@@ -21,7 +21,7 @@
 #
 #	Thank you for choosing FreeEMS to run your engine!
 
-VERSION = v0.0.18
+VERSION = 0.0.19
 
 INCDIR = inc
 OUTDIR = zoutput
@@ -38,7 +38,7 @@ PPCSDIR = zpreprocessedc
 PREFIX = m6811-elf-
 
 CP = cp
-RM = rm -f
+RM = rm -rf
 ZIP = zip
 GCC = $(PREFIX)gcc
 COPY = $(PREFIX)objcopy
@@ -231,11 +231,19 @@ COPYOPTS =  --output-target=srec \
 
 # do the assemblies first as its faster, then objects, then preprocessed files.
 # the labels are there to print out the messages, the variables are the dependencies which do the work.
-all: preprocess $(PREPROCESSED) compile $(ASSEMBLIES) assemble $(OBJECTS) link $(ELFOUT) debug $(DUMPOUT) $(MAPOUT) $(REOUT) s19 $(S19OUT)
-fast: fastcomp $(OBJECTS) link $(ELFOUT) s19 $(S19OUT)
-alldebug: dumps $(DUMPS) debug $(DUMPOUT) $(MAPOUT) $(REOUT)
+all: $(PPCSDIR) preprocess $(PREPROCESSED) compile $(ASSEMBLIES) $(OBJDIR) assemble $(OBJECTS) $(OUTDIR) link $(ELFOUT) debug $(DUMPOUT) $(MAPOUT) $(REOUT) s19 $(S19OUT)
+fast: $(OBJDIR) fastcomp $(OBJECTS) $(OUTDIR) link $(ELFOUT) s19 $(S19OUT)
+alldebug: $(OBJDIR) dumps $(DUMPS) $(OUTDIR) debug $(DUMPOUT) $(MAPOUT) $(REOUT)
 release: save $(S19SAVED) makewinmake $(WMFILE) clean commit svnexp zipall $(ALLZIP) zips19 $(S19ZIP) upload
 
+$(PPCSDIR):
+	mkdir -p $(PPCSDIR)
+
+$(OUTDIR):
+	mkdir -p $(OUTDIR)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
 preprocess:
 
@@ -343,12 +351,17 @@ $(S19ZIP): $(S19SAVED)
 
 # remove the lot
 clean:
-	$(RM) $(PREPROCESSED)
+	#$(RM) $(PREPROCESSED)
+	#rmdir $(PPCSDIR)
+	$(RM) $(PPCSDIR)
 	$(RM) $(ASSEMBLIES)
-	$(RM) $(OBJECTS)
-	$(RM) $(DUMPS)
-	$(RM) $(ELFOUT)
-	$(RM) $(DUMPOUT)
-	$(RM) $(MAPOUT)
-	$(RM) $(S19OUT)
-	$(RM) $(REOUT)
+	#$(RM) $(OBJECTS)
+	#$(RM) $(DUMPS)
+	#rmdir $(OBJDIR)
+	$(RM) $(OBJDIR)
+	#$(RM) $(ELFOUT)
+	#$(RM) $(DUMPOUT)
+	#$(RM) $(MAPOUT)
+	#$(RM) $(S19OUT)
+	#$(RM) $(REOUT)
+	$(RM) $(OUTDIR)
