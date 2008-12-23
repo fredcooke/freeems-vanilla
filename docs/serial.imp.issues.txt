@@ -33,7 +33,7 @@ docs = error code as neg ack or independent error packet - best way??
 async errors mask for which to send and which to not send - based on counts or what?
 datalog mask(s?!) for which to send and which to not.
 debugs not sent counter and method send if the tx buffer is empty only logic
-
+always respond to packets - last line call to send routine, check inside for flag or something and if not set then send generic response packet back
 
 
 possibly switch to pointers for all small tables etc to enhance readability :
