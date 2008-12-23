@@ -21,7 +21,7 @@
 #
 #	Thank you for choosing FreeEMS to run your engine!
 
-VERSION = v0.0.18
+VERSION = 0.0.19
 
 INCDIR = inc
 OUTDIR = zoutput
