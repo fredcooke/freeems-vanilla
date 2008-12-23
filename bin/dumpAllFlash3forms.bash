@@ -28,5 +28,3 @@ hcs12mem -b 115200 -i sm -p /dev/ttyUSB0 -t mc9s12xdp512 -a banked-ppage -e --fl
 
 #hcs12mem -b 115200 -i sm -p /dev/ttyUSB0 -t mc9s12xdp512 -a non-banked -e --flash-read zoutput/freeems.full.dump.48k.s19
 #hcs12mem -b 115200 -i sm -p /dev/ttyUSB0 -t mc9s12xdp512 -a banked-linear -e --flash-read zoutput/freeems.full.dump.linear.s19
-
-
