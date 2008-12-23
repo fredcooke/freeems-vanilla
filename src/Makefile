@@ -232,11 +232,19 @@ COPYOPTS =  --output-target=srec \
 
 # do the assemblies first as its faster, then objects, then preprocessed files.
 # the labels are there to print out the messages, the variables are the dependencies which do the work.
-all: preprocess $(PREPROCESSED) compile $(ASSEMBLIES) assemble $(OBJECTS) link $(ELFOUT) debug $(DUMPOUT) $(MAPOUT) $(REOUT) s19 $(S19OUT)
-fast: fastcomp $(OBJECTS) link $(ELFOUT) s19 $(S19OUT)
-alldebug: dumps $(DUMPS) debug $(DUMPOUT) $(MAPOUT) $(REOUT)
+all: $(PPCSDIR) preprocess $(PREPROCESSED) compile $(ASSEMBLIES) $(OBJDIR) assemble $(OBJECTS) $(OUTDIR) link $(ELFOUT) debug $(DUMPOUT) $(MAPOUT) $(REOUT) s19 $(S19OUT)
+fast: $(OBJDIR) fastcomp $(OBJECTS) $(OUTDIR) link $(ELFOUT) s19 $(S19OUT)
+alldebug: $(OBJDIR) dumps $(DUMPS) $(OUTDIR) debug $(DUMPOUT) $(MAPOUT) $(REOUT)
 release: save $(S19SAVED) makewinmake $(WMFILE) clean commit svnexp zipall $(ALLZIP) zips19 $(S19ZIP) upload
 
+$(PPCSDIR):
+	mkdir -p $(PPCSDIR)
+
+$(OUTDIR):
+	mkdir -p $(OUTDIR)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
 preprocess:
 	################################################################################
@@ -395,6 +403,7 @@ clean:
 	#                 Removing generated pre-processed C files....                 #
 	################################################################################
 	$(RM) $(PREPROCESSED)
+	rmdir $(PPCSDIR)
 	################################################################################
 	#                     Removing generated assembly files....                    #
 	################################################################################
@@ -407,6 +416,7 @@ clean:
 	#                   Removing individual object dump files....                  #
 	################################################################################
 	$(RM) $(DUMPS)
+	rmdir $(OBJDIR)
 	################################################################################
 	#                        Removing final output files....                       #
 	################################################################################
@@ -415,3 +425,4 @@ clean:
 	$(RM) $(MAPOUT)
 	$(RM) $(S19OUT)
 	$(RM) $(REOUT)
+	rmdir $(OUTDIR)
