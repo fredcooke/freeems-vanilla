@@ -1,0 +1,29 @@
+Practical tests to be performed to ensure no regression prior to each release :
+
+Scheduling/decoder
+1. Ensure sync is lost with an extra pulse, and one too few
+
+Fuel :
+1. Increase and decrease of pulse width to extremes both below max pulse width threshold and above.
+2. Increase and decrease of timing both when it does and doesn't affect overlap of schedule with or when pulse width is longer than cycle.
+3. Increase and decrease of RPM such that pulse widths do and do not overlap, and both.
+4. All above tests with and without staged injection occurring, ensure staged does not stick on.
+
+Aux :
+1. Monitor other functions during above tests. They should continue to operate smoothly despite interrupt load.
+Such functions include :
+Port H interrupts
+Fuel calcs
+PWM update
+User LED flashing
+
+Code :
+grep -rn "~0x[0-9][0-9];" src
+This should be done after make and before clean to ensure that no macros etc expand into notted 8 bit literals.
+
+grep -h "#define" src | sort > ~/defines.sorted
+This will allow you to easily see the duplications. There is probably an automated way to test for duplicate lines, but this works
+
+Comms :
+Drop each type of packet through and ensure the correct response. There should be a packet type for each and every code path created.
+ 

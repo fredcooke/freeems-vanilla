@@ -1,0 +1,31 @@
+# hcs12mem - HC12/S12 memory reader & writer
+# mc9s12xdp512.dat: target description - single chip MC9S12XDP512 MCU
+# $Id: mc9s12xdp512.dat 29 2008-03-08 11:34:34Z fcooke $
+#
+# Copyright (C) 2005,2006,2007 Michal Konieczny <mk@cml.mfk.net.pl>
+# Copyright (C) 2008 Fred Cooke
+#
+# Distributed for FreeEMS use, but you are free to use it for anything else too of course :-)
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+info single chip MC9S12XDP512 MCU
+
+mcu MC9S12XDP512
+family S12X
+ram_size 0x8000
+eeprom_module EETX4K
+flash_module FTX512K4
+

@@ -1,0 +1,19 @@
+FreeEMS release procedure
+
+After testing is complete :
+take a video and pics of work completed
+update the interface and version fields length in header too if changed
+update serial documentation
+update interface data map
+do make;make clean
+update changelog and bugs and tasks
+generate windows make file
+check in all changes
+export repository directory to tag location :  svn export https://www.fredsoft.co.nz/svn/freeems/ freeems-v0.0.
+clear it up if necessary
+zip it up
+upload both zips to sourceforge (sftp fredcooke@frs.sourceforge.net, password, cd uploads, put key*)
+check "keep my format" buttons in sourceforge
+update goals,firmware,hardware threads as appropriate linking sourceforge,video,pics
+increment version number in makefile for next iteration
+check makefile in

@@ -1,0 +1,55 @@
+tidy everything up
+
+-1. Refactor all vars to A be consistent, readable, meaningful B be inside a massive struct in an intelligent order padded by a string to be 4k or some other clean amount.
+0. Make header dependencies clean in Makefile - make file will deteriorate in cleansliness, but compile will be faster
+1. Add checking of preprocessed C files for 8 bit notted literals. grep -rn "~0x[0-9][0-9];" src should return 0 lines.
+1.5 ditto, check for use of "&= !"
+2. Do basic range checking and ensure that dwell overlap functions correctly. 
+3. Because it is meaningless to have 100% duty dwell, ensure that some brief period is always allowed for spark to occur in.
+4. Add proper staging code allowing configurable parallel on OR off and PIT scheduled other event (two pits for staged siamese, but not yet?)
+5. Add ADC averaging code (stabilises readings) in the calculation section
+6. Add proper advance calcs based on speed and time rather than just time as now (which is very wrong) offsets should be in degrees too
+7. Add proper wheel decode/sync code
+8. Add proper scheduling code
+9. Add ignition control with PITS to scheduling
+10. Add fuel pump turn on for X seconds at power on, and on with RPM, off with no rpm for more than X seconds
+11. Add tacho output in configurable way
+12. Add rpm/accel/change in accel prediction to periods etc, and do per tooth.
+16. Implement full serial protocol as defined by Stu, and other thread participants
+18. Clean up headers more by splitting and rearranging and grouping
+19. Check for volatile stuff that isn't labeled as such
+20. Add staged atmospheric calculations/corrections with if then else if options (% load, manual correction, no correction, fixed correction, dashpot via standard ADC, etc and/or all/some of them)
+21. Add staged delta/transient calculations/corrections with if then else if options (WW1, WW2, TPS based, MAP based, RPM based, load based, etc and/or all/some of them)
+22. Add EGO Lambda correction calculations/corrections option block
+29. Add ign correction for engine temp (+/- params? table?)
+30. Add ign correction for intake air temp (+/- params? table?)
+32. Add ign correction for knock level/frequency/history
+33. Add ign adjustment for anti lag
+34. Add ign adjustment for launch control
+35. Add option for fixed timing
+36. Add ign adjustment for rpm limit (soft)
+37. Add ign cut for rpm limit (hard)
+38. Add ign adjustment for idle speed control
+39. Add fuel enrichment based on knock.
+40. Add fuel correction based on fuel temperature and or pressure and or dashpot or flexfuel sensor
+43. Add coolant based RPM limiting by using tables for each RPM limit such that it is always done that way
+44. Think about how to implement priming pulses
+45. Think about how to implement post start enrich
+46. Think about how to implement other time based things such as knock, fuel pump, etc
+47. Add additional fuel variable for NOS use
+51. Add structure to determine the current rpm limits for each type (4 types)
+52. Ensure ordering of all fuel and ignition calculations is perfect for best precision and correctness
+53. Add runtime vars for ALL functions/ISRs of any importance
+54. Add Status struct
+56. Add Ignition struct
+57. Add Injection struct
+58. Add Engine position struct
+59. Add Validity flags perhaps in the status struct?
+60. Calculate RPM based on data recorded during decode
+
+* averaging all vars by the appropriate amount
+
+* fuel advance calculations
+* ignition dwell and angle calcs
+* apply corrections to ignition
+* ignition advance calcs
