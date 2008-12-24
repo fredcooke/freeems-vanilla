@@ -26,8 +26,7 @@
 #include "inc/flashWrite.h"
 #include "inc/flashBurn.h"
 #include "inc/commsISRs.h"
-
-
+#include <string.h>
 
 
 /**************************************************************************************************************/
@@ -91,25 +90,116 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 /* Pass in anything you like and it will error if it can't handle it. */
 /* Note : Limited to 63k per write!! (obviously) */
 /* TODO buffer, copy and do smaller regions by supplementing with data read from the block in question. TODO see above ^ */
-unsigned short writeBlock(unsigned char RPage, unsigned short* RAMSourceAddress, unsigned char PPage, unsigned short* flashDestinationAddr, unsigned short size){
+//unsigned short writeBlock(unsigned char RPage, unsigned short* RAMSourceAddress, unsigned char PPage, unsigned short* flashDestinationAddr, unsigned short size){
+unsigned short writeBlock(blockDetails* details, void* buffer){//, void* buffer /* char* short* how to handle odd byte count?? */){
+	/* because the ram version will be in an arbitrary place we need to base
+	 * our positioning from the flash location. Firstly we need to ensure that
+	 * it doesn't cross any sector boundaries. Then we need to find the address
+	 * of the sector to be burned to. We also need to determine if there are
+	 * 2 or 3 chunks of memory to be copied to the buffer, three cases exist
+	 * for that :
+	 *
+	 * | From Flash |  From RAM  | From flash |
+	 * |    From Flash    |     From RAM      |
+	 * |     From RAM     |    From Flash     |
+	 */
 
-	if(((size % flashSectorSize) != 0) || (size == 0)){
-		return sizeNotMultipleOfSectorSize;
+	unsigned char sectors;
+	unsigned char RAMPage;
+	// FlashPage is always the one provided and is just used as is.
+	unsigned short* RAMAddress;
+	unsigned short* FlashAddress;
+
+	// check size isn't zero...
+	if(details->size == 0){
+		return sizeOfBlockToBurnIsZero;
+	}else if(details->size < 1024){
+		unsigned short chunkFlashAddress = (unsigned short)details->FlashAddress;
+		/* Get the offset from the start of the sector */
+		unsigned short offset = chunkFlashAddress % flashSectorSize;
+
+		/* Check for flash sector boundary crossing */
+		if((offset + details->size) > 1024){
+			return smallBlockCrossesSectorBoundary;
+		}
+
+		/* Configure the final burn variables */
+		sectors = 1; /* By definition if we are in this code there is only one */
+		RAMPage = RPAGE; /* The buffer is always in linear RAM region */
+		RAMAddress = buffer; /* Save the buffer start address */
+		FlashAddress = (unsigned short*)(chunkFlashAddress - offset); /* Get the start of the flash sector */
+
+		/* Possibly three parts to copy to the buffer, copy only what is required */
+
+		/* Save the PPAGE value and set the flash page */
+		unsigned char oldFlashPage = PPAGE;
+		PPAGE = details->FlashPage;
+
+		/* If the chunk doesn't start at the beginning of the sector, copy the first area from flash */
+		if(offset != 0){
+			memcpy(buffer, FlashAddress, offset);
+			buffer += offset;
+		}
+
+		// copy the middle section up regardless
+		unsigned char oldRAMPage = RPAGE;
+		RPAGE = details->RAMPage;
+		memcpy(buffer, details->RAMAddress, details->size);
+		buffer += details->size;
+		RPAGE = oldRAMPage;
+
+		// if the chunk doesn't end at the end of the sector, copy the last are from flash
+		if((offset + details->size) < 1024){ // logic dodgy ??? TODO
+			void* chunkFlashEndAddress = details->FlashAddress + details->size;
+			memcpy(buffer, chunkFlashEndAddress, (1024 - (offset + details->size)));
+		}
+
+		/* Restore the PPAGE value back */
+		PPAGE = oldFlashPage;
+	} else {
+		// if not smaller than 1024, check size is product of sector size
+		if((details->size % flashSectorSize) != 0){
+			return sizeNotMultipleOfSectorSize;
+		}
+
+		// larger chunk
+		sectors = details->size / flashSectorSize;
+		RAMPage = details->RAMPage;
+		RAMAddress = (unsigned short*)details->RAMAddress;
+		FlashAddress = (unsigned short*)details->FlashAddress;
 	}
 
-	unsigned char sectors = size / flashSectorSize;
 	unsigned char i;
 	for(i=0;i<sectors;i++){
-		unsigned short errorID = writeSector(RPage, RAMSourceAddress, PPage, flashDestinationAddr);
+		unsigned short errorID = writeSector(RAMPage, RAMAddress, details->FlashPage, FlashAddress);
 		if(errorID != 0){
 			return errorID;
 		}
 		/* Incrementing a pointer is done by blocks the size of the type, hence 512 per sector here */
-		flashDestinationAddr += flashSectorSizeInWords;
-		RAMSourceAddress += flashSectorSizeInWords;
+		RAMAddress += flashSectorSizeInWords;
+		FlashAddress += flashSectorSizeInWords;
 	}
 	return 0;
 }
+
+// original 5 args version :
+//if(((size % flashSectorSize) != 0) || (size == 0)){
+//	return sizeNotMultipleOfSectorSize;
+//}
+//
+//unsigned char sectors = size / flashSectorSize;
+//unsigned char i;
+//for(i=0;i<sectors;i++){
+//	unsigned short errorID = writeSector(RPage, RAMSourceAddress, PPage, flashDestinationAddr);
+//	if(errorID != 0){
+//		return errorID;
+//	}
+//	/* Incrementing a pointer is done by blocks the size of the type, hence 512 per sector here */
+//	flashDestinationAddr += flashSectorSizeInWords;
+//	RAMSourceAddress += flashSectorSizeInWords;
+//}
+//return 0;
+//}
 
 /*******************************************************************************
  * 	writeSector will use writeWord to write a 1k block from sourceAddress(RAM) to flashDestinationAddress.

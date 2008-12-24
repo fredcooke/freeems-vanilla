@@ -55,13 +55,14 @@
 
 /* Flash burning error codes */
 #define sizeNotMultipleOfSectorSize		0x3000
-#define addressNotSectorAligned			0x3001
-#define addressNotWordAligned			0x3002
-#define addressNotFlashRegion			0x3003
-#define flashEraseFailed				0x3004
-#define flashAccessError				0x3005
-#define flashProtectionError			0x3006
-
+#define sizeOfBlockToBurnIsZero			0x3001
+#define smallBlockCrossesSectorBoundary	0x3002
+#define addressNotSectorAligned			0x3003
+#define addressNotWordAligned			0x3004
+#define addressNotFlashRegion			0x3005
+#define flashEraseFailed				0x3006
+#define flashAccessError				0x3007
+#define flashProtectionError			0x3008
 
 
 /* Communications error codes */

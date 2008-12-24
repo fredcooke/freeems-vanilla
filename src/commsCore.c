@@ -475,8 +475,14 @@ void decodePacketAndRespond(){
 				}
 			}/* else{ hope for the best ;-) } */
 
+			/* Calculate the position of the end of the stored packet for use as a buffer */
+			void* buffer = (&RXBuffer + RXPacketLengthReceived);
+
+			details.RAMPage = RPAGE;
+			details.RAMAddress = RXBufferCurrentPosition;
+
 			/* Copy from the RX buffer to the block of flash */
-			unsigned short errorID = writeBlock(details.FlashPage, (unsigned short*)details.FlashAddress, RPAGE, (unsigned short*)RXBufferCurrentPosition, details.size);
+			unsigned short errorID = writeBlock(&details, buffer);
 
 			/* If flash write failed for some reason */
 			if(errorID != 0){
@@ -618,22 +624,11 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			if(details.size < 1024){
-				sendErrorInternal(0x0999);
-				/* create some sort of function to copy the flash sector up into
-				 * the serial rx buffer in the high end and then over write with
-				 * the small piece defined either from incoming data, or from its
-				 * memory location. Then just call burn in the normal way.
-				 *
-				 * function could take :
-				 * pointer to the buffer region (must be 1024 long or more)
-				 * rpage, address, length of data to be persisted
-				 * ppage, address of the sector to retrieve the rest of the data from
-				 * pointer to the details object we want to use for the following call :
-				 */
-			}
+			/* Calculate the position of the end of the stored packet for use as a buffer */
+			void* buffer = (&RXBuffer + RXPacketLengthReceived);
 
-			unsigned short errorID = writeBlock(details.RAMPage, (unsigned short*)details.RAMAddress, details.FlashPage, (unsigned short*)details.FlashAddress, details.size);
+			/* Write the block down from RAM to Flash */
+			unsigned short errorID = writeBlock(&details, buffer);
 
 			if(errorID != 0){
 				sendErrorInternal(errorID);

@@ -43,7 +43,8 @@
 EXTERN unsigned short writeWord(unsigned short*, unsigned short) TEXT;
 EXTERN unsigned short eraseSector(unsigned char, unsigned short*) TEXT;
 EXTERN unsigned short writeSector(unsigned char, unsigned short*, unsigned char, unsigned short*) TEXT;
-EXTERN unsigned short writeBlock(unsigned char, unsigned short*, unsigned char, unsigned short*, unsigned short) TEXT;
+EXTERN unsigned short writeBlock(blockDetails*, void*) TEXT;
+//EXTERN unsigned short writeBlock(unsigned char, unsigned short*, unsigned char, unsigned short*, unsigned short) TEXT;
 
 //TODO  source flash page, source ram page, dest flash page    grab the code from FF C000 and burn it from E0 up
 #undef EXTERN
