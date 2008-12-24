@@ -351,17 +351,7 @@ $(S19ZIP): $(S19SAVED)
 
 # remove the lot
 clean:
-	#$(RM) $(PREPROCESSED)
-	#rmdir $(PPCSDIR)
-	$(RM) $(PPCSDIR)
 	$(RM) $(ASSEMBLIES)
-	#$(RM) $(OBJECTS)
-	#$(RM) $(DUMPS)
-	#rmdir $(OBJDIR)
+	$(RM) $(PPCSDIR)
 	$(RM) $(OBJDIR)
-	#$(RM) $(ELFOUT)
-	#$(RM) $(DUMPOUT)
-	#$(RM) $(MAPOUT)
-	#$(RM) $(S19OUT)
-	#$(RM) $(REOUT)
 	$(RM) $(OUTDIR)
