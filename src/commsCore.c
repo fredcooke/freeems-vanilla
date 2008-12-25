@@ -299,6 +299,7 @@ void decodePacketAndRespond(){
 
 		switch (RXHeaderPayloadID){
 		case requestInterfaceVersion:
+		{
 			if(RXCalculatedPayloadLength != 0){
 				sendErrorInternal(payloadLengthTypeMismatch);
 				break;
@@ -313,7 +314,9 @@ void decodePacketAndRespond(){
 			TXBufferCurrentPositionHandler += sizeof(interfaceVersionAndType);
 			checksumAndSend();
 			break;
+		}
 		case requestFirmwareVersion:
+		{
 			if(RXCalculatedPayloadLength != 0){
 				sendErrorInternal(payloadLengthTypeMismatch);
 				break;
@@ -327,7 +330,9 @@ void decodePacketAndRespond(){
 			TXBufferCurrentPositionHandler += sizeof(firmwareVersion);
 			checksumAndSend();
 			break;
+		}
 		case requestMaxPacketSize:
+		{
 			if(RXCalculatedPayloadLength != 0){
 				sendErrorInternal(payloadLengthTypeMismatch);
 				break;
@@ -337,7 +342,9 @@ void decodePacketAndRespond(){
 			TXBufferCurrentPositionHandler += 2;
 			checksumAndSend();
 			break;
+		}
 		case requestEchoPacketReturn:
+		{
 			/* This type must have a length field, set that up */
 			*((unsigned short*)TXBufferCurrentPositionHandler) = RXPacketLengthReceived;
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
@@ -349,6 +356,7 @@ void decodePacketAndRespond(){
 			TXBufferCurrentPositionHandler += RXPacketLengthReceived;
 			checksumAndSend();
 			break;
+		}
 		case requestSoftSystemReset:
 		{
 			// hack to allow datalog on/off from the orange button (thank christ I asked for that button when I did)
@@ -380,6 +388,7 @@ void decodePacketAndRespond(){
 //			_start();
 		}
 		case requestHardSystemReset:
+		{
 			if(RXCalculatedPayloadLength != 0){
 				sendErrorInternal(payloadLengthTypeMismatch);
 				break;
@@ -390,12 +399,15 @@ void decodePacketAndRespond(){
 			ARMCOP = 0xFF; /* Write bad value, should cause immediate reset */
 			/* Using _start() only resets the app ignoring the monitor switch. It does not work */
 			/* properly because the location of _start is not the master reset vector location. */
+		}
 		default:
+		{
 			if((RXHeaderPayloadID % 2) == 1){
 				sendErrorInternal(invalidProtocolPayloadID);
 			}else{
 				sendErrorInternal(unrecognisedProtocolPayloadID);
 			}
+		}
 		}
 	}else{ /* Otherwise firmware payload types */
 		switch (RXHeaderPayloadID) {
@@ -420,11 +432,12 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			// TODO factor this out into validation delegation function once the number of types increases somewhat
 			unsigned short errorID = 0;
 			if(locationID < 16){
 				mainTable aTable;
 				errorID = validateMainTable(&aTable);
-			}else if(locationID > 399){
+			}else if((locationID > 399) && (locationID < 900)){
 				twoDTableUS aTable;
 				errorID = validateTwoDTable(&aTable);
 			}// TODO add other table types here
@@ -467,13 +480,20 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			// TODO factor this out into validation delegation function once the number of types increases somewhat
+			unsigned short errorID = 0;
 			if(locationID < 16){
-				unsigned short errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
-				if(errorID != 0){
-					sendErrorInternal(errorID);
-					break;
-				}
-			}/* else{ hope for the best ;-) } */
+				mainTable aTable;
+				errorID = validateMainTable(&aTable);
+			}else if((locationID > 399) && (locationID < 900)){
+				twoDTableUS aTable;
+				errorID = validateTwoDTable(&aTable);
+			}// TODO add other table types here
+			/* If the validation failed, report it */
+			if(errorID != 0){
+				sendErrorInternal(errorID);
+				break;
+			}
 
 			/* Calculate the position of the end of the stored packet for use as a buffer */
 			void* buffer = (&RXBuffer + RXPacketLengthReceived);
