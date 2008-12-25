@@ -502,9 +502,7 @@ void decodePacketAndRespond(){
 			details.RAMAddress = RXBufferCurrentPosition;
 
 			/* Copy from the RX buffer to the block of flash */
-			unsigned short errorID = writeBlock(&details, buffer);
-
-			/* If flash write failed for some reason */
+			errorID = writeBlock(&details, buffer);
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 				break;
