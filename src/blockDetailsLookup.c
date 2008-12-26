@@ -230,7 +230,7 @@ void lookupBlockDetails(unsigned short locationID, blockDetails* details){
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = (void*)&SmallTablesAFlash.dwellDesiredVersusVoltageTable;
 		break;
 	case dwellDesiredVersusVoltageTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
