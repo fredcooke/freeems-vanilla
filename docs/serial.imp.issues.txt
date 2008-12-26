@@ -1,5 +1,6 @@
 Serial TODO
 
+split location variable declarations out into own file.
 split some headers into more than one for different  inclusion purposes
 make file dependencies - chainable ? use same thing for message as action (only possible for single targets) 
 main loop, disable timer isrs leaving only comms and enter loop with delay sending out errors - this gives possibility to use comms to load better data and reset without engine running at all
