@@ -26,6 +26,7 @@
 #include "inc/flashWrite.h"
 #include "inc/flashBurn.h"
 #include "inc/commsISRs.h"
+#include "inc/commsCore.h"
 #include <string.h>
 
 

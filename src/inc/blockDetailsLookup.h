@@ -32,7 +32,7 @@
 #define EXTERN extern
 #endif
 
-EXTERN void lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE;
+EXTERN unsigned short lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE;
 
 
 /* Memory block ID section */
@@ -79,7 +79,7 @@ EXTERN void lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE;
 /* fillers			= 1000+ */
 
 /* TablesA */
-#define dwellDesiredVersusVoltageTableLocationID		333 //400 temp to avoid filter on validity
+#define dwellDesiredVersusVoltageTableLocationID		400
 #define dwellDesiredVersusVoltageTable2LocationID		401
 #define injectorDeadTimeTableLocationID					402
 #define injectorDeadTimeTable2LocationID				403

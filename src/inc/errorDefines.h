@@ -81,6 +81,7 @@
 #define invalidIDForTwoDTableAction		0x400C
 #define noSuchAsyncDatalogType			0x400D
 #define datalogLengthExceedsMax			0x400E
+#define locationIDNotFound				0x400F
 
 #define invalidAxisOrder				0
 #define invalidAxisIndex				1

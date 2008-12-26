@@ -30,7 +30,7 @@
 /* Flash only blocks leave the ram address and page values	 */
 /* set to zero. ID's that don't exist leave all set to zero. */
 /* Error handling is to be done externally based on that.	 */
-void lookupBlockDetails(unsigned short locationID, blockDetails* details){
+unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* details){
 	/* Initialise the four values needed for operations on memory at 0 for error checking */
 	details->RAMPage = 0;
 	details->FlashPage = 0;
@@ -404,8 +404,12 @@ void lookupBlockDetails(unsigned short locationID, blockDetails* details){
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
 		details->FlashAddress = fillerD2Location;
 		break;
-	}
 
 	/* TODO Fixed config small blocks */
 	// NOTE these are in linear space so we can get the addresses directly.
+
+	default:
+		return locationIDNotFound;
+	}
+	return 0;
 }

@@ -435,11 +435,11 @@ void decodePacketAndRespond(){
 			// TODO factor this out into validation delegation function once the number of types increases somewhat
 			unsigned short errorID = 0;
 			if(locationID < 16){
-				mainTable aTable;
-				errorID = validateMainTable(&aTable);
+//				mainTable aTable;
+				errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
 			}else if((locationID > 399) && (locationID < 900)){
-				twoDTableUS aTable;
-				errorID = validateTwoDTable(&aTable);
+//				twoDTableUS aTable;
+				errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
 			}// TODO add other table types here
 			/* If the validation failed, report it */
 			if(errorID != 0){
@@ -483,11 +483,11 @@ void decodePacketAndRespond(){
 			// TODO factor this out into validation delegation function once the number of types increases somewhat
 			unsigned short errorID = 0;
 			if(locationID < 16){
-				mainTable aTable;
-				errorID = validateMainTable(&aTable);
+//				mainTable aTable;
+				errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
 			}else if((locationID > 399) && (locationID < 900)){
-				twoDTableUS aTable;
-				errorID = validateTwoDTable(&aTable);
+//				twoDTableUS aTable;
+				errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
 			}// TODO add other table types here
 			/* If the validation failed, report it */
 			if(errorID != 0){
@@ -496,8 +496,11 @@ void decodePacketAndRespond(){
 			}
 
 			/* Calculate the position of the end of the stored packet for use as a buffer */
-			void* buffer = (&RXBuffer + RXPacketLengthReceived);
+			void* buffer = (void*)((unsigned short)&RXBuffer + RXPacketLengthReceived);
 
+			/* Swap the RAM details such that the block gets pulled down from the buffer */
+			unsigned char originalRAMPage = details.RAMPage;
+			void* originalRAMAddress = details.RAMAddress;
 			details.RAMPage = RPAGE;
 			details.RAMAddress = RXBufferCurrentPosition;
 
@@ -508,19 +511,19 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			/* If present in ram, update that too */
-			if((details.RAMPage != 0) && (details.RAMAddress != 0)){
+			/* If present in RAM, update that too */
+			if((originalRAMPage != 0) && (originalRAMAddress != 0)){
 				/* Save page values for restore */
 				unsigned char oldRamPage = RPAGE;
 				/* Set the viewable ram page */
-				RPAGE = details.RAMPage;
+				RPAGE = originalRAMPage;
 				/* Copy from the RX buffer to the block of ram */
-				memcpy(details.RAMAddress, RXBufferCurrentPosition, details.size);
+				memcpy(originalRAMAddress, RXBufferCurrentPosition, details.size);
 				/* Restore the original ram and flash pages */
 				RPAGE = oldRamPage;
 			}
 
-			sendAckIfRequired(); // TODO implement
+			sendAckIfRequired();
 			// TODO document errors can always be returned and add error check in to send as response for ack and async otherwise
 			break;
 		}
@@ -643,7 +646,7 @@ void decodePacketAndRespond(){
 			}
 
 			/* Calculate the position of the end of the stored packet for use as a buffer */
-			void* buffer = (&RXBuffer + RXPacketLengthReceived);
+			void* buffer = (void*)((unsigned short)&RXBuffer + RXPacketLengthReceived);
 
 			/* Write the block down from RAM to Flash */
 			unsigned short errorID = writeBlock(&details, buffer);
@@ -653,7 +656,7 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			sendDebugInternal("Copied RAM to Flash!");
+			sendAckIfRequired();
 			break;
 		}
 		case eraseAllBlocksFromFlash:

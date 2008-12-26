@@ -3,12 +3,17 @@ Change Log for the firmware code. Newest version at top, newest changes at the b
 Please add your name, and a time/date WITH time zone info before every line.
 
 0.0.19 () <time> // - UK Time
-Fred 25/12  3:30pm:	Added validation to flash burn direct function
+Fred 25/12  3:30pm:	Modified writeBlock to burn small blocks via buffer
+					Added validation to flash burn direct function
 					Added upper range to small table validation check
 					Added test packets for small chunk write/burn
 					Wrapped braces around protocol case blocks
 Fred 26/12 12:26pm:	Added addresses for all the small table stuff
-										
+					Fixed buffer address creation code by casting
+					Finished validation call blocks off
+					Added return to block lookup for when ID not found
+					Added more test packets for small chunk write/burn
+					
 
 0.0.18 (JackTheRipper) 10:40pm 22/12/08 - UK Time
 Fred 12/11  7:04am:	Added flash and ram receive functions
