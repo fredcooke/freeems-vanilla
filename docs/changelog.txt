@@ -2,7 +2,14 @@ Change Log for the firmware code. Newest version at top, newest changes at the b
 
 Please add your name, and a time/date WITH time zone info before every line.
 
-0.0.18 (JackTheRipper) : 10:40pm 22/12/08 - UK Time
+0.0.19 () <time> // - UK Time
+Fred 25/12  3:30pm:	Added validation to flash burn direct function
+					Added upper range to small table validation check
+					Added test packets for small chunk write/burn
+					Wrapped braces around protocol case blocks
+					
+
+0.0.18 (JackTheRipper) 10:40pm 22/12/08 - UK Time
 Fred 12/11  7:04am:	Added flash and ram receive functions
 					Added wrappers for debug and error
 					Modified flash error handling to be compatible with overall scheme
