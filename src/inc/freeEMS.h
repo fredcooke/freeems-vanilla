@@ -252,7 +252,7 @@ EXTERN void* CHTTransferTableLocation;
 EXTERN void* MAFTransferTableLocation;
 EXTERN void* TestTransferTableLocation;
 /* Small tables */
-//EXTERN void*
+EXTERN void* littleTableLocation;
 
 
 //union { /* Declare Union http://www.esacademy.com/faq/docs/cpointers/structures.htm */

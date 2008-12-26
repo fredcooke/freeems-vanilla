@@ -262,6 +262,7 @@ void initPagedRAMTune(void){
 	SmallTablesBFlash2Location	= (void*)&SmallTablesBFlash2;
 	SmallTablesCFlash2Location	= (void*)&SmallTablesCFlash2;
 	SmallTablesDFlash2Location	= (void*)&SmallTablesDFlash2;
+	littleTableLocation = (void*)&SmallTablesAFlash.dwellDesiredVersusVoltageTable;
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TUNE_ONE;
 	memcpy((void*)&TablesA,	SmallTablesAFlashLocation,	MAINTABLE_SIZE);
