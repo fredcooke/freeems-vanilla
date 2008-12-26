@@ -7,7 +7,8 @@ Fred 25/12  3:30pm:	Added validation to flash burn direct function
 					Added upper range to small table validation check
 					Added test packets for small chunk write/burn
 					Wrapped braces around protocol case blocks
-					
+Fred 26/12 12:26pm:	Added addresses for all the small table stuff
+										
 
 0.0.18 (JackTheRipper) 10:40pm 22/12/08 - UK Time
 Fred 12/11  7:04am:	Added flash and ram receive functions
