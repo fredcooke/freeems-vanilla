@@ -24,6 +24,7 @@
 
 #define MAIN_OR_GLOBALS
 #include "inc/freeEMS.h"
+#include "inc/pagedLocationBuffers.h"
 
 /* This file creates the symbols for all of the variables. It is	*/
 /* separated to clarify how much memory is actually being used by	*/

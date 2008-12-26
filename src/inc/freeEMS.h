@@ -30,6 +30,21 @@
 /* Include top level files that everything else relies on */
 #include "memory.h"
 #include "9S12XDP512.h"
+#include "flashGlobals.h" // TODO For Sean to integrate back in
+//#include "registerMasks.h TODO we should define those masks that we use in one place, but probably not in the main device header.
+
+/* Include define files at the top here as other includes use them */
+#include "errorDefines.h"
+#include "globalDefines.h"
+
+
+/* Include data types at the top as other includes use them */
+#include "structs.h" // TODO split this out into more chunks as it's too big.
+#include "tunables.h"
+
+
+/* These specific subsets became too large to stay in this file. */
+#include "globalConstants.h"
 
 
 /* Where extern is used instead of EXTERN it indicates that		*/
@@ -41,18 +56,6 @@
 #else
 #define EXTERN extern
 #endif
-
-
-/* Include define files at the top here as other includes use them */
-#include "errorDefines.h"
-#include "globalDefines.h"
-
-
-/* Include items that would normally be found in here */
-#include "structs.h"
-#include "tunables.h"
-#include "globalConstants.h"
-#include "flashGlobals.h" // For Sean to work on this in parallel with me
 
 
 /* Types summary
@@ -79,7 +82,7 @@ EXTERN unsigned short RPM1; // to be replaced with logging scheme for teeth.
 extern unsigned short tachoPeriod;
 EXTERN unsigned char portHDebounce;
 
-/* these should not be here... TODO */
+// these should not be here... TODO move to a comms header
 extern unsigned char asyncDatalogType;
 #define asyncDatalogOff			0x00
 #define asyncDatalogBasic		0x01
@@ -218,76 +221,6 @@ EXTERN Tables4 TablesD RWINDOW;
 EXTERN unsigned char currentFuelRPage;
 EXTERN unsigned char currentTuneRPage;
 EXTERN unsigned char currentTimeRPage;
-
-// TODO move the location vars to their own file ...
-
-/* Fueling blocks */
-EXTERN void* VETableMainFlashLocation;
-EXTERN void* VETableMainFlash2Location;
-EXTERN void* VETableSecondaryFlashLocation;
-EXTERN void* VETableSecondaryFlash2Location;
-EXTERN void* VETableTertiaryFlashLocation;
-EXTERN void* VETableTertiaryFlash2Location;
-EXTERN void* LambdaTableFlashLocation;
-EXTERN void* LambdaTableFlash2Location;
-/* Timing blocks */
-EXTERN void* IgnitionAdvanceTableMainFlashLocation;
-EXTERN void* IgnitionAdvanceTableMainFlash2Location;
-EXTERN void* IgnitionAdvanceTableSecondaryFlashLocation;
-EXTERN void* IgnitionAdvanceTableSecondaryFlash2Location;
-EXTERN void* InjectionAdvanceTableMainFlashLocation;
-EXTERN void* InjectionAdvanceTableMainFlash2Location;
-EXTERN void* InjectionAdvanceTableSecondaryFlashLocation;
-EXTERN void* InjectionAdvanceTableSecondaryFlash2Location;
-/* Tuable blocks */
-EXTERN void* SmallTablesAFlashLocation;
-EXTERN void* SmallTablesAFlash2Location;
-EXTERN void* SmallTablesBFlashLocation;
-EXTERN void* SmallTablesBFlash2Location;
-EXTERN void* SmallTablesCFlashLocation;
-EXTERN void* SmallTablesCFlash2Location;
-EXTERN void* SmallTablesDFlashLocation;
-EXTERN void* SmallTablesDFlash2Location;
-/* Flash ONLY blocks */
-EXTERN void* IATTransferTableLocation;
-EXTERN void* CHTTransferTableLocation;
-EXTERN void* MAFTransferTableLocation;
-EXTERN void* TestTransferTableLocation;
-/* Small tables */
-
-/* TablesA */
-EXTERN void* dwellDesiredVersusVoltageTableLocation;
-EXTERN void* dwellDesiredVersusVoltageTable2Location;
-EXTERN void* injectorDeadTimeTableLocation;
-EXTERN void* injectorDeadTimeTable2Location;
-EXTERN void* postStartEnrichmentTableLocation;
-EXTERN void* postStartEnrichmentTable2Location;
-EXTERN void* engineTempEnrichmentTableFixedLocation;
-EXTERN void* engineTempEnrichmentTableFixed2Location;
-EXTERN void* primingVolumeTableLocation;
-EXTERN void* primingVolumeTable2Location;
-EXTERN void* engineTempEnrichmentTablePercentLocation;
-EXTERN void* engineTempEnrichmentTablePercent2Location;
-EXTERN void* dwellMaxVersusRPMTableLocation;
-EXTERN void* dwellMaxVersusRPMTable2Location;
-
-/* TablesB */
-EXTERN void* perCylinderFuelTrimsLocation;
-EXTERN void* perCylinderFuelTrims2Location;
-
-/* TablesC */
-
-/* TablesD */
-
-/* filler defs */
-EXTERN void* fillerALocation;
-EXTERN void* fillerA2Location;
-EXTERN void* fillerBLocation;
-EXTERN void* fillerB2Location;
-EXTERN void* fillerCLocation;
-EXTERN void* fillerC2Location;
-EXTERN void* fillerDLocation;
-EXTERN void* fillerD2Location;
 
 
 //union { /* Declare Union http://www.esacademy.com/faq/docs/cpointers/structures.htm */
@@ -445,7 +378,6 @@ EXTERN unsigned short injectorStagedPulseWidths1[INJECTION_CHANNELS];
 /* Channel latencies (init not required) */
 EXTERN unsigned short injectorCodeLatencies[INJECTION_CHANNELS];
 
-#undef IN_OUT_BANKS
 #undef EXTERN
 
 #else

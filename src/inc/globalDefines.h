@@ -242,15 +242,6 @@
 #define IGNITION_ENABLE BIT1
 #define IGNITION_DISABLE NBIT1
 
-/* Variable banks for taking readings while performing calculations without corruption or blocking ISRs */
-#define IN_OUT_BANKS 2
-
-/* Hold two copies of all ADC readings such that one can be used while the other is being recorded. */
-#define ADC_ARRAY_COUNT 16 // no point doing the other 8 (24) because they can't be used on this core at this time.
-#define ADCS_IN_ADC0 8
-#define ADCS_IN_ADC1 8 /* Should be 16, but code will need a slight refactor to take care of that anyway */
-#define ADC_BLOCK_LENGTH 64 /* ADC_ARRAY_COUNT * IN_OUT_BANKS * 2 = 16 * 2 * 2 */ /* times 2 because they are shorts and 2 bytes each */
-
 /* Valid RPAGE values :
  *	0xFF - linear
  *	0xFE - linear

@@ -41,6 +41,13 @@
  */
 
 
+#ifdef MAIN_OR_GLOBALS
+#define EXTERN
+#else
+#define EXTERN extern
+#endif
+
+
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Arrays here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 #ifndef NO_CONST_ARRAYS
@@ -157,6 +164,10 @@ EXTERN const unsigned short leadingEdgePrimaryRPMInputCodeTime;
 EXTERN const unsigned short trailingEdgePrimaryRPMInputCodeTime;
 EXTERN const unsigned short leadingEdgeSecondaryRPMInputCodeTime;
 EXTERN const unsigned short trailingEdgeSecondaryRPMInputCodeTime;
+
+
+#undef EXTERN
+
 
 #else
 	/* let us know if we are being untidy with headers */

@@ -24,6 +24,7 @@
 #define BLOCK_DETAILS_LOOKUP_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+#include "inc/pagedLocationBuffers.h"
 #include "inc/blockDetailsLookup.h"
 
 

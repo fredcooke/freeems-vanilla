@@ -26,6 +26,7 @@
 #include "inc/interrupts.h"
 #include "inc/utils.h"
 #include "inc/commsISRs.h"
+#include "inc/pagedLocationBuffers.h"
 #include "inc/init.h"
 #include <string.h>
 
