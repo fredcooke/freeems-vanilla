@@ -230,98 +230,98 @@ void lookupBlockDetails(unsigned short locationID, blockDetails* details){
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
-		details->FlashAddress = littleTableLocation;
+		details->FlashAddress = dwellDesiredVersusVoltageTableLocation;
 		break;
 	case dwellDesiredVersusVoltageTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = dwellDesiredVersusVoltageTable2Location;
 		break;
 	case injectorDeadTimeTableLocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.injectorDeadTimeTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = injectorDeadTimeTableLocation;
 		break;
 	case injectorDeadTimeTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.injectorDeadTimeTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = injectorDeadTimeTable2Location;
 		break;
 	case postStartEnrichmentTableLocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = postStartEnrichmentTableLocation;
 		break;
 	case postStartEnrichmentTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = postStartEnrichmentTable2Location;
 		break;
 	case engineTempEnrichmentTableFixedLocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = engineTempEnrichmentTableFixedLocation;
 		break;
 	case engineTempEnrichmentTableFixed2LocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = engineTempEnrichmentTableFixed2Location;
 		break;
 	case primingVolumeTableLocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = primingVolumeTableLocation;
 		break;
 	case primingVolumeTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = primingVolumeTable2Location;
 		break;
 	case engineTempEnrichmentTablePercentLocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = engineTempEnrichmentTablePercentLocation;
 		break;
 	case engineTempEnrichmentTablePercent2LocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = engineTempEnrichmentTablePercent2Location;
 		break;
 	case dwellMaxVersusRPMTableLocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellMaxVersusRPMTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = dwellMaxVersusRPMTableLocation;
 		break;
 	case dwellMaxVersusRPMTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellMaxVersusRPMTable;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = dwellMaxVersusRPMTable2Location;
 		break;
 
 	/* TablesB small tables */
@@ -330,14 +330,14 @@ void lookupBlockDetails(unsigned short locationID, blockDetails* details){
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.perCylinderFuelTrims;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = perCylinderFuelTrimsLocation;
 		break;
 	case perCylinderFuelTrims2LocationID:
 		details->size = 12;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.perCylinderFuelTrims;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = perCylinderFuelTrims2Location;
 		break;
 
 	/* TablesC small tables */
@@ -352,49 +352,49 @@ void lookupBlockDetails(unsigned short locationID, blockDetails* details){
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerALocation;
 		break;
 	case fillerA2LocationID:
 		details->size = 576;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerA2Location;
 		break;
 	case fillerBLocationID:
 		details->size = 1012;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerBLocation;
 		break;
 	case fillerB2LocationID:
 		details->size = 1012;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerB2Location;
 		break;
 	case fillerCLocationID:
 		details->size = 1024;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC.SmallTablesC.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerCLocation;
 		break;
 	case fillerC2LocationID:
 		details->size = 1024;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC.SmallTablesC.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerC2Location;
 		break;
 	case fillerDLocationID:
 		details->size = 1024;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerDLocation;
 		break;
 
 	case fillerD2LocationID:
@@ -402,7 +402,10 @@ void lookupBlockDetails(unsigned short locationID, blockDetails* details){
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
-		//details->FlashAddress = FlashLocation;
+		details->FlashAddress = fillerD2Location;
 		break;
 	}
+
+	/* TODO Fixed config small blocks */
+	// NOTE these are in linear space so we can get the addresses directly.
 }

@@ -219,6 +219,8 @@ EXTERN unsigned char currentFuelRPage;
 EXTERN unsigned char currentTuneRPage;
 EXTERN unsigned char currentTimeRPage;
 
+// TODO move the location vars to their own file ...
+
 /* Fueling blocks */
 EXTERN void* VETableMainFlashLocation;
 EXTERN void* VETableMainFlash2Location;
@@ -252,7 +254,40 @@ EXTERN void* CHTTransferTableLocation;
 EXTERN void* MAFTransferTableLocation;
 EXTERN void* TestTransferTableLocation;
 /* Small tables */
-EXTERN void* littleTableLocation;
+
+/* TablesA */
+EXTERN void* dwellDesiredVersusVoltageTableLocation;
+EXTERN void* dwellDesiredVersusVoltageTable2Location;
+EXTERN void* injectorDeadTimeTableLocation;
+EXTERN void* injectorDeadTimeTable2Location;
+EXTERN void* postStartEnrichmentTableLocation;
+EXTERN void* postStartEnrichmentTable2Location;
+EXTERN void* engineTempEnrichmentTableFixedLocation;
+EXTERN void* engineTempEnrichmentTableFixed2Location;
+EXTERN void* primingVolumeTableLocation;
+EXTERN void* primingVolumeTable2Location;
+EXTERN void* engineTempEnrichmentTablePercentLocation;
+EXTERN void* engineTempEnrichmentTablePercent2Location;
+EXTERN void* dwellMaxVersusRPMTableLocation;
+EXTERN void* dwellMaxVersusRPMTable2Location;
+
+/* TablesB */
+EXTERN void* perCylinderFuelTrimsLocation;
+EXTERN void* perCylinderFuelTrims2Location;
+
+/* TablesC */
+
+/* TablesD */
+
+/* filler defs */
+EXTERN void* fillerALocation;
+EXTERN void* fillerA2Location;
+EXTERN void* fillerBLocation;
+EXTERN void* fillerB2Location;
+EXTERN void* fillerCLocation;
+EXTERN void* fillerC2Location;
+EXTERN void* fillerDLocation;
+EXTERN void* fillerD2Location;
 
 
 //union { /* Declare Union http://www.esacademy.com/faq/docs/cpointers/structures.htm */
