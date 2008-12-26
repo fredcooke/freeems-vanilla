@@ -15,7 +15,6 @@ tidy everything up
 10. Add fuel pump turn on for X seconds at power on, and on with RPM, off with no rpm for more than X seconds
 11. Add tacho output in configurable way
 12. Add rpm/accel/change in accel prediction to periods etc, and do per tooth.
-16. Implement full serial protocol as defined by Stu, and other thread participants
 18. Clean up headers more by splitting and rearranging and grouping
 19. Check for volatile stuff that isn't labeled as such
 20. Add staged atmospheric calculations/corrections with if then else if options (% load, manual correction, no correction, fixed correction, dashpot via standard ADC, etc and/or all/some of them)
