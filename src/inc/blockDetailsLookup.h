@@ -114,9 +114,9 @@ EXTERN unsigned short lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE
 #define fillerD2LocationID							1007
 
 
-/* Individual small chunks of fixed config blocks */
+/* TODO Individual small chunks of fixed config blocks */
 
-// TODO no point till we can burn down small pieces via buffer.
+// TODO this is ready to be done now
 
 
 #undef EXTERN

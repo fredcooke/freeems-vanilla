@@ -1,4 +1,4 @@
-/*	filename here
+/*	decodePacketAndRespond.c
 
 	Copyright 2008 Fred Cooke
 
@@ -21,8 +21,8 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
-#define < filename >_C
+#define DECODE_PACKET_AND_RESPOND_C
 #include "inc/freeEMS.h"
-#include "inc/< filename >.h"
+#include "inc/decodePacketAndRespond.h"
 
 // code here TODO for 0.0.19

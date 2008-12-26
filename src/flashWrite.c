@@ -71,27 +71,8 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 }
 
 
-				/* TODO for 0.0.19
-				 *
-				 * To be called from replace block of flash and ram to flash serial functions :
-				 *
-				 * create some sort of function to copy the flash sector up into
-				 * the serial rx buffer in the high end and then over write with
-				 * the small piece defined either from incoming data, or from its
-				 * memory location. Then just call burn in the normal way.
-				 *
-				 * function could take :
-				 * pointer to the buffer region (must be 1024 long or more)
-				 * rpage, address, length of data to be persisted
-				 * ppage, address of the sector to retrieve the rest of the data from
-				 * pointer to the details object we want to use for the following call :
-				 */
-
-
 /* Pass in anything you like and it will error if it can't handle it. */
 /* Note : Limited to 63k per write!! (obviously) */
-/* TODO buffer, copy and do smaller regions by supplementing with data read from the block in question. TODO see above ^ */
-//unsigned short writeBlock(unsigned char RPage, unsigned short* RAMSourceAddress, unsigned char PPage, unsigned short* flashDestinationAddr, unsigned short size){
 unsigned short writeBlock(blockDetails* details, void* buffer){//, void* buffer /* char* short* how to handle odd byte count?? */){
 	/* because the ram version will be in an arbitrary place we need to base
 	 * our positioning from the flash location. Firstly we need to ensure that
@@ -183,24 +164,6 @@ unsigned short writeBlock(blockDetails* details, void* buffer){//, void* buffer 
 	return 0;
 }
 
-// original 5 args version :
-//if(((size % flashSectorSize) != 0) || (size == 0)){
-//	return sizeNotMultipleOfSectorSize;
-//}
-//
-//unsigned char sectors = size / flashSectorSize;
-//unsigned char i;
-//for(i=0;i<sectors;i++){
-//	unsigned short errorID = writeSector(RPage, RAMSourceAddress, PPage, flashDestinationAddr);
-//	if(errorID != 0){
-//		return errorID;
-//	}
-//	/* Incrementing a pointer is done by blocks the size of the type, hence 512 per sector here */
-//	flashDestinationAddr += flashSectorSizeInWords;
-//	RAMSourceAddress += flashSectorSizeInWords;
-//}
-//return 0;
-//}
 
 /*******************************************************************************
  * 	writeSector will use writeWord to write a 1k block from sourceAddress(RAM) to flashDestinationAddress.

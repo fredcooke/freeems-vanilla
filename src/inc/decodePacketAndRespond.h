@@ -1,4 +1,4 @@
-/*	filename here
+/*	decodePacketAndRespond.h
 
 	Copyright 2008 Fred Cooke
 
@@ -24,10 +24,10 @@
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
-#ifndef FILE_< filename >_H_SEEN
-#define FILE_< filename >_H_SEEN
+#ifndef FILE_DECODE_PACKET_AND_RESPOND_H_SEEN
+#define FILE_DECODE_PACKET_AND_RESPOND_H_SEEN
 
-#ifdef < filename >_C
+#ifdef DECODE_PACKET_AND_RESPOND_C
 #define EXTERN
 #else
 #define EXTERN extern
@@ -39,6 +39,6 @@
 
 #else
 	/* let us know if we are being untidy with headers */
-	#warning "Header file < filename >_H seen before, sort it out!"
+	#warning "Header file DECODE_PACKET_AND_RESPOND_H seen before, sort it out!"
 /* end of the wrapper ifdef from the very top */
 #endif

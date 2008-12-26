@@ -342,10 +342,10 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		break;
 
 	/* TablesC small tables */
-		// TODO
+		// TODO add data chunks from TablesC when some are put in
 
 	/* TablesD small tables */
-		// TODO
+		// TODO add data chunks from TablesD when some are put in
 
 	/* filler block entries */
 	case fillerALocationID:
@@ -406,7 +406,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = fillerD2Location;
 		break;
 
-	/* TODO Fixed config small blocks */
+	/* TODO (add) Fixed config small blocks */
 	// NOTE these are in linear space so we can get the addresses directly.
 
 	default:

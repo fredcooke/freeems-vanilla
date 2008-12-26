@@ -51,7 +51,7 @@
  */
 
 
-// TODO
+// TODO various new structs
 // Status struct
 // Ignition struct
 // Injection struct
