@@ -674,6 +674,7 @@ void decodePacketAndRespond(){
 			for(;page < 0xF8;page++){
 				unsigned short addr;
 				for(addr = start;addr < end; addr += inc){
+					// TODO create selfDestruct() function for loading larger code to the device using all flash pages.
 					eraseSector(page, (unsigned short*)addr);
 				}
 			}
