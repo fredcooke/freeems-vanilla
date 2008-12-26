@@ -30,7 +30,6 @@ int  main(){ // TODO maybe move this to paged flash ?
 	//LongNoTime.timeLong = 54;
 	// Run forever repeating.
 	while(TRUE){
-		adjustPWM();
 	//	unsigned short start = realTimeClockMillis;
 		/* If ADCs require forced sampling, sample now */
 		if(coreStatusA & FORCE_READING){
