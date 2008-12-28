@@ -71,28 +71,41 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 }
 
 
-/* Pass in anything you like and it will error if it can't handle it. */
-/* Note : Limited to 63k per write!! (obviously) */
+/**
+ * Writes a block of memory to flash.
+ *
+ * The block size must either be under 1024, or an exact multiple of 1024.
+ * Additionally, if under 1024 the destination should be within a single flash
+ * sector, and if a multiple of 1024, the destination should be sector aligned.
+ *
+ * Because the ram version will be in an arbitrary place we need to base
+ * our positioning from the flash location. Firstly we need to ensure that
+ * it doesn't cross any sector boundaries. Then we need to find the address
+ * of the sector to be burned to. We also need to determine if there are
+ * 2 or 3 chunks of memory to be copied to the buffer, three cases exist
+ * for that :
+ *
+ * | From Flash |  From RAM  | From flash |
+ * |    From Flash    |     From RAM      |
+ * |     From RAM     |    From Flash     |
+ *
+ * @warning Limited to 63k per write! (obviously)
+ *
+ * @author Fred Cooke
+ *
+ * @param details contains the size and two addresses for the data to be read from and written to.
+ * @param buffer is a location at least 1024 bytes long used to allow small chunks to be burned independently.
+ *
+ * @return an error code. 0 means success, anything else is a failure.
+ */
 unsigned short writeBlock(blockDetails* details, void* buffer){//, void* buffer /* char* short* how to handle odd byte count?? */){
-	/* because the ram version will be in an arbitrary place we need to base
-	 * our positioning from the flash location. Firstly we need to ensure that
-	 * it doesn't cross any sector boundaries. Then we need to find the address
-	 * of the sector to be burned to. We also need to determine if there are
-	 * 2 or 3 chunks of memory to be copied to the buffer, three cases exist
-	 * for that :
-	 *
-	 * | From Flash |  From RAM  | From flash |
-	 * |    From Flash    |     From RAM      |
-	 * |     From RAM     |    From Flash     |
-	 */
-
 	unsigned char sectors;
 	unsigned char RAMPage;
-	// FlashPage is always the one provided and is just used as is.
+	/* FlashPage is always the one provided and is just used as is. */
 	unsigned short* RAMAddress;
 	unsigned short* FlashAddress;
 
-	// check size isn't zero...
+	/* Check that the size isn't zero... */
 	if(details->size == 0){
 		return sizeOfBlockToBurnIsZero;
 	}else if(details->size < 1024){
@@ -123,15 +136,15 @@ unsigned short writeBlock(blockDetails* details, void* buffer){//, void* buffer 
 			buffer += offset;
 		}
 
-		// copy the middle section up regardless
+		/* Copy the middle section up regardless */
 		unsigned char oldRAMPage = RPAGE;
 		RPAGE = details->RAMPage;
 		memcpy(buffer, details->RAMAddress, details->size);
 		buffer += details->size;
 		RPAGE = oldRAMPage;
 
-		// if the chunk doesn't end at the end of the sector, copy the last are from flash
-		if((offset + details->size) < 1024){ // logic dodgy ??? TODO
+		/* If the chunk doesn't end at the end of the sector, copy the last are from flash */
+		if((offset + details->size) < 1024){
 			void* chunkFlashEndAddress = details->FlashAddress + details->size;
 			memcpy(buffer, chunkFlashEndAddress, (1024 - (offset + details->size)));
 		}
@@ -139,12 +152,12 @@ unsigned short writeBlock(blockDetails* details, void* buffer){//, void* buffer 
 		/* Restore the PPAGE value back */
 		PPAGE = oldFlashPage;
 	} else {
-		// if not smaller than 1024, check size is product of sector size
+		/* If not smaller than 1024, check size is product of sector size */
 		if((details->size % flashSectorSize) != 0){
 			return sizeNotMultipleOfSectorSize;
 		}
 
-		// larger chunk
+		/* Set the variables to what they would have been before */
 		sectors = details->size / flashSectorSize;
 		RAMPage = details->RAMPage;
 		RAMAddress = (unsigned short*)details->RAMAddress;
