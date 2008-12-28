@@ -58,21 +58,44 @@ signed short lookup16Bit3dSS(
 signed char lookup8Bit3D( */
 
 
-/* Take a table with two movable axis sets and two axis lengths,
+/** Looks up a value from a main table using interpolation.
+ *
+ * The process :
+ *
+ * Take a table with two movable axis sets and two axis lengths,
  * loop to find which pairs of axis values and indexs we are between,
  * interpolate two pairs down to two values,
  * interpolate two values down to one value.
  *
- * Warning : This function relies on the axis values being a sorted list from low to high. If this is not the case behaviour is undefined and could include memory corruption and engine damage.
+ * Table size :
  *
- * To reduce the table size from 19x24 to something smaller, simply reduce the RPMLength and LoadLength fields to lower values. Increasing the size of either axis is not currently possible.
+ * To reduce the table size from 19x24 to something smaller, simply
+ * reduce the RPMLength and LoadLength fields to lower values.
+ * Increasing the size of either axis is not currently possible.
  *
- * Given that the axis lists are in order, a data point outside the table will give the value adjacent to it, and one outside one of the four corners will give the corner value. This is a clean and reasonable behaviour in my opinion.
+ * Values outside the table :
+ *
+ * Given that the axis lists are in order, a data point outside
+ * the table will give the value adjacent to it, and one outside
+ * one of the four corners will give the corner value. This is a
+ * clean and reasonable behaviour in my opinion.
  *
  * Reminder : X/RPM is horizontal, Y/Load is vertical
  *
- * Save the page value to a variable, change the page value, read the table, change the page back and return the value */
-unsigned short lookupPagedMainTableCellValue(mainTable *Table, unsigned short realRPM, unsigned short realLoad, unsigned char RPageValue){
+ * @warning This function relies on the axis values being a sorted
+ * list from low to high. If this is not the case behaviour is
+ * undefined and could include memory corruption and engine damage.
+ *
+ * @author Fred Cooke
+ *
+ * @param Table is a pointer to the mainTable struct that we need to read from.
+ * @param realRPM is the current RPM for which a table value is required.
+ * @param realLoad is the current load for which a table value is required.
+ * @param RAMPage is the RAM page that the table is stored in.
+ *
+ * @return The interpolated value for the location specified.
+ */
+unsigned short lookupPagedMainTableCellValue(mainTable* Table, unsigned short realRPM, unsigned short realLoad, unsigned char RPageValue){
 
 	/* Save the RPAGE value for restoration and switch pages. */
 	unsigned char oldRPage = RPAGE;
@@ -103,7 +126,6 @@ unsigned short lookupPagedMainTableCellValue(mainTable *Table, unsigned short re
 		}
 	}
 
-
 	/* Find the bounding cell values and indices for Load */
 	unsigned char lowLoadIndex = 0;
 	unsigned char highLoadIndex = Table->LoadLength -1;
@@ -129,22 +151,18 @@ unsigned short lookupPagedMainTableCellValue(mainTable *Table, unsigned short re
 		}
 	}
 
-
 	/* Obtain the four corners surrounding the spot of interest */
 	unsigned short lowRPMLowLoad = Table->Table[(Table->LoadLength * lowRPMIndex) + lowLoadIndex];
 	unsigned short lowRPMHighLoad = Table->Table[(Table->LoadLength * lowRPMIndex) + highLoadIndex];
 	unsigned short highRPMLowLoad = Table->Table[(Table->LoadLength * highRPMIndex) + lowLoadIndex];
 	unsigned short highRPMHighLoad = Table->Table[(Table->LoadLength * highRPMIndex) + highLoadIndex];
 
-
 	/* Restore the ram page before doing the math */
 	RPAGE = oldRPage;
-
 
 	/* Find the two side values to interpolate between by interpolation */
 	unsigned short lowRPMIntLoad = lowRPMLowLoad + (((signed long)((signed long)lowRPMHighLoad - lowRPMLowLoad) * (realLoad - lowLoadValue))/ (highLoadValue - lowLoadValue));
 	unsigned short highRPMIntLoad = highRPMLowLoad + (((signed long)((signed long)highRPMHighLoad - highRPMLowLoad) * (realLoad - lowLoadValue))/ (highLoadValue - lowLoadValue));
-
 
 	/* Interpolate between the two side values and return the result */
 	return lowRPMIntLoad + (((signed long)((signed long)highRPMIntLoad - lowRPMIntLoad) * (realRPM - lowRPMValue))/ (highRPMValue - lowRPMValue));
