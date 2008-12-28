@@ -106,7 +106,7 @@ EXTERN RuntimeVar RuntimeVars;			/* Execution times for various blocks of code *
 EXTERN ISRLatencyVar ISRLatencyVars;	/* Delay in execution start for various blocks of code */
 
 
-/* The banked running variable system and structure
+/** @page bankedRunningVariables Banked Running Variable System and Structure
  *
  * The program running variables are divided into three broad groups: inputs, working
  * and outputs. For both the input and output groups there are two copies of each set
@@ -137,23 +137,23 @@ EXTERN ISRLatencyVar ISRLatencyVars;	/* Delay in execution start for various blo
  * tracking and is well worth the extra memory expense and complication.
  */
 
-EXTERN CoreVar* CoreVars;			/* Pointer to the core running variables */
-EXTERN CoreVar CoreVars0;			/* Bank 0 core running variables */
+EXTERN CoreVar* CoreVars;			/** Pointer to the core running variables */
+EXTERN CoreVar CoreVars0;			/** Bank 0 core running variables */
 /* If we move to xgate or isr driven logging, add bank 1 back in */
 
-EXTERN DerivedVar* DerivedVars;		/* Pointer to the secondary running variables */
-EXTERN DerivedVar DerivedVars0;		/* Bank 0 secondary running variables */
+EXTERN DerivedVar* DerivedVars;		/** Pointer to the secondary running variables */
+EXTERN DerivedVar DerivedVars0;		/** Bank 0 secondary running variables */
 /* If we move to xgate or isr driven logging, add bank 1 back in */
 
-EXTERN ADCArray* ADCArrays;		/* main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
-EXTERN ADCArray* ADCArraysRecord;		/* main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
-EXTERN ADCArray ADCArrays0;		/* main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
-EXTERN ADCArray ADCArrays1;		/* main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
+EXTERN ADCArray* ADCArrays;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
+EXTERN ADCArray* ADCArraysRecord;	/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
+EXTERN ADCArray ADCArrays0;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
+EXTERN ADCArray ADCArrays1;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
 
-EXTERN ADCArray* asyncADCArrays;	/* secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
-EXTERN ADCArray* asyncADCArraysRecord;	/* secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
-EXTERN ADCArray asyncADCArrays0;	/* secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
-EXTERN ADCArray asyncADCArrays1;	/* secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
+EXTERN ADCArray* asyncADCArrays;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
+EXTERN ADCArray* asyncADCArraysRecord;	/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
+EXTERN ADCArray asyncADCArrays0;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
+EXTERN ADCArray asyncADCArrays1;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
 
 EXTERN unsigned short* mathSampleTimeStamp; // TODO temp, remove
 EXTERN unsigned short* mathSampleTimeStampRecord; // TODO temp, remove
@@ -182,7 +182,7 @@ see line 80 or so from inc/injectorISR.c for array of pointer use. the above may
 
 
 
-/* Unions for paged large table access using RPAGE */
+/* TODO explanation of paged ram operation Unions for paged large table access using RPAGE */
 typedef union {
 	mainTable VETableMain;
 	mainTable IgnitionAdvanceTableMain;
