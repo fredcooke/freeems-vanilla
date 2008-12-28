@@ -95,11 +95,11 @@ signed char lookup8Bit3D( */
  *
  * @return The interpolated value for the location specified.
  */
-unsigned short lookupPagedMainTableCellValue(mainTable* Table, unsigned short realRPM, unsigned short realLoad, unsigned char RPageValue){
+unsigned short lookupPagedMainTableCellValue(mainTable* Table, unsigned short realRPM, unsigned short realLoad, unsigned char RAMPage){
 
 	/* Save the RPAGE value for restoration and switch pages. */
 	unsigned char oldRPage = RPAGE;
-	RPAGE = RPageValue;
+	RPAGE = RAMPage;
 
 	/* Find the bounding axis values and indices for RPM */
 	unsigned char lowRPMIndex = 0;
