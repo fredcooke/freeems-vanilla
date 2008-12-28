@@ -93,12 +93,12 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
  *
  * @author Fred Cooke
  *
- * @param details contains the size and two addresses for the data to be read from and written to.
- * @param buffer is a location at least 1024 bytes long used to allow small chunks to be burned independently.
+ * @param details contains the RAM address and page to be read from, the flash address and page to be burned to and the size to be read.
+ * @param buffer is a pointer to a block of RAM at least 1024 bytes long used to allow small chunks to be burned independently.
  *
- * @return an error code. 0 means success, anything else is a failure.
+ * @return an error code. Zero means success, anything else is a failure.
  */
-unsigned short writeBlock(blockDetails* details, void* buffer){//, void* buffer /* char* short* how to handle odd byte count?? */){
+unsigned short writeBlock(blockDetails* details, void* buffer){
 	unsigned char sectors;
 	unsigned char RAMPage;
 	/* FlashPage is always the one provided and is just used as is. */
