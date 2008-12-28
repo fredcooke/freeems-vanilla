@@ -1,6 +1,6 @@
 /*	flashWrite.c
 
-	Copyright 2008 Sean Keys
+	Copyright 2008 Sean Keys, Fred Cooke
 
 	This file is part of the FreeEMS project.
 
