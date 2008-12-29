@@ -40,6 +40,7 @@
 *
 * @param Pass in the PPage and starting sector to be erased
 */
+
 unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 
 	if (((unsigned short)flashAddr % flashSectorSize) != 0){
