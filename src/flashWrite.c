@@ -31,29 +31,21 @@
 #include <string.h>
 
 
-/**************************************************************************************************************/
-/*	27.4.2.4 Sector Erase Command
-
-	The sector erase operation will erase all addresses in a 1 Kbyte sector of Flash memory using an embedded
-	algorithm.
-
-	An example flow to execute the sector erase operation is shown in Figure 27-29. The sector erase
-	command write sequence is as follows:
-
-	1. Write to a Flash block address to start the command write sequence for the sector erase command.
-	The Flash address written determines the sector to be erased while global address bits [9:0] and the
-	data written are ignored. Multiple Flash sectors can be simultaneously erased by writing to the
-	same relative address in each Flash block.
-
-	2. Write the sector erase command, 0x40, to the FCMD register.
-
-	3. Clear the CBEIF flag in the FSTAT register by writing a 1 to CBEIF to launch the sector erase
-	command.
-
-	If a Flash sector to be erased is in a protected area of the Flash block, the PVIOL flag in the FSTAT register
-	will set and the sector erase command will not launch. Once the sector erase command has successfully
-	launched, the CCIF flag in the FSTAT register will set after the sector erase operation has completed unless
-	a new command write sequence has been buffered. */
+/**
+*  Sector Erase Command
+*  This will erase a 1k sector in flash.  Write 0xFFFF to the starting sector to be
+*  erased, 0xFFFF will be written regardless. Register the flash sector erase command(0x40)
+*  and call StackBurner();.  If you try to erase a protected sector you will get PVIOL in
+*  the FSTAT register.
+* @author Sean Keys
+*
+* @warning This will erase an entire 1k block starting at the address you pass
+*
+* @param PPage the flashPage you are referring to
+* @param flashAddr the first address in the sector
+*
+* @return an error code. Zero means success, anything else is a failure.
+*/
 unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 
 	if (((unsigned short)flashAddr % flashSectorSize) != 0){
@@ -179,12 +171,22 @@ unsigned short writeBlock(blockDetails* details, void* buffer){
 }
 
 
-/*******************************************************************************
- * 	writeSector will use writeWord to write a 1k block from sourceAddress(RAM) to flashDestinationAddress.
- *  Give it the starting memory address and the destination flash address.
- *  Both addresses will be incremented by 1 word after a successful writeWord,
- *  until the whole 1024 byte sector has been written.  Before any writing occurs
- *  eraseSector is called to make sure the destination is blank. */
+/**
+*  writeSector will use writeWord to write a 1k block from sourceAddress(RAM) to
+*  flashDestinationAddress. Give it the starting memory address and the destination
+*  flash address.  Both addresses will be incremented by 1 word after a successful writeWord,
+*  until the whole 1024 byte sector has been written.  Before any writing occurs
+*  eraseSector is called to make sure the destination is blank.
+*
+* @author Sean Keys
+*
+* @param RPage the page of RAM the RAMSourceAddress is located
+* @param RAMSourceAddress the address of the source data
+* @param PPage the page of flash where your flashDestinationAddress is located
+* @param flashDestinationAddress where your data will be written to in flash
+*
+* @return an error code. Zero means success, anything else is a failure.
+*/
 unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress, unsigned char PPage , unsigned short* flashDestinationAddress){
 
 	if (((unsigned short)flashDestinationAddress % flashSectorSize) != 0){
@@ -225,30 +227,21 @@ unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress
 	PPAGE = currentPPage;
 	return 0;
 }
-/*	27.4.2.3 Program Command
-
-	The program operation will program a previously erased word in the Flash memory using an embedded
-	algorithm.
-
-	An example flow to execute the program operation is shown in Figure 27-28. The program command write
-	sequence is as follows:
-
-	1. Write to a Flash block address to start the command write sequence for the program command. The
-	data written will be programmed to the address written. Multiple Flash blocks can be
-	simultaneously programmed by writing to the same relative address in each Flash block.
-
-	2. Write the program command, 0x20, to the FCMD register.
-
-	3. Clear the CBEIF flag in the FSTAT register by writing a 1 to CBEIF to launch the program
-	command.
-
-	If a word to be programmed is in a protected area of the Flash block, the PVIOL flag in the FSTAT register
-	will set and the program command will not launch. Once the program command has successfully launched,
-	the CCIF flag in the FSTAT register will set after the program operation has completed unless a new
-	command write sequence has been buffered. By executing a new program command write sequence on
-	sequential words after the CBEIF flag in the FSTAT register has been set, up to 55% faster programming
-	time per word can be effectively achieved than by waiting for the CCIF flag to set after each program
-	operation.*/
+/**	Program Command
+*  This will write 1 word to a empty(0xFFFF) flash address.  If you try to write to an
+*  address containing data(not 0xFFFF),an error will register at FSTAT.  The embedded
+*  algorithm works like this, just write to the desired flash  address as you would any
+*  other writable address. Then register the program command(0x20)
+*  at FCDM, the rest is handled by StackBurner();
+* @author Sean Keys
+*
+* @warning Be sure your destination address is not protected or you will flag an error in FSTAT
+*
+* @param flashDestination where you want to write your data
+* @param data the data you are going to write
+*
+* @return an error code. Zero means success, anything else is a failure.
+*/
 unsigned short writeWord(unsigned short* flashDestination, unsigned short data){
 	if ((unsigned short)flashDestination & 0x0001){
 		return addressNotWordAligned;

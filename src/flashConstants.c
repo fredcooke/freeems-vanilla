@@ -29,4 +29,4 @@
 
 
 /// @todo TODO this is a variable, not a constant, should this even be a constant? would a define be better?
-unsigned char flashclock = 100;
+unsigned char flashClock = 100;
