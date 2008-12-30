@@ -228,7 +228,7 @@ unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress
 	return 0;
 }
 /**	Program Command
-*  This will write 1 word to a empty(0xFFFF) flash address.  If you try to write to an
+*  This will write 1 word to an empty(0xFFFF) flash address.  If you try to write to an
 *  address containing data(not 0xFFFF),an error will register at FSTAT.  The embedded
 *  algorithm works like this, just write to the desired flash  address as you would any
 *  other writable address. Then register the program command(0x20)
