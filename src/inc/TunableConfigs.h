@@ -32,12 +32,18 @@
 #define FILE_TUNABLE_CONFIGS_H_SEEN
 
 
-#define ARRAY_OF_16_ZEROS    	{    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}	/** An array of 16 zeros to fill out currently unused tables. */
-#define ARRAY_OF_16_VOLTAGES 	{ 6000,  7200,  8400,  9000,  9600, 10200, 10800, 11400, 12000, 12600, 13200, 13800, 14400, 17800, 21000, 24500}	/** An array of 16 scaled voltages for use as axes. */
-#define ARRAY_OF_16_DWELLS   	{10913,  8625,  6975,  6375,  5925,  5513,  5213,  4875,  4613,  4313,  4106,  3900,  3713,  2850,  2138,  1500}	/** An array of 16 dwell times in native ticks. */
-#define ARRAY_OF_16_DEADTIMES	{ 3638,  2875,  2325,  2125,  1975,  1838,  1738,  1625,  1538,  1438,  1369,  1300,  1238,   950,   713,   500}	/** An array of 16 injector dead times in native ticks. */
-#define ARRAY_OF_16_RPMS     	{    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}	/* Any array of 16 RPM values forAxis values for use as axes. TODO fill out values */
-#define ARRAY_OF_6_FUEL_TRIMS	{32768, 32768, 32768, 32768, 32768, 32768}	/** An array of 6 percentage fuel trims, the value is 100%. */
+/** An array of 16 zeros to fill out currently unused tables. */
+#define ARRAY_OF_16_ZEROS    	{    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
+/** An array of 16 scaled voltages for use as axes. */
+#define ARRAY_OF_16_VOLTAGES 	{ 6000,  7200,  8400,  9000,  9600, 10200, 10800, 11400, 12000, 12600, 13200, 13800, 14400, 17800, 21000, 24500}
+/** An array of 16 dwell times in native ticks. */
+#define ARRAY_OF_16_DWELLS   	{10913,  8625,  6975,  6375,  5925,  5513,  5213,  4875,  4613,  4313,  4106,  3900,  3713,  2850,  2138,  1500}
+/** An array of 16 injector dead times in native ticks. */
+#define ARRAY_OF_16_DEADTIMES	{ 3638,  2875,  2325,  2125,  1975,  1838,  1738,  1625,  1538,  1438,  1369,  1300,  1238,   950,   713,   500}
+/** Any array of 16 RPM values forAxis values for use as axes. TODO fill out values */
+#define ARRAY_OF_16_RPMS     	{    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
+/** An array of 6 percentage fuel trims, the value is 100%. */
+#define ARRAY_OF_6_FUEL_TRIMS	{32768, 32768, 32768, 32768, 32768, 32768}
 
 
 #else
