@@ -27,6 +27,13 @@
 #ifndef FILE_< filename >_H_SEEN
 #define FILE_< filename >_H_SEEN
 
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
+
 #ifdef < filename >_C
 #define EXTERN
 #else
