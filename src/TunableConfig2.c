@@ -1,6 +1,16 @@
-/*	TunableConfig2.c
+/**	@file TunableConfig2.c
 
 	Copyright 2008 Fred Cooke
+
+	This file contains the definition of the secondary set of tunable
+	configuration data. This set is enabled when the table switching
+	mechanism is enabled and engaged. The rest of the time this is not
+	used. Unless you are using the table switching feature it is wise
+	to configure all values in this set to be exactly the same as what
+	is in the other primary set. This way if you have table switching
+	turned on and the input pin is floating you will not get erratic
+	engine behaviour. The declaration can be found in the global
+	constants header file.
 
 	This file is part of the FreeEMS project.
 
@@ -21,49 +31,19 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 #include "inc/freeEMS.h"
-
-
-// TODO split this into four files as they WILL be growing a lot...
-// TODO or 8? in pairs best or all sep?
+#include "inc/TunableConfigs.h"
 
 
 const volatile SmallTables1 SmallTablesAFlash2 TUNETABLESD5 = {
-/* dwellDesiredVersusVoltageTable */
-		/* Axis values in scaled Volts */
-		{{ 6000,  7200,  8400,  9000,  9600, 10200, 10800, 11400, 12000, 12600, 13200, 13800, 14400, 17800, 21000, 24500},
-		/* Dwell times in native ticks */
-		{10913,  8625,  6975,  6375,  5925,  5513,  5213,  4875,  4613,  4313,  4106,  3900,  3713,  2850,  2138,  1500}},
-/* injectorDeadTimeTable */
-		/* Axis values in scaled Volts */
-		{{ 6000,  7200,  8400,  9000,  9600, 10200, 10800, 11400, 12000, 12600, 13200, 13800, 14400, 17800, 21000, 24500},
-		/* Injector opening times in native ticks */
-		{ 3638,  2875,  2325,  2125,  1975,  1838,  1738,  1625,  1538,  1438,  1369,  1300,  1238,   950,   713,   500}},
-/* postStartEnrichmentTable */
-		/* Axis values ? */
-		{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		/* ? values ? */
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
-/* engineTempEnrichmentTableFixed */
-		/* Axis values ? */
-		{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		/* ? values ? */
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
-/* primingVolumeTable */
-		/* Axis values ? */
-		{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		/* ? values ? */
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
-/* engineTempEnrichmentTablePercent */
-		/*  */
-		{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		/*  */
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
-/* dwellMaxVersusRPMTable */
-		/* Axis values in RPM */
-		{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		/*  */
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
+		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},   	/* dwellDesiredVersusVoltageTable */
+		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},	/* injectorDeadTimeTable */
+		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* postStartEnrichmentTable */
+		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* engineTempEnrichmentTableFixed */
+		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* primingVolumeTable */
+		{ARRAY_OF_16_ZEROS,  ARRAY_OF_16_ZEROS},      	/* engineTempEnrichmentTablePercent */
+		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_RPMS},       	/* dwellMaxVersusRPMTable */
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -77,7 +57,7 @@ const volatile SmallTables1 SmallTablesAFlash2 TUNETABLESD5 = {
 
 
 const volatile SmallTables2 SmallTablesBFlash2 TUNETABLESD6 = {
-		/* unsigned short perCylinderFuelTrims[]= */	{32768, 32768, 32768, 32768, 32768, 32768},
+		ARRAY_OF_6_FUEL_TRIMS,	/* perCylinderFuelTrims[] */
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
