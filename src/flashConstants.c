@@ -24,5 +24,5 @@
 
 #include "inc/freeEMS.h"
 
-unsigned char flashclock = 100;
+unsigned char flashClock = 100;
 
