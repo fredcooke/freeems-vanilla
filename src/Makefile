@@ -24,10 +24,10 @@
 VERSION = 0.0.19
 
 INCDIR = inc
-OUTDIR = zoutput
-OBJDIR = zobjects
-ASMDIR = zassembly
-PPCSDIR = zpreprocessedc
+OUTDIR = output
+OBJDIR = objects
+ASMDIR = assembly
+PPCSDIR = preprocessedc
 # Set the windows/non debian path first and then overwrite
 # with the debian one so we can grep the deb line out and
 # end up with a working windows make file in an automated
