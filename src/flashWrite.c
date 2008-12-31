@@ -31,11 +31,13 @@
 
 
 /**
-*  Sector Erase Command
+*  Erases a sector of flash memory
+*
 *  This will erase a 1k sector in flash.  Write 0xFFFF to the starting sector to be
 *  erased, 0xFFFF will be written regardless. Register the flash sector erase command(0x40)
 *  and call StackBurner();.  If you try to erase a protected sector you will get PVIOL in
 *  the FSTAT register.
+* 
 * @author Sean Keys
 *
 * @warning This will erase an entire 1k block starting at the address you pass
@@ -61,8 +63,6 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 
 	return 0;
 }
-
-
 /**
  * Writes a block of memory to flash.
  *
@@ -169,11 +169,11 @@ unsigned short writeBlock(blockDetails* details, void* buffer){
 	}
 	return 0;
 }
-
-
 /**
-*  writeSector will use writeWord to write a 1k block from sourceAddress(RAM) to
-*  flashDestinationAddress. Give it the starting memory address and the destination
+*  Writes a sector from memory to a sector in flash
+*
+*  Uses writeWord to write a 1k block from sourceAddress(RAM) to
+*  flashDestinationAddress, one word at a time. Give it the starting memory address and the destination
 *  flash address.  Both addresses will be incremented by 1 word after a successful writeWord,
 *  until the whole 1024 byte sector has been written.  Before any writing occurs
 *  eraseSector is called to make sure the destination is blank.
@@ -233,6 +233,7 @@ unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress
 *  algorithm works like this, just write to the desired flash  address as you would any
 *  other writable address. Then register the program command(0x20)
 *  at FCDM, the rest is handled by StackBurner();
+*
 * @author Sean Keys
 *
 * @warning Be sure your destination address is not protected or you will flag an error in FSTAT
