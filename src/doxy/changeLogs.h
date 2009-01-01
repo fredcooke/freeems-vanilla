@@ -51,7 +51,7 @@
  *     - Removed dangerous and unrequired EXTERN stuff from flash header
  *     - Added note on include order to code style doc
  *     - Fixed all links to gnu.org/licenses to not be wrapped in < >
- *     - Changed all TODOs to appear in todo list
+ *     - Changed some TODOs to appear in todo list
  *     - Tidied line spacing of headers
  *     - Added checks for extern predef to headers
  *     - Removed non functional header checks from asm header
