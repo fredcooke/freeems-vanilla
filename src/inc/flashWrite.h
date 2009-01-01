@@ -43,13 +43,11 @@
 #endif
 
 
-/// @todo TODO : hash define CBEIF mask : still needed??
-
-
 /// @todo TODO add mass erase function and replace ?? with the real value
 #define MASS_ERASE  	0x?? /* Used to erase 128k flash blocks */
 #define WORD_PROGRAM	0x20 /* Word = 2 bytes, this is the minimum write size, 64K of these per block, 512 per sector	*/
 #define SECTOR_ERASE	0x40 /* Sector = 1024 bytes, there are 128 sectors to a block, and 4 blocks to the chip			*/
+/// @todo TODO CBEIF mask hash define - is this still needed?
 
 
 /* The following code must run from unpaged space for obvious reasons. Location explicitly set to text. */
