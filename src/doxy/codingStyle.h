@@ -16,6 +16,14 @@
  * - spaces should be used to space out from variable width text before more tabs
  * - generally, two blank lines between functions, one blank line between logical blocks
  * - default tab size is 4 spaces, currently best viewed with that, but working on making it clean for any.
+ * - Include order should have the most general thing first and most specific last :
+ * @code
+ * #include <string.h>
+ * #include "inc/freeEMS.h"
+ * #include "inc/utils.h"
+ * #include "inc/thisFilesHeader.h"
+ * @endcode
+ *
  * - braces should be positioned as follows with the opening brace on the same line as the function name and no leading space:
  * @code
  * void function(){
