@@ -60,12 +60,6 @@
 
 
 typedef struct {
-	char byte1;  //8 bit
-	short byte23;  // 16 bit
-} tribyte;
-
-
-typedef struct {
 	unsigned char RAMPage;
 	unsigned char FlashPage;
 	void* RAMAddress;
