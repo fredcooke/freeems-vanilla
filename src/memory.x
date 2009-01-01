@@ -2,7 +2,10 @@
 
 	Copyright 2008 Fred Cooke
 	
-	Memory region location definition file for inclusion into the linker script.
+	Memory region location definition file for inclusion into the linker
+	script. It defines the names, types, start addresses and lengths of
+	each memory region available for the linker to populate with code and
+	data. See hc9s12xdp512elfb.x and regions.x for more information. 
 
 	This file is part of the FreeEMS project.
 
@@ -21,7 +24,9 @@
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
-	Thank you for choosing FreeEMS to run your engine! */
+	Thank you for choosing FreeEMS to run your engine!
+
+	@cond memoryscript */
 
 
 /* A description of what some of this means can be found at the following URL	*/
@@ -101,3 +106,6 @@
 
   PROVIDE (_stack = 0x4000-1); /* Start the stack immediately after ram */
   /* Vectors are located via the linker command line, not here. */
+
+
+/** @endcond */

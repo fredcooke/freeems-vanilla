@@ -57,6 +57,8 @@
  *     - Removed non functional header checks from asm header
  *     - Updated various copyright statements to include 2009
  *     - Removed all empty headers - not needed now, shouldn't be in there!
+ * - Fred 1/1/09 18:34 GMT:
+ *     - Added the three linker scripts to be processed by doxygen
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:

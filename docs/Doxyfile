@@ -80,7 +80,8 @@ FILE_PATTERNS          = *.c \
                          *.h \
                          *.inc \
                          *.C \
-                         *.H
+                         *.H \
+                         *.x
 RECURSIVE              = YES
 EXCLUDE_SYMLINKS       = NO
 EXAMPLE_PATTERNS       = *

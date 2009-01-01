@@ -2,7 +2,10 @@
 
 	Copyright 2008 Fred Cooke
 
-	Code section to memory region mapping definition file for inclusion into the linker script.
+	Code section to memory region mapping definition file for inclusion
+	into the linker script. This file provides rules which map pieces of
+	code and data from named sections into specific named memory regions.
+	See memory.x and hc9s12xdp512elfb.x for more information.
 
 	This file is part of the FreeEMS project.
 
@@ -21,7 +24,9 @@
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
-	Thank you for choosing FreeEMS to run your engine! */
+	Thank you for choosing FreeEMS to run your engine!
+
+	@cond regionsscript */
 
 
 /* A description of what some of this means can be found at the following URL	*/
@@ -314,3 +319,6 @@ SECTIONS
     *(.ppageF7)
   }  > ppageF7
 }
+
+
+/** @endcond */

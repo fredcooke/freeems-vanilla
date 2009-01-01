@@ -5,9 +5,6 @@
  * detail as they are integral to the operation of the code.
  *
  * @b Key @b Files:
- * - Linker script
- * - Memory definition
- * - Region definitions
  * - Loader script
  * - Flash dump script
  * - Flash delete script
