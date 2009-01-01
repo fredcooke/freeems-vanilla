@@ -1,6 +1,8 @@
-/*	memory.x
+/**	@file memory.x
 
 	Copyright 2008 Fred Cooke
+	
+	Memory region location definition file for inclusion into the linker script.
 
 	This file is part of the FreeEMS project.
 
@@ -15,15 +17,17 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /* A description of what some of this means can be found at the following URL	*/
 /* http://www.gnu.org/software/m68hc11/m68hc11_binutils.html					*/
 /* http://m68hc11.serveftp.org/wiki/index.php/FAQ:Link							*/
+
 
   MEMORY
   {

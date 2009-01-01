@@ -15,14 +15,15 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 #define DECODE_PACKET_AND_RESPOND_C
 #include "inc/freeEMS.h"
 #include "inc/decodePacketAndRespond.h"
 
-// code here TODO for 0.0.19
+// code here TODO for 0.0.19 or 0.0.20??

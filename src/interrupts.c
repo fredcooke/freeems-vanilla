@@ -15,14 +15,16 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+
 
 /* Correctly placed in memory due to compiler/linker directives in memory.x and the linker script.	*/
 /* This is the FULL table of length 0xFF starting at 0xFF00 and ending at 0xFFFF, redirected with	*/

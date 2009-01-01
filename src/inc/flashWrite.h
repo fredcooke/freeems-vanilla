@@ -1,6 +1,8 @@
-/*	flashWrite.h
+/**	@file flashWrite.h
 
 	Copyright 2008 Sean Keys
+
+	Flash manipulation function declarations.
 
 	This file is part of the FreeEMS project.
 
@@ -15,16 +17,24 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_FLASHWRITE_H_SEEN
 #define FILE_FLASHWRITE_H_SEEN
+
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
 
 #ifdef FLASHWRITE_C
 #define EXTERN
@@ -32,9 +42,12 @@
 #define EXTERN extern
 #endif
 
-// TODO :
-// #define CBEIF mask
-#define ERASE_CMD       0x40  //TODO add more info
+
+/// @todo TODO : hash define CBEIF mask : still needed??
+
+
+/// @todo TODO add mass erase function and replace ?? with the real value
+#define MASS_ERASE  	0x?? /* Used to erase 128k flash blocks */
 #define WORD_PROGRAM	0x20 /* Word = 2 bytes, this is the minimum write size, 64K of these per block, 512 per sector	*/
 #define SECTOR_ERASE	0x40 /* Sector = 1024 bytes, there are 128 sectors to a block, and 4 blocks to the chip			*/
 
@@ -44,10 +57,10 @@ EXTERN unsigned short writeWord(unsigned short*, unsigned short) TEXT;
 EXTERN unsigned short eraseSector(unsigned char, unsigned short*) TEXT;
 EXTERN unsigned short writeSector(unsigned char, unsigned short*, unsigned char, unsigned short*) TEXT;
 EXTERN unsigned short writeBlock(blockDetails*, void*) TEXT;
-//EXTERN unsigned short writeBlock(unsigned char, unsigned short*, unsigned char, unsigned short*, unsigned short) TEXT;
 
-//TODO  source flash page, source ram page, dest flash page    grab the code from FF C000 and burn it from E0 up
+
 #undef EXTERN
+
 
 #else
 	/* let us know ifunsigned short writeBlock(unsigned short* flashAddr, unsigned short* RAMAddr, unsigned short size){

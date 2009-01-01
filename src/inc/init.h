@@ -1,6 +1,8 @@
-/*	init.h
+/**	@file init.h
 
 	Copyright 2008 Fred Cooke
+
+	Header for various things that are only used in the initialisation process.
 
 	This file is part of the FreeEMS project.
 
@@ -15,7 +17,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
@@ -26,6 +28,13 @@
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_INIT_H_SEEN
 #define FILE_INIT_H_SEEN
+
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
 
 #ifdef INIT_C
 #define EXTERN
@@ -53,9 +62,11 @@ EXTERN void init(void) FPAGE_FE;
 #define PLLDIVISOR		0x03 /* Input crystal frequency is divided by this number */
 #define PLLMULTIPLIER	0x09 /* The result of the above is multiplied by this number to give the bus frequency */
 
-// TODO define other macros such that raw values aren't used in the code
+/// @todo TODO define other macros such that raw values aren't used in the code
+
 
 #undef EXTERN
+
 
 #else
 	/* let us know if we are being untidy with headers */

@@ -15,7 +15,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
@@ -25,9 +25,9 @@
 
 
 include "inc/9S12XDP512asm.s"
-;include "inc/asm.s"
+
+
 .global StackBurner
-;.global SpSub  //causes seg fault
 
 
 StackBurner:

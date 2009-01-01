@@ -15,17 +15,18 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 #define REALTIMEISRS_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
 #include "inc/commsISRs.h"
-#include "inc/realtimeISRs.h"
+
 
 /* Real Time Interrupt Interrupt Service Routine */
 /* Handles time keeping and generic periodic tasks that run quickly and must be done on time. */
@@ -116,6 +117,7 @@ void RTIISR(void)
 	RuntimeVars.RTCRuntime = TCNT - startTimeRTI;
 }
 
+
 /* Tachometer pulse generator function */
 void ModDownCtrISR(void)
 {
@@ -135,6 +137,7 @@ void ModDownCtrISR(void)
 	/* Bit bang the output port */
 	PORTA ^= 0x40; // SM pin (A6)
 }
+
 
 /* When the ECT free running timer hits 65535 and rolls over, this is run */
 void TimerOverflow(void){

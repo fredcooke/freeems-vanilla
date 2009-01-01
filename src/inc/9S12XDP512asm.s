@@ -15,18 +15,14 @@
 ;	GNU General Public License for more details.
 ;
 ;	You should have received a copy of the GNU General Public License
-;	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+;	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 ;
 ;	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 ;
-;	Thank you for choosing FreeEMS to run your engine! */
+;	Thank you for choosing FreeEMS to run your engine!
 
-/* Full basic register definitions for the Freescale S912XDP512 processor */
-/* MC9S12XDP512V2.pdf Appendix G */
-
-/* see if we've seen this, if not, mark seen and process */
-#ifndef FILE_9S12XDP512asm_H_SEEN
-#define FILE_9S12XDP512ams_H_SEEN
+;	Full basic register definitions for the Freescale S912XDP512 processor
+;	MC9S12XDP512V2.pdf Appendix G
 
 ;* Define the cores of the CPU
 
@@ -893,5 +889,3 @@
 .equ EDATALO, EEPROMcore+0x0B    ;
 ;
 .equ EDLO,        0b11111111     ;
-
-

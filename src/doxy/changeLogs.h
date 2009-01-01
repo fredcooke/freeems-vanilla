@@ -47,6 +47,16 @@
  *     - Rearranged headers and comments for FixedConfigs.h and TunableConfigs.h
  *     - Fixed up random comments in various headers
  *     - Changed the way the headers are used for core global stuff
+ * - Fred 1/1/09 15:35 GMT:
+ *     - Removed dangerous and unrequired EXTERN stuff from flash header
+ *     - Added note on include order to code style doc
+ *     - Fixed all links to gnu.org/licenses to not be wrapped in < >
+ *     - Changed all TODOs to appear in todo list
+ *     - Tidied line spacing of headers
+ *     - Added checks for extern predef to headers
+ *     - Removed non functional header checks from asm header
+ *     - Updated various copyright statements to include 2009
+ *     - Removed all empty headers - not needed now, shouldn't be in there!
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:

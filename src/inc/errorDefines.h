@@ -1,6 +1,10 @@
-/*	errorDefines.h
+/**	@file errorDefines.h
 
 	Copyright 2008 Fred Cooke
+
+	This file contains all error codes for propagation up and out to a PC.
+	When adding new codes, ensure that they are unique and also that you
+	group them appropriately in ranges for easy visual identification.
 
 	This file is part of the FreeEMS project.
 
@@ -15,7 +19,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
@@ -27,7 +31,7 @@
 #define FILE_ERRORDEFINES_H_SEEN
 
 
-/* TODO Introduce some structure to the numbering such that they can be interpreted somewhat without a chart */
+/** @todo TODO Introduce some structure to the numbering such that they can be interpreted somewhat without a chart */
 
 
 /* Unconfigured options */
