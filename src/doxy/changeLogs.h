@@ -319,13 +319,13 @@
  * - Factored out hr serial logging
  * - Moved pwm demo to utils.c
  * - Measured time of ADC reading functions at less than 1us each, and removed non loop implementation
- * - Used #define to ensure extern keyword applied appropriately
+ * - Used hash define to ensure extern keyword applied appropriately
  * - Fixed makefile dependencies to only recompile sources that are changed
  * - Fix makefile paths for execution from explicit to user based
  * - Changed makefile to chain execution such that each stage is done only once
  * - Added output dir to keep clutter down
  * - Added backup of .s19 to makefile
- * - Added extern #define structure to all headers
+ * - Added extern hash define structure to all headers
  * - Split oversized freeems.h down to managable chunks
  * - Moved s19 storage to own directory
  * - Introduced dependency on all headers for all source files (previously rebuilding ALL files EVERY time)
@@ -392,7 +392,7 @@
  * - Added reset rpm to zero if non synchronously sampling ADCs
  * - Split Lambda table out from VETables.c so it can be arranged in memory more conveniently
  * - Split config into tunable and fixed
- * - Moved many literals to #defines
+ * - Moved many literals to hash defines
  * - Fixed "out by 100" error on load indices in tables
  * - Moved rough RPM calc to per event rather than per rev and inited cycleTime to longmax
  * - Reincluded the broken ignition code
@@ -447,7 +447,7 @@
  * - Sean: Added flash write aligned block function
  * - Sean: Documented flash functionality in the code
  * - Fred: Added output to makefile to see each operation type
- * - Fred: Removed #define from all constants C files
+ * - Fred: Removed hash define from all constants C files
  * - Fred: Added main table unions
  * - Fred: Added ram regions for the purpose of aligning large blocks of data
  * - Fred: Added include and memcpy references to bring data up into ram
