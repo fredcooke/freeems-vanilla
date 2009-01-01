@@ -1,6 +1,12 @@
-/*	freeEMS.h
+/**	@file freeEMS.h
 
 	Copyright 2008 Fred Cooke
+
+	The central header for all source files to include. This pulls in the
+	device header, all other shared headers, all global defines, all global
+	constant declarations, all type definitions and all global variables. Other
+	variables that are actually in global space but only shared between a few
+	select files should be placed in the header for the main file that uses them.
 
 	This file is part of the FreeEMS project.
 
@@ -30,8 +36,8 @@
 /* Include top level files that everything else relies on */
 #include "memory.h"
 #include "9S12XDP512.h"
-#include "flashGlobals.h" // TODO For Sean to integrate back in
-//#include "registerMasks.h TODO we should define those masks that we use in one place, but probably not in the main device header.
+#include "flashGlobals.h" /// @todo TODO For Sean to integrate back in
+///#include "registerMasks.h @todo TODO we should define the register masks that we use in one place, but probably not in the main device header.
 
 /* Include define files at the top here as other includes use them */
 #include "errorDefines.h"
@@ -39,19 +45,20 @@
 
 
 /* Include data types at the top as other includes use them */
-#include "structs.h" // TODO split this out into more chunks as it's too big.
-#include "tunables.h"
+#include "structs.h" /// @todo TODO split this out into more chunks as it's too big.
+#include "FixedConfigs.h"
+#include "TunableConfigs.h"
 
 
-/* These specific subsets became too large to stay in this file. */
+/* Global constant declarations */
 #include "globalConstants.h"
 
 
-/* Where extern is used instead of EXTERN it indicates that		*/
-/* the variable is initialised in staticInit.c, if someone		*/
-/* attempts to use extern and doesn't initialise the variable	*/
+/* Where extern is used instead of EXTERN it indicates that   	*/
+/* the variable is initialised in staticInit.c, if someone    	*/
+/* attempts to use extern and doesn't initialise the variable 	*/
 /* statically then the linker should error on undefined symbol	*/
-#ifdef MAIN_OR_GLOBALS
+#ifdef FREEEMS_C
 #define EXTERN
 #else
 #define EXTERN extern
@@ -106,7 +113,9 @@ EXTERN RuntimeVar RuntimeVars;			/* Execution times for various blocks of code *
 EXTERN ISRLatencyVar ISRLatencyVars;	/* Delay in execution start for various blocks of code */
 
 
-/** @page bankedRunningVariables Banked Running Variable System and Structure
+/** @page bankedRunningVariables Banked Running Variables
+ *
+ * This page is to document and explain the operation of the banked running variable system and structure.
  *
  * The program running variables are divided into three broad groups: inputs, working
  * and outputs. For both the input and output groups there are two copies of each set
@@ -277,6 +286,7 @@ EXTERN unsigned short bootTimeAAP; /* TODO populate this at switch on time depen
 
 /* ALL STATUS STUFF HERE */
 
+// TODO these flags are used for coreSettingsA and it is not clear that they are dual purpose, fix this...
 /* State variables : 0 = false (don't forget to change the init mask to suit!) */
 EXTERN unsigned short coreStatusA;	/* Each bit represents the state of some core parameter, masks below */
 /* Bit masks for coreStatusA */ // TODO needs a rename as does coresetingsA
@@ -297,7 +307,7 @@ EXTERN unsigned short coreStatusA;	/* Each bit represents the state of some core
 #define COREA15			BIT15_16	/* 15 */
 #define COREA16			BIT16_16	/* 16 */
 
-#define CLEAR_PRIMARY_SYNC	NBIT2_16	/**/
+#define CLEAR_PRIMARY_SYNC	NBIT2_16	/* */
 #define STAGED_NOT_REQUIRED	NBIT9_16	/*  9 Do not fire the staged injectors */
 #define CLEAR_CALC_FUEL_IGN	NBIT10_16	/* 10 Fuel and ignition don't require calculation */
 #define CLEAR_FORCE_READING	NBIT11_16	/* 11 Clear flag to force ADC sampling at low rpm/stall */

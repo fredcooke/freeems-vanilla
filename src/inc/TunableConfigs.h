@@ -2,9 +2,9 @@
 
 	Copyright 2008 Fred Cooke
 
-	This file exists to provide a shared place for arrays of default values
-	for small tables. Place reusable definitions of default table values in
-	here such that they can be used in multiple tunable table definitions.
+	This file contains both the struct data type definitions and the arrays of
+	default values for small tables. Place reusable definitions of default table
+	values in here such that they can be used in multiple tunable table definitions.
 
 	This file is part of the FreeEMS project.
 
@@ -44,6 +44,45 @@
 #define ARRAY_OF_16_RPMS     	{    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
 /** An array of 6 percentage fuel trims, the value is 100%. */
 #define ARRAY_OF_6_FUEL_TRIMS	{32768, 32768, 32768, 32768, 32768, 32768}
+
+
+/**
+ * One of four structs of live tunable data such as small tables and live configuration items.
+ * If you add something here, please ensure you update all of the following :
+ * - Default values in the initial definitions in TunableConfig.c and TunableConfig2.c
+ * - The address values within the initPagedRAMTune() function in init.c
+ * - The lookupBlockDetails() function in blockDetailsLookup.c
+ * - The JSON data map and other related firmware interface definition files
+ */
+typedef struct {
+	twoDTableUS dwellDesiredVersusVoltageTable;
+	twoDTableUS injectorDeadTimeTable;
+	twoDTableUS postStartEnrichmentTable;
+	twoDTableUS engineTempEnrichmentTableFixed;
+	twoDTableUS primingVolumeTable; /// @todo TODO define units. perhaps micro litres (cubic milli meters) would be good, 5 - 100 seem to be the norm 327.68 = 65535/200
+	twoDTableUS engineTempEnrichmentTablePercent;
+	twoDTableUS dwellMaxVersusRPMTable;
+	unsigned char filler[576];
+} SmallTables1;
+
+
+/** @copydoc SmallTables1 */
+typedef struct {
+	unsigned short perCylinderFuelTrims[INJECTION_CHANNELS]; /* Trims for injection, from 0% to 200% of base */
+	unsigned char filler[1012];
+} SmallTables2;
+
+
+/** @copydoc SmallTables1 */
+typedef struct {
+	unsigned char filler[1024];
+} SmallTables3;
+
+
+/** @copydoc SmallTables1 */
+typedef struct {
+	unsigned char filler[1024];
+} SmallTables4;
 
 
 #else

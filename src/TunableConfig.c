@@ -13,6 +13,10 @@
 	get erratic engine behaviour. The declaration can be found in the
 	global constants header file.
 
+	Please ensure that any items added to the struct type definition
+	have appropriate defaults added here also. See the documentation
+	for SmallTables1 for more details.
+
 	This file is part of the FreeEMS project.
 
 	FreeEMS software is free software: you can redistribute it and/or modify
@@ -35,7 +39,6 @@
 
 #define TUNABLE_CONFIGS_C
 #include "inc/freeEMS.h"
-#include "inc/TunableConfigs.h"
 
 
 const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
