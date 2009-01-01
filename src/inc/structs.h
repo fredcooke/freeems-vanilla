@@ -21,6 +21,7 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_STRUCTS_H_SEEN
@@ -59,6 +60,12 @@
 // Validity flags, or they should be in the status struct?
 
 
+/**
+ * Addressable memory block description. This structure holds
+ * the size, RAM page and address and flash page and address.
+ * It is used for looking up the details of a memory block to
+ * allow serial operations on RAM and flash data structures.
+ */
 typedef struct {
 	unsigned char RAMPage;
 	unsigned char FlashPage;
@@ -66,8 +73,6 @@ typedef struct {
 	void* FlashAddress;
 	unsigned short size;
 } blockDetails;
-
-// memory block addresses description parameters
 
 
 /* Fixed Configuration - place things that do not    *
