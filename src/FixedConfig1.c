@@ -28,21 +28,17 @@
 #include "inc/freeEMS.h"
 
 
-/**
- * Fixed, in this context means that it typically is not tuned in a live way
- * and therefore should not be cached in RAM while running. Usually these are
- * values that do not change such as cylinder volume, injector size, cylinder
- * count and other constants related to physical aspects of the engine setup.
- * When adding configuration values, please consider adding them here first.
- * If a value doesn't need to be live tunable definitely put it here instead.
- * Please ensure that all variables added here have good default values.
- */
+/// @todo TODO for coreSettingsA masks See definitions in freeEMS.h OR is it in structs.h ???
+/// @todo TODO divide fixedConfig1 into useful chunks
+/// @todo TODO create presets sensor values struct
+/// @todo TODO create engine setup struct
+/// @todo TODO create ranges struct
+/// @todo TODO add userTextField1 to the dictionary/address lookup
+
+
 const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
-		0x07F0,                 	/* coreSettingsA */ /** @todo TODO See definitions in freeems.h. OR is it in structs.h ??? */
+		0x07F0,                 	/* coreSettingsA */
 
-/// @todo TODO perhaps just configure the dictionary to point at these as is and be careful about changing them?
-
-/// @todo TODO presets sensor values struct
 		roomTemperature,        	/* presetIAT */
 		runningTemperature,     	/* presetCHT */
 		halfThrottle,           	/* presetTPS */
@@ -56,13 +52,11 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		idlePulseWidth,         	/* presetBPW */
 		idleAirFlow,            	/* presetAF */
 
-/// @todo TODO engine setup struct
 		typicalCylinderSize,    	/* perCylinderVolume */
 		stoichiometricAFROctane,	/* stoichiometricAFR */
 		typicalInjectorSize,    	/* injectorFlow */
 		densityOfOctane,        	/* densityOfFuelAtSTP */
 
-/// @todo TODO ranges struct
 		offIdleMAP,             	/* TPSClosedMAP */
 		nearlyWOTMAP,           	/* TPSOpenMAP */
 		MPX4250AMin,            	/* MAPMinimum */

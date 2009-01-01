@@ -2,6 +2,15 @@
 
 	Copyright 2008 Fred Cooke
 
+	This file contains the struct data type definitions for fixed configuration items.
+
+	Fixed, in this context means that it typically is not tuned in a live way
+	and therefore should not be cached in RAM while running. Usually these are
+	values that do not change such as cylinder volume, injector size, cylinder
+	count and other constants related to physical aspects of the engine setup.
+	When adding configuration values, please consider adding them here first.
+	If a value doesn't need to be live tunable definitely put it here instead.
+
 	This file is part of the FreeEMS project.
 
 	FreeEMS software is free software: you can redistribute it and/or modify
@@ -27,10 +36,15 @@
 #ifndef FILE_FIXED_CONFIGS_H_SEEN
 #define FILE_FIXED_CONFIGS_H_SEEN
 
-
-/* Fixed Configuration - place things that do not    *
- * change after initial setup or during tuning here. */
-#define FIXED_CONFIG1_SIZE sizeof(fixedConfig1)
+/**
+ * One of two structs of fixed configuration data such as physical parameters etc.
+ * If you add something here, please ensure you update all of the following :
+ * - Default values in the initial definitions in FixedConfig1.c and FixedConfig2.c
+ * - The lookupBlockDetails() function in blockDetailsLookup.c
+ * - The JSON data map and other related firmware interface definition files
+ *
+ * @todo TODO split this up!
+ */
 typedef struct {
 
 	/* Settings variables : 0 = false */
@@ -110,12 +124,11 @@ typedef struct {
 	unsigned char userTextField[userTextFieldArrayLength1]; /* "Place your personal notes here!!" */
 } fixedConfig1;
 
+#define FIXED_CONFIG1_SIZE sizeof(fixedConfig1)
 
-/* Fixed Configuration - place things that do not    *
- * change after initial setup or during tuning here. */
-#define FIXED_CONFIG2_SIZE sizeof(fixedConfig2)
+
+/** @copydoc fixedConfig1 */
 typedef struct {
-
 	/* Setting variables (must be inited with useful values) */
 	unsigned short capacityOfAirPerCombustionEvent;		/* How much air it swallows per power producing event	*/
 	unsigned short perPrimaryInjectorChannelFlowRate;	/* How much fuel flows per minute per channel			*/
@@ -139,6 +152,8 @@ typedef struct {
 	/* User text field for noting which installation the unit is from etc. */
 	unsigned char userTextField[userTextFieldArrayLength2]; /* "Place your personal notes here!!" */
 } fixedConfig2;
+
+#define FIXED_CONFIG2_SIZE sizeof(fixedConfig2)
 
 
 #else

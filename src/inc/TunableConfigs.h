@@ -6,6 +6,10 @@
 	default values for small tables. Place reusable definitions of default table
 	values in here such that they can be used in multiple tunable table definitions.
 
+	You should add your configuration item here if it is best that it is adjusted with
+	instant results on a running engine. For everything else, please consider placing
+	it in one of the fixed configuration structs.
+
 	This file is part of the FreeEMS project.
 
 	FreeEMS software is free software: you can redistribute it and/or modify
@@ -47,8 +51,8 @@
 
 
 /**
- * One of four structs of live tunable data such as small tables and live configuration items.
- * If you add something here, please ensure you update all of the following :
+ * One of four structs of live tunable data such as small tables and fuel trims
+ * etc. If you add something here, please ensure you update all of the following :
  * - Default values in the initial definitions in TunableConfig.c and TunableConfig2.c
  * - The address values within the initPagedRAMTune() function in init.c
  * - The lookupBlockDetails() function in blockDetailsLookup.c
@@ -59,7 +63,8 @@ typedef struct {
 	twoDTableUS injectorDeadTimeTable;
 	twoDTableUS postStartEnrichmentTable;
 	twoDTableUS engineTempEnrichmentTableFixed;
-	twoDTableUS primingVolumeTable; /// @todo TODO define units. perhaps micro litres (cubic milli meters) would be good, 5 - 100 seem to be the norm 327.68 = 65535/200
+	/// @todo TODO define units. perhaps micro litres (cubic milli meters) would be good, 5 - 100 seem to be the norm 327.68 = 65535/200
+	twoDTableUS primingVolumeTable;
 	twoDTableUS engineTempEnrichmentTablePercent;
 	twoDTableUS dwellMaxVersusRPMTable;
 	unsigned char filler[576];

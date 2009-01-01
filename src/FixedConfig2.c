@@ -5,13 +5,6 @@
 	This file contains the definition of the second fixed configuration block.
 	The declaration can be found in the global constants header file.
 
-	Fixed, in this context, means that it typically is not tuned in a live way
-	and therefore should not be cached in RAM while running. Usually these are
-	values that do not change such as cylinder volume, injector size, cylinder
-	count and other constants related to physical aspects of the engine setup.
-	When adding configuration values, please consider adding them here first.
-	If a value doesn't need to be live tunable definitely put it here instead.
-
 	Please ensure that all variables added here have good default values.
 
 	This file is part of the FreeEMS project.
@@ -36,9 +29,15 @@
 
 #include "inc/freeEMS.h"
 
+
 /// @todo TODO divide fixedConfig2 into useful chunks
-const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 /// @todo TODO create engine hardware config chunk
+/// @todo TODO create random stuff chunk
+/// @todo TODO add the userTextField2 to the dictionary/address lookup
+
+
+const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
+
 		500,                  	/* capacityOfAirPerCombustionEvent */
 		550,                  	/* perPrimaryInjectorChannelFlowRate */
 		550,                  	/* perSecondaryInjectorChannelFlowRate */
@@ -50,10 +49,10 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		24,                   	/* primaryTeeth */
 		0,                    	/* missingTeeth */
 
-/// @todo TODO create random stuff chunk
 		divisorFor115200bps,  	/* baudDivisor */
 		1,                    	/* networkAddress */
 		tachoTickFactor4at50, 	/* tachoTickFactor */
 		tachoTotalFactor4at50,	/* tachoTotalFactor */
+
 		{"Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but if you wish to remain compatible......"}	/* userTextField[] */
 };
