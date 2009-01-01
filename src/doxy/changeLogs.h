@@ -30,7 +30,23 @@
  *     - Updated some TODOs entries etc in preparation for the weekends work
  * - Fred 31/12/08 09:45 GMT:
  *     - Doxygenated the source code
- *     - more even more lots more etc
+ *     - Modularised the initial contents of the tunable config structs for reuse
+ *     - Separated the content from the two copies of the tunable config structs in a shared header
+ *     - Added extra header checks for EXTERN pre definition
+ *     - Moved zassembly to assembly
+ *     - Removed the silly z prefix from the build dir names in the Makefiles
+ *     - Added .gitignore for generated .s, .o, .pp.c and output files and doxygen output files
+ *     - Moved this change logs to this doxygen html format for easier releases
+ *     - Added coding style document
+ *     - Added doc page for files not parsed by doxy
+ * - Fred 1/1/09 00:36 GMT:
+ *     - Named the next release :-)
+ *     - Started converting TODOs into doxy format
+ *     - Added mainPage doxy page for an intro page when entering the doxy docs
+ * - Fred 1/1/09 13:24 GMT:
+ *     - Rearranged headers and comments for FixedConfigs.h and TunableConfigs.h
+ *     - Fixed up random comments in various headers
+ *     - Changed the way the headers are used for core global stuff
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:

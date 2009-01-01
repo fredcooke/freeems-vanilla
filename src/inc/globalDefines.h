@@ -178,19 +178,26 @@
 #define AFR1020LambdaMax			49152		/* Lambda read at highest ADC reading */
 #define AFR1020LambdaRange			32768		/* Lambda difference between lowest and highest ADC reading */
 
+
 /* MAP Sensor Data Explanation
  *
- *  Motorola/Freescale pressure sensor data obtained from the
+ * Motorola/Freescale pressure sensor data obtained from the
  * data sheets by extrapolation of the "typical" line to the
- * borders of the transfer function chart.
+ * borders of the transfer function chart. This gives us the
+ * correct values in the middle despite not being able to
+ * reach the ends of the scale.
  *
  * By min and max I mean the OV and 5V pressures that aren't
  * attainable, but that give the correct function in between.
  */
+
+
+/* www.freescale.com/files/sensors/doc/data_sheet/MPX4100A.pdf */
 #define MPX4100AMin				1400		/* Pressure read at lowest ADC reading */
 #define MPX4100AMax				10750		/* Pressure read at highest ADC reading */
 #define MPX4100ARange			9350		/* Pressure difference between lowest and highest ADC readings */
 
+/* www.freescale.com/files/sensors/doc/data_sheet/MPX4250A.pdf */
 #define MPX4250AMin				800			/* Pressure read at lowest ADC reading */
 #define MPX4250AMax				26000		/* Pressure read at highest ADC reading */
 #define MPX4250ARange			25200		/* Pressure difference between lowest and highest ADC readings */
@@ -226,7 +233,7 @@
 
 #define userTextFieldArrayLength1 966			/* Arbitrary field length to avoid wasting excess space on flash */
 #define userTextFieldArrayLength2 1004			/* Arbitrary field length to avoid wasting excess space on flash */
-#define baudDivisor115p2 22					/* (40MHz / (16*115.2kHz)) = 21.7013889 */
+#define divisorFor115200bps 22					/* (40MHz / (16*115.2kHz)) = 21.7013889 */
 /* http://www.google.com/search?hl=en&safe=off&q=22%2F%28%2840000000%2F16%29%2F115200%29&btnG=Search 1.376% error in speed */
 /* http://www.google.com/search?hl=en&safe=off&q=40MHz%2F%2816*22%29&btnG=Search 113.636 kHz */
 

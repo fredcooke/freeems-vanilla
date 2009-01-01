@@ -1,4 +1,4 @@
-/*	globalConstants.h
+/**	@file globalConstants.h
 
 	Copyright 2008 Fred Cooke
 
@@ -21,10 +21,24 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_GLOBAL_CONSTANTS_H_SEEN
 #define FILE_GLOBAL_CONSTANTS_H_SEEN
+
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
+
+#ifdef GLOBAL_CONSTANTS_C
+#define EXTERN
+#else
+#define EXTERN extern
+#endif
 
 
 /* Types summary
@@ -39,13 +53,6 @@
  * float		32 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
  * double		64 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
  */
-
-
-#ifdef MAIN_OR_GLOBALS
-#define EXTERN
-#else
-#define EXTERN extern
-#endif
 
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Arrays here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/

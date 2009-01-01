@@ -1,6 +1,8 @@
-/*	globalConstants.c
+/**	@file globalConstants.c
 
 	Copyright 2008 Fred Cooke
+
+	All global constants values are and should be defined here.
 
 	This file is part of the FreeEMS project.
 
@@ -23,7 +25,9 @@
 
 
 #define NO_CONST_ARRAYS
+#define GLOBAL_CONSTANTS_C
 #include "inc/freeEMS.h"
+
 
 /* Types summary
  *
@@ -38,6 +42,7 @@
  * double		64 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
  */
 
+
 const unsigned short memdumplength = 0x100;
 const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar) + sizeof(ADCArray);
 
@@ -46,15 +51,17 @@ const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar
 /* &&&&&&&&&& WARNING &&&&&&&&&& These need to be changed if the timer period is changed at all!! &&&&&&&&&& WARNING &&&&&&&&&& */
 /* TODO It may be better to make these actual times and calculate the number of timer units such that a change in time base of the timer doesn't affect the code. */
 
-/* Serial interface unique identifier */
+/** Serial interface unique identifier
+ * This should only change when the serial interface changes (even a little)
+ * This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
+ * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID
+ */
 const unsigned char interfaceVersionAndType[20] = {0,0,2,'I','F','r','e','e','E','M','S',' ','V','a','n','i','l','l','a',0};
-/* This should only change when the serial interface changes (even a little) */
-/* This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
- * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID */
 
-/* Displayable firmware version identifier */
+/** Displayable firmware version identifier
+ * This should change everytime the code is changed at all (even a little) before each release.
+ */
 const unsigned char firmwareVersion[47] = {"FreeEMS Vanilla 0.0.18 JackTheRipper pre-alpha"};
-/* This should change everytime the code is changed at all (even a little) before each release. */
 
 /* divisors and untunable physical constants combined into a single master fuel constant
  *
@@ -75,7 +82,7 @@ const unsigned char firmwareVersion[47] = {"FreeEMS Vanilla 0.0.18 JackTheRipper
  * http://www.google.com/search?hl=en&safe=off&q=((1250+*+2897+*+4096+*+1024+*+1024000)+%2F+(34056+*++100+*+32768)&btnG=Search */
 const unsigned long masterFuelConstant = 139371764; /* ((1250 * 2897 * 4096 * 1024 * 1024000) / (34056 *  100 * 32768) */
 
-/* Yet to be determined */
+/* MAF const : Yet to be determined TODO */
 const unsigned long MAFFuelConstant = 0;
 
 /* Injection limits */
