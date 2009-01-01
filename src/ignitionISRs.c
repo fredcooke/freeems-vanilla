@@ -25,7 +25,6 @@
 #define IGNITIONISRS_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
-#include "inc/ignitionISRs.h"
 
 
 /* Summary of intended ignition timing scheme
