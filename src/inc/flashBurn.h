@@ -15,7 +15,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
@@ -27,13 +27,8 @@
 #ifndef FLASHBURN_H_SEEN
 #define FLASHBURN_H_SEEN
 
-#ifdef FLASHBURN_S
-#define EXTERN
-#else
-#define EXTERN extern
-#endif
 
-EXTERN void StackBurner();
+extern void StackBurner();
 
 
 #else
