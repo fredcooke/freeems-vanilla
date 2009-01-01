@@ -21,16 +21,25 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_BLOCK_DETAILS_LOOKUP_H_SEEN
 #define FILE_BLOCK_DETAILS_LOOKUP_H_SEEN
+
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
 
 #ifdef BLOCK_DETAILS_LOOKUP_C
 #define EXTERN
 #else
 #define EXTERN extern
 #endif
+
 
 EXTERN unsigned short lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE;
 
