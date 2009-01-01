@@ -19,7 +19,7 @@
  * - Interface definition files
  * - Loadable s19 firmware file
  *
- * @TODO add a description for each item with an anchor above it. Reference the anchor from the above list.
+ * @todo TODO add a description for each item with an anchor above it. Reference the anchor from the above list.
  *
  * Contributed work welcome! By email, post, instant message or git push!
  *
