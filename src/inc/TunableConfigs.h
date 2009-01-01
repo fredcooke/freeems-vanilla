@@ -57,6 +57,8 @@
  * - The address values within the initPagedRAMTune() function in init.c
  * - The lookupBlockDetails() function in blockDetailsLookup.c
  * - The JSON data map and other related firmware interface definition files
+ *
+ * @todo TODO add doxy comments for each element of the struct
  */
 typedef struct {
 	twoDTableUS dwellDesiredVersusVoltageTable;

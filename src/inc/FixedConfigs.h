@@ -44,6 +44,7 @@
  * - The JSON data map and other related firmware interface definition files
  *
  * @todo TODO split this up!
+ * @todo TODO add doxy comments for each element of the struct
  */
 typedef struct {
 
