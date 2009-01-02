@@ -59,6 +59,7 @@
  *     - Removed all empty headers - not needed now, shouldn't be in there!
  * - Fred 1/1/09 18:34 GMT:
  *     - Added the three linker scripts to be processed by doxygen
+ *     - Formatted global constants files a bit as a reason to push a commit
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:

@@ -52,37 +52,46 @@ const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar
 /* TODO It may be better to make these actual times and calculate the number of timer units such that a change in time base of the timer doesn't affect the code. */
 
 /** Serial interface unique identifier
+ *
  * This should only change when the serial interface changes (even a little)
+ *
  * This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
  * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID
  */
 const unsigned char interfaceVersionAndType[20] = {0,0,2,'I','F','r','e','e','E','M','S',' ','V','a','n','i','l','l','a',0};
 
 /** Displayable firmware version identifier
- * This should change everytime the code is changed at all (even a little) before each release.
+ *
+ * This should change every time the code is changed at all (even a little) before each release.
  */
 const unsigned char firmwareVersion[45] = {"FreeEMS Vanilla 0.0.19 Doxygenated pre-alpha"};
 
-/* divisors and untunable physical constants combined into a single master fuel constant
+/** Divisors and untunable physical constants combined into a single master fuel constant
  *
  * const unsigned short molarMassOfAir = 2897; // in grams per 100 moles, so divide by 100 to get gm/mol
  * const unsigned short msToTicks = 1250; // constant to bring ms into 0.8us chunks
  * const unsigned short universalGasConstant = 34056; // 8.314472 * 4096, so divide by 4096 to get real number
  *
- * #define injectorFlowDivisor 1024
- * #define injectorFlowUnitDivisor 1000 - to get it into litres/second
- * #define injectorFlowTotalDivisor 1024000
- * #define stoichiometricAFRDivisor 1024
- * #define universalGasConstantDivisor 4096
- * #define molarMassOfAirDivisor 100
- * #define perCylinderVolumeDivisor 32768
+ * hash define injectorFlowDivisor 1024
+ * hash define injectorFlowUnitDivisor 1000 - to get it into litres/second
+ * hash define injectorFlowTotalDivisor 1024000
+ * hash define stoichiometricAFRDivisor 1024
+ * hash define universalGasConstantDivisor 4096
+ * hash define molarMassOfAirDivisor 100
+ * hash define perCylinderVolumeDivisor 32768
  *
  * master = (msToTicks * molarMassOfAir * universalGasConstantDivisor * stoichiometricAFRDivisor * injectorFlowTotalDivisor) / (universalGasConstant * molarMassOfAirDivisor * perCylinderVolumeDivisor);
  * master = (1250	   * 2897			* 4096						  * 1024				     * 1024000				   ) / (34056				 * 100					 * 32768				   );
- * http://www.google.com/search?hl=en&safe=off&q=((1250+*+2897+*+4096+*+1024+*+1024000)+%2F+(34056+*++100+*+32768)&btnG=Search */
-const unsigned long masterFuelConstant = 139371764; /* ((1250 * 2897 * 4096 * 1024 * 1024000) / (34056 *  100 * 32768) */
+ * http://www.google.com/search?hl=en&safe=off&q=((1250+*+2897+*+4096+*+1024+*+1024000)+%2F+(34056+*++100+*+32768)&btnG=Search
+ *
+ * ((1250 * 2897 * 4096 * 1024 * 1024000) / (34056 *  100 * 32768) = 139371764
+ */
+const unsigned long masterFuelConstant = 139371764;
 
-/* MAF const : Yet to be determined TODO */
+/** MAF fuel constant
+ *
+ * @todo TODO Determine what the value of MAF fuel constant should be
+ */
 const unsigned long MAFFuelConstant = 0;
 
 /* Injection limits */

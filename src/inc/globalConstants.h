@@ -65,18 +65,15 @@ EXTERN const volatile unsigned short CHTTransferTable[1024]; /* 2k */
 EXTERN const volatile unsigned short MAFTransferTable[1024]; /* 2k */
 EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 
-EXTERN const unsigned short memdumplength;
-EXTERN const unsigned short maxBasicDatalogLength;
+/* Version strings */
+EXTERN const unsigned char interfaceVersionAndType[20];
+EXTERN const unsigned char firmwareVersion[45];
 
-/* Interface version field 8 bit number, 8 bit number, 8 bit number, string of arbitrary length */
-EXTERN const unsigned char interfaceVersionAndType[20]; /* Should be unique for serial comms */
-
-/* Firmware version string of arbitrary length for display and human ID purposes */
-EXTERN const unsigned char firmwareVersion[45]; /* Should change with even the slightest code change */
-
+/* Ignition */
 EXTERN const unsigned short dwellStartMasks[IGNITION_CHANNELS];
 EXTERN const unsigned short ignitionMasks[IGNITION_CHANNELS];
 
+/* Injection */
 EXTERN const unsigned char injectorMainOnMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainOffMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainEnableMasks[INJECTION_CHANNELS];
@@ -142,6 +139,12 @@ EXTERN const volatile twoDTableUS dwellMaxVersusRPMTableFlash; // maximum dwell 
 /* Fueling constants */
 EXTERN const unsigned long masterFuelConstant;
 EXTERN const unsigned long MAFFuelConstant;
+
+
+/* Serial data log stuff, temporary */
+EXTERN const unsigned short memdumplength;
+EXTERN const unsigned short maxBasicDatalogLength;
+
 
 
 /* These need to be changed if the timer period is changed at all */
