@@ -72,7 +72,7 @@ EXTERN const unsigned short maxBasicDatalogLength;
 EXTERN const unsigned char interfaceVersionAndType[20]; /* Should be unique for serial comms */
 
 /* Firmware version string of arbitrary length for display and human ID purposes */
-EXTERN const unsigned char firmwareVersion[47]; /* Should change with even the slightest code change */
+EXTERN const unsigned char firmwareVersion[45]; /* Should change with even the slightest code change */
 
 EXTERN const unsigned short dwellStartMasks[IGNITION_CHANNELS];
 EXTERN const unsigned short ignitionMasks[IGNITION_CHANNELS];

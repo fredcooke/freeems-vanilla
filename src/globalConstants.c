@@ -61,7 +61,7 @@ const unsigned char interfaceVersionAndType[20] = {0,0,2,'I','F','r','e','e','E'
 /** Displayable firmware version identifier
  * This should change everytime the code is changed at all (even a little) before each release.
  */
-const unsigned char firmwareVersion[47] = {"FreeEMS Vanilla 0.0.18 JackTheRipper pre-alpha"};
+const unsigned char firmwareVersion[45] = {"FreeEMS Vanilla 0.0.19 Doxygenated pre-alpha"};
 
 /* divisors and untunable physical constants combined into a single master fuel constant
  *
