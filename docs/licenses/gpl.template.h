@@ -1,4 +1,4 @@
-/*	filename here
+/**	@file filename.h
 
 	Copyright 2009 Fred Cooke
 
@@ -40,7 +40,11 @@
 #define EXTERN extern
 #endif
 
+
+// hash defines here
+
 // declarations here
+
 
 #undef EXTERN
 

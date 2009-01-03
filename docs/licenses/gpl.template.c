@@ -1,6 +1,8 @@
-/*	filename here
+/**	@file filename.c
 
 	Copyright 2008 Fred Cooke
+
+	Description about what this file is intended to contain here!
 
 	This file is part of the FreeEMS project.
 
@@ -21,8 +23,10 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 #define < filename >_C
 #include "inc/freeEMS.h"
 #include "inc/< filename >.h"
+
 
 // code here
