@@ -1,6 +1,11 @@
-/*	commsISRs.c
+/**	@file commsISRs.c
 
 	Copyright 2008 Fred Cooke
+
+	This file contains the code for both send and receive of serial bytes
+	through the UART SCI0 device. It is purely interrupt driven and controlled
+	by a set of register and non-register flags that are toggled both inside
+	and outside this file. Some additional helper functions are also kept here.
 
 	This file is part of the FreeEMS project.
 
@@ -35,7 +40,14 @@
  * http://gcc.gnu.org/onlinedocs/gcc-3.3.6/Inline.html#Inline	*/
 
 
-/* Increment the pointer, decrement the length, and send it! */
+/** Send And Increment
+ *
+ * Increment the pointer, decrement the length, and send it!
+ *
+ * @note This is an extern inline function and as such is always inlined.
+ *
+ * @param rawValue is the raw byte to be sent down the serial line.
+ */
 extern inline void sendAndIncrement(unsigned char rawValue){
 	SCI0DRL = rawValue;
 	TXPacketLengthToSendSCI0--;
@@ -43,7 +55,14 @@ extern inline void sendAndIncrement(unsigned char rawValue){
 }
 
 
-/* Store and checksum the value, then increment the pointer and length */
+/** Receive And Increment
+ *
+ * Store the value and add it to the checksum, then increment the pointer and length.
+ *
+ * @note This is an extern inline function and as such is always inlined.
+ *
+ * @param value is the byte of data to store in the buffer and add to the checksum.
+ */
 extern inline void receiveAndIncrement(const unsigned char value){
 	*RXBufferCurrentPosition = value;
 	RXCalculatedChecksum += value;
@@ -52,8 +71,15 @@ extern inline void receiveAndIncrement(const unsigned char value){
 }
 
 
-/* Reset serial reception to one of two states */
-void resetReceiveState(unsigned char sourceIDState){ // WRONG
+/** Reset Receive State
+ *
+ * Reset communications reception to the state provided.
+ *
+ * @todo TODO this is in the wrong file!! Either move the header declaration or move the function!
+ *
+ * @param sourceIDState is the state to apply to the RX buffer state variable.
+ */
+void resetReceiveState(unsigned char sourceIDState){
 	/* Set the receive buffer pointer to the beginning */
 	RXBufferCurrentPosition = (unsigned char*)&RXBuffer;
 
@@ -69,8 +95,8 @@ void resetReceiveState(unsigned char sourceIDState){ // WRONG
 	/* it must be on and we want it to stay on, so just turn off all the others.	*/
 	if(sourceIDState & COM_SET_SCI0_INTERFACE_ID){
 		/* Turn off all others here */
-		// TODO CAN0CTL1 &= CANCTL1_RX_DISABLE;
-		// TODO CAN0CTL1 &= CANCTL1_RX_ISR_DISABLE;
+		/// @todo TODO CAN0CTL1 &= CANCTL1_RX_DISABLE;
+		/// @todo TODO CAN0CTL1 &= CANCTL1_RX_ISR_DISABLE;
 		/* SPI ? I2C ? SCI1 ? */
 	}else if(sourceIDState & COM_SET_CAN0_INTERFACE_ID){
 		/* Turn off all others here */
@@ -82,15 +108,24 @@ void resetReceiveState(unsigned char sourceIDState){ // WRONG
 		/* Only SCI for now */
 		SCI0CR2 |= SCICR2_RX_ENABLE;
 		SCI0CR2 |= SCICR2_RX_ISR_ENABLE;
-		// TODO CAN0CTL1 |= CANCTL1_RX_ENABLE;
-		// TODO CAN0CTL1 |= CANCTL1_RX_ISR_ENABLE;
+		/// @todo TODO CAN0CTL1 |= CANCTL1_RX_ENABLE;
+		/// @todo TODO CAN0CTL1 |= CANCTL1_RX_ISR_ENABLE;
 		/* SPI ? I2C ? SCI1 ? */
 	}
 }
 
 
-/* SCI0 ISR handles all interrupts for SCI0 by reading the flag registers and acting appropriately. */
-void SCI0ISR(void){
+/** UART Serial Communication Interface 0 ISR
+ *
+ * SCI0 ISR handles all interrupts for SCI0 by reading flags and acting
+ * appropriately. Its functions are to send raw bytes out over the wire from a
+ * buffer and to receive bytes from the wire un-escape them, checksum them and
+ * store them in a buffer.
+ *
+ * @todo TODO Move this code into an include file much like the fuel interrupts such that it can be used for multiple UART SCI devices without duplication.
+ * @todo TODO Remove the debug code that uses the IO ports to light LEDs during specific actions.
+ */
+void SCI0ISR(){
 	/* Read the flags register */
 	unsigned char flags = SCI0SR1;
 	/* Note: Combined with reading or writing the data register this also clears the flags. */

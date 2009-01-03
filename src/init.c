@@ -32,25 +32,6 @@
 #include <string.h>
 
 
-/* If these are moved back to the header then	*/
-/* wrap them in an if to keep them hidden away	*/
-void initPLL(void) FPAGE_FE;
-void initIO(void) FPAGE_FE;
-void initAllPagedRAM(void) FPAGE_FE;
-void initVariables(void) FPAGE_FE;
-void initFlash(void) FPAGE_FE;
-void initECTTimer(void) FPAGE_FE;
-void initPITTimer(void) FPAGE_FE;
-void initSCIStuff(void) FPAGE_FE;
-void initConfiguration(void) FPAGE_FE;
-void initInterrupts(void) FPAGE_FE;
-
-void initLookupAddresses(void) LOOKUPF;
-void initPagedRAMFuel(void) FUELTABLESF;
-void initPagedRAMTime(void) TIMETABLESF;
-void initPagedRAMTune(void) TUNETABLESF;
-
-
 /* Main init function to be called from main.c before entering the main loop */
 void init(){
 	ATOMIC_START();			/* Disable ALL interrupts while we configure the board ready for use */

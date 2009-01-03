@@ -38,6 +38,21 @@
 
 #ifdef INIT_C
 #define EXTERN
+/* For private internal use of init.c init() function only, hence wrapped in this ifdef */
+void initPLL(void) FPAGE_FE;
+void initIO(void) FPAGE_FE;
+void initAllPagedRAM(void) FPAGE_FE;
+void initVariables(void) FPAGE_FE;
+void initFlash(void) FPAGE_FE;
+void initECTTimer(void) FPAGE_FE;
+void initPITTimer(void) FPAGE_FE;
+void initSCIStuff(void) FPAGE_FE;
+void initConfiguration(void) FPAGE_FE;
+void initInterrupts(void) FPAGE_FE;
+void initLookupAddresses(void) LOOKUPF;
+void initPagedRAMFuel(void) FUELTABLESF;
+void initPagedRAMTime(void) TIMETABLESF;
+void initPagedRAMTune(void) TUNETABLESF;
 #else
 #define EXTERN extern
 #endif

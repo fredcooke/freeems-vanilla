@@ -28,6 +28,9 @@
 
 #ifdef COMMSCORE_C
 #define EXTERN
+/* Internal use without check on buffer, purely here to place functions in paged memory. */
+void sendErrorInternal(unsigned short) FPAGE_FE;
+void sendDebugInternal(unsigned char*) FPAGE_FE;
 #else
 #define EXTERN extern
 #endif

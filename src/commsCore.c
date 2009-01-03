@@ -1,6 +1,11 @@
-/*	commsCore.c
+/**	@file commsCore.c
 
 	Copyright 2008 Fred Cooke
+
+	This file contains most of the core comms functionality. Currently that is
+	only for UART serial style communication. It is already too big and needs
+	to be split up somewhat. This will happen fairly soon during the serial
+	refactoring and protocol fine tuning.
 
 	This file is part of the FreeEMS project.
 
@@ -33,12 +38,15 @@
 #include <string.h>
 
 
-/* Internal use without check on buffer */
-void sendErrorInternal(unsigned short) FPAGE_FE;
-void sendDebugInternal(unsigned char*) FPAGE_FE;
-
-
-/* If changing this, update the max constant */
+/** Populate Basic Datalog
+ *
+ * Copies various chunks of data to the transmission buffer and truncates to
+ * the configured length. If changing this, update the maxBasicDatalogLength.
+ *
+ * @author Fred Cooke
+ *
+ * @warning This function is only a skeleton at this time.
+ */
 void populateBasicDatalog(){
 	/* Save the current position */
 	unsigned char* position = TXBufferCurrentPositionHandler;
@@ -58,11 +66,9 @@ void populateBasicDatalog(){
 }
 
 
-// TODO function to setup a packet and send it fn(populateBodyFunctionPointer(), header, other, fields, here, and, use, or, not, within){}
+/// @todo TODO function to setup a packet and send it fn(populateBodyFunctionPointer(), header, other, fields, here, and, use, or, not, within){}
 
-// TODO rip dictionary out to own file
-
-// TODO factor many things into functions and move the receive delegator to its own file
+/// @todo TODO factor many things into functions and move the receive delegator to its own file
 
 
 //void populateLogicAnalyser(){
@@ -71,25 +77,25 @@ void populateBasicDatalog(){
 //	// get portA ign
 //	// get portK inj staged
 //}
+
+
+// All of these require some range checking, eg only some registers, and all ram, not flash, not other regs
+// TODO pointer for one byte
+// TODO pointer for one short
+// TODO function to log generic memory region by location and size ? requires length!
+// Ranges are :
+// ram window
+// bss/data region
+// IO registers etc that can't be altered simply by reading from.
+// NOT :
+// flash makes no sense
+// some regs are sensitive
+// some ram is unused
+// serial buffers make no sense
+// eeprom makes no sense
 //
-//
-//// All of these require some range checking, eg only some registers, and all ram, not flash, not other regs
-//// TODO pointer for one byte
-//// TODO pointer for one short
-//// TODO function to log generic memory region by location and size ? requires length!
-//// Ranges are :
-//// ram window
-//// bss/data region
-//// IO registers etc that can't be altered simply by reading from.
-//// NOT :
-//// flash makes no sense
-//// some regs are sensitive
-//// some ram is unused
-//// serial buffers make no sense
-//// eeprom makes no sense
-////
-//// 2k of regs max - user beware for now
-//// 12k of ram max
+// 2k of regs max - user beware for now
+// 12k of ram max
 //
 //init :
 //logaddr = fixed.addr
@@ -115,11 +121,17 @@ void populateBasicDatalog(){
 //}
 
 
-// TODO Look at the time stamps and where to write them, also whether to function
-// TODO call these simple blocks or write one function that handles all the logic.
+/// @todo TODO Look at the time stamps and where to write them, also whether to function call these simple blocks or write one function that handles all the logic.
 
 
-/* Checksum and initiate send process */
+/** Checksum And Send
+ *
+ * This functions job is to finalise the main loop part of the packet sending
+ * process. It runs a checksum over the packet data and tags it to the end
+ * before configuring the various ISRs that need to send the data out.
+ *
+ * @author Fred Cooke
+ */
 void checksumAndSend(){
 	/* Get the length from the pointer */
 	unsigned short TXPacketLengthToSend = (unsigned short)TXBufferCurrentPositionHandler - (unsigned short)&TXBuffer;
@@ -190,10 +202,14 @@ void checksumAndSend(){
 }
 
 
-// hHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-// above this to another file
-
-
+/** Decode Packet And Respond
+ *
+ * This is the core function that controls what functionality is run when a
+ * packet is received in full by the ISR code and control is passed back to the
+ * main loop code. The vast majority of communications action happens here.
+ *
+ * @author Fred Cooke
+ */
 void decodePacketAndRespond(){
 	/* Extract and build up the header fields */
 	RXBufferCurrentPosition = (unsigned char*)&RXBuffer;
@@ -953,11 +969,19 @@ void decodePacketAndRespond(){
 	PORTK |= BIT0;
 }
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-//below this to another file for now
-
-/* Wrapper for use outside the com handler */
+/** Send Error If Clear
+ *
+ * This is a wrapper for use outside the communication handler function. The error will only be sent if the buffer is empty and available, if not, it will be discarded.
+ *
+ * @author Fred Cooke
+ *
+ * @warning Use of this function signifies that the error you are trying to propagate is not urgent and can be forgotten.
+ *
+ * @note Consider not throwing an error if it seems appropriate to use this.
+ *
+ * @param errorID is the error ID to be passed out to listening devices.
+ */
 void sendErrorIfClear(unsigned short errorID){
 	if(!TXBufferInUseFlags){
 		TXBufferInUseFlags = ONES;
@@ -968,7 +992,20 @@ void sendErrorIfClear(unsigned short errorID){
 }
 
 
-/* Wrapper for use outside the com handler */
+/** Send Error Busy Wait
+ *
+ * This is a wrapper for use outside the communication handler function. This
+ * function will block until the error is able to be sent. This behaviour is
+ * not recommended as it will interfere with engine operation somewhat.
+ *
+ * @author Fred Cooke
+ *
+ * @warning Use of this function signifies that the error you are trying to propagate is extremely urgent and can not be forgotten.
+ *
+ * @note Using this function blocks other main loop code from execution. Consider handling the error in another way if it seems appropriate to use this.
+ *
+ * @param errorID is the error ID to be passed out to listening devices.
+ */
 void sendErrorBusyWait(unsigned short errorID){
 	while(TXBufferInUseFlags){} /* Wait till clear to send */
 	TXBufferInUseFlags = ONES;
@@ -976,9 +1013,22 @@ void sendErrorBusyWait(unsigned short errorID){
 }
 
 
-/* Send an error code out in a frequency limited way */
-void sendErrorInternal(unsigned short errorCode){ // TODO build wrapper to check for use inside handler or not and not send if busy and not in handler ditto for debug
-
+/** Send Error Internal
+ *
+ * This function is only for use inside the communication handling function.
+ * Use of it outside this environment is not supported and behaviour when used
+ * as such is undefined.
+ *
+ * @author Fred Cooke
+ *
+ * @warning ONLY use this function from within the communication handler.
+ *
+ * @todo TODO clean up the mess of commented out crap in here!
+ * @todo TODO decide on errorCode or errorID and consistencise it everywhere.
+ *
+ * @param errorCode is the error ID to be passed out to listening devices.
+ */
+void sendErrorInternal(unsigned short errorCode){
 //	set buffer in use, consider blocking interrupts to do this cleanly
 
 
@@ -1016,7 +1066,16 @@ void sendErrorInternal(unsigned short errorCode){ // TODO build wrapper to check
 }
 
 
-/* Wrapper for use outside the com handler */
+/** Send Debug If Clear
+ *
+ * This is a wrapper for use outside the communication handler function. The debug message will only be sent if the buffer is empty and available, if not, it will be discarded.
+ *
+ * @author Fred Cooke
+ *
+ * @note This function exists as a convenience to developers, do not publish code that calls this function.
+ *
+ * @param message is a pointer to the null terminated debug message string.
+ */
 void sendDebugIfClear(unsigned char* message){
 	if(!TXBufferInUseFlags){
 		TXBufferInUseFlags = ONES;
@@ -1027,7 +1086,17 @@ void sendDebugIfClear(unsigned char* message){
 }
 
 
-/* Wrapper for use outside the com handler */
+/** Send Debug Busy Wait
+ *
+ * This is a wrapper for use outside the communication handler function. This
+ * function will block until the debug message is able to be sent.
+ *
+ * @author Fred Cooke
+ *
+ * @note This function exists as a convenience to developers, do not publish code that calls this function.
+ *
+ * @param message is a pointer to the null terminated debug message string.
+ */
 void sendDebugBusyWait(unsigned char* message){
 	while(TXBufferInUseFlags){} /* Wait till clear to send */
 	TXBufferInUseFlags = ONES;
@@ -1035,7 +1104,20 @@ void sendDebugBusyWait(unsigned char* message){
 }
 
 
-/* Send a null terminated message out on the broadcast address */
+/** Send Debug Internal
+ *
+ * Sends a null terminated debug message out on the broadcast address of all available interfaces.
+ *
+ * @author Fred Cooke
+ *
+ * @warning ONLY use this function from within the communication handler.
+ *
+ * @note This function exists as a convenience to developers, do not publish code that calls this function.
+ *
+ * @todo TODO clean up the mess of commented out crap in here!
+ *
+ * @param message is a pointer to the null terminated debug message string.
+ */
 void sendDebugInternal(unsigned char* message){
 
 //	set buffer in use, consider blocking interrupts to do this cleanly
@@ -1148,7 +1230,10 @@ void sendDebugInternal(unsigned char* message){
 //}
 
 
-/* TODO when implementing, check that ppage is OK!!! */
+/** Send Ack If Required
+ *
+ * @todo TODO when implementing, check that ppage is OK!!!
+ */
 void sendAckIfRequired(){
 	TXBufferInUseFlags = 0;
 	// check PPAGE while implementing TODO

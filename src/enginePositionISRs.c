@@ -1,6 +1,9 @@
-/*	enginePositionISRs.c
+/**	@file enginePositionISRs.c
 
 	Copyright 2008 Fred Cooke
+
+	This file contains the two interrupt service routines for handling engine
+	position and RPM signals.
 
 	This file is part of the FreeEMS project.
 
@@ -29,7 +32,10 @@
 #include "inc/commsISRs.h"
 #include "inc/enginePositionISRs.h"
 
-/* TODO Summary of intended engine position capture scheme
+
+/** Primary RPM ISR
+ *
+ * Summary of intended engine position capture scheme (out of date as at 3/1/09)
  *
  * Position/RPM signal interpretation :
  * Discard edges that have arrived too soon (lose sync here?)
@@ -44,8 +50,9 @@
  * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
  * Set flag stating that New pulse, advance, etc should be calculated.
  *
+ * @todo TODO bring the above docs up to date with reality
+ * @todo TODO finish this off to a usable standard
  */
-
 void PrimaryRPMISR(void)
 {
 	/* Clear the interrupt flag for this input compare channel */
@@ -333,6 +340,14 @@ void PrimaryRPMISR(void)
 	// schedule fuel and ign based on spark cut and fuel cut and timing vars and status vars config vars
 }
 
+
+/** Secondary RPM ISR
+ *
+ * Similar to the primary one.
+ *
+ * @todo TODO bring this documentation up to date.
+ * @todo TODO finish this off to a usable standard.
+ */
 void SecondaryRPMISR(void)
 {
 	/* Clear the interrupt flag for this input compare channel */

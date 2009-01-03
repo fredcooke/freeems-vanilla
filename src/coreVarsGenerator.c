@@ -1,6 +1,9 @@
-/*	coreVarsGenerator.c
+/**	@file coreVarsGenerator.c
 
 	Copyright 2008 Fred Cooke
+
+	This file contains the function that transfers the raw ADC values to actual
+	physical measurements and averages them.
 
 	This file is part of the FreeEMS project.
 
@@ -28,6 +31,17 @@
 #include "inc/coreVarsGenerator.h"
 
 
+/** Generate Core Variables
+ *
+ * Each raw ADC value is converted to a usable measurement via a variety of
+ * methods chosen at runtime by configured settings. Once in their native units
+ * and therefore closer to maximal use of the available data range they are
+ * all averaged.
+ *
+ * @todo TODO incorporate averaging code, right now its a straight copy.
+ * @todo TODO change the way configuration is done and make sure the most common options are after the first if().
+ * @todo TODO add actual configuration options to the fixed config blocks for these items.
+ */
 void generateCoreVars(){
 	/*&&&&&&&& Calculate and obtain the basic variables with which we will perform the calculations &&&&&&&&*/
 
@@ -255,7 +269,7 @@ void generateCoreVars(){
 	/* already averaged in a way. However, there may be some advantage to some short term averaging on the	*/
 	/* derived ones also, so it is something to look into later.											*/
 
-	// TODO average them here
+	/// @todo TODO average the generated values here
 
 //			newVal var word        ' the value from the ADC
 //			smoothed var word    ' a nicely smoothed result

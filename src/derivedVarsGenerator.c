@@ -1,6 +1,8 @@
-/*	derivedVarsGenerator.c
+/**	@file derivedVarsGenerator.c
 
 	Copyright 2008 Fred Cooke
+
+	Second line variables are generated from the core variables here.
 
 	This file is part of the FreeEMS project.
 
@@ -29,6 +31,12 @@
 #include "inc/derivedVarsGenerator.h"
 
 
+/** Generate Derived Variables
+ *
+ * This function uses the core variables to lookup and calculate further second
+ * order variables such as load, VE, Lamdda, Transient fuel correction, engine
+ * temperature enrichment, Injector dead time, etc.
+ */
 void generateDerivedVars(){
 	/*&&&&&&&&&&&&&&&&&&&& Use basic variables to lookup and calculate derived variables &&&&&&&&&&&&&&&&&&&*/
 

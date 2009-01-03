@@ -1,6 +1,8 @@
-/*	decodePacketAndRespond.c
+/**	@file decodePacketAndRespond.c
 
 	Copyright 2008 Fred Cooke
+
+	Empty file to be filled out in a later release.
 
 	This file is part of the FreeEMS project.
 
@@ -26,4 +28,5 @@
 #include "inc/freeEMS.h"
 #include "inc/decodePacketAndRespond.h"
 
-// code here TODO for 0.0.19 or 0.0.20??
+
+/// @todo TODO Split the functionality out for 0.0.20

@@ -1,6 +1,9 @@
-/*	blockDetailsLookup.c
+/**	@file blockDetailsLookup.c
 
 	Copyright 2008 Fred Cooke
+
+	This file holds the single function lookupBlockDetails() which
+	functions as a sort of address book for logical blocks of memory.
 
 	This file is part of the FreeEMS project.
 
@@ -29,9 +32,23 @@
 #include "inc/blockDetailsLookup.h"
 
 
-/* Flash only blocks leave the ram address and page values	 */
-/* set to zero. ID's that don't exist leave all set to zero. */
-/* Error handling is to be done externally based on that.	 */
+/** Lookup Block Details
+ *
+ * Flash only blocks leave the ram address and page values
+ * set to zero. ID's that don't exist leave all set to zero.
+ * Error handling is to be done externally based on that.
+ *
+ * @author Fred Cooke
+ *
+ * @note This function is an exception to the style rule switch statement
+ * blocks of using a {} pair for each case statement. Readability is better
+ * without them in this case.
+ *
+ * @param locationID is the ID of the memory location for which details are required.
+ * @param details is a pointer to the blockDetails struct to populate with the details.
+ *
+ * @return An error code. Zero means success, anything else is a failure.
+ */
 unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* details){
 	/* Initialise the four values needed for operations on memory at 0 for error checking */
 	details->RAMPage = 0;
@@ -407,11 +424,14 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = fillerD2Location;
 		break;
 
-	/* TODO (add) Fixed config small blocks */
-	// NOTE these are in linear space so we can get the addresses directly.
+	/** @todo TODO (add) Fixed config small blocks */
+	/// @note NOTE these are in linear space so we can get the addresses directly.
 
 	default:
+		/* Return early if locationID is not valid. */
 		return locationIDNotFound;
 	}
+
+	/* Fall through to not return error */
 	return 0;
 }

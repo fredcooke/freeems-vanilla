@@ -1,6 +1,9 @@
-/*	CHTTransferTable.c
+/**	@file CHTTransferTable.c
 
 	Copyright 2008 Fred Cooke
+
+	This file solely contains the Coolant/Head Temperature thermistor transfer
+	function lookup table.
 
 	This file is part of the FreeEMS project.
 
@@ -25,6 +28,11 @@
 #include "inc/freeEMS.h"
 
 
+/** Coolant/Head Temperature Lookup Table
+ *
+ * Using this table it is possible to accurately and quickly convert
+ * a raw ADC reading to a scaled temperature value in degrees Kelvin.
+ */
 const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
 		65535, 65535, 65535, 60641, 57372, 55074, 53332, 51945, 50803, 49837, 49004, 48276, 47629, 47051, 46527, 46051,
 		45614, 45211, 44838, 44491, 44166, 43862, 43576, 43306, 43051, 42809, 42579, 42360, 42151, 41952, 41760, 41577,

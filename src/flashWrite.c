@@ -1,6 +1,10 @@
-/*	flashWrite.c
+/**	@file flashWrite.c
 
 	Copyright 2008 Sean Keys, Fred Cooke
+
+	This file contains all functions that operate directly or indirectly and
+	only on flash memory. They are used for erasing data from and reprogramming
+	data to the embedded flash non-volatile storage area.
 
 	This file is part of the FreeEMS project.
 
