@@ -1,11 +1,4 @@
-/**	@file commsCore.c
-
-	Copyright 2008 Fred Cooke
-
-	This file contains most of the core comms functionality. Currently that is
-	only for UART serial style communication. It is already too big and needs
-	to be split up somewhat. This will happen fairly soon during the serial
-	refactoring and protocol fine tuning.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -22,9 +15,24 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file commsCore.c
+ *
+ * This file contains most of the core comms functionality. Currently that is
+ * only for UART serial style communication. It is already too big and needs
+ * to be split up somewhat. This will happen fairly soon during the serial
+ * refactoring and protocol fine tuning.
+ *
+ * @todo TODO function to setup a packet and send it fn(populateBodyFunctionPointer(), header, other, fields, here, and, use, or, not, within){}
+ * @todo TODO factor many things into functions and move the receive delegator to its own file
+ *
+ * @author Fred Cooke
+ */
 
 
 #define COMMSCORE_C
@@ -64,11 +72,6 @@ void populateBasicDatalog(){
 	/* Set/Truncate the log to the specified length */
 	TXBufferCurrentPositionHandler = position + configuredBasicDatalogLength;
 }
-
-
-/// @todo TODO function to setup a packet and send it fn(populateBodyFunctionPointer(), header, other, fields, here, and, use, or, not, within){}
-
-/// @todo TODO factor many things into functions and move the receive delegator to its own file
 
 
 //void populateLogicAnalyser(){
@@ -114,14 +117,14 @@ void populateBasicDatalog(){
 //
 //run check at init and set time, not run time or just not check?? maybe its silly to check at all
 //
-///* Just dump the ADC channels as fast as possible */
+// /* Just dump the ADC channels as fast as possible */
 //void populateScopeLogADCAll(){
 //	sampleBlockADC(TXBufferCurrentPositionHandler);
 //	TXBufferCurrentPositionHandler += sizeof(ADCArray);
 //}
 
 
-/// @todo TODO Look at the time stamps and where to write them, also whether to function call these simple blocks or write one function that handles all the logic.
+// what does this mean >> ??? TODO Look at the time stamps and where to write them, also whether to function call these simple blocks or write one function that handles all the logic.
 
 
 /** Checksum And Send
@@ -131,6 +134,9 @@ void populateBasicDatalog(){
  * before configuring the various ISRs that need to send the data out.
  *
  * @author Fred Cooke
+ *
+ * @bug http://freeems.aaronb.info/tracker/view.php?id=81
+ * @todo TODO fix the double/none start byte bug and remove the hack!
  */
 void checksumAndSend(){
 	/* Get the length from the pointer */
@@ -156,9 +162,7 @@ void checksumAndSend(){
 		/* Initiate transmission */
 		SCI0DRL = START_BYTE;
 		while(!(SCI0SR1 & 0x80)){/* Wait for ever until able to send then move on */}
-		SCI0DRL = START_BYTE; // TODO nasty hack that works... means at least one and most 2 starts are sent so stuff works, but is messy... must be a better way.
-
-		// TODO http://freeems.aaronb.info/tracker/view.php?id=81
+		SCI0DRL = START_BYTE; // nasty hack that works... means at least one and most 2 starts are sent so stuff works, but is messy... there must be a better way.
 
 		/* Note : Order Is Important! */
 		/* TX empty flag is already set, so we must clear it by writing out before enabling the interrupt */
@@ -1231,6 +1235,10 @@ void sendDebugInternal(unsigned char* message){
 
 
 /** Send Ack If Required
+ *
+ * Currently only used to clear the TX buffer flags if we no longer need it.
+ *
+ * @author Fred Cooke
  *
  * @todo TODO when implementing, check that ppage is OK!!!
  */

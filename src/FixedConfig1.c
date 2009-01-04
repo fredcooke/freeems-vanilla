@@ -1,9 +1,4 @@
-/**	@file FixedConfig1.c
-
-	Copyright 2008 Fred Cooke
-
-	This file contains the definition of the first fixed configuration block.
-	The declaration can be found in the global constants header file.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -20,9 +15,23 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file FixedConfig1.c
+ *
+ * @ingroup dataInitialisers
+ *
+ * This file contains the definition of the first fixed configuration block.
+ * The declaration can be found in the global constants header file.
+ *
+ * Please ensure that all variables added here have good default values.
+ *
+ * @author Fred Cooke
+ */
 
 
 #include "inc/freeEMS.h"

@@ -1,6 +1,4 @@
-/*	fuelAndIgnitionCalcs.c
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -22,6 +20,19 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file fuelAndIgnitionCalcs.c
+ *
+ * @ingroup measurementsAndCalculations
+ *
+ * @brief Fuel and ignition calculations.
+ *
+ * This file contains all of the main fuel and ignition calculations based
+ * upon the variables that we have already determined in previous stages.
+ *
+ * @author Fred Cooke
+ */
+
+
 #define FUELANDIGNITIONCALCS_C
 #include "inc/freeEMS.h"
 #include "inc/commsCore.h"
@@ -29,7 +40,24 @@
 #include "inc/fuelAndIgnitionCalcs.h"
 
 
-/* Based on the latest ADC readings, determine pulsewidth, dwell, and advance for all channels */
+/** Calculate Fuel And Ignition
+ *
+ * @brief Fuel and ignition calculations.
+ *
+ * Using a variety of primary algorithms calculate a base pulsewidth and then
+ * apply various corrections to it such as injector dead time, transient fuel
+ * correction, engine temperature enrichment and per cylinder trims. The fuel
+ * injection timing is also determined here.
+ *
+ * Calculate the ignition timing and dwell here too. Several corrections are
+ * applied to these as well.
+ *
+ * @todo TODO implement the all of the ignition stuff and finish off all of the fuel injection stuff.
+ * @todo TODO change the way configuration is done and make sure the most common options are after the first if().
+ * @todo TODO add actual configuration options to the fixed config blocks for these items.
+ *
+ * @author Fred Cooke
+ */
 void calculateFuelAndIgnition(){
 	/*&&&&&&&&&&&&& Perform the basic calculations one step at a time to get a final pulsewidth &&&&&&&&&&&&*/
 
@@ -44,7 +72,7 @@ void calculateFuelAndIgnition(){
 			DerivedVars->AirFlow = DerivedVars->VEMain; /* Not actually VE, but rather tuned air flow without density information */
 		}else if(FALSE /*MAF*/){
 			DerivedVars->AirFlow = CoreVars->MAF; /* Just fix temperature at appropriate level to provide correct Lambda */
-			// TODO figure out what the correct "temperature" is to make MAF work correctly!
+			/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!
 			airInletTemp = roomTemperature; // 293.15k is 20c * 100 to get value, so divide by 100 to get real number
 		}else if(FALSE /*FixedAF*/){ /* Fixed air flow from config */
 			DerivedVars->AirFlow = fixedConfigs1.presetAF;
@@ -83,15 +111,15 @@ void calculateFuelAndIgnition(){
 
 	/* Apply the corrections after calculating */
 	DerivedVars->FinalPW = DerivedVars->BasePW;
-	DerivedVars->FinalPW += DerivedVars->TFCTotal; /* TODO check for overflow when TFC is positive and underflow when negative */
-	DerivedVars->FinalPW += DerivedVars->ETE; /* TODO check for overflow always */
+	DerivedVars->FinalPW += DerivedVars->TFCTotal;	/** @todo TODO check for overflow when TFC is positive and underflow when negative */
+	DerivedVars->FinalPW += DerivedVars->ETE;     	/** @todo TODO check for overflow of ETE always */
 
+
+	unsigned char channel; // the declaration of this variable is used in multiple loops below.
+	#define oneHundredPercentPCFT 32768 /** @todo TODO move oneHundredPercentPCFT to a header with all other #defines found in code */
 
 	/* "Calculate" the individual fuel pulse widths */
-	unsigned char channel;
-	/* TODO move this to a header with all other #defines found in code */
-	#define oneHundredPercentPCFT 32768
-	for(channel = 0; channel < INJECTION_CHANNELS; channel++){ // TODO make injector channels come from config, not defines.
+	for(channel = 0; channel < INJECTION_CHANNELS; channel++){ /// @todo TODO make injector channels come from config, not defines.
 		/* Add or subtract the per cylinder fuel trims */
 		unsigned short trimmedPW;
 		trimmedPW = ((unsigned long)DerivedVars->FinalPW * TablesB.SmallTablesB.perCylinderFuelTrims[channel]) / oneHundredPercentPCFT;
@@ -129,14 +157,13 @@ void calculateFuelAndIgnition(){
 
 	/*&&&&&&&&&&&&&&&&& Based on IDT schedule PW start such that Fuel is correctly timed &&&&&&&&&&&&&&&&&&&*/
 
-//	unsigned char channel;
-	for(channel = 0;channel < INJECTION_CHANNELS;channel++){ // TODO make injector channels come from config, not defines.
+	for(channel = 0;channel < INJECTION_CHANNELS;channel++){ /// @todo TODO make injector channels come from config, not defines.
 		//injectorMainAdvances[channel] = IDT blah blah.
 	}
 
 	/* This will involve using RPM, injector firing angle and IDT to schedule the events correctly */
 
-	/* TODO work needs to be done on scheduling before this can be completed. */
+	/** @todo TODO work needs to be done on scheduling before this can be completed. */
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
@@ -161,16 +188,16 @@ void calculateFuelAndIgnition(){
 	masterPulseWidth = (ADCArrays->EGO << 6) + (ADCArrays->MAP >> 4);
 
 	/* "Calculate" the individual fuel pulse widths */
-//	unsigned char channel;
 	for(channel = 0; channel < INJECTION_CHANNELS; channel++){
 		injectorMainPulseWidthsMath[channel] = masterPulseWidth;
 	}
 
-	// TODO x 6 main, x 6 staged, x 6 flags for staged if(coreSettingsA & STAGED_ON){}
+	/// @todo TODO x 6 main pulsewidths, x 6 staged pulsewidths, x 6 flags for staged channels if(coreSettingsA & STAGED_ON){}
 
 	/* Set the staged status on or off (for now based on changeable settings) */
 	if(fixedConfigs1.coreSettingsA & STAGED_ON){
 		coreStatusA |= STAGED_REQUIRED;
+		/// @todo TODO determine the requirement for staged based on some sort of map and or complex load based configuration.
 	}else{
 		coreStatusA &= STAGED_NOT_REQUIRED;
 	}
@@ -198,16 +225,13 @@ void calculateFuelAndIgnition(){
 //	}
 //	PITLD0 = dwellPeriod;
 
-	/* Calculate the fuel advances */
-	// TODO x 6
-	// just use one for all for now
+	/** @todo TODO Calculate the fuel advances (six of) */
+	// just use one for all for now...
 	totalAngleAfterReferenceInjection = (ADCArrays->TPS << 6);
 
-	/* Calculate the dwell period */
-	// TODO x 1
+	/** @todo TODO Calculate the dwell period (one of) */
 
-	/* Calculate the ignition advances */
-	//TODO x 12
+	/** @todo TODO Calculate the ignition advances (twelve of) */
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& TEMPORARY END &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 }
