@@ -1,6 +1,4 @@
-/*	coreVarsGenerator.c
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -15,11 +13,25 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+/**	@file coreVarsGenerator.c
+ *
+ * @ingroup measurementsAndCalculations
+ *
+ * @brief Generate the core variables and average them.
+ *
+ * This file contains the function that transfers the raw ADC values to actual
+ * physical measurements and averages them.
+ *
+ * @author Fred Cooke
+ */
+
 
 #define COREVARSGENERATOR_C
 #include "inc/freeEMS.h"
@@ -27,6 +39,19 @@
 #include "inc/coreVarsGenerator.h"
 
 
+/** @brief Generate the core variables and average them.
+ *
+ * Each raw ADC value is converted to a usable measurement via a variety of
+ * methods chosen at runtime by configured settings. Once in their native units
+ * and therefore closer to maximal use of the available data range they are
+ * all averaged.
+ *
+ * @todo TODO incorporate averaging code, right now its a straight copy.
+ * @todo TODO change the way configuration is done and make sure the most common options are after the first if().
+ * @todo TODO add actual configuration options to the fixed config blocks for these items.
+ *
+ * @author Fred Cooke
+ */
 void generateCoreVars(){
 	/*&&&&&&&& Calculate and obtain the basic variables with which we will perform the calculations &&&&&&&&*/
 
@@ -254,7 +279,7 @@ void generateCoreVars(){
 	/* already averaged in a way. However, there may be some advantage to some short term averaging on the	*/
 	/* derived ones also, so it is something to look into later.											*/
 
-	// TODO average them here
+	/// @todo TODO average the generated values here
 
 //			newVal var word        ' the value from the ADC
 //			smoothed var word    ' a nicely smoothed result

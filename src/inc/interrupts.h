@@ -15,11 +15,12 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
+
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
@@ -82,6 +83,7 @@ void LowVoltageISR(void) INT TEXT1;		/* Low voltage counter ISR */
 void VRegAPIISR(void) INT TEXT1;			/* VReg periodic interrupt ISR */
 
 typedef void (* interruptTable)(void);
+
 
 #else
 	/* let us know if we are being untidy with headers */

@@ -15,16 +15,24 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_TABLELOOKUP_H_SEEN
 #define FILE_TABLELOOKUP_H_SEEN
+
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
 
 #ifdef TABLELOOKUP_C
 #define EXTERN
@@ -57,7 +65,9 @@ EXTERN unsigned short validateTwoDTable(twoDTableUS*) TEXT;
 //EXTERN signed short lookup16Bit2D(void);
 //EXTERN signed char lookup8Bit2D(void);
 
+
 #undef EXTERN
+
 
 #else
 	/* let us know if we are being untidy with headers */

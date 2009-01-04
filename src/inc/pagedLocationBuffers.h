@@ -15,7 +15,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
@@ -27,7 +27,14 @@
 #ifndef FILE_PAGED_LOCATION_BUFFERS_H_SEEN
 #define FILE_PAGED_LOCATION_BUFFERS_H_SEEN
 
-#ifdef MAIN_OR_GLOBALS
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
+
+#ifdef BLOCK_DETAILS_LOOKUP_C
 #define EXTERN
 #else
 #define EXTERN extern
@@ -115,6 +122,7 @@ EXTERN void* fillerD2Location;
 
 
 #undef EXTERN
+
 
 #else
 	/* let us know if we are being untidy with headers */

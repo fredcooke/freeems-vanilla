@@ -15,7 +15,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
@@ -28,6 +28,9 @@
 
 #ifdef COMMSCORE_C
 #define EXTERN
+/* Internal use without check on buffer, purely here to place functions in paged memory. */
+void sendErrorInternal(unsigned short) FPAGE_FE;
+void sendDebugInternal(unsigned char*) FPAGE_FE;
 #else
 #define EXTERN extern
 #endif

@@ -15,19 +15,22 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
+
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_FLASHGLOBALS_H_SEEN
 #define FILE_FLASHGLOBALS_H_SEEN
 
+
 #define PVIOL 0x20
 #define ACCERR 0x10
+
 
 #else
 	/* let us know if we are being untidy with headers */

@@ -1,6 +1,9 @@
-/*	9S12XDP512.h
+/**	@file 9S12XDP512.h
 
-	Copyright 2008 Fred Cooke
+	Copyright 2008, 2009 Fred Cooke
+
+	This is the device header for the FreeScale MC9S12XDP512 MCU. It contains
+	declarations that allow access to all of the devices control registers.
 
 	This file is part of the FreeEMS project.
 
@@ -15,11 +18,12 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
+
 
 /* Full basic register definitions for the Freescale S912XDP512 processor */
 /* MC9S12XDP512V2.pdf Appendix G */
@@ -986,6 +990,7 @@
 #ifdef Reserved
 	#error "We have accidentally defined reserved as Reserved in here, find it and fix it."
 #endif
+
 
 #else
 	/* let us know if we are being untidy with headers */

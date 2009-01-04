@@ -15,7 +15,7 @@
 #	GNU General Public License for more details.
 #
 #	You should have received a copy of the GNU General Public License
-#	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+#	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 #
 #	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 #
@@ -24,10 +24,10 @@
 VERSION = 0.0.19
 
 INCDIR = inc
-OUTDIR = zoutput
-OBJDIR = zobjects
-ASMDIR = zassembly
-PPCSDIR = zpreprocessedc
+OUTDIR = output
+OBJDIR = objects
+ASMDIR = assembly
+PPCSDIR = preprocessedc
 # Set the windows/non debian path first and then overwrite
 # with the debian one so we can grep the deb line out and
 # end up with a working windows make file in an automated
@@ -51,8 +51,8 @@ SIZE = $(PREFIX)size
 #Temporary - need to suss out. for now any H change = full recompile.
 ASMH = 9S12XDP512asm.s
 ISRH = interrupts.h
-GLOBALH = freeEMS.h 9S12XDP512.h globalConstants.h globalDefines.h errorDefines.h structs.h tunables.h memory.h
-ISRSH = commsISRs.h enginePositionISRs.h ignitionISRs.h injectionISRs.h miscISRs.h realtimeISRs.h
+GLOBALH = freeEMS.h 9S12XDP512.h memory.h globalConstants.h globalDefines.h errorDefines.h structs.h TunableConfigs.h FixedConfigs.h
+ISRSH = commsISRs.h enginePositionISRs.h injectionISRs.h
 UTILH = utils.h
 COMMSH = commsCore.h blockDetailsLookup.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h

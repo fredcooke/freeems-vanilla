@@ -15,13 +15,15 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /* This code is identical between all 6 channels, and thus we only want one copy of it. The X in each macro will be replaced with the real deal appropriate for the channel it is used for at the time. */
+
 
 /* Each channel performs the following actions
  *
@@ -43,6 +45,7 @@
  * 6	Calculate and record code run time
  * 7	Return
  */
+
 
 void InjectorXISR(){
 	/* Clear the interrupt flag for this channel */

@@ -15,11 +15,12 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
+
 
 #define INIT_C
 #include "inc/freeEMS.h"
@@ -29,25 +30,6 @@
 #include "inc/pagedLocationBuffers.h"
 #include "inc/init.h"
 #include <string.h>
-
-
-/* If these are moved back to the header then	*/
-/* wrap them in an if to keep them hidden away	*/
-void initPLL(void) FPAGE_FE;
-void initIO(void) FPAGE_FE;
-void initAllPagedRAM(void) FPAGE_FE;
-void initVariables(void) FPAGE_FE;
-void initFlash(void) FPAGE_FE;
-void initECTTimer(void) FPAGE_FE;
-void initPITTimer(void) FPAGE_FE;
-void initSCIStuff(void) FPAGE_FE;
-void initConfiguration(void) FPAGE_FE;
-void initInterrupts(void) FPAGE_FE;
-
-void initLookupAddresses(void) LOOKUPF;
-void initPagedRAMFuel(void) FUELTABLESF;
-void initPagedRAMTime(void) TIMETABLESF;
-void initPagedRAMTune(void) TUNETABLESF;
 
 
 /* Main init function to be called from main.c before entering the main loop */
@@ -257,33 +239,33 @@ void initPagedRAMTime(void){
 /* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
 void initPagedRAMTune(void){
 	/* Setup addresses within the page to avoid warnings */
-	SmallTablesAFlashLocation	= (void*)&SmallTablesAFlash;
-	SmallTablesBFlashLocation	= (void*)&SmallTablesBFlash;
-	SmallTablesCFlashLocation	= (void*)&SmallTablesCFlash;
-	SmallTablesDFlashLocation	= (void*)&SmallTablesDFlash;
+	SmallTablesAFlashLocation 	= (void*)&SmallTablesAFlash;
+	SmallTablesBFlashLocation 	= (void*)&SmallTablesBFlash;
+	SmallTablesCFlashLocation 	= (void*)&SmallTablesCFlash;
+	SmallTablesDFlashLocation 	= (void*)&SmallTablesDFlash;
 	SmallTablesAFlash2Location	= (void*)&SmallTablesAFlash2;
 	SmallTablesBFlash2Location	= (void*)&SmallTablesBFlash2;
 	SmallTablesCFlash2Location	= (void*)&SmallTablesCFlash2;
 	SmallTablesDFlash2Location	= (void*)&SmallTablesDFlash2;
 
 	/* TablesA */
-	dwellDesiredVersusVoltageTableLocation = (void*)&SmallTablesAFlash.dwellDesiredVersusVoltageTable;
-	dwellDesiredVersusVoltageTable2Location = (void*)&SmallTablesAFlash2.dwellDesiredVersusVoltageTable;
-	injectorDeadTimeTableLocation = (void*)&SmallTablesAFlash.injectorDeadTimeTable;
-	injectorDeadTimeTable2Location = (void*)&SmallTablesAFlash2.injectorDeadTimeTable;
-	postStartEnrichmentTableLocation = (void*)&SmallTablesAFlash.postStartEnrichmentTable;
-	postStartEnrichmentTable2Location = (void*)&SmallTablesAFlash2.postStartEnrichmentTable;
-	engineTempEnrichmentTableFixedLocation = (void*)&SmallTablesAFlash.engineTempEnrichmentTableFixed;
-	engineTempEnrichmentTableFixed2Location = (void*)&SmallTablesAFlash2.engineTempEnrichmentTableFixed;
-	primingVolumeTableLocation = (void*)&SmallTablesAFlash.primingVolumeTable;
-	primingVolumeTable2Location = (void*)&SmallTablesAFlash2.primingVolumeTable;
-	engineTempEnrichmentTablePercentLocation = (void*)&SmallTablesAFlash.engineTempEnrichmentTablePercent;
+	dwellDesiredVersusVoltageTableLocation    = (void*)&SmallTablesAFlash.dwellDesiredVersusVoltageTable;
+	dwellDesiredVersusVoltageTable2Location   = (void*)&SmallTablesAFlash2.dwellDesiredVersusVoltageTable;
+	injectorDeadTimeTableLocation             = (void*)&SmallTablesAFlash.injectorDeadTimeTable;
+	injectorDeadTimeTable2Location            = (void*)&SmallTablesAFlash2.injectorDeadTimeTable;
+	postStartEnrichmentTableLocation          = (void*)&SmallTablesAFlash.postStartEnrichmentTable;
+	postStartEnrichmentTable2Location         = (void*)&SmallTablesAFlash2.postStartEnrichmentTable;
+	engineTempEnrichmentTableFixedLocation    = (void*)&SmallTablesAFlash.engineTempEnrichmentTableFixed;
+	engineTempEnrichmentTableFixed2Location   = (void*)&SmallTablesAFlash2.engineTempEnrichmentTableFixed;
+	primingVolumeTableLocation                = (void*)&SmallTablesAFlash.primingVolumeTable;
+	primingVolumeTable2Location               = (void*)&SmallTablesAFlash2.primingVolumeTable;
+	engineTempEnrichmentTablePercentLocation  = (void*)&SmallTablesAFlash.engineTempEnrichmentTablePercent;
 	engineTempEnrichmentTablePercent2Location = (void*)&SmallTablesAFlash2.engineTempEnrichmentTablePercent;
-	dwellMaxVersusRPMTableLocation = (void*)&SmallTablesAFlash.dwellMaxVersusRPMTable;
-	dwellMaxVersusRPMTable2Location = (void*)&SmallTablesAFlash2.dwellMaxVersusRPMTable;
+	dwellMaxVersusRPMTableLocation            = (void*)&SmallTablesAFlash.dwellMaxVersusRPMTable;
+	dwellMaxVersusRPMTable2Location           = (void*)&SmallTablesAFlash2.dwellMaxVersusRPMTable;
 
 	/* TablesB */
-	perCylinderFuelTrimsLocation = (void*)&SmallTablesBFlash.perCylinderFuelTrims;
+	perCylinderFuelTrimsLocation  = (void*)&SmallTablesBFlash.perCylinderFuelTrims;
 	perCylinderFuelTrims2Location = (void*)&SmallTablesBFlash2.perCylinderFuelTrims;
 
 	/* TablesC */
@@ -293,13 +275,13 @@ void initPagedRAMTune(void){
 	// TODO
 
 	/* filler defs */
-	fillerALocation = (void*)&SmallTablesAFlash.filler;
+	fillerALocation  = (void*)&SmallTablesAFlash.filler;
 	fillerA2Location = (void*)&SmallTablesAFlash2.filler;
-	fillerBLocation = (void*)&SmallTablesBFlash.filler;
+	fillerBLocation  = (void*)&SmallTablesBFlash.filler;
 	fillerB2Location = (void*)&SmallTablesBFlash2.filler;
-	fillerCLocation = (void*)&SmallTablesCFlash.filler;
+	fillerCLocation  = (void*)&SmallTablesCFlash.filler;
 	fillerC2Location = (void*)&SmallTablesCFlash2.filler;
-	fillerDLocation = (void*)&SmallTablesDFlash.filler;
+	fillerDLocation  = (void*)&SmallTablesDFlash.filler;
 	fillerD2Location = (void*)&SmallTablesDFlash2.filler;
 
 	/* Copy the tables from flash to RAM */

@@ -15,21 +15,23 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
-#include "inc/miscISRs.h"
+
 
 /* Unimplemented interrupt service routine */
 void UISR(void){
 	/* Increment the unimplemented ISR execution counter */
 	Counters.callsToUISRs++;
 }
+
 
 void PortPISR(void){
 	/* Clear all port P flags (we only want one at a time) */
@@ -38,6 +40,7 @@ void PortPISR(void){
 	Counters.callsToUISRs++;
 }			/* Port P interrupt service routine */
 
+
 /* Port J interrupt service routine */
 void PortJISR(void){
 	/* Clear all port H flags (we only want one at a time) */
@@ -45,6 +48,7 @@ void PortJISR(void){
 	/* Increment the unimplemented ISR execution counter */
 	Counters.callsToUISRs++;
 }
+
 
 /* Port H interrupt service routine */
 void PortHISR(void)
@@ -153,6 +157,7 @@ void PortHISR(void)
 //	}
 }
 
+
 /* IRQ/PE1 interrupt service routine */
 void IRQISR(void){
 	/* Clear the flag */
@@ -162,6 +167,7 @@ void IRQISR(void){
 	Counters.callsToUISRs++;
 }
 
+
 /* XIRQ/PE0 interrupt service routine */
 void XIRQISR(void){
 	/* Clear the flag */
@@ -170,6 +176,7 @@ void XIRQISR(void){
 	/* Increment the unimplemented ISR execution counter */
 	Counters.callsToUISRs++;
 }
+
 
 /* Count how often our voltage goes too low without resetting */
 void LowVoltageISR(void){

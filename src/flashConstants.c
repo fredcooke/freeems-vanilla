@@ -1,6 +1,9 @@
-/*	flashConstants.c
+/**	@file flashConstants.c
 
-	Copyright 2008 Fred Cooke
+	Copyright 2008 Fred Cooke, Sean Keys
+
+	This file was originally for me and Sean to collaborate more easily, possibly redundant now.
+	@todo TODO This file should probably be removed and the single value moved elsewhere.
 
 	This file is part of the FreeEMS project.
 
@@ -15,7 +18,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
@@ -24,5 +27,6 @@
 
 #include "inc/freeEMS.h"
 
-unsigned char flashClock = 100;
 
+/// @todo TODO this is a variable, not a constant, should this even be a constant? would a define be better?
+unsigned char flashClock = 100;

@@ -15,22 +15,31 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with any FreeEMS software.  If not, see <http://www.gnu.org/licenses/>.
+	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
 	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
 
 	Thank you for choosing FreeEMS to run your engine! */
+
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_UTILS_H_SEEN
 #define FILE_UTILS_H_SEEN
 
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
+
 #ifdef UTILS_C
 #define EXTERN
 #else
 #define EXTERN extern
 #endif
+
 
 EXTERN void sleep(unsigned short) FPAGE_FE;
 EXTERN void sleepMicro(unsigned short) FPAGE_FE;
@@ -45,7 +54,9 @@ EXTERN void sampleBlockADC(ADCArray*) FPAGE_F8;
 EXTERN unsigned char checksum(unsigned char *, unsigned short) FPAGE_F8;
 EXTERN unsigned short stringCopy(unsigned char*, unsigned char*) FPAGE_F8;
 
+
 #undef EXTERN
+
 
 #else
 	/* let us know if we are being untidy with headers */
