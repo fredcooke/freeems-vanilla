@@ -3,7 +3,7 @@
  * This page contains a log of all changes made to the FreeEMS firmware since
  * the beginning of the project, ever such a long time ago. The changes that
  * occurred between the last version and this version are listed below. For
- * old change logs click @ref oldChangeLogs "here".
+ * old change logs see the @ref oldChangeLogs page.
  *
  * Please place your entries at the bottom of the list in the same format as the rest.
  *
@@ -60,6 +60,17 @@
  * - Fred 1/1/09 18:34 GMT:
  *     - Added the three linker scripts to be processed by doxygen
  *     - Formatted global constants files a bit as a reason to push a commit
+ * - Fred 4/1/09 14:18 GMT:
+ *     - Added more coding style information to the docs
+ *     - Merged in Seans branch via git cherry-pick
+ *     - Doxygenated the template files
+ *     - Added tune switching documentation in its own file
+ *     - Added grouping file to make doc navigation easier
+ *     - Tweaked Doxyfile a bit to format things more nicely
+ *     - Removed the gfdl.txt file as we won't be using that license
+ *     - Split the GPL and Doxygen comments in the templates
+ *     - Added ref to github and sanitised my diyefi admin email in the GPL comments
+ *     - Finalised the Doxygen docs for now
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:
@@ -721,4 +732,8 @@
  *     - Added more comments etc
  *     - Moved old bugs to mantis and removed bugs.txt
  *     - Cleaned out HEAPS of old cruft, tidied up and commented stuff
+ */
+
+/**	@file changeLogs.h
+ * @ingroup doxygenDocFiles
  */

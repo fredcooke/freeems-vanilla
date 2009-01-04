@@ -1,5 +1,5 @@
 /** @mainpage FreeEMS
- *  @anchor Doxygen_Home_top
+ * @anchor doxygenMainPageTop
  *
  * Welcome to the FreeEMS project!
  *
@@ -8,11 +8,11 @@
  * licenses that you can download. FreeEMS firmware is intended to
  * be clean and modular with an emphasis on readability and quality.
  *
- * A log of the work done between this release and the last one can be found here:
- * @ref changeLogs
+ * A log of the work done between this release and the last one can be found on
+ * the @ref changeLogs page.
  *
- * A summary of important information about this release can be found here:
- * @ref releaseNotes
+ * A summary of important information about this release can be found on the
+ * @ref releaseNotes page.
  *
  * Specific aspects of the firmware are documented, one aspect per page in
  * the <a href="pages.html"><b>Related Pages</b></a> tab.
@@ -62,4 +62,8 @@
  *
  * @b Licensing:
  * - This project is licensed under the GNU GPL v3. The full terms of the license are available <a href="http://www.gnu.org/licenses/gpl-3.0-standalone.html"><b>here</b></a>.
+ */
+
+/**	@file mainPage.h
+ * @ingroup doxygenDocFiles
  */

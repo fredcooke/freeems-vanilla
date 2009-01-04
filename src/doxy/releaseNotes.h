@@ -139,3 +139,7 @@
  *
  * stuff
  */
+
+/**	@file releaseNotes.h
+ * @ingroup doxygenDocFiles
+ */
