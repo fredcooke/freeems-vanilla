@@ -239,33 +239,33 @@ void initPagedRAMTime(void){
 /* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
 void initPagedRAMTune(void){
 	/* Setup addresses within the page to avoid warnings */
-	SmallTablesAFlashLocation	= (void*)&SmallTablesAFlash;
-	SmallTablesBFlashLocation	= (void*)&SmallTablesBFlash;
-	SmallTablesCFlashLocation	= (void*)&SmallTablesCFlash;
-	SmallTablesDFlashLocation	= (void*)&SmallTablesDFlash;
+	SmallTablesAFlashLocation 	= (void*)&SmallTablesAFlash;
+	SmallTablesBFlashLocation 	= (void*)&SmallTablesBFlash;
+	SmallTablesCFlashLocation 	= (void*)&SmallTablesCFlash;
+	SmallTablesDFlashLocation 	= (void*)&SmallTablesDFlash;
 	SmallTablesAFlash2Location	= (void*)&SmallTablesAFlash2;
 	SmallTablesBFlash2Location	= (void*)&SmallTablesBFlash2;
 	SmallTablesCFlash2Location	= (void*)&SmallTablesCFlash2;
 	SmallTablesDFlash2Location	= (void*)&SmallTablesDFlash2;
 
 	/* TablesA */
-	dwellDesiredVersusVoltageTableLocation = (void*)&SmallTablesAFlash.dwellDesiredVersusVoltageTable;
-	dwellDesiredVersusVoltageTable2Location = (void*)&SmallTablesAFlash2.dwellDesiredVersusVoltageTable;
-	injectorDeadTimeTableLocation = (void*)&SmallTablesAFlash.injectorDeadTimeTable;
-	injectorDeadTimeTable2Location = (void*)&SmallTablesAFlash2.injectorDeadTimeTable;
-	postStartEnrichmentTableLocation = (void*)&SmallTablesAFlash.postStartEnrichmentTable;
-	postStartEnrichmentTable2Location = (void*)&SmallTablesAFlash2.postStartEnrichmentTable;
-	engineTempEnrichmentTableFixedLocation = (void*)&SmallTablesAFlash.engineTempEnrichmentTableFixed;
-	engineTempEnrichmentTableFixed2Location = (void*)&SmallTablesAFlash2.engineTempEnrichmentTableFixed;
-	primingVolumeTableLocation = (void*)&SmallTablesAFlash.primingVolumeTable;
-	primingVolumeTable2Location = (void*)&SmallTablesAFlash2.primingVolumeTable;
-	engineTempEnrichmentTablePercentLocation = (void*)&SmallTablesAFlash.engineTempEnrichmentTablePercent;
+	dwellDesiredVersusVoltageTableLocation    = (void*)&SmallTablesAFlash.dwellDesiredVersusVoltageTable;
+	dwellDesiredVersusVoltageTable2Location   = (void*)&SmallTablesAFlash2.dwellDesiredVersusVoltageTable;
+	injectorDeadTimeTableLocation             = (void*)&SmallTablesAFlash.injectorDeadTimeTable;
+	injectorDeadTimeTable2Location            = (void*)&SmallTablesAFlash2.injectorDeadTimeTable;
+	postStartEnrichmentTableLocation          = (void*)&SmallTablesAFlash.postStartEnrichmentTable;
+	postStartEnrichmentTable2Location         = (void*)&SmallTablesAFlash2.postStartEnrichmentTable;
+	engineTempEnrichmentTableFixedLocation    = (void*)&SmallTablesAFlash.engineTempEnrichmentTableFixed;
+	engineTempEnrichmentTableFixed2Location   = (void*)&SmallTablesAFlash2.engineTempEnrichmentTableFixed;
+	primingVolumeTableLocation                = (void*)&SmallTablesAFlash.primingVolumeTable;
+	primingVolumeTable2Location               = (void*)&SmallTablesAFlash2.primingVolumeTable;
+	engineTempEnrichmentTablePercentLocation  = (void*)&SmallTablesAFlash.engineTempEnrichmentTablePercent;
 	engineTempEnrichmentTablePercent2Location = (void*)&SmallTablesAFlash2.engineTempEnrichmentTablePercent;
-	dwellMaxVersusRPMTableLocation = (void*)&SmallTablesAFlash.dwellMaxVersusRPMTable;
-	dwellMaxVersusRPMTable2Location = (void*)&SmallTablesAFlash2.dwellMaxVersusRPMTable;
+	dwellMaxVersusRPMTableLocation            = (void*)&SmallTablesAFlash.dwellMaxVersusRPMTable;
+	dwellMaxVersusRPMTable2Location           = (void*)&SmallTablesAFlash2.dwellMaxVersusRPMTable;
 
 	/* TablesB */
-	perCylinderFuelTrimsLocation = (void*)&SmallTablesBFlash.perCylinderFuelTrims;
+	perCylinderFuelTrimsLocation  = (void*)&SmallTablesBFlash.perCylinderFuelTrims;
 	perCylinderFuelTrims2Location = (void*)&SmallTablesBFlash2.perCylinderFuelTrims;
 
 	/* TablesC */
@@ -275,13 +275,13 @@ void initPagedRAMTune(void){
 	// TODO
 
 	/* filler defs */
-	fillerALocation = (void*)&SmallTablesAFlash.filler;
+	fillerALocation  = (void*)&SmallTablesAFlash.filler;
 	fillerA2Location = (void*)&SmallTablesAFlash2.filler;
-	fillerBLocation = (void*)&SmallTablesBFlash.filler;
+	fillerBLocation  = (void*)&SmallTablesBFlash.filler;
 	fillerB2Location = (void*)&SmallTablesBFlash2.filler;
-	fillerCLocation = (void*)&SmallTablesCFlash.filler;
+	fillerCLocation  = (void*)&SmallTablesCFlash.filler;
 	fillerC2Location = (void*)&SmallTablesCFlash2.filler;
-	fillerDLocation = (void*)&SmallTablesDFlash.filler;
+	fillerDLocation  = (void*)&SmallTablesDFlash.filler;
 	fillerD2Location = (void*)&SmallTablesDFlash2.filler;
 
 	/* Copy the tables from flash to RAM */
