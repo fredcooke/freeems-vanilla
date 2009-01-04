@@ -1,6 +1,4 @@
-/**	@file filename.h
-
-	Copyright 2009 Fred Cooke
+/*	Copyright 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -17,9 +15,23 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork it on www.github.com!!!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file filename.h
+ *
+ * Description about what this file is intended to contain and
+ * anything else that is unique and/or notable about it here!
+ *
+ * To add a file to the project :
+ * - Copy this file to the source directory with an appropriate name
+ * - Change the name to your own at the top of the GPL comment
+ * - Change the filename to the correct one at the top of this comment
+ * - Change all 4 hash defines to the filename uppercased and underscored
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
