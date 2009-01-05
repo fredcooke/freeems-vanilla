@@ -1,9 +1,4 @@
-/**	@file 9S12XDP512.h
-
-	Copyright 2008, 2009 Fred Cooke
-
-	This is the device header for the FreeScale MC9S12XDP512 MCU. It contains
-	declarations that allow access to all of the devices control registers.
+/*	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -26,8 +21,14 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/* Full basic register definitions for the Freescale S912XDP512 processor */
-/* MC9S12XDP512V2.pdf Appendix G */
+/**	@file 9S12XDP512.h
+ *
+ * This is the device header for the FreeScale MC9S12XDP512 MCU. It contains
+ * declarations that allow access to all of the devices control registers.
+ *
+ * These are the full basic register definitions for the Freescale 9S12XDP512
+ * processor as taken from MC9S12XDP512V2.pdf Appendix G
+ */
 
 
 /* see if we've seen this, if not, mark seen and process */

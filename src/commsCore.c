@@ -23,6 +23,8 @@
 
 /**	@file commsCore.c
  *
+ * @brief Core communications functions.
+ *
  * This file contains most of the core comms functionality. Currently that is
  * only for UART serial style communication. It is already too big and needs
  * to be split up somewhat. This will happen fairly soon during the serial
