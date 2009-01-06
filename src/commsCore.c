@@ -48,7 +48,7 @@
 #include <string.h>
 
 
-/** Populate Basic Datalog
+/** @brief Populate a basic datalog packet
  *
  * Copies various chunks of data to the transmission buffer and truncates to
  * the configured length. If changing this, update the maxBasicDatalogLength.
@@ -129,7 +129,7 @@ void populateBasicDatalog(){
 // what does this mean >> ??? TODO Look at the time stamps and where to write them, also whether to function call these simple blocks or write one function that handles all the logic.
 
 
-/** Checksum And Send
+/** @brief Checksum a packet and send it
  *
  * This functions job is to finalise the main loop part of the packet sending
  * process. It runs a checksum over the packet data and tags it to the end
@@ -208,7 +208,7 @@ void checksumAndSend(){
 }
 
 
-/** Decode Packet And Respond
+/** @brief Decode a packet and respond
  *
  * This is the core function that controls what functionality is run when a
  * packet is received in full by the ISR code and control is passed back to the
@@ -976,7 +976,7 @@ void decodePacketAndRespond(){
 }
 
 
-/** Send Error If Clear
+/** @brief Send an error if buffer free
  *
  * This is a wrapper for use outside the communication handler function. The error will only be sent if the buffer is empty and available, if not, it will be discarded.
  *
@@ -998,7 +998,7 @@ void sendErrorIfClear(unsigned short errorID){
 }
 
 
-/** Send Error Busy Wait
+/** @brief Send an error even if we must wait
  *
  * This is a wrapper for use outside the communication handler function. This
  * function will block until the error is able to be sent. This behaviour is
@@ -1019,7 +1019,7 @@ void sendErrorBusyWait(unsigned short errorID){
 }
 
 
-/** Send Error Internal
+/** @brief Send an error
  *
  * This function is only for use inside the communication handling function.
  * Use of it outside this environment is not supported and behaviour when used
@@ -1028,6 +1028,9 @@ void sendErrorBusyWait(unsigned short errorID){
  * @author Fred Cooke
  *
  * @warning ONLY use this function from within the communication handler.
+ *
+ * @see sendErrorIfClear()
+ * @see sendErrorBusyWait()
  *
  * @todo TODO clean up the mess of commented out crap in here!
  * @todo TODO decide on errorCode or errorID and consistencise it everywhere.
@@ -1072,7 +1075,7 @@ void sendErrorInternal(unsigned short errorCode){
 }
 
 
-/** Send Debug If Clear
+/** @brief Send a debug message if buffer free
  *
  * This is a wrapper for use outside the communication handler function. The debug message will only be sent if the buffer is empty and available, if not, it will be discarded.
  *
@@ -1092,7 +1095,7 @@ void sendDebugIfClear(unsigned char* message){
 }
 
 
-/** Send Debug Busy Wait
+/** Send a debug message even if we must wait
  *
  * This is a wrapper for use outside the communication handler function. This
  * function will block until the debug message is able to be sent.
@@ -1110,13 +1113,16 @@ void sendDebugBusyWait(unsigned char* message){
 }
 
 
-/** Send Debug Internal
+/** @brief Send a debug message
  *
  * Sends a null terminated debug message out on the broadcast address of all available interfaces.
  *
  * @author Fred Cooke
  *
  * @warning ONLY use this function from within the communication handler.
+ *
+ * @see sendDebugIfClear()
+ * @see sendDebugBusyWait()
  *
  * @note This function exists as a convenience to developers, do not publish code that calls this function.
  *
@@ -1236,7 +1242,7 @@ void sendDebugInternal(unsigned char* message){
 //}
 
 
-/** Send Ack If Required
+/** @brief Send an ack if required
  *
  * Currently only used to clear the TX buffer flags if we no longer need it.
  *

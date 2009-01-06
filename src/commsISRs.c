@@ -1,11 +1,4 @@
-/**	@file commsISRs.c
-
-	Copyright 2008 Fred Cooke
-
-	This file contains the code for both send and receive of serial bytes
-	through the UART SCI0 device. It is purely interrupt driven and controlled
-	by a set of register and non-register flags that are toggled both inside
-	and outside this file. Some additional helper functions are also kept here.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -26,6 +19,15 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file commsISRs.c
+
+ * This file contains the code for both send and receive of serial bytes
+ * through the UART SCI0 device. It is purely interrupt driven and controlled
+ * by a set of register and non-register flags that are toggled both inside
+ * and outside this file. Some additional helper functions are also kept here.
+*/
 
 
 #define COMMSISRS_C
