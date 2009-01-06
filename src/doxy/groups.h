@@ -6,6 +6,36 @@
  * of them on the modules page so place new groups accordingly.
  */
 
+/** @defgroup interruptHandlers Interrupt Service Routines
+ *
+ * These files contain special functions that take no arguments and have void
+ * return type. They can not take arguments or return anything as they are
+ * called asynchronously by the hardware through a special jump table that
+ * contains the start address of each one. Typically these functions take care
+ * of handling asyncronous external events that are triggered through some sort
+ * of peripheral module. Examples of types of events that require interrupts
+ * and associated handlers are listed below.
+ *
+ * @b Examples:
+ * - change of pin voltage state (high to low or vice versa)
+ * - data received by a communication module
+ * - buffer for data to be sent by a communication module requires refilling
+ * - real time clock ticks
+ * - timer module ticks
+ */
+
+/** @defgroup communicationsFiles Communications
+ *
+ * All files that are involved in communicating with something outside the MCU
+ * can be found here.
+ *
+ * @b Examples:
+ * - UART/SCI
+ * - CAN
+ * - SPI
+ * - I2C
+ */
+
 /** @defgroup globalHeaders Global Headers
  *
  * These key files are included in most source files by default.

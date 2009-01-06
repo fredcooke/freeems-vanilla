@@ -79,6 +79,11 @@
  *     - Formatted some old headers a bit with blank lines
  *     - Removed another empty header file
  *     - Documented many special header files
+ * - Fred 6/1/09 18:58 GMT:
+ *     - Added brief descriptions to .c files
+ *     - Added ISR doc group
+ *     - Added comms doc group
+ *     -
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:
