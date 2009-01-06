@@ -23,7 +23,7 @@
 
 /**	@file blockDetailsLookup.c
  *
- * @brief Lookup memory block details.
+ * @brief Memory block details lookup
  *
  * This file holds the single function lookupBlockDetails() which
  * functions as a sort of address book for logical blocks of memory.

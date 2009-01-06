@@ -1,15 +1,4 @@
-/**	@file FixedConfigs.h
-
-	Copyright 2008 Fred Cooke
-
-	This file contains the struct data type definitions for fixed configuration items.
-
-	Fixed, in this context means that it typically is not tuned in a live way
-	and therefore should not be cached in RAM while running. Usually these are
-	values that do not change such as cylinder volume, injector size, cylinder
-	count and other constants related to physical aspects of the engine setup.
-	When adding configuration values, please consider adding them here first.
-	If a value doesn't need to be live tunable definitely put it here instead.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -32,10 +21,30 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file FixedConfigs.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief Struct typedefs for fixed configuration
+ *
+ * This file contains the struct data type definitions for fixed configuration items.
+ *
+ * Fixed, in this context means that it typically is not tuned in a live way
+ * and therefore should not be cached in RAM while running. Usually these are
+ * values that do not change such as cylinder volume, injector size, cylinder
+ * count and other constants related to physical aspects of the engine setup.
+ * When adding configuration values, please consider adding them here first.
+ * If a value doesn't need to be live tunable definitely put it here instead.
+ *
+ * @author Fred Cooke
+ */
+
+
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_FIXED_CONFIGS_H_SEEN
 #define FILE_FIXED_CONFIGS_H_SEEN
+
 
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.

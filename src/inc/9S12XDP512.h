@@ -22,12 +22,18 @@
 
 
 /**	@file 9S12XDP512.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief MC9S12XDP512 register definitions
  *
  * This is the device header for the FreeScale MC9S12XDP512 MCU. It contains
  * declarations that allow access to all of the devices control registers.
  *
  * These are the full basic register definitions for the Freescale 9S12XDP512
  * processor as taken from MC9S12XDP512V2.pdf Appendix G
+ *
+ * @author Fred Cooke
  */
 
 

@@ -1,6 +1,4 @@
-/*	IATTransferTable.c
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -21,6 +19,19 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file IATTransferTable.c
+ *
+ * @ingroup dataInitialisers
+ *
+ * @brief Inlet Air Temperature Transfer Table
+ *
+ * This file exists solely to contain the Inlet Air Temperature thermistor
+ * transfer function lookup table.
+ *
+ * @author Fred Cooke
+ */
 
 
 #include "inc/freeEMS.h"

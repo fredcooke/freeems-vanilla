@@ -1,14 +1,4 @@
-/**	@file TunableConfigs.h
-
-	Copyright 2008 Fred Cooke
-
-	This file contains both the struct data type definitions and the arrays of
-	default values for small tables. Place reusable definitions of default table
-	values in here such that they can be used in multiple tunable table definitions.
-
-	You should add your configuration item here if it is best that it is adjusted with
-	instant results on a running engine. For everything else, please consider placing
-	it in one of the fixed configuration structs.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -29,6 +19,24 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file TunableConfigs.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief Struct typedefs for tunable configuration
+ *
+ * This file contains both the struct data type definitions and the arrays of
+ * default values for small tables. Place reusable definitions of default table
+ * values in here such that they can be used in multiple tunable table definitions.
+ *
+ * You should add your configuration item here if it is best that it is adjusted with
+ * instant results on a running engine. For everything else, please consider placing
+ * it in one of the fixed configuration structs.
+ *
+ * @author Fred Cooke
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/

@@ -1,10 +1,4 @@
-/**	@file errorDefines.h
-
-	Copyright 2008 Fred Cooke
-
-	This file contains all error codes for propagation up and out to a PC.
-	When adding new codes, ensure that they are unique and also that you
-	group them appropriately in ranges for easy visual identification.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -25,6 +19,21 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file errorDefines.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief Error ID hash defines
+ *
+ * This file contains all error codes for propagation up and out to a PC.
+ * When adding new codes, ensure that they are unique and also that you
+ * group them appropriately in ranges for easy visual identification.
+ *
+ * @author Fred Cooke
+ */
+
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/

@@ -1,6 +1,4 @@
-/*	MAFTransferTable.c
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -21,6 +19,19 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file MAFTransferTable.c
+ *
+ * @ingroup dataInitialisers
+ *
+ * @brief Mass Air Flow Transfer Table
+ *
+ * This file exists solely to contain the Mass Air Flow transfer function
+ * lookup table.
+ *
+ * @author Fred Cooke
+ */
 
 
 #include "inc/freeEMS.h"

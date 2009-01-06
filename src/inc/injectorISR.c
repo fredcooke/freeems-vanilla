@@ -1,6 +1,4 @@
-/*	injectorISR.c
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -23,10 +21,15 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/* This code is identical between all 6 channels, and thus we only want one copy of it. The X in each macro will be replaced with the real deal appropriate for the channel it is used for at the time. */
-
-
-/* Each channel performs the following actions
+/**	@file injectorISR.c
+ *
+ * @brief Injector ISR shared code
+ *
+ * This code is identical between all 6 channels, and thus we only want one
+ * copy of it. The X in each macro will be replaced with the number that is
+ * appropriate for the channel it is being used for at the time.
+ *
+ * Each channel performs the following actions
  *
  * 1	Clear its interrupt flag
  * 2	Record its start time
@@ -45,6 +48,8 @@
  * 5.3	Else disable itself
  * 6	Calculate and record code run time
  * 7	Return
+ *
+ * @author Fred Cooke
  */
 
 
@@ -68,7 +73,7 @@ void InjectorXISR(){
 		unsigned short localPulseWidth = injectorMainPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER];
 		unsigned short localMinimumPulseWidth = injectorSwitchOnCodeTime + injectorCodeLatencies[INJECTOR_CHANNEL_NUMBER];
 
-		/* TODO *maybe* instead of checking min and increasing pulse, just force it straight off if diff between start and now+const is greater than desired pulsewidth */
+		/** @todo TODO *maybe* instead of checking min and increasing pulse, just force it straight off if diff between start and now+const is greater than desired pulsewidth */
 
 		/* Ensure we dont go under minimum pulsewidth */
 		if(localPulseWidth < localMinimumPulseWidth){
@@ -105,7 +110,7 @@ void InjectorXISR(){
 				stagedOn |= STAGEDXON;
 			}else{
 				/* Schedule the start at a later time */
-				// TODO PIT scheduling of staged start
+				/// @todo TODO PIT scheduling of staged start
 			}
 		}
 		/* Calculate and store code run time */

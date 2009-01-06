@@ -1,4 +1,6 @@
-/*	flashGlobals.h
+/**	@file flashGlobals.h
+
+ @todo TODO integrate this file with the rest of the masks and other global constants and hash defines etc
 
 	Copyright 2008 Sean Keys
 

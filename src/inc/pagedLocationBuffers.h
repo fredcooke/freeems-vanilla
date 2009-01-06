@@ -1,6 +1,4 @@
-/*	pagedLocationBuffers.h
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -21,6 +19,19 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file pagedLocationBuffers.h
+ * @ingroup allHeaders
+ *
+ * @brief Pointers to paged memory blocks
+ *
+ * The number of these required is fairly significant and thus is best placed
+ * in its own header file. Their only function is to prevent warnings from the
+ * linker due to accessing paged addresses in linear space.
+ *
+ * @author Fred Cooke
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/

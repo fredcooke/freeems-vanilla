@@ -1,8 +1,4 @@
-/**	@file flashWrite.h
-
-	Copyright 2008 Sean Keys
-
-	Flash manipulation function declarations.
+/*	Copyright 2008 Sean Keys
 
 	This file is part of the FreeEMS project.
 
@@ -23,6 +19,11 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/** @file flashWrite.h
+ * @ingroup allHeaders
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/

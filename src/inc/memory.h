@@ -1,6 +1,4 @@
-/*	memory.h
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -21,6 +19,20 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file memory.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief Memory usage directives
+ *
+ * This file is solely for the definition of compiler memory usage directives.
+ * Each one is just a short form of the larger statements DFAR and FFAR found
+ * near the top of this file.
+ *
+ * @author Fred Cooke
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/

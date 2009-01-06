@@ -1,6 +1,4 @@
-/**	@file globalConstants.h
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -21,6 +19,18 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file globalConstants.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief Global constant declarations
+ *
+ * All global constants are declared in this file for use throughout the program.
+ *
+ * @author Fred Cooke
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
