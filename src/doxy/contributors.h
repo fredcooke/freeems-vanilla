@@ -18,9 +18,9 @@
  * - Sean Keys
  *
  * @b Tuning @b Software:
- * - Aaron
- * - Ben
- * - Shameem
+ * - Aaron Barnes
+ * - Ben Fenner
+ * - Shameem Hameed
  *
  * @b Hardware @b Design:
  * - Jared
