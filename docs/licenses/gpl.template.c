@@ -22,6 +22,9 @@
 
 
 /**	@file filename.c
+ * @ingroup putMeInSomeGroups
+ *
+ * @brief A summary description only
  *
  * Description about what this file is intended to contain and
  * anything else that is unique and/or notable about it here!
@@ -32,6 +35,11 @@
  * - Change the filename to the correct one at the top of this comment
  * - Change the hash define to the filename uppercased and underscored
  * - Remove or adjust the hash include of the matching header
+ *
+ * @bug THIS DOCUMENTATION IS FAULTY!!
+ * @todo REPLACE THIS WITH REAL DOCUMENTATION!!
+ * @note SOME LAZY DEVELOPER DIDN'T CUSTOMISE THEIR DOCUMENTATION!!
+ * @warning IMAGINE WHAT THEIR CODE MIGHT BE LIKE IF THEIR DOCUMENTATION IS THIS BAD!!
  */
 
 
