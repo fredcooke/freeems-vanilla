@@ -29,3 +29,8 @@
  * When adding things to the set of switchable data please ensure you insert
  * appropriate default values in both the primary and secondary copies.
  */
+
+/**	@file tuneSwitching.h
+ * @ingroup doxygenDocFiles
+ * @brief Doxygen Tune Switching page definition
+ */
