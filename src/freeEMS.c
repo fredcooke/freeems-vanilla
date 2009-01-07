@@ -1,13 +1,4 @@
-/**	@file freeEMS.c
-
-	Copyright 2008 Fred Cooke
-
-	This file creates the symbols for all of the variables. It is
-	separated to clarify how much memory is actually being used by
-	various parts of the program. This is required because the RX/TX
-	buffers and main paged RAM unions show up as occupied data space
-	even though they are actually in RAM and not flash. Additionally
-	it serves as a good place to keep the Doxygen main page comment.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -28,6 +19,20 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file freeEMS.c
+ *
+ * @brief Here purely for structure
+ *
+ * This file creates the symbols for all of the variables. It is
+ * separated to clarify how much memory is actually being used by
+ * various parts of the program. This is required because the RX/TX
+ * buffers and main paged RAM unions show up as occupied data space
+ * even though they are actually in RAM and not flash.
+ *
+ * @author Fred Cooke
+ */
 
 
 #define FREEEMS_C

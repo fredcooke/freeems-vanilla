@@ -22,12 +22,20 @@
 
 
 /**	@file commsISRs.c
-
+ * @ingroup interruptHandlers
+ * @ingroup communicationsFiles
+ *
+ * @brief Send and receive bytes serially
+ *
  * This file contains the code for both send and receive of serial bytes
  * through the UART SCI0 device. It is purely interrupt driven and controlled
  * by a set of register and non-register flags that are toggled both inside
  * and outside this file. Some additional helper functions are also kept here.
-*/
+ *
+ * @todo TODO SCI0ISR() needs to be split into some hash defines and an include file that formats it to be the ISR for a specific channel.
+ *
+ * @author Fred Cooke
+ */
 
 
 #define COMMSISRS_C
@@ -46,6 +54,8 @@
 /** Send And Increment
  *
  * Increment the pointer, decrement the length, and send it!
+ *
+ * @author Fred Cooke
  *
  * @note This is an extern inline function and as such is always inlined.
  *

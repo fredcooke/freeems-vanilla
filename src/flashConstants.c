@@ -1,9 +1,4 @@
-/**	@file flashConstants.c
-
-	Copyright 2008 Fred Cooke, Sean Keys
-
-	This file was originally for me and Sean to collaborate more easily, possibly redundant now.
-	@todo TODO This file should probably be removed and the single value moved elsewhere.
+/*	Copyright 2008 Fred Cooke, Sean Keys
 
 	This file is part of the FreeEMS project.
 
@@ -24,6 +19,13 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file flashConstants.c
+
+	This file was originally for me and Sean to collaborate more easily, possibly redundant now.
+	@todo TODO This file should probably be removed and the single value moved elsewhere.
+ */
 
 
 #include "inc/freeEMS.h"

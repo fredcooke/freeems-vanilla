@@ -22,8 +22,9 @@
 
 
 /**	@file FixedConfig2.c
- *
  * @ingroup dataInitialisers
+ *
+ * @brief Second fixed config block
  *
  * This file contains the definition of the second fixed configuration block.
  * The declaration can be found in the global constants header file.
@@ -43,6 +44,7 @@
 /// @todo TODO add the userTextField2 to the dictionary/address lookup
 
 
+/** @copydoc fixedConfig1 */
 const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 
 		500,                  	/* capacityOfAirPerCombustionEvent */

@@ -1,9 +1,4 @@
-/**	@file enginePositionISRs.c
-
-	Copyright 2008 Fred Cooke
-
-	This file contains the two interrupt service routines for handling engine
-	position and RPM signals.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -24,6 +19,18 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file enginePositionISRs.c
+ * @ingroup interruptHandlers
+ *
+ * @brief Reads engine position and RPM
+ *
+ * This file contains the two interrupt service routines for handling engine
+ * position and RPM signals.
+ *
+ * @author Fred Cooke
+ */
 
 
 #define ENGINEPOSITIONISRS_C
@@ -49,6 +56,10 @@
  * Sample ADCs :
  * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
  * Set flag stating that New pulse, advance, etc should be calculated.
+ *
+ * @author Fred Cooke
+ *
+ * @warning These are for testing and demonstration only, not suitable for driving with just yet.
  *
  * @todo TODO bring the above docs up to date with reality
  * @todo TODO finish this off to a usable standard

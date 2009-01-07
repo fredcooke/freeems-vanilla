@@ -22,6 +22,7 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+interruptHandlers
 
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"

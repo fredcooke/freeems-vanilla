@@ -1,10 +1,4 @@
-/**	@file flashWrite.c
-
-	Copyright 2008 Sean Keys, Fred Cooke
-
-	This file contains all functions that operate directly or indirectly and
-	only on flash memory. They are used for erasing data from and reprogramming
-	data to the embedded flash non-volatile storage area.
+/*	Copyright 2008 Sean Keys, Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -27,6 +21,18 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file flashWrite.c
+ *
+ * @brief Flash manipulation functions
+ *
+ * This file contains all functions that operate directly or indirectly and
+ * only on flash memory. They are used for erasing data from and reprogramming
+ * data to the embedded flash non-volatile storage area.
+ *
+ * @author Sean Keys, Fred Cooke
+ */
+
+
 #define FLASHWRITE_C
 #include "inc/freeEMS.h"
 #include "inc/flashWrite.h"
@@ -36,7 +42,7 @@
 #include <string.h>
 
 
-/** Erases a sector of flash memory
+/** @brief Erases a sector of flash memory
  *
  * This will erase a 1k sector in flash.  Write 0xFFFF to the starting sector
  * to be erased, 0xFFFF will be written regardless. Register the flash sector
@@ -70,8 +76,7 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 }
 
 
-/**
- * Writes a block of memory to flash.
+/** @brief Writes a block of memory to flash
  *
  * The block size must either be under 1024, or an exact multiple of 1024.
  * Additionally, if under 1024 the destination should be within a single flash
@@ -95,7 +100,7 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
  * @param details contains the RAM address and page to be read from, the flash address and page to be burned to and the size to be read.
  * @param buffer is a pointer to a block of RAM at least 1024 bytes long used to allow small chunks to be burned independently.
  *
- * @return an error code. Zero means success, anything else is a failure.
+ * @return An error code. Zero means success, anything else is a failure.
  */
 unsigned short writeBlock(blockDetails* details, void* buffer){
 	unsigned char sectors;
@@ -177,7 +182,7 @@ unsigned short writeBlock(blockDetails* details, void* buffer){
 }
 
 
-/** Writes a sector from memory to a sector in flash
+/** @brief Writes a sector from memory to a sector in flash
  *
  * Uses writeWord to write a 1k block from sourceAddress(RAM) to
  * flashDestinationAddress, one word at a time. Give it the starting memory
@@ -237,7 +242,7 @@ unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress
 }
 
 
-/**	Program Command
+/**	@brief Program Command
  *
  * This will write 1 word to an empty(0xFFFF) flash address. If you try to
  * write to an address containing data(not 0xFFFF),an error will register at

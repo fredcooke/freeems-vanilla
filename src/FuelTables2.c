@@ -23,6 +23,18 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file FuelTables2.c
+ * @ingroup dataInitialisers
+ *
+ * @brief Fuel VE and Lambda tables
+ *
+ * This file contains the definition of the secondary VE and lambda tables. The
+ * declaration can be found in the global constants header file.
+ *
+ * @author Fred Cooke
+ */
+
+
 #include "inc/freeEMS.h"
 
 

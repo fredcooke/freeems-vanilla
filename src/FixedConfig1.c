@@ -22,8 +22,9 @@
 
 
 /**	@file FixedConfig1.c
- *
  * @ingroup dataInitialisers
+ *
+ * @brief First fixed config block
  *
  * This file contains the definition of the first fixed configuration block.
  * The declaration can be found in the global constants header file.
@@ -45,7 +46,9 @@
 /// @todo TODO add userTextField1 to the dictionary/address lookup
 
 
+/** @copydoc fixedConfig1 */
 const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
+
 		0x07F0,                 	/* coreSettingsA */
 
 		roomTemperature,        	/* presetIAT */
