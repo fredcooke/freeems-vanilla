@@ -35,6 +35,7 @@
  * - Robert Clark
  * - Jared Harvey
  * - Aaron Barnes
+ * - Tahi Walcher
  * - Others
  *
  * @b Bug @b Reports/Feedback:
