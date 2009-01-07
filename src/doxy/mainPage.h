@@ -1,12 +1,12 @@
 /** @mainpage FreeEMS
  * @anchor doxygenMainPageTop
  *
- * Welcome to the FreeEMS project!
+ * @b Welcome @b to @b the @b FreeEMS @b project!
  *
- * FreeEMS is a free and open source Engine Management System. It
- * includes both software and hardware designs under free software
- * licenses that you can download. FreeEMS firmware is intended to
- * be clean and modular with an emphasis on readability and quality.
+ * FreeEMS is a free and open source Engine Management System. It includes both
+ * software and hardware designs under free and open source licenses that you
+ * can download. FreeEMS firmware is intended to be clean and modular with an
+ * emphasis on readability and quality. All feedback is very much appreciated!
  *
  * A log of the work done between this release and the last one can be found on
  * the @ref changeLogs page.
@@ -16,6 +16,17 @@
  *
  * Specific aspects of the firmware are documented, one aspect per page in
  * the <a href="pages.html"><b>Related Pages</b></a> tab.
+ *
+ * @b Primary @b Authors:
+ * - Fred Cooke - Founder, leader and main developer.
+ * - Sean Keys - Flash burning code and documentation.
+ *
+ * @b Contributors:
+ *
+ * For a fairly comprehensive list of people who have assisted the cause in
+ * various ways see the @ref contributors page.
+ *
+ * @since The first of January 2008
  *
  * @b See @b Also:
  * - <a href="http://www.diyefi.org">DIYEFI.org</a>
@@ -66,4 +77,5 @@
 
 /**	@file mainPage.h
  * @ingroup doxygenDocFiles
+ * @brief Doxygen Main index page definition
  */

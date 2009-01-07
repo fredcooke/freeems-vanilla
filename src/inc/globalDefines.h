@@ -1,11 +1,4 @@
-/**	@file globalDefines.h
-
-	Copyright 2008 Fred Cooke
-
-	Currently this holds most hash defined constants and literals.
-
-	@todo TODO Some investigation as to whether it is best to use consts or defines is required
-	@todo TODO Break this up into smaller chunks that are included into this file
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -22,9 +15,25 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file globalDefines.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief Global hash define literal replacements
+ *
+ * Currently this holds most hash defined constants and literals.
+ *
+ * @author Fred Cooke
+ *
+ * @todo TODO Some investigation as to whether it is best to use consts or defines is required
+ * @todo TODO Break this up into smaller chunks that are included into this file
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/

@@ -1,9 +1,4 @@
-/**	@file blockDetailsLookup.c
-
-	Copyright 2008 Fred Cooke
-
-	This file holds the single function lookupBlockDetails() which
-	functions as a sort of address book for logical blocks of memory.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -20,9 +15,21 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file blockDetailsLookup.c
+ *
+ * @brief Memory block details lookup
+ *
+ * This file holds the single function lookupBlockDetails() which
+ * functions as a sort of address book for logical blocks of memory.
+ *
+ * @author Fred Cooke
+ */
 
 
 #define BLOCK_DETAILS_LOOKUP_C
@@ -32,7 +39,7 @@
 #include "inc/blockDetailsLookup.h"
 
 
-/** Lookup Block Details
+/** @brief Lookup memory block details.
  *
  * Flash only blocks leave the ram address and page values
  * set to zero. ID's that don't exist leave all set to zero.

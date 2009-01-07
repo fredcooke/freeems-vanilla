@@ -1,6 +1,4 @@
-/*	interrupts.h
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -17,9 +15,25 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file interrupts.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief All interrupt handler declarations
+ *
+ * All of the declarations for ISR functions are done here because they are all
+ * used in one place and it doesn't make sense to spread them out over N files
+ * for N functions. ISR headers only exist where there is a requirement for
+ * local variables and constants etc.
+ *
+ * @author Fred Cooke
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/

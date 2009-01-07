@@ -142,4 +142,5 @@
 
 /**	@file releaseNotes.h
  * @ingroup doxygenDocFiles
+ * @brief Doxygen Release Notes page definition
  */

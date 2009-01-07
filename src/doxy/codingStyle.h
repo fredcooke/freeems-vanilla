@@ -110,3 +110,8 @@
  * Please see the following Mantis issue for the original mandate to produce this document:
  * - http://freeems.aaronb.info/tracker/view.php?id=10
  */
+
+/** @file codingStyle.h
+ * @ingroup doxygenDocFiles
+ * @brief Doxygen Coding Style page definition
+ */

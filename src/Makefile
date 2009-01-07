@@ -17,7 +17,8 @@
 #	You should have received a copy of the GNU General Public License
 #	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 #
-#	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+#	We ask that if you make any changes to this file you email them upstream to
+#	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 #
 #	Thank you for choosing FreeEMS to run your engine!
 
@@ -52,7 +53,7 @@ SIZE = $(PREFIX)size
 ASMH = 9S12XDP512asm.s
 ISRH = interrupts.h
 GLOBALH = freeEMS.h 9S12XDP512.h memory.h globalConstants.h globalDefines.h errorDefines.h structs.h TunableConfigs.h FixedConfigs.h
-ISRSH = commsISRs.h enginePositionISRs.h injectionISRs.h
+ISRSH = commsISRs.h injectionISRs.h
 UTILH = utils.h
 COMMSH = commsCore.h blockDetailsLookup.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h

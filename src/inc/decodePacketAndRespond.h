@@ -1,6 +1,4 @@
-/*	decodePacketAndRespond.h
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -17,9 +15,15 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/** @file decodePacketAndRespond.h
+ * @ingroup allHeaders
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
@@ -27,15 +31,25 @@
 #ifndef FILE_DECODE_PACKET_AND_RESPOND_H_SEEN
 #define FILE_DECODE_PACKET_AND_RESPOND_H_SEEN
 
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
+
 #ifdef DECODE_PACKET_AND_RESPOND_C
 #define EXTERN
 #else
 #define EXTERN extern
 #endif
 
+
 // to be filled out in 0.0.19
 
+
 #undef EXTERN
+
 
 #else
 	/* let us know if we are being untidy with headers */

@@ -1,12 +1,4 @@
-/**	@file freeEMS.h
-
-	Copyright 2008 Fred Cooke
-
-	The central header for all source files to include. This pulls in the
-	device header, all other shared headers, all global defines, all global
-	constant declarations, all type definitions and all global variables. Other
-	variables that are actually in global space but only shared between a few
-	select files should be placed in the header for the main file that uses them.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -23,9 +15,26 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file freeEMS.h
+ * @ingroup allHeaders
+ * @ingroup globalHeaders
+ *
+ * @brief The main project header file
+ *
+ * The central header for all source files to include. This pulls in the
+ * device header, all other shared headers, all global defines, all global
+ * constant declarations, all type definitions and all global variables. Other
+ * variables that are actually in global space but only shared between a few
+ * select files should be placed in the header for the main file that uses them.
+ *
+ * @author Fred Cooke
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
@@ -59,6 +68,14 @@
 /* the variable is initialised in staticInit.c, if someone    	*/
 /* attempts to use extern and doesn't initialise the variable 	*/
 /* statically then the linker should error on undefined symbol	*/
+
+
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
+
 #ifdef FREEEMS_C
 #define EXTERN
 #else

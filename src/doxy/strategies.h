@@ -14,3 +14,8 @@
  *
  * @todo TODO TBC (other strategies)
  */
+
+/**	@file strategies.h
+ * @ingroup doxygenDocFiles
+ * @brief Doxygen General Strategies page definition
+ */

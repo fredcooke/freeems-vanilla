@@ -1,8 +1,4 @@
-/**	@file init.h
-
-	Copyright 2008 Fred Cooke
-
-	Header for various things that are only used in the initialisation process.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -19,9 +15,15 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file init.h
+ * @ingroup allHeaders
+ */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/

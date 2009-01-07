@@ -1,8 +1,22 @@
 /**	@file groups.h
  * @ingroup doxygenDocFiles
+ * @brief Doxygen module groups definition
  *
  * @note The order of group definitions within this file determines the order
  * of them on the modules page so place new groups accordingly.
+ */
+
+/** @defgroup globalHeaders Global Headers
+ *
+ * These key files are included in most source files by default.
+ *
+ * @b Examples:
+ * - Global defines
+ * - Global constants
+ * - Global variables
+ * - Error codes
+ * - Device header
+ * - Struct typedefs
  */
 
 /** @defgroup dataInitialisers Data Initialisers
@@ -28,6 +42,13 @@
  * - Derived variable generation
  * - Fuel calculations
  * - Ignition calculations
+ */
+
+/** @defgroup allHeaders All Header Files
+ *
+ * Most of these are fairly uninteresting, hence being clost to the bottom of
+ * the modules list. Typically they just contain function declarations for
+ * inclusion in other source files.
  */
 
 /** @defgroup doxygenDocFiles Doxygen Documentation Files

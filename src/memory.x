@@ -1,12 +1,5 @@
-/**	@file memory.x
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 	
-	Memory region location definition file for inclusion into the linker
-	script. It defines the names, types, start addresses and lengths of
-	each memory region available for the linker to populate with code and
-	data. See hc9s12xdp512elfb.x and regions.x for more information. 
-
 	This file is part of the FreeEMS project.
 
 	FreeEMS software is free software: you can redistribute it and/or modify
@@ -22,16 +15,25 @@
 	You should have received a copy of the GNU General Public License
 	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 
-	We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+	We ask that if you make any changes to this file you email them upstream to
+	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
-	Thank you for choosing FreeEMS to run your engine!
-
-	@cond memoryscript */
+	Thank you for choosing FreeEMS to run your engine! */
 
 
-/* A description of what some of this means can be found at the following URL	*/
-/* http://www.gnu.org/software/m68hc11/m68hc11_binutils.html					*/
-/* http://m68hc11.serveftp.org/wiki/index.php/FAQ:Link							*/
+/**	@file memory.x
+ *
+ * Memory region location definition file for inclusion into the linker
+ * script. It defines the names, types, start addresses and lengths of
+ * each memory region available for the linker to populate with code and
+ * data. See hc9s12xdp512elfb.x and regions.x for more information. 
+ *
+ * A description of what some of this means can be found at the following URL:
+ * http://www.gnu.org/software/m68hc11/m68hc11_binutils.html
+ * http://m68hc11.serveftp.org/wiki/index.php/FAQ:Link
+ *
+ * @cond memoryscript
+ */
 
 
   MEMORY

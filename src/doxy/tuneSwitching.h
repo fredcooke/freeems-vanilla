@@ -15,6 +15,7 @@
  * secondary copy is never used.
  *
  * @b Warning:
+ *
  * Although this boils down to paranoia, some precautions are best taken when
  * tuning your vehicle with FreeEMS. Because there are always two copies of all
  * settings and the code has the ability to switch between them you you should
@@ -26,6 +27,12 @@
  * pin is floating you will not get erratic engine behaviour.
  *
  * @b Developers:
+ *
  * When adding things to the set of switchable data please ensure you insert
  * appropriate default values in both the primary and secondary copies.
+ */
+
+/**	@file tuneSwitching.h
+ * @ingroup doxygenDocFiles
+ * @brief Doxygen Tune Switching page definition
  */

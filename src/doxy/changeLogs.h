@@ -71,6 +71,14 @@
  *     - Split the GPL and Doxygen comments in the templates
  *     - Added ref to github and sanitised my diyefi admin email in the GPL comments
  *     - Finalised the Doxygen docs for now
+ * - Fred 5/1/09 18:08 GMT:
+ *     - Added contributors page to docs - incomplete
+ *     - Added headers group to modules/groups and populated it
+ *     - Added rest of doxy page files to doxy group
+ *     - Added EXTERN predef check to more headers
+ *     - Formatted some old headers a bit with blank lines
+ *     - Removed another empty header file
+ *     - Documented many special header files
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:
@@ -736,4 +744,5 @@
 
 /**	@file changeLogs.h
  * @ingroup doxygenDocFiles
+ * @brief Doxygen Change Logs page definition
  */
