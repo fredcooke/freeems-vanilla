@@ -83,7 +83,7 @@
  *     - Added brief descriptions to .c files
  *     - Added ISR doc group
  *     - Added comms doc group
- *     -
+ *     - Added and reformatted file documentation for doxygen in about half of all .c files
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:
