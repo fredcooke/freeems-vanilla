@@ -161,16 +161,16 @@ RPMCLASSES = NipponDenso.c LT1-360-8.c Subaru-32-2-2-2.c MissingTeeth.c MiataNB.
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
 
 # Convert extensions
-PREPROCESSED = $(patsubst %.c,$(PPCSDIR)/%.pp.c,$(CLASSES))
+PREPROCESSED = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(CLASSES))
 ASSEMBLIES = $(patsubst %.c,$(ASMDIR)/%.s,$(CLASSES))
 OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
 DUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(HANDASMS))
 
 # Convert RPM extensions
-RPMPREPROCESSED = $(patsubst %.c,$(PPCSDIR)/%.pp.c,$(RPMCLASSES))
-RPMASSEMBLIES = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
-RPMOBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
-RPMDUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
+PREPROCESSEDRPM = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(RPMCLASSES))
+ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
+OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
+DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
 # Convert to output files
 ALLELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-%-$(VERSION).elf,$(RPMCLASSES)) $(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-%-$(VERSION).elf,$(RPMHANDASMS))
@@ -359,17 +359,17 @@ COPYOPTS =  --output-target=srec \
 
 
 # Top level
-.PHONY all fast release clean
+.PHONY: all fast release clean
 # Second level
-.PHONY rpm nonrpm final debug
-# Third level Non-RPM
-.PHONY preprocess assemble compile
+.PHONY: rpm nonrpm final debug
+## Third level Non-RPM
+.PHONY: preprocess assemble compile
 # Third level RPM
-.PHONY preprocessrpm assemblerpm compilerpm
+.PHONY: preprocessrpm assemblerpm compilerpm
 # Comments
-.PHONY etc etc etc
+.PHONY: etc etc etc
 # Clean targets
-.PHONY cleanasm cleandebug cleanobj cleanout cleanppc cleanrelease cleans19
+.PHONY: cleanasm cleandebug cleanobj cleanout cleanppc cleanrelease cleans19
 
 
 ################################################################################
@@ -395,8 +395,33 @@ final: link copy
 
 debug: dump map read dumpsmall
 
+
 ################################################################################
-#                         Perform Release Procedures...                        #
+#              Preprocess, Assemble and Compile Target Definitions             #
+################################################################################
+
+
+preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
+
+preprocessmsg:
+	################################################################################
+	#                        Running the C Pre Processor...                        #
+	################################################################################
+
+# Generate preprocessed source files to examine
+$(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH)
+	$(GCC) $(GCCOPTS) -E $< > $@
+
+
+
+
+
+
+
+
+
+################################################################################
+#                     Release Procedure Target Definitions                     #
 ################################################################################
 
 ### clean all
@@ -407,11 +432,17 @@ debug: dump map read dumpsmall
 
 #copy s19s up
 
+#md5sum s19s above
+
 ### clean all
 
 #git commit s19s
 
 #zip each s19 to parent
+
+#zip docs to parent
+
+#zip without docs to parent
 
 #zip entire directory to parent
 
@@ -423,18 +454,33 @@ debug: dump map read dumpsmall
 # Assembly, release and inc directories don't get removed.
 
 $(BUGDIR):
+	################################################################################
+	#                       Creating the debug directory....                       #
+	################################################################################
 	mkdir -p $(BUGDIR)
 
 $(S19DIR):
+	################################################################################
+	#                      Creating the firmware directory...                      #
+	################################################################################
 	mkdir -p $(S19DIR)
 
 $(PPCDIR):
+	################################################################################
+	#                   Creating the preprocessedc directory....                   #
+	################################################################################
 	mkdir -p $(PPCDIR)
 
 $(OUTDIR):
+	################################################################################
+	#                       Creating the output directory...                       #
+	################################################################################
 	mkdir -p $(OUTDIR)
 
 $(OBJDIR):
+	################################################################################
+	#                       Creating the object directory...                       #
+	################################################################################
 	mkdir -p $(OBJDIR)
 
 
@@ -446,7 +492,7 @@ cleanasm:
 	################################################################################
 	#                     Removing generated assembly files....                    #
 	################################################################################
-	$(RM) $(ASSEMBLIES) asmdecoderstoo
+	$(RM) $(ASSEMBLIES) $(ASSEMBLIESRPM)
 	# remove the asm file for each decoder
 
 cleanppc:
@@ -457,30 +503,30 @@ cleanppc:
 
 cleanobj:
 	################################################################################
-	#                 Removing object and dump output directory....                #
+	#                         Removing object directory...                         #
 	################################################################################
 	$(RM) $(OBJDIR)
 
 cleanout:
 	################################################################################
-	#                      Removing final output directory....                     #
+	#                       Removing link output directory...                      #
 	################################################################################
 	$(RM) $(OUTDIR)
 
 cleans19:
 	################################################################################
-	#                      Removing final output directory....                     #
+	#                           Removing s19 directory...                          #
 	################################################################################
 	$(RM) $(S19DIR)
 
 cleandebug:
 	################################################################################
-	#                      Removing final output directory....                     #
+	#                          Removing debug directory...                         #
 	################################################################################
 	$(RM) $(DEBUGDIR)
 
 cleanrelease:
 	################################################################################
-	#                      Removing final output directory....                     #
+	#                         Removing s19 release files...                        #
 	################################################################################
 	$(RM) $(RELEASEDIR)/*
