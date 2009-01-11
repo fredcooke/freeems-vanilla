@@ -98,8 +98,8 @@
  * - local variables
  * - global variables
  * - files
- *     - header
- *     - source
+ *     - header see source :
+ *     - source - RPM ISRs and data initialisers UpperCamelCase - the rest lowerCamelCase
  *     - doxygen
  *     - standalone documentation
  *     - JSON files and schemas
