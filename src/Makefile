@@ -397,25 +397,32 @@ debug: dump map read dumpsmall
 
 
 ################################################################################
-#              Preprocess, Assemble and Compile Target Definitions             #
+#              Preprocess, Compile and Assemble Target Definitions             #
 ################################################################################
 
-
-preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
 
 preprocessmsg:
 	################################################################################
 	#                        Running the C Pre Processor...                        #
 	################################################################################
 
+preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
+
 # Generate preprocessed source files to examine
 $(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH)
 	$(GCC) $(GCCOPTS) -E $< > $@
 
 
+compilemsg:
+	################################################################################
+	#                         Compiling PPC to Assembly...                         #
+	################################################################################
 
+compile: preprocess compilemsg $(ASSEMBLIES) $(ASSEMBLIESRPM)
 
-
+# Generate assembly files to examine
+$(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
+	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
 
@@ -445,6 +452,8 @@ $(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH)
 #zip without docs to parent
 
 #zip entire directory to parent
+
+
 
 
 ################################################################################
@@ -484,6 +493,8 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 
+
+
 ################################################################################
 #                            Clean Target Definitions                          #
 ################################################################################
@@ -493,7 +504,6 @@ cleanasm:
 	#                     Removing generated assembly files....                    #
 	################################################################################
 	$(RM) $(ASSEMBLIES) $(ASSEMBLIESRPM)
-	# remove the asm file for each decoder
 
 cleanppc:
 	################################################################################
