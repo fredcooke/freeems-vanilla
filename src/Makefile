@@ -425,6 +425,18 @@ $(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
 	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
+assemble: compile $(OBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM)
+
+assemblemsg:
+	################################################################################
+	#                          Assembling Object Files...                          #
+	################################################################################
+
+# Generate object files to link
+$(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
+	$(GCC) $(GCCOPTS) -c -o $@ $<
+
+
 
 
 ################################################################################
