@@ -61,6 +61,8 @@
 ################################################################################
 
 
+
+
 ################################################################################
 #                             All Fixed Variables                              #
 ################################################################################
@@ -101,6 +103,8 @@ DUMP = $(PREFIX)objdump
 NM = $(PREFIX)nm
 RE = $(PREFIX)readelf
 SIZE = $(PREFIX)size
+
+
 
 
 ################################################################################
@@ -173,11 +177,14 @@ OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) $(patsubst %.s,$(OBJDIR
 DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
 # Convert to output files
-ALLELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-%-$(VERSION).elf,$(RPMCLASSES)) $(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-%-$(VERSION).elf,$(RPMHANDASMS))
-ALLDMPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-%-$(VERSION).dmp,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-%-$(VERSION).dmp,$(RPMHANDASMS))
-ALLMAPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-%-$(VERSION).map,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-%-$(VERSION).map,$(RPMHANDASMS))
-ALLREAD = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-%-$(VERSION).ree,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-%-$(VERSION).ree,$(RPMHANDASMS))
-ALLS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-%-$(VERSION).s19,$(RPMCLASSES)) $(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-%-$(VERSION).s19,$(RPMHANDASMS))
+ALLELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMCLASSES)) $(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMHANDASMS))
+ALLDMPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMHANDASMS))
+ALLMAPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
+ALLREAD = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
+ALLS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES)) $(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
+GCDS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES)) $(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
+
+
 
 
 ################################################################################
@@ -309,6 +316,8 @@ COPYOPTS =  --output-target=srec \
 #		--change-section-lma .ppageF7=0xF78000 \
 
 
+
+
 ################################################################################
 #                        Dependency And Target Summary                         #
 ################################################################################
@@ -353,6 +362,8 @@ COPYOPTS =  --output-target=srec \
 ################################################################################
 
 
+
+
 ################################################################################
 #                   Declare targets that aren't real files                     #
 ################################################################################
@@ -362,14 +373,14 @@ COPYOPTS =  --output-target=srec \
 .PHONY: all fast release clean
 # Second level
 .PHONY: rpm nonrpm final debug
-## Third level Non-RPM
+## Third level
 .PHONY: preprocess assemble compile
-# Third level RPM
-.PHONY: preprocessrpm assemblerpm compilerpm
 # Comments
 .PHONY: etc etc etc
 # Clean targets
 .PHONY: cleanasm cleandebug cleanobj cleanout cleanppc cleanrelease cleans19
+
+
 
 
 ################################################################################
@@ -394,6 +405,68 @@ clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
 final: link copy 
 
 debug: dump map read dumpsmall
+
+
+
+
+################################################################################
+#                       Link and Copy Target Definitions                       #
+################################################################################
+
+
+linkmsg:
+	################################################################################
+	#                      Linking the Objects into an ELF...                      #
+	################################################################################
+
+link: assemble $(OUTDIR) linkmsg $(ALLELFS)
+
+# link the object files into an elf executable
+$(ALLELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
+	################################################################################
+	#               Linking $@ ...
+	################################################################################
+	$(GCC) $(GCCOPTS) $(LINKOPTSGC) -o $@.gc.elf $< $(OBJECTS) # ...
+	$(GCC) $(GCCOPTS) $(LINKOPTS) -o $@ $< $(OBJECTS)
+# The links with garbage collection are to ensure that there are no warnings
+# TODO find out how to stop .tramp from being collected (or inserted)!
+
+
+s19msg:
+	################################################################################
+	#                          Building The S19 Files....                          #
+	################################################################################
+
+s19: link $(S19DIR) s19msg $(ALLS19S) $(GCDS19S)
+# the gc dependency is temporary until i figure out if the .tramp removal is an issue or not.
+
+# Generate the loadable s19 firmware files
+$(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
+	################################################################################
+	#               Building $@ ...
+	################################################################################
+	$(COPY) $(COPYOPTS) $< $@
+
+# Generate the garbage collected s19 files temporarily
+$(GCDS19S): $(S19DIR)/%.gc.s19: $(OUTDIR)/%.elf.gc.elf
+	################################################################################
+	#               Building $@ ...
+	################################################################################
+	$(COPY) $(COPYOPTS) $< $@
+
+
+sizemsg:
+	################################################################################
+	#                          Measuring The S19 Files...                          #
+	################################################################################
+
+size: # TODO this should be run for each s19 target with only the one rpm .o file
+	$(SIZE) -t $(OBJECTS)
+
+sizes: # TODO this should be run for each s19 file too..
+	echo "Flash image size for $(VERSION) is" `echo \`cat $(S19OUT) | wc -l\` "* 16" | bc -l` "bytes..."
+
+
 
 
 ################################################################################
@@ -425,12 +498,12 @@ $(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
 	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
-assemble: compile $(OBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM)
-
 assemblemsg:
 	################################################################################
 	#                          Assembling Object Files...                          #
 	################################################################################
+
+assemble: compile $(OBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM)
 
 # Generate object files to link
 $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
