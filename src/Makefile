@@ -132,7 +132,7 @@ FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
 # Let's keep this to a bare minimum! If you write ASM code
 # please provide an matching alternate C implementation too.
 HANDASMS = flashBurn.s
-RPMHANDASMS = 
+#RPMHANDASMS = 
 
 # .c files from inc/ should be included here as deps for the parts they are relied on by!!
 ALLHEADERS = $(GLOBALH1) $(GLOBALH2) $(COMMSH) $(ISRSH) $(UTILH) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(FLASHH) $(LOOKUPH)
@@ -173,19 +173,19 @@ DUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(BUGDIR)/%.dm
 # Convert RPM extensions
 PREPROCESSEDRPM = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(RPMCLASSES))
 ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
-OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
-DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
+OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst %.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
+DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
 # Convert to output files
-ALLELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMCLASSES)) $(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMHANDASMS))
-ALLDMPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMHANDASMS))
-ALLMAPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
-ALLREAD = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
-ALLS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES)) $(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
+ALLELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMCLASSES)) #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMHANDASMS))
+ALLDMPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMHANDASMS))
+ALLMAPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
+ALLREAD = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
+ALLS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES)) #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
 
 # Convert to output files for GC variants
-GCDELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES)) $(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMHANDASMS))
-GCDS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES)) $(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
+GCDELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES)) #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMHANDASMS))
+GCDS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES)) #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
 
 
 
@@ -374,6 +374,8 @@ COPYOPTS =  --output-target=srec \
 
 # Build everything the long way (default)
 all: gcs19 s19
+allfull: s19
+allgc: gcs19 #...
 
 # Build minimally and quickly
 fast: lessthings here
@@ -398,7 +400,7 @@ debug: dump map read dumpsmall
 ################################################################################
 
 
-linkmsg:
+linkmsg: #...
 	################################################################################
 	#                      Linking the Objects into an ELF...                      #
 	################################################################################
@@ -413,24 +415,24 @@ $(ALLELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
 	$(GCC) $(GCCOPTS) $(LINKOPTS) -o $@ $< $(OBJECTS)
 
 
-gclinkmsg:
+gclinkmsg: #...
 	################################################################################
 	#                      Linking the Objects into an ELF...                      #
 	################################################################################
 
-gclink: assemble $(OUTDIR) linkmsg $(GCDELFS)
+gclink: assemble $(OUTDIR) linkmsg $(GCDELFS) #...
 
-# link the object files into an elf executable
-$(GCDELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS)
+# link the object files into an elf executable with gc...
+$(GCDELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS) #...
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
 	$(GCC) $(GCCOPTS) $(LINKOPTSGC) -o $@ $< $(OBJECTS) # ...
-# The links with garbage collection are to ensure that there are no warnings
-# TODO find out how to stop .tramp from being collected (or inserted)!
+# The links with garbage collection are to ensure that there are no warnings ...
+# TODO find out how to stop .tramp from being collected (or inserted)! ...
 
 
-s19msg:
+s19msg: #...
 	################################################################################
 	#                          Building The S19 Files....                          #
 	################################################################################
@@ -446,22 +448,22 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	$(COPY) $(COPYOPTS) $< $@
 
 
-gcs19msg:
+gcs19msg: #...
 	################################################################################
 	#                          Building The S19 Files....                          #
 	################################################################################
 
-gcs19: gclink $(S19DIR) gcs19msg  $(GCDS19S)
+gcs19: gclink $(S19DIR) gcs19msg  $(GCDS19S) #...
 
-# Generate the garbage collected s19 files temporarily
-$(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
+# Generate the garbage collected s19 files temporarily...
+$(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf #...
 	################################################################################
 	#               Building $@ ...
 	################################################################################
-	$(COPY) $(COPYOPTS) $< $@
+	$(COPY) $(COPYOPTS) $< $@ #...
 
 
-sizemsg:
+sizemsg: #...
 	################################################################################
 	#                          Measuring The S19 Files...                          #
 	################################################################################
@@ -469,7 +471,7 @@ sizemsg:
 size: # TODO this should be run for each s19 target with only the one rpm .o file
 	$(SIZE) -t $(OBJECTS)
 
-sizes: # TODO this should be run for each s19 file too..
+sizes: # TODO this should be run for each s19 file too...
 	echo "Flash image size for $(VERSION) is" `echo \`cat $(S19OUT) | wc -l\` "* 16" | bc -l` "bytes..."
 
 
@@ -480,7 +482,7 @@ sizes: # TODO this should be run for each s19 file too..
 ################################################################################
 
 
-preprocessmsg:
+preprocessmsg: #...
 	################################################################################
 	#                        Running the C Pre Processor...                        #
 	################################################################################
@@ -492,7 +494,7 @@ $(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH)
 	$(GCC) $(GCCOPTS) -E $< > $@
 
 
-compilemsg:
+compilemsg: #...
 	################################################################################
 	#                         Compiling PPC to Assembly...                         #
 	################################################################################
@@ -504,7 +506,7 @@ $(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
 	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
-assemblemsg:
+assemblemsg: #...
 	################################################################################
 	#                          Assembling Object Files...                          #
 	################################################################################
