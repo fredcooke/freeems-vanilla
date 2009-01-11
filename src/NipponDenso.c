@@ -23,7 +23,7 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file NipponDensoISR.c
+/**	@file NipponDenso.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
