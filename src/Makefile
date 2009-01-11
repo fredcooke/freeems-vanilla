@@ -396,9 +396,31 @@ final: link copy
 debug: dump map read dumpsmall
 
 ################################################################################
-#                        Create Required Directories...                        #
+#                         Perform Release Procedures...                        #
 ################################################################################
 
+### clean all
+
+#check git status for changes, fail build if not fully commited
+
+### build all
+
+#copy s19s up
+
+### clean all
+
+#git commit s19s
+
+#zip each s19 to parent
+
+#zip entire directory to parent
+
+
+################################################################################
+#                     Create Directory Target Definitions                      #
+################################################################################
+
+# Assembly, release and inc directories don't get removed.
 
 $(BUGDIR):
 	mkdir -p $(BUGDIR)
