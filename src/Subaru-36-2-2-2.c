@@ -29,7 +29,7 @@
  *
  * @brief Subaru 36 minus 2 2 2
  *
- * @todo TODO This file contains SFA but <anon> is going to fill it up with
+ * @todo TODO This file contains SFA but [anon] is going to fill it up with
  * @todo TODO wonderful goodness very soon ;-)
  *
  * @author Who Ever
