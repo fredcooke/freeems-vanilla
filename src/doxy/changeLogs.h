@@ -84,6 +84,17 @@
  *     - Added ISR doc group
  *     - Added comms doc group
  *     - Added and reformatted file documentation for doxygen in about half of all .c files
+ * - Fred 9/1/09 21:40 GMT:
+ *     - Heavily refactored the Makefile to cleanly build many variants with different wheel decoders
+ *     - Added documenation to the Makefile to describe how it works
+ * - Fred 10/1/09 22:39 GMT:
+ *     - Added .PHONY declarations to the Makefile
+ * - Fred 11/1/09 21:42 GMT:
+ *     - Added 4 new decoders in skeleton form for others to work from.
+ *     - Added a new group for decoders in doxygen groups
+ *     - Added preprocessing, compiling, assembling, linking and copying to s19s to the make file
+ *     - Added file name conventions to the code style doc
+ *
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:

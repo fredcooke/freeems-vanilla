@@ -24,6 +24,12 @@
  * - timer module ticks
  */
 
+/** @defgroup enginePositionRPMDecoders Engine Position/RPM Decoders
+ *
+ * All of the code that reads the high speed engine
+ * position signals can be found linked to from here.
+ */
+
 /** @defgroup communicationsFiles Communications
  *
  * All files that are involved in communicating with something outside the MCU

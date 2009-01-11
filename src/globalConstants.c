@@ -1,8 +1,6 @@
-/**	@file globalConstants.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
-
-	All global constants values are and should be defined here.
 
 	This file is part of the FreeEMS project.
 
@@ -25,8 +23,19 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-#define NO_CONST_ARRAYS
+/**	@file globalConstants.c
+ * @ingroup dataInitialisers
+ *
+ * @brief Global constant values
+ *
+ * All global constants values are, and should be, defined here.
+ *
+ * @author Fred Cooke
+ */
+
+
 #define GLOBAL_CONSTANTS_C
+#define NO_CONST_ARRAYS
 #include "inc/freeEMS.h"
 
 

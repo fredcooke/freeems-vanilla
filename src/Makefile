@@ -160,7 +160,7 @@ DATA = $(FIXEDCLASSES) $(LOOKUPCLASSES1) $(LOOKUPCLASSES2) $(FUELCLASSES) $(TIME
 CLASSES = $(SOURCE) $(DATA)
 
 # Engine position/RPM here
-RPMCLASSES = NipponDenso.c LT1-360-8.c Subaru-32-2-2-2.c MissingTeeth.c MiataNB.c
+RPMCLASSES = NipponDenso.c LT1-360-8.c Subaru-36-2-2-2.c MissingTeeth.c MiataNB.c
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
 
 
@@ -182,6 +182,9 @@ ALLDMPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES)) 
 ALLMAPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
 ALLREAD = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES)) $(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
 ALLS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES)) $(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
+
+# Convert to output files for GC variants
+GCDELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES)) $(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMHANDASMS))
 GCDS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES)) $(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
 
 
@@ -370,7 +373,7 @@ COPYOPTS =  --output-target=srec \
 
 
 # Build everything the long way (default)
-all: manythingshere
+all: gcs19 s19
 
 # Build minimally and quickly
 fast: lessthings here
@@ -407,8 +410,22 @@ $(ALLELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
-	$(GCC) $(GCCOPTS) $(LINKOPTSGC) -o $@.gc.elf $< $(OBJECTS) # ...
 	$(GCC) $(GCCOPTS) $(LINKOPTS) -o $@ $< $(OBJECTS)
+
+
+gclinkmsg:
+	################################################################################
+	#                      Linking the Objects into an ELF...                      #
+	################################################################################
+
+gclink: assemble $(OUTDIR) linkmsg $(GCDELFS)
+
+# link the object files into an elf executable
+$(GCDELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS)
+	################################################################################
+	#               Linking $@ ...
+	################################################################################
+	$(GCC) $(GCCOPTS) $(LINKOPTSGC) -o $@ $< $(OBJECTS) # ...
 # The links with garbage collection are to ensure that there are no warnings
 # TODO find out how to stop .tramp from being collected (or inserted)!
 
@@ -418,7 +435,7 @@ s19msg:
 	#                          Building The S19 Files....                          #
 	################################################################################
 
-s19: link $(S19DIR) s19msg $(ALLS19S) $(GCDS19S)
+s19: link $(S19DIR) s19msg $(ALLS19S)
 # the gc dependency is temporary until i figure out if the .tramp removal is an issue or not.
 
 # Generate the loadable s19 firmware files
@@ -428,8 +445,16 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	################################################################################
 	$(COPY) $(COPYOPTS) $< $@
 
+
+gcs19msg:
+	################################################################################
+	#                          Building The S19 Files....                          #
+	################################################################################
+
+gcs19: gclink $(S19DIR) gcs19msg  $(GCDS19S)
+
 # Generate the garbage collected s19 files temporarily
-$(GCDS19S): $(S19DIR)/%.gc.s19: $(OUTDIR)/%.elf.gc.elf
+$(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	################################################################################
 	#               Building $@ ...
 	################################################################################
