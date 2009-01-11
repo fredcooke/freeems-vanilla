@@ -71,7 +71,6 @@
 # Constants
 VERSION = 0.0.19
 OUTPREFIX = freeems
-STAR = *
 
 # Directories here
 RELEASEDIR = ../firmware
@@ -163,6 +162,7 @@ CLASSES = $(SOURCE) $(DATA)
 # Engine position/RPM here
 RPMCLASSES = NipponDenso.c LT1-360-8.c Subaru-32-2-2-2.c MissingTeeth.c MiataNB.c
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
+
 
 # Convert extensions
 PREPROCESSED = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(CLASSES))
@@ -360,25 +360,6 @@ COPYOPTS =  --output-target=srec \
 #        release : md5sum, export, zip, copy, docs, etc                                                                      #
 #                                                                              #
 ################################################################################
-
-
-
-
-################################################################################
-#                   Declare targets that aren't real files                     #
-################################################################################
-
-
-# Top level
-.PHONY: all fast release clean
-# Second level
-.PHONY: rpm nonrpm final debug
-## Third level
-.PHONY: preprocess assemble compile
-# Comments
-.PHONY: etc etc etc
-# Clean targets
-.PHONY: cleanasm cleandebug cleanobj cleanout cleanppc cleanrelease cleans19
 
 
 
@@ -625,3 +606,22 @@ cleanrelease:
 	#                         Removing s19 release files...                        #
 	################################################################################
 	$(RM) $(RELEASEDIR)/*
+
+
+
+
+################################################################################
+#                   Declare targets that aren't real files                     #
+################################################################################
+
+
+# Top level
+.PHONY: all fast release clean
+# Second level
+.PHONY: rpm nonrpm final debug
+## Third level
+.PHONY: preprocess assemble compile
+# Comments
+.PHONY: etc etc etc
+# Clean targets
+.PHONY: cleanasm cleandebug cleanobj cleanout cleanppc cleanrelease cleans19
