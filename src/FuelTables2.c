@@ -1,6 +1,4 @@
-/*	FuelTables2.c
-
-	Copyright 2008 Fred Cooke
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -21,6 +19,18 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file FuelTables2.c
+ * @ingroup dataInitialisers
+ *
+ * @brief Fuel VE and Lambda tables
+ *
+ * This file contains the definition of the secondary VE and lambda tables. The
+ * declaration can be found in the global constants header file.
+ *
+ * @author Fred Cooke
+ */
 
 
 #include "inc/freeEMS.h"

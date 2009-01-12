@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -22,6 +24,7 @@
 
 
 /**	@file commsCore.c
+ * @ingroup communicationsFiles
  *
  * @brief Core communications functions.
  *

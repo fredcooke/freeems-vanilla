@@ -22,7 +22,6 @@
 
 
 /**	@file fuelAndIgnitionCalcs.c
- *
  * @ingroup measurementsAndCalculations
  *
  * @brief Fuel and ignition calculations.
@@ -41,9 +40,7 @@
 #include "inc/fuelAndIgnitionCalcs.h"
 
 
-/** Calculate Fuel And Ignition
- *
- * @brief Fuel and ignition calculations.
+/** @brief Fuel and ignition calculations
  *
  * Using a variety of primary algorithms calculate a base pulsewidth and then
  * apply various corrections to it such as injector dead time, transient fuel

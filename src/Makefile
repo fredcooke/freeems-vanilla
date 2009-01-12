@@ -1,8 +1,8 @@
-#	Makefile
+#	FreeEMS - the open source engine management system
 #
-#	Copyright 2008 Fred Cooke
+#	Copyright 2008, 2009 Fred Cooke
 #
-#	This file is part of the FreeEMS project.
+#	This Makefile is part of the FreeEMS project.
 #
 #	FreeEMS software is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -22,13 +22,66 @@
 #
 #	Thank you for choosing FreeEMS to run your engine!
 
-VERSION = 0.0.19
 
+################################################################################
+#                                                                              #
+#   This Makefile is designed to be run with GNU make! Accept no substitute!   #
+#                                                                              #
+################################################################################
+#                                                                              #
+#   Top level targets:                                                         #
+#                                                                              #
+#   make:                                                                      #
+#       Builds all output files in the slow multi stage way with all debugging #
+#   make fast:                                                                 #
+#       Compiles from C straight to objects, links to elfs and copies to s19s  #
+#   make clean:                                                                #
+#       Permanently removes all build artifact files and directories           #
+#   make release:                                                              #
+#       Cleans the project, builds it from scratch, copies the s19 files up to #
+#       the firmware directory, zips each s19 separately, zips all of the      #
+#       documentation, cleans the project again and lastly zips the entire     #
+#       project directory                                                      #
+#                                                                              #
+################################################################################
+#                                                                              #
+#   When doing a full build the following steps are taken:                     #
+#                                                                              #
+#    1) Pre-process all of the C files                                         #
+#    2) Compile all preprocessed C files into assembly files                   #
+#    3) Assemble all assembly files into object files                          #
+#    4) Dump the contents of all object files                                  #
+#    5) Link one decoder with garbage collection and reporting turned on       #
+#    6) Link each decoder without garbage collection                           #
+#    7) Dump the contents of each decoders elf                                 #
+#    8) Produce a memory map for each elf                                      #
+#    9) Produce a readelf dump for each elf                                    #
+#   10) Produce an s19 loadable firmware file for each elf                     #
+#                                                                              #
+################################################################################
+
+
+
+
+################################################################################
+#                             All Fixed Variables                              #
+################################################################################
+
+
+# Constants
+VERSION = 0.0.19
+OUTPREFIX = freeems
+
+# Directories here
+RELEASEDIR = ../firmware
 INCDIR = inc
+BUGDIR = debug
 OUTDIR = output
 OBJDIR = objects
 ASMDIR = assembly
-PPCSDIR = preprocessedc
+S19DIR = firmware
+PPCDIR = preprocessedc
+
 # Set the windows/non debian path first and then overwrite
 # with the debian one so we can grep the deb line out and
 # end up with a working windows make file in an automated
@@ -39,6 +92,7 @@ PPCSDIR = preprocessedc
 PREFIX = m6811-elf-
 PREFIX = m68hc11-
 
+# All of the tools
 CP = cp
 RM = rm -rf
 ZIP = zip
@@ -49,60 +103,97 @@ NM = $(PREFIX)nm
 RE = $(PREFIX)readelf
 SIZE = $(PREFIX)size
 
-#Temporary - need to suss out. for now any H change = full recompile.
-ASMH = 9S12XDP512asm.s
-ISRH = interrupts.h
-GLOBALH = freeEMS.h 9S12XDP512.h memory.h globalConstants.h globalDefines.h errorDefines.h structs.h TunableConfigs.h FixedConfigs.h
-ISRSH = commsISRs.h injectionISRs.h
-UTILH = utils.h
-COMMSH = commsCore.h blockDetailsLookup.h
-FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
+
+
+
+################################################################################
+#                               All Source Files                               #
+################################################################################
+
+
+# Indirect dependencies - any header change means a full recompile. This can be improved upon and made more specific.
 MAINH = main.h
 INITH = init.h
-FLASHH = flashWrite.h
-LOOKUPH = tableLookup.h
-LINKER = memory.x regions.x hc9s12xdp512elfb.x
+UTILH = utils.h
 MFILE = Makefile
-WMFILE = Makefile.windows
+ISRH = interrupts.h
 CINCS = injectorISR.c
+FLASHH = flashWrite.h
+ASMH = 9S12XDP512asm.s
+LOOKUPH = tableLookup.h
+WMFILE = Makefile.windows
+ISRSH = commsISRs.h injectionISRs.h
+COMMSH = commsCore.h blockDetailsLookup.h
+LINKER = memory.x regions.x hc9s12xdp512elfb.x
+GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h
+GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
+FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
 
-# let's keep this to a bare minimum! :-)
+# Let's keep this to a bare minimum! If you write ASM code
+# please provide an matching alternate C implementation too.
 HANDASMS = flashBurn.s
+#RPMHANDASMS = 
 
-# .c files from inc/ should be included here as deps for the parts they are relied on by!! TODO
-
-ALLHEADERS = $(GLOBALH) $(COMMSH) $(ISRSH) $(UTILH) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(FLASHH) $(LOOKUPH)
+# .c files from inc/ should be included here as deps for the parts they are relied on by!!
+ALLHEADERS = $(GLOBALH1) $(GLOBALH2) $(COMMSH) $(ISRSH) $(UTILH) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(FLASHH) $(LOOKUPH)
 ALLH = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS)) $(LINKER) $(MFILE) $(patsubst %.c,$(INCDIR)/%.c,$(CINCS)) $(INCDIR)/$(ASMH)
 
 # Warning : do not include .c files from inc/ as they are included into the other C files and automatically compiled.
-#			    0.2k		  2k +				 2k +				2k
-FLASHCLASSES = FixedConfig1.c FixedConfig2.c IATTransferTable.c CHTTransferTable.c MAFTransferTable.c TestTransferTable.c
-# 8*1k + 8*1k + 8*1k = 24k
+
+# Flash data files
+FIXEDCLASSES = FixedConfig1.c FixedConfig2.c
+LOOKUPCLASSES1 = IATTransferTable.c CHTTransferTable.c
+LOOKUPCLASSES2 = MAFTransferTable.c TestTransferTable.c
 FUELCLASSES = FuelTables.c FuelTables2.c
 TIMECLASSES = TimingTables.c TimingTables2.c
 TUNECLASSES = TunableConfig.c TunableConfig2.c
 
-# Code and global constants can be stored anywhere
-SUBCLASSES = fuelAndIgnitionCalcs.c commsCore.c blockDetailsLookup.c coreVarsGenerator.c derivedVarsGenerator.c flashWrite.c tableLookup.c interrupts.c init.c utils.c globalConstants.c
-# ISR code that MUST be in the unpaged flash! 
-ISRCLASSES = injectionISRs.c ignitionISRs.c enginePositionISRs.c commsISRs.c realtimeISRs.c miscISRs.c
+# Source code files
+UTILCLASSES = tableLookup.c init.c utils.c globalConstants.c
+MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c
+COMCLASSES = flashWrite.c commsCore.c blockDetailsLookup.c
+ISRCLASSES = interrupts.c injectionISRs.c ignitionISRs.c commsISRs.c realtimeISRs.c miscISRs.c
 
-CLASSES = freeEMS.c staticInit.c main.c $(SUBCLASSES) $(ISRCLASSES) $(FLASHCLASSES) $(FUELCLASSES) $(TIMECLASSES) $(TUNECLASSES)
+# All but the engine position/RPM combined here
+SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSES) $(ISRCLASSES)
+DATA = $(FIXEDCLASSES) $(LOOKUPCLASSES1) $(LOOKUPCLASSES2) $(FUELCLASSES) $(TIMECLASSES) $(TUNECLASSES)
+CLASSES = $(SOURCE) $(DATA)
 
-PREPROCESSED = $(patsubst %.c,$(PPCSDIR)/%.pp.c,$(CLASSES))
+# Engine position/RPM here
+RPMCLASSES = NipponDenso.c LT1-360-8.c Subaru-36-2-2-2.c MissingTeeth.c MiataNB.c
+# future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
+
+
+# Convert extensions
+PREPROCESSED = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(CLASSES))
 ASSEMBLIES = $(patsubst %.c,$(ASMDIR)/%.s,$(CLASSES))
 OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
-DUMPS = $(patsubst %.c,$(OBJDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(OBJDIR)/%.dmp,$(HANDASMS))
+DUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(HANDASMS))
 
-S19FILE = freeems-$(VERSION).s19
+# Convert RPM extensions
+PREPROCESSEDRPM = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(RPMCLASSES))
+ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
+OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst %.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
+DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
-REOUT = $(OUTDIR)/freeems-$(VERSION).re
-ELFOUT = $(OUTDIR)/freeems-$(VERSION).elf
-DUMPOUT = $(OUTDIR)/freeems-$(VERSION).dmp
-MAPOUT = $(OUTDIR)/freeems-$(VERSION).map
-S19OUT = $(OUTDIR)/$(S19FILE)
-S19SAVED = ../firmware/$(S19FILE)
-S19ZIP = $(S19SAVED).zip
+# Convert to output files
+ALLELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMCLASSES)) #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMHANDASMS))
+ALLDMPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMHANDASMS))
+ALLMAPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
+ALLREAD = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
+ALLS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES)) #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
+
+# Convert to output files for GC variants
+GCDELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES)) #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMHANDASMS))
+GCDS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES)) #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
+
+
+
+
+################################################################################
+#                           All Command Line Options                           #
+################################################################################
+
 
 # M68hc1x GCC Options we may want : -minmax  -mlong-calls
 
@@ -114,19 +205,14 @@ GCCOPTS = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -fo
 # have to review this at a later date perhaps splitting paged functions from nonpaged ones.
 
 # pass to linker, link for hc12
+# The vectors address in the linker options is the VMA address and must be short form 0xF710, not a paged address.
 LINKOPTS = -Wl,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
 LINKOPTSGC = -Wl,--gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
-#LINKOPTS = -Wl,--print-map,--gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
-# vectors address in the above line is the VMA address and must be short form 0xF710, not a paged address.
-# Add this in : "--print-map," with no spaces/quotes to get a map dump when the linker fails in a confusing way.
-# --gc-sections,--print-gc-sections, add those in to find out what isn't being used and clear up flash space
+# Use this to get a map dump when the linker fails in a confusing way :
+#LINKOPTSGC = -Wl,--print-map,--gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
 
 # If using the below option for paged flash, the ADDRESS_TYPE field in the freeEMSloader script should be updated to match.
 # --change-section-lma .ppagePP=0xPP8000 \ (where PP = the ppage value for that page of flash) OR if using linear address per formula
-#		--only-section=.text2 --change-section-lma .text2=0x380000 \ produced error
-# .rodata is now inside .text for convenience during load
-
-
 COPYOPTS =  --output-target=srec \
 		--change-section-lma .fixedconf1+0xFD4000 \
 		--change-section-lma .fixedconf2+0xFD4000 \
@@ -181,6 +267,8 @@ COPYOPTS =  --output-target=srec \
 #		--only-section=.ppageFD \	This is left here for clarity only (equivalent to text1 but paged)
 #		--only-section=.ppageFF		This is left here for clarity only (equivalent to text but paged)
 # Changes to the above options should be reflected in memory.x and memory.h also!
+
+# The following flash areas can only be used once Sean has written his loader app :
 #		--only-section=.ppageE0 \
 #		--only-section=.ppageE1 \
 #		--only-section=.ppageE2 \
@@ -231,188 +319,336 @@ COPYOPTS =  --output-target=srec \
 #		--change-section-lma .ppageF7=0xF78000 \
 
 
-# do the assemblies first as its faster, then objects, then preprocessed files.
-# the labels are there to print out the messages, the variables are the dependencies which do the work.
-all: $(PPCSDIR) preprocess $(PREPROCESSED) compile $(ASSEMBLIES) $(OBJDIR) assemble $(OBJECTS) $(OUTDIR) link $(ELFOUT) debug $(DUMPOUT) $(MAPOUT) $(REOUT) s19 $(S19OUT)
-fast: $(OBJDIR) fastcomp $(OBJECTS) $(OUTDIR) link $(ELFOUT) s19 $(S19OUT)
-alldebug: $(OBJDIR) dumps $(DUMPS) $(OUTDIR) debug $(DUMPOUT) $(MAPOUT) $(REOUT)
-release: save $(S19SAVED) makewinmake $(WMFILE) clean commit svnexp zipall $(ALLZIP) zips19 $(S19ZIP) upload
-
-$(PPCSDIR):
-	mkdir -p $(PPCSDIR)
-
-$(OUTDIR):
-	mkdir -p $(OUTDIR)
-
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
-preprocess:
-	################################################################################
-	#                        Running the C Pre Processor...                        #
-	################################################################################
-
-# Generate preprocessed source files to examine
-$(PREPROCESSED): $(PPCSDIR)/%.pp.c: %.c $(ALLH)
-	$(GCC) $(GCCOPTS) -E $< > $@
 
 
-# traditional single stage compile
-fastcomp:
-	################################################################################
-	#                             Compiling FreeEMS...                             #
-	################################################################################
+################################################################################
+#                        Dependency And Target Summary                         #
+################################################################################
+#                                                                              #
+#   Top level targets:                                                         #
+#                                                                              #
+#       1) all                                                                 #
+#       2) fast                                                                #
+#       3) install                                                             #
+#       4) release                                                             #
+#       5) clean                                                               #
+#                                                                              #
+#   Second level targets:                                                      #
+#                                                                              #
+#       1) nonrpm:                                                             #
+#                                                                              #
+#           1) preprocess [list] Generate preprocessed C from sources          #
+#           2) assemble   [list] Generate assembly from preprocessed C         #
+#           3) compile    [list] Generate object files from assembly           #
+#                                                                              #
+#       2) rpm:                                                                #
+#                                                                              #
+#           1) preprocessrpm [list] Generate preprocessed C from sources       #
+#           2) assemblerpm   [list] Generate assembly from preprocessed C      #
+#           3) compilerpm    [list] Generate object files from assembly        #
+#                                                                              #
+#       3) final:                                                              #
+#                                                                              #
+#           1) link [list] Generate ELFs objects                               #
+#           2) copy [list] s19s from elfs                                      #
+#                                                                              #
+#       4) debug:                                                              #
+#                                                                              #
+#           1) link      [list] Generate ELFs objects                          #
+#           2) dump      [list] dumpslarge from elfs                           #
+#           3) map       [list] mapslarge from elfs                            #
+#           4) read      [list] relarge from elfs                              #
+#           5) dumpsmall [list] dumpsall from obj + rpmobj                     #
+#                                                                              #
+#        release : md5sum, export, zip, copy, docs, etc                                                                      #
+#                                                                              #
+################################################################################
 
-#$(ASSEMBLIES): $(ASMDIR)/%.s: $(PPCSDIR)/%.pp.c
-	#$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
-# generate assembly files to examine
-compile:
-	################################################################################
-	#                         Compiling PPC to Assembly...                         #
-	################################################################################
 
-$(ASSEMBLIES): $(ASMDIR)/%.s: $(PPCSDIR)/%.pp.c
-	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
+################################################################################
+#                           All Target Dependencies                            #
+################################################################################
 
 
-# generate object files to link
-assemble:
-	################################################################################
-	#                          Assembling Object Files...                          #
-	################################################################################
+# Build everything the long way (default)
+all: gcs19 s19
+allfull: s19
+allgc: gcs19 #...
 
-$(OBJECTS): $(OBJDIR)/%.o: $(ASMDIR)/%.s
-	$(GCC) $(GCCOPTS) -c -o $@ $<
+# Build minimally and quickly
+fast: lessthings here
+
+# Load the s19 of your choice
+install: clean fast loader
+
+# Perform a release
+release: clean cleanrelease fast someMoreStuffHere
+
+clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
+
+final: link copy 
+
+debug: dump map read dumpsmall
 
 
-# link the object files into an elf executable
-link:
+
+
+################################################################################
+#                       Link and Copy Target Definitions                       #
+################################################################################
+
+
+linkmsg: #...
 	################################################################################
 	#                      Linking the Objects into an ELF...                      #
 	################################################################################
 
-$(ELFOUT): $(OBJECTS)
-	$(GCC) $(GCCOPTS) $(LINKOPTSGC) -o $(ELFOUT) $(OBJECTS) # ...
-	$(GCC) $(GCCOPTS) $(LINKOPTS) -o $(ELFOUT) $(OBJECTS)
-# the above is to ensure no warnings, TODO find out how to stop .tramp from being collected!
+link: assemble $(OUTDIR) linkmsg $(ALLELFS)
 
-# dump the full disassembled source with private headers
-dumps:
+# link the object files into an elf executable
+$(ALLELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
 	################################################################################
-	#                      Creating Individual Dump Files...                       #
+	#               Linking $@ ...
 	################################################################################
-
-$(DUMPS): $(OBJDIR)/%.dmp: $(OBJDIR)/%.o
-	$(DUMP) -spSd $< > $@
+	$(GCC) $(GCCOPTS) $(LINKOPTS) -o $@ $< $(OBJECTS)
 
 
-# dump the full disassembled source with private headers
-# create a memory map
-# output the readelf information 
-debug:
+gclinkmsg: #...
 	################################################################################
-	#                          Generating Debug Files...                           #
-	################################################################################
-	
-$(DUMPOUT): $(ELFOUT)
-	$(DUMP) -spSd $(ELFOUT) > $(DUMPOUT)
-
-$(MAPOUT): $(ELFOUT)
-	$(NM) $(ELFOUT) | sort > $(MAPOUT)
-
-$(REOUT): $(ELFOUT)
-	$(RE) -a -W $(ELFOUT) > $(REOUT)
-
-s19:
-	################################################################################
-	#                           Building The S19 File...                           #
+	#                      Linking the Objects into an ELF...                      #
 	################################################################################
 
-# generate a loadable s19
-$(S19OUT): $(ELFOUT)
-	$(COPY) $(COPYOPTS) $(ELFOUT) $(S19OUT)
+gclink: assemble $(OUTDIR) linkmsg $(GCDELFS) #...
+
+# link the object files into an elf executable with gc...
+$(GCDELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS) #...
+	################################################################################
+	#               Linking $@ ...
+	################################################################################
+	$(GCC) $(GCCOPTS) $(LINKOPTSGC) -o $@ $< $(OBJECTS) # ...
+# The links with garbage collection are to ensure that there are no warnings ...
+# TODO find out how to stop .tramp from being collected (or inserted)! ...
+
+
+s19msg: #...
+	################################################################################
+	#                          Building The S19 Files....                          #
+	################################################################################
+
+s19: link $(S19DIR) s19msg $(ALLS19S)
+# the gc dependency is temporary until i figure out if the .tramp removal is an issue or not.
+
+# Generate the loadable s19 firmware files
+$(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
+	################################################################################
+	#               Building $@ ...
+	################################################################################
+	$(COPY) $(COPYOPTS) $< $@
+
+
+gcs19msg: #...
+	################################################################################
+	#                          Building The S19 Files....                          #
+	################################################################################
+
+gcs19: gclink $(S19DIR) gcs19msg  $(GCDS19S) #...
+
+# Generate the garbage collected s19 files temporarily...
+$(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf #...
+	################################################################################
+	#               Building $@ ...
+	################################################################################
+	$(COPY) $(COPYOPTS) $< $@ #...
+
+
+sizemsg: #...
+	################################################################################
+	#                          Measuring The S19 Files...                          #
+	################################################################################
+
+size: # TODO this should be run for each s19 target with only the one rpm .o file
 	$(SIZE) -t $(OBJECTS)
-	echo "Flash image size is" `echo \`cat $(S19OUT) | wc -l\` "* 16" | bc -l` "bytes..."
+
+sizes: # TODO this should be run for each s19 file too...
+	echo "Flash image size for $(VERSION) is" `echo \`cat $(S19OUT) | wc -l\` "* 16" | bc -l` "bytes..."
 
 
-# not yet implemented!
-commit:
+
+
+################################################################################
+#              Preprocess, Compile and Assemble Target Definitions             #
+################################################################################
+
+
+preprocessmsg: #...
 	################################################################################
-	#                          Commiting final changes...                          #
-	################################################################################
-
-
-# not yet implemented!
-svnexp:
-	################################################################################
-	#                            Exporting from SVN...                             #
-	################################################################################
-
-
-# not yet implemented!
-upload:
-	################################################################################
-	#                            Uploading to SF.net...                            #
+	#                        Running the C Pre Processor...                        #
 	################################################################################
 
+preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
 
-save:
+# Generate preprocessed source files to examine
+$(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH)
+	$(GCC) $(GCCOPTS) -E $< > $@
+
+
+compilemsg: #...
 	################################################################################
-	#                            Saving The Firmware...                            #
-	################################################################################
-
-# save a copy in firmware directory above
-$(S19SAVED): $(S19OUT)
-	$(CP) $(S19OUT) $(S19SAVED)
-
-
-makewinmake:
-	################################################################################
-	#                        Generating Windows Makefile...                        #
+	#                         Compiling PPC to Assembly...                         #
 	################################################################################
 
-$(WMFILE): $(MFILE)
-	../bin/makeWinMake.bash
+compile: preprocess compilemsg $(ASSEMBLIES) $(ASSEMBLIESRPM)
+
+# Generate assembly files to examine
+$(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
+	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
-# zip that copy ready for release
-zipall:
+assemblemsg: #...
 	################################################################################
-	#                            Zipping The Release...                            #
+	#                          Assembling Object Files...                          #
 	################################################################################
-	#$(S19ZIP): $(S19SAVED)
-	#	$(RM) $(S19ZIP)
-	#	$(ZIP) $(S19ZIP) $(S19SAVED)
+
+assemble: compile $(OBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM)
+
+# Generate object files to link
+$(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
+	$(GCC) $(GCCOPTS) -c -o $@ $<
 
 
-# zip that copy ready for release
-zips19:
+
+
+################################################################################
+#                     Release Procedure Target Definitions                     #
+################################################################################
+
+### clean all
+
+#check git status for changes, fail build if not fully commited
+
+### build all
+
+#copy s19s up
+
+#md5sum s19s above
+
+### clean all
+
+#git commit s19s
+
+#zip each s19 to parent
+
+#zip docs to parent
+
+#zip without docs to parent
+
+#zip entire directory to parent
+
+
+
+
+################################################################################
+#                     Create Directory Target Definitions                      #
+################################################################################
+
+# Assembly, release and inc directories don't get removed.
+
+$(BUGDIR):
 	################################################################################
-	#                           Zipping The Firmware...                            #
+	#                       Creating the debug directory....                       #
 	################################################################################
-	# move this process to above the normal dirs
-$(S19ZIP): $(S19SAVED)
-	$(RM) $(S19ZIP)
-	$(ZIP) $(S19ZIP) $(S19SAVED)
+	mkdir -p $(BUGDIR)
+
+$(S19DIR):
+	################################################################################
+	#                      Creating the firmware directory...                      #
+	################################################################################
+	mkdir -p $(S19DIR)
+
+$(PPCDIR):
+	################################################################################
+	#                   Creating the preprocessedc directory....                   #
+	################################################################################
+	mkdir -p $(PPCDIR)
+
+$(OUTDIR):
+	################################################################################
+	#                       Creating the output directory...                       #
+	################################################################################
+	mkdir -p $(OUTDIR)
+
+$(OBJDIR):
+	################################################################################
+	#                       Creating the object directory...                       #
+	################################################################################
+	mkdir -p $(OBJDIR)
 
 
-# remove the lot
-clean:
+
+
+################################################################################
+#                            Clean Target Definitions                          #
+################################################################################
+
+cleanasm:
 	################################################################################
 	#                     Removing generated assembly files....                    #
 	################################################################################
-	$(RM) $(ASSEMBLIES)
+	$(RM) $(ASSEMBLIES) $(ASSEMBLIESRPM)
+
+cleanppc:
 	################################################################################
 	#                  Removing pre-processed C output directory...                #
 	################################################################################
-	$(RM) $(PPCSDIR)
+	$(RM) $(PPCDIR)
+
+cleanobj:
 	################################################################################
-	#                 Removing object and dump output directory....                #
+	#                         Removing object directory...                         #
 	################################################################################
 	$(RM) $(OBJDIR)
+
+cleanout:
 	################################################################################
-	#                      Removing final output directory....                     #
+	#                       Removing link output directory...                      #
 	################################################################################
 	$(RM) $(OUTDIR)
+
+cleans19:
+	################################################################################
+	#                           Removing s19 directory...                          #
+	################################################################################
+	$(RM) $(S19DIR)
+
+cleandebug:
+	################################################################################
+	#                          Removing debug directory...                         #
+	################################################################################
+	$(RM) $(DEBUGDIR)
+
+cleanrelease:
+	################################################################################
+	#                         Removing s19 release files...                        #
+	################################################################################
+	$(RM) $(RELEASEDIR)/*
+
+
+
+
+################################################################################
+#                   Declare targets that aren't real files                     #
+################################################################################
+
+
+# Top level
+.PHONY: all fast release clean
+# Second level
+.PHONY: rpm nonrpm final debug
+## Third level
+.PHONY: preprocess assemble compile
+# Comments
+.PHONY: etc etc etc
+# Clean targets
+.PHONY: cleanasm cleandebug cleanobj cleanout cleanppc cleanrelease cleans19

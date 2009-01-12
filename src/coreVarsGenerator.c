@@ -20,8 +20,8 @@
 
 	Thank you for choosing FreeEMS to run your engine! */
 
+
 /**	@file coreVarsGenerator.c
- *
  * @ingroup measurementsAndCalculations
  *
  * @brief Generate the core variables and average them.

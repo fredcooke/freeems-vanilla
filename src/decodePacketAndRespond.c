@@ -1,8 +1,4 @@
-/**	@file decodePacketAndRespond.c
-
-	Copyright 2008 Fred Cooke
-
-	Empty file to be filled out in a later release.
+/*	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -25,9 +21,21 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file decodePacketAndRespond.c
+ * @ingroup communicationsFiles
+ *
+ * @brief Empty file to be filled out
+ * @details Empty file to be filled out in a later release.
+ *
+ * @todo TODO Split the functionality out for 0.0.20
+ *
+ * @author Fred Cooke
+ */
+
+
 #define DECODE_PACKET_AND_RESPOND_C
 #include "inc/freeEMS.h"
 #include "inc/decodePacketAndRespond.h"
 
 
-/// @todo TODO Split the functionality out for 0.0.20
+// code here

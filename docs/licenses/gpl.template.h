@@ -22,6 +22,9 @@
 
 
 /**	@file filename.h
+ * @ingroup putMeInSomeGroups
+ *
+ * no brief description unless global or general purpose
  *
  * Description about what this file is intended to contain and
  * anything else that is unique and/or notable about it here!
@@ -31,6 +34,11 @@
  * - Change the name to your own at the top of the GPL comment
  * - Change the filename to the correct one at the top of this comment
  * - Change all 4 hash defines to the filename uppercased and underscored
+ *
+ * @bug THIS DOCUMENTATION IS FAULTY!!
+ * @todo REPLACE THIS WITH REAL DOCUMENTATION!!
+ * @note SOME LAZY DEVELOPER DIDN'T CUSTOMISE THEIR DOCUMENTATION!!
+ * @warning IMAGINE WHAT THEIR CODE MIGHT BE LIKE IF THEIR DOCUMENTATION IS THIS BAD!!
  */
 
 

@@ -1,9 +1,6 @@
-/**	@file enginePositionISRs.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
-
-	This file contains the two interrupt service routines for handling engine
-	position and RPM signals.
 
 	This file is part of the FreeEMS project.
 
@@ -26,11 +23,35 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-#define ENGINEPOSITIONISRS_C
+/**	@file NipponDenso.c
+ * @ingroup interruptHandlers
+ * @ingroup enginePositionRPMDecoders
+ *
+ * @brief Reads Nippon Denso 24/2 sensors
+ *
+ * This file contains the two interrupt service routines for handling engine
+ * position and RPM signals from mainly Toyota engines using this sensor style.
+ *
+ * One ISR handles the 24 evenly spaced teeth and the other handles the two
+ * adjacent teeth. This signal style provides enough information for wasted
+ * spark ignition and semi sequential fuel injection.
+ *
+ * Supported engines include:
+ * - 4A-GE
+ * - 7A-FE
+ * - 3S-GE
+ * - 1UZ-FE
+ * - Mazda F2T
+ *
+ * @author Fred Cooke
+ *
+ * @todo TODO make this generic for evenly spaced teeth with a pulse per revolution from the second input.
+ */
+
+
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
 #include "inc/utils.h"
-#include "inc/commsISRs.h"
 
 
 /** Primary RPM ISR
@@ -49,6 +70,10 @@
  * Sample ADCs :
  * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
  * Set flag stating that New pulse, advance, etc should be calculated.
+ *
+ * @author Fred Cooke
+ *
+ * @warning These are for testing and demonstration only, not suitable for driving with just yet.
  *
  * @todo TODO bring the above docs up to date with reality
  * @todo TODO finish this off to a usable standard

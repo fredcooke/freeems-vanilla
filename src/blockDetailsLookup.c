@@ -22,6 +22,7 @@
 
 
 /**	@file blockDetailsLookup.c
+ * @ingroup communicationsFiles
  *
  * @brief Memory block details lookup
  *
