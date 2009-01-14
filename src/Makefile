@@ -373,9 +373,9 @@ COPYOPTS =  --output-target=srec \
 
 
 # Build everything the long way (default)
-all: gcs19 s19
-allfull: s19
-allgc: gcs19 #...
+all: gcs19 s19 size
+allfull: s19 size
+allgc: gcs19 size #...
 
 # Build minimally and quickly
 fast: lessthings here
@@ -446,6 +446,10 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	#               Building $@ ...
 	################################################################################
 	$(COPY) $(COPYOPTS) $< $@
+	################################################################################
+	#               Measuring $@ ...
+	################################################################################
+	echo "Flash image size of $@ is" `echo \`cat $@ | wc -l\` "* 16" | bc -l` "bytes..."
 
 
 gcs19msg: #...
@@ -461,18 +465,37 @@ $(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf #...
 	#               Building $@ ...
 	################################################################################
 	$(COPY) $(COPYOPTS) $< $@ #...
+	################################################################################
+	#               Measuring $@ ...
+	################################################################################
+	echo "Flash image size of $@ is" `echo \`cat $@ | wc -l\` "* 16" | bc -l` "bytes..."
 
 
-sizemsg: #...
-	################################################################################
-	#                          Measuring The S19 Files...                          #
-	################################################################################
+
+
+################################################################################
+#                     Size Measuring Target Definition                         #
+################################################################################
+
 
 size: # TODO this should be run for each s19 target with only the one rpm .o file
+	################################################################################
+	#                          Measuring The Decoder Binaries...                   #
+	################################################################################
+	$(SIZE) $(OBJECTSRPM)
+	################################################################################
+	#                          Measuring All Other Binaries...                     #
+	################################################################################
 	$(SIZE) -t $(OBJECTS)
-
-sizes: # TODO this should be run for each s19 file too...
-	echo "Flash image size for $(VERSION) is" `echo \`cat $(S19OUT) | wc -l\` "* 16" | bc -l` "bytes..."
+	################################################################################
+	#                    Add one decoder to the total above and                    #
+	#                   subtract the size reported for freeEMS.o                   #
+	#                   this will give you the actual image size                   #
+	################################################################################
+	#                                                                              #
+	#                  Thank you for building FreeEMS firmware!!!                  #
+	#                                                                              #
+	################################################################################
 
 
 
@@ -532,7 +555,7 @@ $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
 
 #copy s19s up
 
-#md5sum s19s above
+#md5sum/sha1sum s19s above
 
 ### clean all
 
