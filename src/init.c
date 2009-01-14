@@ -1,4 +1,4 @@
-/*	init.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -23,6 +23,24 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file init.c
+ *
+ * @brief Initialise the devices state
+ *
+ * Setup, configure and initialise all aspects of the devices state including
+ * but not limited to:
+ *
+ * - Setup the bus clock speed
+ * - Configuration based variable initialisation
+ * - I/O register behaviour and initial state
+ * - Configure and enable interrupts
+ * - Copy tunable data up to RAM from flash
+ * - Configure peripheral module behaviour
+ *
+ * @author Fred Cooke
+ */
+
+
 #define INIT_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
@@ -33,14 +51,22 @@
 #include <string.h>
 
 
-/* Main init function to be called from main.c before entering the main loop */
+/** @brief The main top level init
+ *
+ * The main init function to be called from main.c before entering the main
+ * loop. This function is simply a delegator to the finer grained special
+ * purpose init functions.
+ *
+ * @author Fred Cooke
+ */
 void init(){
 	ATOMIC_START();			/* Disable ALL interrupts while we configure the board ready for use */
 	initPLL();				/* Set up the PLL and use it */
 	initIO();				/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
 	initAllPagedRAM();			/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
+	initAllPagedAddresses();	/* Save the paged memory addresses to variables such that we can access them from another paged block with no warnings */
 	initVariables();		/* Initialise the rest of the running variables etc */
-	initFlash();			/* TODO, populate */
+	initFlash();			/* TODO, finalise this */
 	initECTTimer();			/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
 	initPITTimer();			/* TODO ditto... */
 	initSCIStuff();			/* Setup the sci module(s) that we will use. */
@@ -54,7 +80,13 @@ void init(){
 //#define NO_INIT
 
 
-/* Set the Phase Locked Loop to our desired frequency (80MHz) and switch to using it for clock (40MHz bus speed) */
+/** @brief Set the PLL clock frequency
+ *
+ * Set the Phase Locked Loop to our desired frequency (80MHz) and switch to
+ * using it for clock (40MHz bus speed).
+ *
+ * @author Fred Cooke
+ */
 void initPLL(){
 	CLKSEL &= PLLSELOFF;	/* Switches to base external OSCCLK to ensure PLL is not being used (off out of reset, but not sure if the monitor turns it on before passing control or not) */
 	PLLCTL &= PLLOFF;		/* Turn the PLL device off to adjust its speed (on by default out of reset) */
@@ -176,8 +208,15 @@ void initIO(){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initLookupAddresses(void){
+/** @brief Buffer lookup tables addresses
+ *
+ * Save pointers to the lookup tables which live in paged flash.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initLookupAddresses(){
 	IATTransferTableLocation = (void*)&IATTransferTable;
 	CHTTransferTableLocation = (void*)&CHTTransferTable;
 	MAFTransferTableLocation = (void*)&MAFTransferTable;
@@ -185,8 +224,15 @@ void initLookupAddresses(void){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initPagedRAMFuel(void){
+/** @brief Buffer fuel tables addresses
+ *
+ * Save pointers to the fuel tables which live in paged flash.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initFuelAddresses(){
 	/* Setup addresses within the page to avoid warnings */
 	VETableMainFlashLocation		= (void*)&VETableMainFlash;
 	VETableSecondaryFlashLocation	= (void*)&VETableSecondaryFlash;
@@ -196,8 +242,17 @@ void initPagedRAMFuel(void){
 	VETableSecondaryFlash2Location	= (void*)&VETableSecondaryFlash2;
 	VETableTertiaryFlash2Location	= (void*)&VETableTertiaryFlash2;
 	LambdaTableFlash2Location		= (void*)&LambdaTableFlash2;
-	/* Copy the tables from flash to RAM */
+}
 
+
+/** @brief Copy fuel tables to RAM
+ *
+ * Initialises the fuel tables in RAM by copying them up from flash.
+ *
+ * @author Fred Cooke
+ */
+void initPagedRAMFuel(void){
+	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_FUEL_ONE;
 	memcpy((void*)&TablesA,	VETableMainFlashLocation,		MAINTABLE_SIZE);
 	memcpy((void*)&TablesB,	(void*)&VETableSecondaryFlash,	MAINTABLE_SIZE);
@@ -211,8 +266,15 @@ void initPagedRAMFuel(void){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initPagedRAMTime(void){
+/** @brief Buffer timing tables addresses
+ *
+ * Save pointers to the timing tables which live in paged flash.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initTimingAddresses(){
 	/* Setup addresses within the page to avoid warnings */
 	IgnitionAdvanceTableMainFlashLocation			= (void*)&IgnitionAdvanceTableMainFlash;
 	IgnitionAdvanceTableSecondaryFlashLocation		= (void*)&IgnitionAdvanceTableSecondaryFlash;
@@ -222,8 +284,17 @@ void initPagedRAMTime(void){
 	IgnitionAdvanceTableSecondaryFlash2Location		= (void*)&IgnitionAdvanceTableSecondaryFlash2;
 	InjectionAdvanceTableMainFlash2Location			= (void*)&InjectionAdvanceTableMainFlash2;
 	InjectionAdvanceTableSecondaryFlash2Location	= (void*)&InjectionAdvanceTableSecondaryFlash2;
-	/* Copy the tables from flash to RAM */
+}
 
+
+/** @brief Copy timing tables to RAM
+ *
+ * Initialises the timing tables in RAM by copying them up from flash.
+ *
+ * @author Fred Cooke
+ */
+void initPagedRAMTime(){
+	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TIME_ONE;
 	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlashLocation,			MAINTABLE_SIZE);
 	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlashLocation,		MAINTABLE_SIZE);
@@ -237,8 +308,16 @@ void initPagedRAMTime(void){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initPagedRAMTune(void){
+/** @brief Buffer tunable tables addresses
+ *
+ * Save pointers to the tunable tables which live in paged flash and their
+ * sub-sections too.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initTunableAddresses(){
 	/* Setup addresses within the page to avoid warnings */
 	SmallTablesAFlashLocation 	= (void*)&SmallTablesAFlash;
 	SmallTablesBFlashLocation 	= (void*)&SmallTablesBFlash;
@@ -284,7 +363,13 @@ void initPagedRAMTune(void){
 	fillerC2Location = (void*)&SmallTablesCFlash2.filler;
 	fillerDLocation  = (void*)&SmallTablesDFlash.filler;
 	fillerD2Location = (void*)&SmallTablesDFlash2.filler;
+}
 
+
+/**
+ *
+ */
+void initPagedRAMTune(){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TUNE_ONE;
 	memcpy((void*)&TablesA,	SmallTablesAFlashLocation,	MAINTABLE_SIZE);
@@ -299,19 +384,48 @@ void initPagedRAMTune(void){
 }
 
 
-/* Take the tables and config from flash up to RAM and initialise pointers to them.
+/** @brief Buffer addresses of paged data
+ *
+ * If you try to access paged data from the wrong place you get nasty warnings.
+ * These calls to functions that live in the same page that they are addressing
+ * prevent those warnings.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initAllPagedAddresses(){
+	/* Setup pointers to lookup tables */
+	initLookupAddresses();
+	/* Setup pointers to the main tables */
+	initFuelAddresses();
+	initTimingAddresses();
+	initTunableAddresses();
+}
+
+
+/** @brief Copies paged flash to RAM
+ *
+ * Take the tables and config from flash up to RAM to allow live tuning.
  *
  * For the main tables and other paged config we need to adjust
  * the RPAGE value to the appropriate one before copying up.
+ *
+ * This function is simply a delegator to the ones for each flash page. Each
+ * one lives in the same paged space as the data it is copying up.
+ *
+ * @author Fred Cooke
  */
 void initAllPagedRAM(){
-	/* Setup pointers to lookup tables */
-	initLookupAddresses();
-
 	/* Copy the tables up to their paged ram blocks through the window from flash */
 	initPagedRAMFuel();
 	initPagedRAMTime();
 	initPagedRAMTune();
+
+	/* Default to page one for now, perhaps read the configured port straight out of reset in future? TODO */
+	setupPagedRAM(TRUE); // probably something like (PORTA & TableSwitchingMask)
+}
+
 
 	/* Init all pointers to tunable items with direct addresses */
 	/* Pointers remain the same when switching pages so are initialised only once */
@@ -334,10 +448,6 @@ void initAllPagedRAM(){
 //	dwellMaxVersusRPMTable = &TablesA.SmallTablesA.dwellMaxVersusRPMTable;
 //
 //	perCylinderFuelTrims = TablesB.SmallTablesB.perCylinderFuelTrims;
-
-	/* Default to page one for now, perhaps read the configured port straight out of reset in future? TODO */
-	setupPagedRAM(TRUE); // probably something like (PORTA & TableSwitchingMask)
-}
 
 
 /* Initialise and set up all running variables that require a non-zero start value here */
@@ -382,7 +492,13 @@ void initVariables(){
 	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
 }
 
-/* TODO initialise the flash burning configuration regs */
+/** @brief Flash module setup
+ *
+ * Initialise configuration registers for the flash module to allow burning of
+ * non-volatile flash memory from within the firmware.
+ *
+ * @author Sean Keys
+ */
 void initFlash(){
 	// TBC
 	unsigned char flashclock;

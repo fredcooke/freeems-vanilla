@@ -44,6 +44,7 @@
 void initPLL(void) FPAGE_FE;
 void initIO(void) FPAGE_FE;
 void initAllPagedRAM(void) FPAGE_FE;
+void initAllPagedAddresses(void) FPAGE_FE;
 void initVariables(void) FPAGE_FE;
 void initFlash(void) FPAGE_FE;
 void initECTTimer(void) FPAGE_FE;
@@ -52,6 +53,9 @@ void initSCIStuff(void) FPAGE_FE;
 void initConfiguration(void) FPAGE_FE;
 void initInterrupts(void) FPAGE_FE;
 void initLookupAddresses(void) LOOKUPF;
+void initFuelAddresses(void) FUELTABLESF;
+void initTimingAddresses(void) TIMETABLESF;
+void initTunableAddresses(void) TUNETABLESF;
 void initPagedRAMFuel(void) FUELTABLESF;
 void initPagedRAMTime(void) TIMETABLESF;
 void initPagedRAMTune(void) TUNETABLESF;
