@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -431,6 +433,37 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
 		details->FlashAddress = fillerD2Location;
 		break;
+
+	case coreSettingsALocationID:
+		details->size = 2;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.coreSettingsA);
+		break;
+
+	case sensorRangesLocationID:
+		details->size = SENSOR_RANGES_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.sensorRanges);
+		break;
+
+	case sensorPresetsLocationID:
+		details->size = SENSOR_PRESETS_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.sensorPresets);
+		break;
+
+	case engineSettingsLocationID:
+		details->size = ENGINE_SETTINGS_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.engineSettings);
+		break;
+
+	case userTextFieldLocationID:
+		details->size = userTextFieldArrayLength1;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = &(fixedConfigs1.userTextField);
+		break;
+
 
 	/** @todo TODO (add) Fixed config small blocks */
 	/// @note NOTE these are in linear space so we can get the addresses directly.

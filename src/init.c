@@ -638,13 +638,13 @@ void initConfiguration(){
 	 *nstant = ((masterConst / injectorFlow) * perCylinderVolume) / stoichiometricAFR;
 	 *nstant = ((139371764	 / 4096		   ) * 16384			) / 15053			 ;
 	 * http://www.google.com/search?hl=en&safe=off&q=((139371764++%2F+4096+++++)+*+16384+++)+%2F+15053++++&btnG=Search */
-	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.injectorFlow) * fixedConfigs1.perCylinderVolume) / fixedConfigs1.stoichiometricAFR;
+	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.engineSettings.injectorFlow) * fixedConfigs1.engineSettings.perCylinderVolume) / fixedConfigs1.engineSettings.stoichiometricAFR;
 
 	/* The MAP range used to convert fake TPS from MAP and vice versa */
-	TPSMAPRange = fixedConfigs1.TPSOpenMAP - fixedConfigs1.TPSClosedMAP;
+	TPSMAPRange = fixedConfigs1.sensorRanges.TPSOpenMAP - fixedConfigs1.sensorRanges.TPSClosedMAP;
 
 	/* The ADC range used to generate TPS percentage */
-	TPSADCRange = fixedConfigs1.TPSMaximumADC - fixedConfigs1.TPSMinimumADC;
+	TPSADCRange = fixedConfigs1.sensorRanges.TPSMaximumADC - fixedConfigs1.sensorRanges.TPSMinimumADC;
 
 
 	/* Use like flags for now, just add one for each later */
@@ -653,7 +653,7 @@ void initConfiguration(){
 	/* Check various aspects of config which will cause problems */
 
 	/* BRV max bigger than variable that holds it */
-	if(((unsigned long)fixedConfigs1.BRVMinimum + fixedConfigs1.BRVRange) > 65535){
+	if(((unsigned long)fixedConfigs1.sensorRanges.BRVMinimum + fixedConfigs1.sensorRanges.BRVRange) > 65535){
 		//sendError(BRV_MAX_TOO_LARGE);
 		cumulativeConfigErrors++;
 	}
