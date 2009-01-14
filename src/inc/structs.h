@@ -232,6 +232,14 @@ typedef struct {
 } ADCArray;
 
 
+#define MAINTABLE_SIZE sizeof(mainTable)
+#define MAINTABLE_RPM_LENGTH 24			/* How many cells on the X axis */
+#define MAINTABLE_LOAD_LENGTH 19		/* How many cells on the Y axis */
+#define MAINTABLE_MAX_RPM_LENGTH 27		/* How many cells on the X axis max */
+#define MAINTABLE_MAX_LOAD_LENGTH 21	/* How many cells on the Y axis max */
+#define MAINTABLE_MAX_MAIN_LENGTH 462	/* 924B 462 shorts maximum main table length */
+
+
 /**	@struct maintable
  *
  * @brief Main Table Structure definition
@@ -272,12 +280,6 @@ typedef struct {
 	unsigned short Load[MAINTABLE_MAX_LOAD_LENGTH];		/* The array of Load (Y) axis values */
 	unsigned short Table[MAINTABLE_MAX_MAIN_LENGTH];	/* The table as an array of values */
 } mainTable;
-#define MAINTABLE_SIZE sizeof(mainTable)
-#define MAINTABLE_RPM_LENGTH 24			/* How many cells on the X axis */
-#define MAINTABLE_LOAD_LENGTH 19		/* How many cells on the Y axis */
-#define MAINTABLE_MAX_RPM_LENGTH 27		/* How many cells on the X axis max */
-#define MAINTABLE_MAX_LOAD_LENGTH 21	/* How many cells on the Y axis max */
-#define MAINTABLE_MAX_MAIN_LENGTH 462	/* 924B 462 shorts maximum main table length */
 
 
 #define TWODTABLEUS_SIZE sizeof(twoDTableUS)
