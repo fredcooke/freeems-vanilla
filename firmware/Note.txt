@@ -1,0 +1,13 @@
+Please note :
+
+If you downloaded the latest zipped release these firmware files are current.
+
+However...
+
+If you are accessing these files via a Git clone from github.com then these
+firmware files are not a representation of the current state of the code.
+Rather they are the output from the source as it was at the time of the last
+release of the code. Please attempt to build the code if you want the latest
+at any given time. Beware that "snapshot" code is NOT guaranteed to work.
+
+Thank you for your time!
