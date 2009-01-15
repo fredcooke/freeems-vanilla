@@ -94,7 +94,13 @@
  *     - Added a new group for decoders in doxygen groups
  *     - Added preprocessing, compiling, assembling, linking and copying to s19s to the make file
  *     - Added file name conventions to the code style doc
- *
+ * - Fred 15/1/09 22:26 GMT:
+ *     - Added size reporting to linux makefile
+ *     - Refactored init functions for paged ram copies and addresses
+ *     - Split up fixed conf 1 into 5 addressable chunks
+ *     - Added core vars test generator file
+ *     - Added note about s19 files
+ *     - More doxygen docs and titles in gpl headers
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:
