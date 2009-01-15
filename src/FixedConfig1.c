@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -51,6 +53,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 
 		0x07F0,                 	/* coreSettingsA */
 
+		{
 		roomTemperature,        	/* presetIAT */
 		runningTemperature,     	/* presetCHT */
 		halfThrottle,           	/* presetTPS */
@@ -62,13 +65,10 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		stoichiometricLambda,   	/* presetEGO2 */
 		maxExpectedBoost,       	/* presetIAP */
 		idlePulseWidth,         	/* presetBPW */
-		idleAirFlow,            	/* presetAF */
+		idleAirFlow          		/* presetAF */
+		},
 
-		typicalCylinderSize,    	/* perCylinderVolume */
-		stoichiometricAFROctane,	/* stoichiometricAFR */
-		typicalInjectorSize,    	/* injectorFlow */
-		densityOfOctane,        	/* densityOfFuelAtSTP */
-
+		{
 		offIdleMAP,             	/* TPSClosedMAP */
 		nearlyWOTMAP,           	/* TPSOpenMAP */
 		MPX4250AMin,            	/* MAPMinimum */
@@ -80,7 +80,15 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		batteryVoltageMin,      	/* BRVMinimum */
 		batteryVoltageRange,    	/* BRVRange */
 		TPSDefaultMin,          	/* TPSMinimumADC */
-		TPSDefaultMax,          	/* TPSMaximumADC */
+		TPSDefaultMax          	/* TPSMaximumADC */
+		},
+
+		{
+		typicalCylinderSize,    	/* perCylinderVolume */
+		stoichiometricAFROctane,	/* stoichiometricAFR */
+		typicalInjectorSize,    	/* injectorFlow */
+		densityOfOctane        	/* densityOfFuelAtSTP */
+		},
 
 		{"Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but"}	/* userTextField[] */
 };

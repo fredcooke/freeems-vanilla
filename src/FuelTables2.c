@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -26,8 +28,12 @@
  *
  * @brief Fuel VE and Lambda tables
  *
- * This file contains the definition of the secondary VE and lambda tables. The
- * declaration can be found in the global constants header file.
+ * This file contains the definitions of the secondary group VE and lambda
+ * tables. The declaration can be found in the global constants header file.
+ *
+ * @note At least one Doxygen bug prevents the data structures below being show
+ *       correctly in the documentation for this file. Please see the source
+ *       code itself for more information.
  *
  * @author Fred Cooke
  */
@@ -36,7 +42,6 @@
 #include "inc/freeEMS.h"
 
 
-/* The main Volumetric Efficiency Table */
 const volatile mainTable VETableMainFlash2 FUELTABLESD = {
 	MAINTABLE_RPM_LENGTH,		/* VETableMain.RPMLength */
 	MAINTABLE_LOAD_LENGTH,		/* VETableMain.LoadLength */
@@ -50,7 +55,7 @@ const volatile mainTable VETableMainFlash2 FUELTABLESD = {
 		7000,	7350,	7700,	8050,
 		8400,	8750,	9100
 	},
-	/*VETableMain.Load */
+	/* VETableMain.Load */
 	{
 		 1600,	 3200,	 4800,	 6400,
 		 8000,	 9600,	11200,	12800,
@@ -59,8 +64,8 @@ const volatile mainTable VETableMainFlash2 FUELTABLESD = {
 		27200,	28800,	30400,	32000,
 		33600
 	},
-	/* VETableMain.Table */
-	{	/* Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size. */
+	/* VETableMain.Table (Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size.) */
+	{
 		  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,
 		  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,
 		  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,
@@ -93,7 +98,6 @@ const volatile mainTable VETableMainFlash2 FUELTABLESD = {
 };
 
 
-/* The secondary Volumetric Efficiency Table */
 const volatile mainTable VETableSecondaryFlash2 FUELTABLESD = {
 	MAINTABLE_RPM_LENGTH,		/* VETableSecondary.RPMLength */
 	MAINTABLE_LOAD_LENGTH,		/* VETableSecondary.LoadLength */
@@ -107,7 +111,7 @@ const volatile mainTable VETableSecondaryFlash2 FUELTABLESD = {
 		7000,	7350,	7700,	8050,
 		8400,	8750,	9100
 	},
-	/*VETableSecondary.Load */
+	/* VETableSecondary.Load */
 	{
 		 1600,	 3200,	 4800,	 6400,
 		 8000,	 9600,	11200,	12800,
@@ -150,11 +154,10 @@ const volatile mainTable VETableSecondaryFlash2 FUELTABLESD = {
 };
 
 
-/* The secondary Volumetric Efficiency Table */
 const volatile mainTable VETableTertiaryFlash2 FUELTABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableSecondary.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableSecondary.LoadLength */
-	/* VETableSecondary.RPM */
+	MAINTABLE_RPM_LENGTH,		/* VETableTertiary.RPMLength */
+	MAINTABLE_LOAD_LENGTH,		/* VETableTertiary.LoadLength */
+	/* VETableTertiary.RPM */
 	{
 		   0,	 200,	 700,	1050,
 		1400,	1750,	2100,	2450,
@@ -164,7 +167,7 @@ const volatile mainTable VETableTertiaryFlash2 FUELTABLESD = {
 		7000,	7350,	7700,	8050,
 		8400,	8750,	9100
 	},
-	/*VETableSecondary.Load */
+	/* VETableTertiary.Load */
 	{
 		 1600,	 3200,	 4800,	 6400,
 		 8000,	 9600,	11200,	12800,
@@ -173,7 +176,7 @@ const volatile mainTable VETableTertiaryFlash2 FUELTABLESD = {
 		27200,	28800,	30400,	32000,
 		33600
 	},
-	/* VETableSecondary.Table */
+	/* VETableTertiary.Table */
 	{
 		  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,
 		  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,  49152,
@@ -207,7 +210,6 @@ const volatile mainTable VETableTertiaryFlash2 FUELTABLESD = {
 };
 
 
-/* The Lambda Table */
 const volatile mainTable LambdaTableFlash2 FUELTABLESD = {
 	MAINTABLE_RPM_LENGTH,		/* LambdaTable.RPMLength */
 	MAINTABLE_LOAD_LENGTH,		/* LambdaTable.LoadLength */
@@ -221,7 +223,7 @@ const volatile mainTable LambdaTableFlash2 FUELTABLESD = {
 		 7000,	 7350,	 7700,	 8050,
 		 8400,	 8750,	 9100
 	},
-	/*LambdaTable.Load */
+	/* LambdaTable.Load */
 	{
 		 1600,	 3200,	 4800,	 6400,
 		 8000,	 9600,	11200,	12800,

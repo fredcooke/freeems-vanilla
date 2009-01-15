@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -46,6 +48,82 @@
 #define FILE_FIXED_CONFIGS_H_SEEN
 
 
+
+/** @brief Preset values for inputs
+ *
+ * In some cases you may want to ignore input readings and just use some
+ * configured value for a particular sensor. These are the values used when you
+ * choose to use a fixed reading instead of the real thing.
+ *
+ * @author Fred Cooke
+ */
+typedef struct {
+	/* Pre configured value settings for the sensor inputs */
+	unsigned short presetIAT;
+	unsigned short presetCHT;
+	unsigned short presetTPS;
+	unsigned short presetEGO;
+	unsigned short presetBRV;
+	unsigned short presetMAP;
+	unsigned short presetAAP;
+	unsigned short presetMAT;
+	unsigned short presetEGO2;
+	unsigned short presetIAP;
+	unsigned short presetBPW; /* Base Pulse Width */
+	unsigned short presetAF; /* Air Flow */
+} sensorPreset;
+
+#define SENSOR_PRESETS_SIZE sizeof(sensorPreset)
+
+
+typedef struct {
+/* Sensor related settings */
+unsigned short TPSClosedMAP;
+unsigned short TPSOpenMAP;
+
+/* Sensor input conditioning settings */
+/* These are used to calculate MAP, EGO and TPS from ADC readings. */
+
+/* For MAP, default to MPX4250A 260kPa - 8kPa = 252kPa See the link for the transfer function*/
+unsigned short MAPMinimum;							/* 0 kPa usually. */
+unsigned short MAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
+
+/* For AAP, default to MPX4100A 107.5kPa - 14kPa = 93.5kPa See the link for the transfer function */
+unsigned short AAPMinimum;							/* 0 kPa usually. */
+unsigned short AAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
+
+/* Default to Innovate LC-1 on lambda 0.5 - 1.5 for 0-5V range (lambda range = 1.0) */
+unsigned short EGOMinimum;							/* 0.5 lambda ? (0.5 x 32768 = 16384) */
+unsigned short EGORange;							/* 1.5 lambda ? ((1.5 - 0.5) x 32768 = 32768 (max 49152)) */
+
+/* 0 - 24.5 Volt measurement with 10k and 39k resistors */
+/* http://www.google.com/search?hl=en&safe=off&q=5+*+(39000+%2B+10000)+%2F+10000&btnG=Search */
+unsigned short BRVMinimum;							/* 0 Volts usually. */
+unsigned short BRVRange;							/* 24.5 Volts for 10k and 39k resistors on a 12v vehicle */
+
+/* Default to 25% of voltage = closed (0%) */
+/* 75% of voltage = open (100%) */
+unsigned short TPSMinimumADC;						/* *should* be zero, but often isn't, this value corresponds to 0% TPS */
+unsigned short TPSMaximumADC;						/*  */
+// unsigned short TPSADCRange;						// ?? 100% = how many ADCs ?
+/*efine TPS_MINIMUM 0								** = 0.00%		For clarity ONLY, always zero.	*/
+#define TPS_RANGE_MAX 64000							/* = 100.00%									*/
+} sensorRange;
+
+#define SENSOR_RANGES_SIZE sizeof(sensorRange)
+
+
+typedef struct {
+/* Fuel injection settings TODO duplication from original temp code below!! */
+unsigned short perCylinderVolume;	/* 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
+unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
+unsigned short injectorFlow;		/* Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
+unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
+} engineSetting;
+
+#define ENGINE_SETTINGS_SIZE sizeof(engineSetting)
+
+
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  * If you add something here, please ensure you update all of the following :
@@ -56,7 +134,7 @@
  * @todo TODO split this up!
  * @todo TODO add doxy comments for each element of the struct
  */
-typedef struct {
+typedef struct { // 2 +
 
 	/* Settings variables : 0 = false */
 	unsigned short coreSettingsA;	/* Each bit represents the state of some core setting, masks below and above where the same one is used */
@@ -78,60 +156,12 @@ typedef struct {
 	//#define COREA15			BIT15_16	/* 15 */
 	//#define COREA16			BIT16_16	/* 16 */
 
+	sensorRange sensorRanges;
 
-	/* Pre configured value settings for the sensor inputs */
-	unsigned short presetIAT;
-	unsigned short presetCHT;
-	unsigned short presetTPS;
-	unsigned short presetEGO;
-	unsigned short presetBRV;
-	unsigned short presetMAP;
-	unsigned short presetAAP;
-	unsigned short presetMAT;
-	unsigned short presetEGO2;
-	unsigned short presetIAP;
-	unsigned short presetBPW; /* Base Pulse Width */
-	unsigned short presetAF; /* Air Flow */
+	sensorPreset sensorPresets;
 
+	engineSetting engineSettings;
 
-	/* Fuel injection settings TODO duplication from original temp code below!! */
-	unsigned short perCylinderVolume;	/* 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
-	unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
-	unsigned short injectorFlow;		/* Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
-	unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
-
-	/* Sensor related settings */
-	unsigned short TPSClosedMAP;
-	unsigned short TPSOpenMAP;
-
-
-	/* Sensor input conditioning settings */
-	/* These are used to calculate MAP, EGO and TPS from ADC readings. */
-
-	/* For MAP, default to MPX4250A 260kPa - 8kPa = 252kPa See the link for the transfer function*/
-	unsigned short MAPMinimum;							/* 0 kPa usually. */
-	unsigned short MAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
-
-	/* For AAP, default to MPX4100A 107.5kPa - 14kPa = 93.5kPa See the link for the transfer function */
-	unsigned short AAPMinimum;							/* 0 kPa usually. */
-	unsigned short AAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
-
-	/* Default to Innovate LC-1 on lambda 0.5 - 1.5 for 0-5V range (lambda range = 1.0) */
-	unsigned short EGOMinimum;							/* 0.5 lambda ? (0.5 x 32768 = 16384) */
-	unsigned short EGORange;							/* 1.5 lambda ? ((1.5 - 0.5) x 32768 = 32768 (max 49152)) */
-
-	/* 0 - 24.5 Volt measurement with 10k and 39k resistors */
-	/* http://www.google.com/search?hl=en&safe=off&q=5+*+(39000+%2B+10000)+%2F+10000&btnG=Search */
-	unsigned short BRVMinimum;							/* 0 Volts usually. */
-	unsigned short BRVRange;							/* 24.5 Volts for 10k and 39k resistors on a 12v vehicle */
-
-	/* Default to 25% of voltage = closed (0%) */
-	/* 75% of voltage = open (100%) */
-	unsigned short TPSMinimumADC;						/* *should* be zero, but often isn't, this value corresponds to 0% TPS */
-	unsigned short TPSMaximumADC;						/*  */
-	// unsigned short TPSADCRange;						// ?? 100% = how many ADCs ?
-	/*efine TPS_MINIMUM 0								** = 0.00%		For clarity ONLY, always zero.	*/
-	#define TPS_RANGE_MAX 64000							/* = 100.00%									*/
 	unsigned char userTextField[userTextFieldArrayLength1]; /* "Place your personal notes here!!" */
 } fixedConfig1;
 

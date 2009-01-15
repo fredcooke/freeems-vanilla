@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -22,7 +24,6 @@
 
 
 /**	@file IATTransferTable.c
- *
  * @ingroup dataInitialisers
  *
  * @brief Inlet Air Temperature Transfer Table
@@ -37,6 +38,13 @@
 #include "inc/freeEMS.h"
 
 
+/** @brief Inlet Air Temperature Transfer Table
+ *
+ * Using this table it is possible to accurately and quickly convert
+ * a raw ADC reading to a scaled temperature value in degrees Kelvin.
+ *
+ * @author FreeTherm
+ */
 const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
 		65535, 65535, 65535, 60641, 57372, 55074, 53332, 51945, 50803, 49837, 49004, 48276, 47629, 47051, 46527, 46051,
 		45614, 45211, 44838, 44491, 44166, 43862, 43576, 43306, 43051, 42809, 42579, 42360, 42151, 41952, 41760, 41577,

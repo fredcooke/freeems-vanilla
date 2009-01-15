@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -128,7 +130,13 @@ EXTERN unsigned short lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE
 
 
 /* TODO Individual small chunks of fixed config blocks */
+#define coreSettingsALocationID						2000
+#define sensorRangesLocationID						2001
+#define sensorPresetsLocationID						2002
+#define engineSettingsLocationID					2003
+#define userTextFieldLocationID						2004
 
+#define fixed2conflocids							2010
 // TODO this is ready to be done now
 
 
