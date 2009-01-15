@@ -1,4 +1,4 @@
-/*	ignitionISRs.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -21,6 +21,20 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file ignitionISRs.c
+ * @ingroup interruptHandlers
+ *
+ * @brief Turn ignition channels on and off
+ *
+ * This currently semi-working but broken code is intended to one day provide
+ * multi-channel ignition capabilities. The basic method will be to turn a pin
+ * or set of pins on or another pin or set of pins off during each run of the
+ * appropriate handler. Each run will be triggered either by the scheduler and
+ * possibly this code itself as well. Currently it does not work correctly and
+ * isn't suitable for actual use as an ignition control solution.
+ */
 
 
 #define IGNITIONISRS_C
@@ -46,6 +60,15 @@
 
 /* further reading : ftp://ftp-sop.inria.fr/esterel/pub/papers/FDL99-camready.pdf section 4.1 has a nice diagram */
 
+
+/**	@brief Ignition dwell control
+ *
+ * This function turns ignition pins on to dwell when required.
+ *
+ * @author Fred Cooke
+ *
+ * @todo TODO make this actually work.
+ */
 void IgnitionDwellISR(void)
 {
 	// clear flag
@@ -88,6 +111,14 @@ void IgnitionDwellISR(void)
 }
 
 
+/**	@brief Ignition discharge control
+ *
+ * This function turns ignition pins off to discharge when required.
+ *
+ * @author Fred Cooke
+ *
+ * @todo TODO make this actually work.
+ */
 void IgnitionFireISR(void)
 {
 	// clear flag
