@@ -32,117 +32,75 @@
  * @todo TODO This file contains SFA but Sean Keys is going to fill it up with
  * @todo TODO wonderful goodness very soon ;-)
  *
- * @author Who Ever
+ * @author Sean Keys
  */
 
 
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
 
+/** Setup PT Capturing so that we can decode the LT1 pattern
+ *  @todo TODO Put this in the correct place
+ *
+ */
+void LT1PTInit(void)
+{
+	/* set pt1 to capture on rising and falling */
 
+}
+/*	set overflow to 8 so that it will fire an interrupt on every 8th tooth, basically making it a 45tooth CAS */
 /** Primary RPM ISR
  *
  * @todo TODO Docs here!
  */
 void PrimaryRPMISR(void)
 {
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x01;
+//	unsigned char risingEdge; /* in LT1s case risingEdge means signal is high */
+	//			if(fixedConfigs1.coreSettingsA & PRIMARY_POLARITY){
+		//			risingEdge = PTITCurrentState & 0x01;
+			//	}else{
+				//	risingEdge = !(PTITCurrentState & 0x01);
+			//	}
 
-	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
-	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-//	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
+				if (!isSynced)  /* If the CAS is not in sync get window counts so SecondaryRPMISR can set position */
+				{
+					if (PTITCurrentState & 0x02)
+					{
+						Counters.PrimaryTeethDuringHigh++;  /* if low resolution signal is high count number of pulses */
+					}
+					else
+					{
+						Counters.PrimaryTeethDuringLow++;  /* if low resolution signal is low count number of pulses */
+					}
+				}
+				else
+				{
 
-	/* Calculate the latency in ticks */
-	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
-
-	// TODO discard narrow ones! test for tooth width and tooth period
-
-	/* Set up edges as per config */
-	unsigned char risingEdge;
-	if(fixedConfigs1.coreSettingsA & PRIMARY_POLARITY){
-		risingEdge = PTITCurrentState & 0x01;
-	}else{
-		risingEdge = !(PTITCurrentState & 0x01);
-	}
-
-	if(risingEdge){
-		/* Echo input condition on J7 */
-		PORTJ |= 0x80;
-
-		// increment crank pulses TODO this needs to be wrapped in tooth period and width checking
-		primaryPulsesPerSecondaryPulse++;
-
-		LongTime timeStamp;
-
-		/* Install the low word */
-		timeStamp.timeShorts[1] = edgeTimeStamp;
-		/* Find out what our timer value means and put it in the high word */
-		if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
-			timeStamp.timeShorts[0] = timerExtensionClock + 1;
-		}else{
-			timeStamp.timeShorts[0] = timerExtensionClock;
-		}
-		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-	}else{
-		PORTJ &= 0x7F;
-		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
-	}
-
-	Counters.primaryTeethSeen++;
+				}
 }
-
-
 /** Secondary RPM ISR
  *
  * @todo TODO Docs here!
  */
 void SecondaryRPMISR(void)
 {
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x02;
+	if (isSynced) /* If the CAS is not in sync get window counts and set position */
+		if (PTITCUrrentState & 0x02)  /* if signal is high that means we can count the lows */
+		{
 
-	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
-	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-//	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
+		}
+		else    /* if the signal is low that means we can count the highs */
+		{
 
-	/* Calculate the latency in ticks */
-	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
-
-	// TODO discard narrow ones! test for tooth width and tooth period
-
-	/* Set up edges as per config */
-	unsigned char risingEdge;
-	if(fixedConfigs1.coreSettingsA & SECONDARY_POLARITY){
-		risingEdge = PTITCurrentState & 0x02;
-	}else{
-		risingEdge = !(PTITCurrentState & 0x02);
-	}
-
-	if(risingEdge){
-		// echo input condition
-		PORTJ |= 0x40;
-
-		LongTime timeStamp;
-
-		/* Install the low word */
-		timeStamp.timeShorts[1] = edgeTimeStamp;
-		/* Find out what our timer value means and put it in the high word */
-		if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
-			timeStamp.timeShorts[0] = timerExtensionClock + 1;
-		}else{
-			timeStamp.timeShorts[0] = timerExtensionClock;
 		}
 
-		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-	}else{
-		PORTJ &= 0xBF;
-		RuntimeVars.secondaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
-	}
+//	Counter.primaryTeethAfterSecondaryRise = 0;
+//	Counter.primaryTeethAfterSecondaryFall = 0;
 
-	Counters.secondaryTeethSeen++;
+//	unsigned char risingEdge;
+//		if(fixedConfigs1.coreSettingsA & SECONDARY_POLARITY){
+//			risingEdge = PTITCurrentState & 0x02;
+//		}else{
+//			risingEdge = !(PTITCurrentState & 0x02);
+//		}
 }
