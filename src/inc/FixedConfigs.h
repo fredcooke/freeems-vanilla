@@ -114,15 +114,52 @@ unsigned short TPSMaximumADC;						/*  */
 
 
 typedef struct {
-/* Fuel injection settings TODO duplication from original temp code below!! */
-unsigned short perCylinderVolume;	/* 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
-unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
-unsigned short injectorFlow;		/* Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
-unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
+	/* Fuel injection settings TODO duplication from original temp code below!! */
+	unsigned short perCylinderVolume;	/* 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
+	unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
+	unsigned short injectorFlow;		/* Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
+	unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
+	/* Setting variables (must be inited with useful values) */
+	unsigned short capacityOfAirPerCombustionEvent;		/* How much air it swallows per power producing event	*/
+	unsigned short perPrimaryInjectorChannelFlowRate;	/* How much fuel flows per minute per channel			*/
+	unsigned short perSecondaryInjectorChannelFlowRate;	/* How much fuel flows per minute per channel			*/
+	unsigned char ports;								/* How many groups of injectors we are firing			*/
+	unsigned char coils;								/* How many coils we are firing							*/
+	unsigned char combustionEventsPerEngineCycle;		/* How many power producing events per engine cycle		*/
+	unsigned char revolutionsPerEngineCycle;			/* Rotary = 1, 2 Stroke = 1, 4 Stroke = 2				*/
+	unsigned char primaryTeeth;							/* How many teeth are on the crank signal including the missing ones if any (eg. 36-1 primary = 36 not 35) */
+	unsigned char missingTeeth;							/* Number sequentially removed from primary teeth (eg. 36-1 missing = 1) */
 } engineSetting;
 
 #define ENGINE_SETTINGS_SIZE sizeof(engineSetting)
 
+
+typedef struct {
+	/* Serial settings */
+	unsigned short baudDivisor;							/* 22 = (40MHz / (16*115.2kHz)) = 21.7013889 */
+	unsigned char networkAddress;						/* Default = 1, Default for PC = 10 */
+} serialSetting;
+
+#define SERIAL_SETTINGS_SIZE sizeof(serialSetting)
+
+
+typedef struct {
+	/* Tacho settings */
+	unsigned char tachoTickFactor;
+	unsigned short tachoTotalFactor;
+} tachoSetting;
+
+#define TACHO_SETTINGS_SIZE sizeof(tachoSetting)
+
+
+typedef struct {
+	unsigned short readingTimeout;						/* How often an ADC reading MUST occur					*/
+} sensorSetting;
+
+#define SENSOR_SETTINGS_SIZE sizeof(sensorSetting)
+
+
+#define userTextFieldArrayLength1 1024 - (ENGINE_SETTINGS_SIZE + SERIAL_SETTINGS_SIZE + TACHO_SETTINGS_SIZE + 2)
 
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
@@ -131,10 +168,15 @@ unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density 
  * - The lookupBlockDetails() function in blockDetailsLookup.c
  * - The JSON data map and other related firmware interface definition files
  *
- * @todo TODO split this up!
  * @todo TODO add doxy comments for each element of the struct
  */
-typedef struct { // 2 +
+typedef struct {
+
+	engineSetting engineSettings;
+
+	serialSetting serialSettings;
+
+	tachoSetting tachoSettings;
 
 	/* Settings variables : 0 = false */
 	unsigned short coreSettingsA;	/* Each bit represents the state of some core setting, masks below and above where the same one is used */
@@ -156,42 +198,25 @@ typedef struct { // 2 +
 	//#define COREA15			BIT15_16	/* 15 */
 	//#define COREA16			BIT16_16	/* 16 */
 
-	sensorRange sensorRanges;
-
-	sensorPreset sensorPresets;
-
-	engineSetting engineSettings;
-
 	unsigned char userTextField[userTextFieldArrayLength1]; /* "Place your personal notes here!!" */
 } fixedConfig1;
 
 #define FIXED_CONFIG1_SIZE sizeof(fixedConfig1)
 
 
+#define userTextFieldArrayLength2 1024 - (SENSOR_RANGES_SIZE + SENSOR_PRESETS_SIZE + SENSOR_SETTINGS_SIZE)
+
 /** @copydoc fixedConfig1 */
 typedef struct {
-	/* Setting variables (must be inited with useful values) */
-	unsigned short capacityOfAirPerCombustionEvent;		/* How much air it swallows per power producing event	*/
-	unsigned short perPrimaryInjectorChannelFlowRate;	/* How much fuel flows per minute per channel			*/
-	unsigned short perSecondaryInjectorChannelFlowRate;	/* How much fuel flows per minute per channel			*/
-	unsigned short readingTimeout;						/* How often an ADC reading MUST occur					*/
-	unsigned char ports;								/* How many groups of injectors we are firing			*/
-	unsigned char coils;								/* How many coils we are firing							*/
-	unsigned char combustionEventsPerEngineCycle;		/* How many power producing events per engine cycle		*/
-	unsigned char revolutionsPerEngineCycle;			/* Rotary = 1, 2 Stroke = 1, 4 Stroke = 2				*/
-	unsigned char primaryTeeth;							/* How many teeth are on the crank signal including the missing ones if any (eg. 36-1 primary = 36 not 35) */
-	unsigned char missingTeeth;							/* Number sequentially removed from primary teeth (eg. 36-1 missing = 1) */
 
-	/* Serial settings */
-	unsigned short baudDivisor;							/* 22 = (40MHz / (16*115.2kHz)) = 21.7013889 */
-	unsigned char networkAddress;						/* Default = 1, Default for PC = 10 */
+	sensorRange sensorRanges;
 
-	/* Tacho settings */
-	unsigned char tachoTickFactor;
-	unsigned short tachoTotalFactor;
+	sensorPreset sensorPresets;
+
+	sensorSetting sensorSettings;
 
 	/* User text field for noting which installation the unit is from etc. */
-	unsigned char userTextField[userTextFieldArrayLength2]; /* "Place your personal notes here!!" */
+	unsigned char userTextField2[userTextFieldArrayLength2]; /* "Place your personal notes here!!" */
 } fixedConfig2;
 
 #define FIXED_CONFIG2_SIZE sizeof(fixedConfig2)

@@ -129,15 +129,18 @@ EXTERN unsigned short lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE
 #define fillerD2LocationID							1007
 
 
-/* TODO Individual small chunks of fixed config blocks */
-#define coreSettingsALocationID						2000
-#define sensorRangesLocationID						2001
-#define sensorPresetsLocationID						2002
-#define engineSettingsLocationID					2003
+/* Individual small chunks of fixed config blocks */
+/* Fixed conf 1 */
+#define engineSettingsLocationID					2000
+#define serialSettingsLocationID					2001
+#define tachoSettingsLocationID						2002
+#define coreSettingsALocationID						2003
 #define userTextFieldLocationID						2004
-
-#define fixed2conflocids							2010
-// TODO this is ready to be done now
+/* Fixed conf 2 */
+#define sensorRangesLocationID						3000
+#define sensorPresetsLocationID						3001
+#define sensorSettingsLocationID					3002
+#define userTextField2LocationID					3003
 
 
 #undef EXTERN

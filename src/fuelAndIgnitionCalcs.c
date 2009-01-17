@@ -75,7 +75,7 @@ void calculateFuelAndIgnition(){
 			/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!
 			airInletTemp = roomTemperature; // 293.15k is 20c * 100 to get value, so divide by 100 to get real number
 		}else if(FALSE /*FixedAF*/){ /* Fixed air flow from config */
-			DerivedVars->AirFlow = fixedConfigs1.sensorPresets.presetAF;
+			DerivedVars->AirFlow = fixedConfigs2.sensorPresets.presetAF;
 		}else{ /* Default to no fuel delivery and error */
 			DerivedVars->AirFlow = 0;
 			/* If anyone is listening, let them know something is wrong */
@@ -95,7 +95,7 @@ void calculateFuelAndIgnition(){
 
 		DerivedVars->BasePW = (bootFuelConst * DerivedVars->AirFlow) / DerivedVars->densityAndFuel;
 	}else if(FALSE /*configured*/){ /* Fixed PW from config */
-		DerivedVars->BasePW = fixedConfigs1.sensorPresets.presetBPW;
+		DerivedVars->BasePW = fixedConfigs2.sensorPresets.presetBPW;
 	}else{ /* Default to no fuel delivery and error */
 		DerivedVars->BasePW = 0;
 		/* If anyone is listening, let them know something is wrong */

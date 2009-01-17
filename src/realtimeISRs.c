@@ -56,7 +56,7 @@ void RTIISR(void)
 
 		/* Perform all tasks that are once per millisecond here or preferably main */
 		Clocks.timeoutADCreadingClock++;
-		if(Clocks.timeoutADCreadingClock > fixedConfigs2.readingTimeout){
+		if(Clocks.timeoutADCreadingClock > fixedConfigs2.sensorSettings.readingTimeout){
 			/* Set force read adc flag */
 			coreStatusA |= FORCE_READING;
 			Clocks.timeoutADCreadingClock = 0;
@@ -130,7 +130,7 @@ void ModDownCtrISR(void)
 		tachoPeriod = 65535;
 	}else{
 		/* Use engine cycle period to setup the frequency of this counter and thereby act as a tacho out */
-		tachoPeriod = (unsigned long)engineCyclePeriod / fixedConfigs2.tachoTotalFactor;
+		tachoPeriod = (unsigned long)engineCyclePeriod / fixedConfigs1.tachoSettings.tachoTotalFactor;
 	}
 	/* Set the count down value */
 	MCCNT = tachoPeriod;

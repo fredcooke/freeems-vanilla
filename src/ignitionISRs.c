@@ -88,7 +88,7 @@ void IgnitionDwellISR(void)
 		dwellQueueLength--;
 
 		// increment channel counter to next channel
-		if(nextDwellChannel < (fixedConfigs2.combustionEventsPerEngineCycle - 1)){
+		if(nextDwellChannel < (fixedConfigs1.engineSettings.combustionEventsPerEngineCycle - 1)){
 			nextDwellChannel++; // if not the last channel, increment
 		}else{
 			nextDwellChannel = 0; // if the last channel, reset to zero
@@ -138,7 +138,7 @@ void IgnitionFireISR(void)
 		ignitionQueueLength--;
 
 		// increment channel counter to next channel
-		if(nextIgnitionChannel < (fixedConfigs2.combustionEventsPerEngineCycle - 1)){
+		if(nextIgnitionChannel < (fixedConfigs1.engineSettings.combustionEventsPerEngineCycle - 1)){
 			nextIgnitionChannel++; // if not the last channel, increment
 		}else{
 			nextIgnitionChannel = 0; // if the last channel, reset to zero
@@ -146,7 +146,7 @@ void IgnitionFireISR(void)
 
 		// if the queue length after decrement is greater than 0 then we need to load the timer, if it is zero and we decremented, the timer was already loaded.
 		if(ignitionQueueLength > 0){
-			if(ignitionQueueLength > fixedConfigs2.combustionEventsPerEngineCycle){ // TODO as above!!!!!!!!!!
+			if(ignitionQueueLength > fixedConfigs1.engineSettings.combustionEventsPerEngineCycle){ // TODO as above!!!!!!!!!!
 				//throw a nasty error of some sort for index out of range issue that should never occur (for now just light a LED)
 				PORTS |= 0x10;
 			}else{
