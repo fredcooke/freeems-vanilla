@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -23,14 +25,16 @@
 
 /**	@file regions.x
  *
+ * @brief Region mapping linker script
+ *
  * Code section to memory region mapping definition file for inclusion
  * into the linker script. This file provides rules which map pieces of
  * code and data from named sections into specific named memory regions.
  * See memory.x and hc9s12xdp512elfb.x for more information.
  *
- * A description of what some of this means can be found at the following URL:
- * http://www.gnu.org/software/m68hc11/m68hc11_binutils.html
- * http://m68hc11.serveftp.org/wiki/index.php/FAQ:Link
+ * A description of what some of this means can be found at the following URLs:
+ * - http://www.gnu.org/software/m68hc11/m68hc11_binutils.html
+ * - http://m68hc11.serveftp.org/wiki/index.php/FAQ:Link
  *
  * @cond regionsscript
  */
