@@ -62,6 +62,7 @@ void PrimaryRPMISR(void)
 				//	risingEdge = !(PTITCurrentState & 0x01);
 			//	}
 
+		PORTJ |= 0x80; /* Echo input condition on J7 */
 				if (!isSynced)  /* If the CAS is not in sync get window counts so SecondaryRPMISR can set position */
 				{
 					if (PTITCurrentState & 0x02)
@@ -79,28 +80,64 @@ void PrimaryRPMISR(void)
 				}
 }
 /** Secondary RPM ISR
- *
+ * @brief Use the rising and falling edges...................
  * @todo TODO Docs here!
  */
 void SecondaryRPMISR(void)
 {
-	if (isSynced) /* If the CAS is not in sync get window counts and set position */
-		if (PTITCUrrentState & 0x02)  /* if signal is high that means we can count the lows */
-		{
-
+	PORTJ |= 0x40;  /* echo input condition */
+	if (!isSynced){ /* If the CAS is not in sync get window counts and set position */
+		if (PTITCUrrentState & 0x02){  /* if signal is high that means we can count the lows */
+			switch Counters.PrimaryTeethDuringLow{
+			case 8: Hook up scope to get real counts ;
+			{
+				Hook up scope to get real counts and set ;
+				}
+			Counters.PrimaryTeethDuringLow = 0;  Reset counter
+			}
 		}
 		else    /* if the signal is low that means we can count the highs */
 		{
-
+			switch Counters.PrimaryTeethDuringHigh{
+			case 8: Hook up scope to get real counts ;
+			{
+				Hook up scope to get real counts and set  ;
+				changeAccumulatorMode();
+				break;
+				}
+			default :
+			{
+				Counters.crankSyncLosses++; /* use crankSyncLosses variable to store number of invalid count cases while attempting to sync*/
+			}
+			Counters.PrimaryTeethDuringHigh = 0;  Reset counter
 		}
+		}
+	}
+	else    /* use adjusted count numbers to check sync */
+	{
 
-//	Counter.primaryTeethAfterSecondaryRise = 0;
-//	Counter.primaryTeethAfterSecondaryFall = 0;
+	}
+}
+		//	Counter.primaryTeethAfterSecondaryRise = 0;
+		//	Counter.primaryTeethAfterSecondaryFall = 0;
 
-//	unsigned char risingEdge;
-//		if(fixedConfigs1.coreSettingsA & SECONDARY_POLARITY){
-//			risingEdge = PTITCurrentState & 0x02;
-//		}else{
-//			risingEdge = !(PTITCurrentState & 0x02);
-//		}
+		//	unsigned char risingEdge;
+		//		if(fixedConfigs1.coreSettingsA & SECONDARY_POLARITY){
+		//			risingEdge = PTITCurrentState & 0x02;
+		//		}else{
+		//			risingEdge = !(PTITCurrentState & 0x02);
+		//		}
+/** PT0 Accumulator Mode
+ * @brief Change the accumulator mode of PT0
+ * @todo TODO Decide if an explicit parameter is necessary if not use a status var instead for now it's explicit.
+ */
+void changeAccumulatorMode(mode char)
+{
+ if (mode == 0){ /* disable accumulator counter, so an ISR is fired on all 360 teeth */
+
+
+ }
+ else{  /* enable accumulator so an ISR is only fired on every "to be determined tooth" */
+
+ }
 }
