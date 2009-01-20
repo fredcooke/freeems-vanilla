@@ -1,4 +1,6 @@
-/*	Copyright 2009 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -48,4 +50,14 @@
 #include "inc/< filename >.h"
 
 
-// code here
+/** @brief code here!
+ *
+ * xyz
+ *
+ * @author Fred Cooke
+ *
+ * @param ??
+ *
+ * @return ??
+ */
+//fn(){}
