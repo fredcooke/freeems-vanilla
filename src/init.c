@@ -66,7 +66,7 @@ void init(){
 	initAllPagedRAM();			/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
 	initAllPagedAddresses();	/* Save the paged memory addresses to variables such that we can access them from another paged block with no warnings */
 	initVariables();		/* Initialise the rest of the running variables etc */
-	initFlash();			/* TODO, finalise this */
+	initFlash(16000);		/* TODO, finalise this */
 	initECTTimer();			/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
 	initPITTimer();			/* TODO ditto... */
 	initSCIStuff();			/* Setup the sci module(s) that we will use. */
@@ -494,29 +494,27 @@ void initVariables(){
 
 /** @brief Flash module setup
  *
- * Initialise configuration registers for the flash module to allow burning of
+ * Initialize configuration registers for the flash module to allow burning of
  * non-volatile flash memory from within the firmware.
+ * Clock Divider Bits — The combination of PRDIV8 and FDIV[5:0] must divide the oscillator clock down to a
+ * frequency of 150 kHz–200 kHz. The maximum divide ratio is 512.
  *
  * @author Sean Keys
+ *
+ * @param sysClock The frequency of the system clock in KHz.
  */
-void initFlash(){
-	// TBC
-	unsigned char flashclock;
-	unsigned short SysClock = 16000;    //TODO see if Fred already specified this var and/or move to configs/constants
-
-	if (SysClock >= 12000){
-		flashclock = (unsigned char) (SysClock/8/200 );
+void initFlash(unsigned short sysClock){
+	unsigned char flashClock;
+	if (sysClock >= 12000){
+		flashClock = sysClock/8/200 + 1 ;
+		FCLKDIV = flashClock | PRDIV8;
 	}
 	else{
-		flashclock = (unsigned char) (SysClock/200 +1);
+		flashClock = sysClock/8/200 + 1 ;
+		FCLKDIV =  flashClock;
 	}
-// TODO FIX SO EQUASION WORKS
-//	FCLKDIV = FCLKDIV|flashclock;
-	FCLKDIV = 0x4A;
-
-	FPROT = 0xFF;  //disable all flash protection
-	FSTAT = FSTAT|(PVIOL|ACCERR);  //clear any errors
-
+	FPROT = 0xFF;  /* disable all flash protection */
+	FSTAT = FSTAT|(PVIOL|ACCERR);  /* clear any errors */
 }
 
 /* Set up the timer module and its various interrupts */
