@@ -74,7 +74,7 @@ void PrimaryRPMISR(void)
 						Counters.PrimaryTeethDuringLow++;  /* if low resolution signal is low count number of pulses */
 					}
 				}
-				else
+				else /* The CAS is synced and we need to update our 360/5=72 tooth wheel */
 				{
 
 				}
@@ -82,38 +82,76 @@ void PrimaryRPMISR(void)
 /** Secondary RPM ISR
  * @brief Use the rising and falling edges...................
  * @todo TODO Docs here!
+ * @todo TODO Add a check for 1 skip pulse of the 8x track, to prevent possible incorrect sync.
+ * @todo TODO Possibily make virtual CAS 16-bit so was can get rid of floating points and use for syncing
  */
 void SecondaryRPMISR(void)
 {
 	PORTJ |= 0x40;  /* echo input condition */
-	if (!isSynced){ /* If the CAS is not in sync get window counts and set position */
+	if (!isSynced){ /* If the CAS is not in sync get window counts and set virtual CAS position */
 		if (PTITCUrrentState & 0x02){  /* if signal is high that means we can count the lows */
 			switch Counters.PrimaryTeethDuringLow{
-			case 8: Hook up scope to get real counts ;
+			case 23: /* wheel is at 0 deg TDC #1, set our virtual CAS to tooth 0 of 72 */
 			{
-				Hook up scope to get real counts and set ;
-				}
-			Counters.PrimaryTeethDuringLow = 0;  Reset counter
+
+				break;
 			}
+			case 38: /* wheel is at 90 deg TDC #4, set our virtual CAS to tooth 18 of 72 */
+			{
+
+				break;
+			}
+			case 33: /* wheel is at 180 deg TDC #6 set our virtual CAS to tooth 36 of 72 */
+			{
+
+				break;
+			}
+			case 28: /* wheel is at 270 deg TDC #7 set our virtual CAS to tooth 54 of 72 */
+			{
+
+				break;
+			}
+			default :
+			{
+			Counters.crankSyncLosses++; /* use crankSyncLosses variable to store number of invalid count cases while attempting to sync*/
+				break;
+			}
+			Counters.PrimaryTeechDuringLow = 0; /* In any case reset counter */
 		}
 		else    /* if the signal is low that means we can count the highs */
 		{
 			switch Counters.PrimaryTeethDuringHigh{
-			case 8: Hook up scope to get real counts ;
+			case 7: /* wheel is at 52 deg, 7 deg ATDC #8 set our virtual CAS to tooth 10.4 of 72 */
 			{
-				Hook up scope to get real counts and set  ;
-				changeAccumulatorMode();
+
 				break;
-				}
+			}
+			case 12: /* wheel is at 147 deg, 12 deg ATDC #3 set our virtual CAS to tooth 29.4 of 72 */
+			{
+
+				break;
+			}
+			case 17: /* wheel is at 242 deg, 17 deg ATDC #5 set our virtual CAS to tooth 48.4 of 72 */
+			{
+
+				break;
+			}
+			case 22: /* wheel is at 337 deg, 22 deg ATDC #2 set our virtual CAS to tooth 67.4 of 72 */
+			{
+
+			 	break;
+			}
 			default :
 			{
-				Counters.crankSyncLosses++; /* use crankSyncLosses variable to store number of invalid count cases while attempting to sync*/
+				Counters.crankSyncLosses++; /* use crankSyncLosses variable to store number of invalid/default count cases while attempting to sync*/
+				break;
 			}
-			Counters.PrimaryTeethDuringHigh = 0;  Reset counter
-		}
-		}
+
+	    	}
+			Counters.PrimaryTeethDuringHigh = 0;  /* In any case reset counter */
+    	}
 	}
-	else    /* use adjusted count numbers to check sync */
+	else    /* System is synced so use adjusted count numbers to check sync */
 	{
 
 	}
@@ -127,17 +165,20 @@ void SecondaryRPMISR(void)
 		//		}else{
 		//			risingEdge = !(PTITCurrentState & 0x02);
 		//		}
-/** PT0 Accumulator Mode
- * @brief Change the accumulator mode of PT0
- * @todo TODO Decide if an explicit parameter is necessary if not use a status var instead for now it's explicit.
+
+/** PT7 Accumulator Mode
+ * @brief Change the accumulator mode of PT7
+ * @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
  */
 void changeAccumulatorMode(mode char)
 {
  if (mode == 0){ /* disable accumulator counter, so an ISR is fired on all 360 teeth */
-
-
+	 PACTL = 0x00; /* disable PAEN and PBOIV */
  }
- else{  /* enable accumulator so an ISR is only fired on every "to be determined tooth" */
-
+ else{  /* enable accumulator so an ISR is only fired on every "8th tooth of the 360x track" */
+	 TIOS = TIOS &  ̃0x80;  /* PT7 input */
+	 TCTL1 = TCTL1 &  ̃0xC0; /* Disconnect IC/OC logic from PT7 */
+	 PACNT = 0x0005 ; /* set to overflow every 5 inputs on PT7 making our 360 tooth wheel act like a 72 tooth wheel */
+	 PACTL = 0x52; /* Enable PA in count mode,rising edge, interrupt on overflow  01010010*/
  }
 }
