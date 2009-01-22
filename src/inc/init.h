@@ -83,6 +83,9 @@ EXTERN void init(void) FPAGE_FE;
 #define PLLDIVISOR		0x03 /* Input crystal frequency is divided by this number */
 #define PLLMULTIPLIER	0x09 /* The result of the above is multiplied by this number to give the bus frequency */
 
+// Flash control values
+#define PRDIV8			0x40 /* Mask for flash module to divide the oscillator clock by 8  */
+
 /// @todo TODO define other macros such that raw values aren't used in the code
 
 
