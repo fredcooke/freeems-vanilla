@@ -1,4 +1,6 @@
-/*	Copyright 2008 Sean Keys, Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Sean Keys, Fred Cooke
 
 	This file is part of the FreeEMS project.
 
