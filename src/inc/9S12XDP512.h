@@ -308,22 +308,24 @@
 
 
 /* Pulse accumulator control registers */
-//0x0068 ICPAR DVUCP() /*
-//0x0060 PACTL DVUCP() /*
-//0x0061 PAFLG DVUCP() /*
-//0x0070 PBCTL DVUCP() /*
-//0x0071 PBFLG DVUCP() /*
+#define 0x0068 ICPAR DVUCP()
+/*	(PACTL) 7   6    5     4     3    2    1    0
+	 		  PAEN PAMOD PEDGE CLK1 CLK0 PAOVI PAI */
+#define 0x0060 PACTL DVUCP()
+#define 0x0061 PAFLG DVUCP()
+#define 0x0070 PBCTL DVUCP()
+#define 0x0071 PBFLG DVUCP()
 // one short for each hi lo par based on hi address.
-/* Pulse accumulator registers */
-//0x0062 PACN3 (hi)
-//0x0063 PACN2 (lo)
-//0x0064 PACN1 (hi)
-//0x0065 PACN0 (lo)
+/* Pulse accumulator count registers */
+#define 0x0062 PACN3 (hi)
+#define 0x0063 PACN2 (lo)
+#define 0x0064 PACN1 (hi)
+#define 0x0065 PACN0 (lo)
 /* Pulse accumulator holding registers */
-//0x0072 PA3H DVUCP() /* hi?
-//0x0073 PA2H DVUCP() /* lo?
-//0x0074 PA1H DVUCP() /* hi?
-//0x0075 PA0H DVUCP() /* lo?
+#define 0x0072 PA3H DVUCP() /* hi? */
+#define 0x0073 PA2H DVUCP() /* lo? */
+#define 0x0074 PA1H DVUCP() /* hi? */
+#define 0x0075 PA0H DVUCP() /* lo? */
 
 
 /* Modulus down counter control registers */
