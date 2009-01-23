@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -22,7 +24,6 @@
 
 
 /**	@file TunableConfig2.c
- *
  * @ingroup dataInitialisers
  *
  * This file contains the definition of the secondary set of tunable
