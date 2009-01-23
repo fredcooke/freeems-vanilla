@@ -1,4 +1,4 @@
-/*	realtimeISRs.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -23,16 +23,33 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file realtimeISRs.c
+ * @ingroup interruptHandlers
+ *
+ * @brief Real time interrupts
+ *
+ * This file contains real time interrupt handlers. Mainly it holds the RTI
+ * handler itself, however the modulus down counter and ETC timer overflow
+ * functions are here too.
+ *
+ * @author Fred Cooke
+ */
+
+
 #define REALTIMEISRS_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
 #include "inc/commsISRs.h"
 
 
-/* Real Time Interrupt Interrupt Service Routine */
-/* Handles time keeping and generic periodic tasks that run quickly and must be done on time. */
-void RTIISR(void)
-{
+/** @brief Real Time Interrupt Handler
+ *
+ * Handles time keeping, including all internal clocks, and generic periodic
+ * tasks that run quickly and must be done on time.
+ *
+ * @author Fred Cooke
+ */
+void RTIISR(){
 	/* Clear the RTI flag */
 	CRGFLG = 0x80;
 
@@ -56,7 +73,7 @@ void RTIISR(void)
 
 		/* Perform all tasks that are once per millisecond here or preferably main */
 		Clocks.timeoutADCreadingClock++;
-		if(Clocks.timeoutADCreadingClock > fixedConfigs2.readingTimeout){
+		if(Clocks.timeoutADCreadingClock > fixedConfigs2.sensorSettings.readingTimeout){
 			/* Set force read adc flag */
 			coreStatusA |= FORCE_READING;
 			Clocks.timeoutADCreadingClock = 0;
@@ -119,9 +136,16 @@ void RTIISR(void)
 }
 
 
-/* Tachometer pulse generator function */
-void ModDownCtrISR(void)
-{
+/** @brief Tacho pulse generator
+ *
+ * Currently this is being used to generate a variable frequency tachometer
+ * output. Although this is a bit of a waste of a timer resource it does allow
+ * tachometers that were intended for engines with a different cylinder count
+ * to be used where it would otherwise not be possible.
+ *
+ * @author Fred Cooke
+ */
+void ModDownCtrISR(){
 	/* Clear the modulus down counter interrupt flag */
 	MCFLG = 0x80;
 
@@ -130,7 +154,7 @@ void ModDownCtrISR(void)
 		tachoPeriod = 65535;
 	}else{
 		/* Use engine cycle period to setup the frequency of this counter and thereby act as a tacho out */
-		tachoPeriod = (unsigned long)engineCyclePeriod / fixedConfigs2.tachoTotalFactor;
+		tachoPeriod = (unsigned long)engineCyclePeriod / fixedConfigs1.tachoSettings.tachoTotalFactor;
 	}
 	/* Set the count down value */
 	MCCNT = tachoPeriod;
@@ -140,8 +164,15 @@ void ModDownCtrISR(void)
 }
 
 
-/* When the ECT free running timer hits 65535 and rolls over, this is run */
-void TimerOverflow(void){
+/** @brief ECT overflow handler
+ *
+ * When the ECT free running timer hits 65535 and rolls over, this is run. Its
+ * job is to extend the timer to an effective 32 bits for longer measuring much
+ * longer periods with the same resolution.
+ *
+ * @author Fred Cooke
+ */
+void TimerOverflow(){
 	/* Increment the timer extension variable */
 	timerExtensionClock++;
 
@@ -149,12 +180,15 @@ void TimerOverflow(void){
 	TFLGOF = 0x80;
 }
 
-/* Generic periodic interrupt (This only works from wait mode...) */
-//void VRegAPIISR(void){
-//	/* Clear the flag needs check because writing a 1 can set this one */
-//	//if(VREGAPICL & 0x01){ // if the flag is set...
-//		VREGAPICL |= 0x01; // clear it...
-//	//} // and not otherwise!
-//
-//	// DO stuff
-//}
+
+/** @todo TODO This could be useful in future once sleeping is implemented.
+// Generic periodic interrupt (This only works from wait mode...)
+void VRegAPIISR(){
+	// Clear the flag needs check because writing a 1 can set this one
+	//if(VREGAPICL & 0x01){ // if the flag is set...
+		VREGAPICL |= 0x01; // clear it...
+	//} // and not otherwise!
+
+	// DO stuff
+}
+*/

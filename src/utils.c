@@ -1,4 +1,4 @@
-/*	utils.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -23,6 +23,18 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file utils.c
+ *
+ * @brief Utility functions only
+ *
+ * General purpose utility functions that are used in various places throughout
+ * the code base. Functions should only be placed here if they are not strongly
+ * related to any other set of functionality.
+ *
+ * @author Fred Cooke
+ */
+
+
 #define UTILS_C
 #include "inc/freeEMS.h"
 #include "inc/commsISRs.h"
@@ -30,7 +42,16 @@
 #include <string.h>
 
 
-/* Do table switching based on boolean parameter */
+/** @brief Setup tune switching
+ *
+ * Place the correct set of tables in RAM based on a boolean parameter
+ *
+ * @todo TODO change parameter style to be a pointer to a register and a mask?
+ *
+ * @author Fred Cooke
+ *
+ * @param bool which set of data to enable.
+ */
 void setupPagedRAM(unsigned char bool){
 	if(bool){
 		currentFuelRPage = RPAGE_FUEL_ONE;
@@ -46,7 +67,14 @@ void setupPagedRAM(unsigned char bool){
 }
 
 
-/* Reset all state to non running */
+/** @brief Reset key state
+ *
+ * Reset all important variables to their non-running state.
+ *
+ * @todo TODO bring this up to date and/or find a better way to do it.
+ *
+ * @author Fred Cooke
+ */
 void resetToNonRunningState(){
 	/* Reset RPM to zero */
 	RPM0 = 0;
@@ -64,7 +92,12 @@ void resetToNonRunningState(){
 }
 
 
-/* Demonstrate basic PWM usage */
+/** @brief Demonstrate PWM
+ *
+ * Demonstrate basic PWM module usage by setting duty to scaled ADC inputs.
+ *
+ * @author Fred Cooke
+ */
 void adjustPWM(){
 	PWMDTY0 = ATD0DR0 >> 2; // scale raw adc to a duty
 	PWMDTY1 = ATD0DR1 >> 2; // scale raw adc to a duty
@@ -77,7 +110,14 @@ void adjustPWM(){
 }
 
 
-/* Read ADCs into the correct bank one at a time linearly */
+/** @brief Read ADCs one at a time
+ *
+ * Read ADCs into the correct bank one at a time by name.
+ *
+ * @author Fred Cooke
+ *
+ * @param Arrays a pointer to an ADCArray struct to store ADC values in.
+ */
 void sampleEachADC(ADCArray *Arrays){
 	/* ATD0 */
 	Arrays->IAT = ATD0DR0;
@@ -101,14 +141,28 @@ void sampleEachADC(ADCArray *Arrays){
 }
 
 
-/* Read ADCs into the correct bank in a loop using pointers */
+/** @brief Read ADCs with memcpy()
+ *
+ * Read ADCs into the correct bank using two fixed calls to memcpy()
+ *
+ * @author Fred Cooke
+ *
+ * @param Arrays a pointer to an ADCArray struct to store ADC values in.
+ */
 void sampleBlockADC(ADCArray *Arrays){
 	memcpy(Arrays, (void*)ATD0_BASE, 16);
 	memcpy(Arrays+16, (void*)ATD1_BASE, 16);
 }
 
 
-/* Loop repeatedly for X milli seconds. */
+/** @brief Sleep for X milli seconds
+ *
+ * Run in a nested loop repeatedly for X milli seconds.
+ *
+ * @author Fred Cooke
+ *
+ * @param ms the number of milli seconds to kill
+ */
 void sleep(unsigned short ms){
 	unsigned short j, k;
 	for(j=0;j<ms;j++)
@@ -116,15 +170,34 @@ void sleep(unsigned short ms){
 }
 
 
-/* Loop repeatedly for X micro seconds. */
-void sleepMicro(unsigned short us){ /* Very approximate... */
+/** @brief Sleep for X micro seconds
+ *
+ * Run in a nested loop repeatedly for X micro seconds.
+ *
+ * @note Very approximate...
+ *
+ * @author Fred Cooke
+ *
+ * @param us the number of micro seconds to kill
+ */
+void sleepMicro(unsigned short us){
 	unsigned short j, k;
 	for(j=0;j<us;j++)
 		for(k=0;k<6;k++);
 }
 
 
-/* Generate a checksum for a block of data */
+/** @brief Simple checksum
+ *
+ * Generate a simple additive checksum for a block of data.
+ *
+ * @author Fred Cooke
+ *
+ * @param block a pointer to a memory region to checksum.
+ * @param length how large the memory region to checksum is.
+ *
+ * @return a simple additive checksum.
+ */
 unsigned char checksum(unsigned char *block, unsigned short length){
 	unsigned char sum = 0;
 	unsigned short i;
@@ -135,6 +208,18 @@ unsigned char checksum(unsigned char *block, unsigned short length){
 	return sum;
 }
 
+
+/** @brief Homebrew strcpy()
+ *
+ * strcpy() wouldn't compile for me for some reason so I wrote my own.
+ *
+ * @author Fred Cooke
+ *
+ * @param dest where to copy the null terminated string to.
+ * @param source where to copy the null terminated string from.
+ *
+ * @return the length of the string copied.
+ */
 unsigned short stringCopy(unsigned char* dest, unsigned char* source){
 	unsigned short length = 0;
 	while(*source != 0){

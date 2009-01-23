@@ -246,8 +246,6 @@
 //#define densityOfFuelUnitDivisor 1000
 #define densityOfFuelTotalDivisor 32000
 
-#define userTextFieldArrayLength1 966			/* Arbitrary field length to avoid wasting excess space on flash */
-#define userTextFieldArrayLength2 1004			/* Arbitrary field length to avoid wasting excess space on flash */
 #define divisorFor115200bps 22					/* (40MHz / (16*115.2kHz)) = 21.7013889 */
 /* http://www.google.com/search?hl=en&safe=off&q=22%2F%28%2840000000%2F16%29%2F115200%29&btnG=Search 1.376% error in speed */
 /* http://www.google.com/search?hl=en&safe=off&q=40MHz%2F%2816*22%29&btnG=Search 113.636 kHz */

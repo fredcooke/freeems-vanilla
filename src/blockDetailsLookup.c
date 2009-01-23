@@ -425,7 +425,6 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
 		details->FlashAddress = fillerDLocation;
 		break;
-
 	case fillerD2LocationID:
 		details->size = 1024;
 		details->RAMPage = RPAGE_TUNE_TWO;
@@ -434,39 +433,54 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = fillerD2Location;
 		break;
 
-	case coreSettingsALocationID:
-		details->size = 2;
-		details->FlashPage = PPAGE;
-		details->FlashAddress = (void*)&(fixedConfigs1.coreSettingsA);
-		break;
-
-	case sensorRangesLocationID:
-		details->size = SENSOR_RANGES_SIZE;
-		details->FlashPage = PPAGE;
-		details->FlashAddress = (void*)&(fixedConfigs1.sensorRanges);
-		break;
-
-	case sensorPresetsLocationID:
-		details->size = SENSOR_PRESETS_SIZE;
-		details->FlashPage = PPAGE;
-		details->FlashAddress = (void*)&(fixedConfigs1.sensorPresets);
-		break;
-
+	/* Fixed conf 1 small chunks */
 	case engineSettingsLocationID:
 		details->size = ENGINE_SETTINGS_SIZE;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.engineSettings);
 		break;
-
+	case serialSettingsLocationID:
+		details->size = SERIAL_SETTINGS_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.serialSettings);
+		break;
+	case tachoSettingsLocationID:
+		details->size = TACHO_SETTINGS_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.tachoSettings);
+		break;
+	case coreSettingsALocationID:
+		details->size = 2;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.coreSettingsA);
+		break;
 	case userTextFieldLocationID:
 		details->size = userTextFieldArrayLength1;
 		details->FlashPage = PPAGE;
-		details->FlashAddress = &(fixedConfigs1.userTextField);
+		details->FlashAddress = (void*)&(fixedConfigs1.userTextField);
 		break;
 
-
-	/** @todo TODO (add) Fixed config small blocks */
-	/// @note NOTE these are in linear space so we can get the addresses directly.
+	/* Fixed conf 2 small chunks */
+	case sensorRangesLocationID:
+		details->size = SENSOR_RANGES_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.sensorRanges);
+		break;
+	case sensorPresetsLocationID:
+		details->size = SENSOR_PRESETS_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.sensorPresets);
+		break;
+	case sensorSettingsLocationID:
+		details->size = SENSOR_SETTINGS_SIZE;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.sensorSettings);
+		break;
+	case userTextField2LocationID:
+		details->size = userTextFieldArrayLength2;
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.userTextField2);
+		break;
 
 	default:
 		/* Return early if locationID is not valid. */

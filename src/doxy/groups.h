@@ -87,6 +87,13 @@
  * inclusion in other source files.
  */
 
+/** @defgroup testing Test Files
+ *
+ * A very small group at this stage, this is intended to contain various files
+ * that manipulate the functional code by providing it with artificial inputs
+ * instead of real values read from sensors.
+ */
+
 /** @defgroup doxygenDocFiles Doxygen Documentation Files
  *
  * These files exist purely to contain documentation for extraction

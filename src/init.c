@@ -551,7 +551,7 @@ void initECTTimer(){
 	//DLYCT = ??; built in noise filter
 
 	/* Configurable tachometer output */
-	PTMCPSR = fixedConfigs2.tachoTickFactor - 1; // Precision prescaler - fastest is 1 represented by 0, slowest/longest possible is 256 represented by 255 or 0xFF
+	PTMCPSR = fixedConfigs1.tachoSettings.tachoTickFactor - 1; // Precision prescaler - fastest is 1 represented by 0, slowest/longest possible is 256 represented by 255 or 0xFF
 	MCCNT = ONES16; // init to slowest possible, first
 	MCCTL = 0xC4; // turn on and setup the mod down counter
 	MCFLG = 0x80; // clear the flag up front
@@ -585,7 +585,7 @@ void initSCIStuff(){
 	/* The alternative register set selector defaults to zero */
 
 	// set the baud/data speed
-	SCI0BD = fixedConfigs2.baudDivisor;
+	SCI0BD = fixedConfigs1.serialSettings.baudDivisor;
 
 	// etc
 
@@ -639,10 +639,10 @@ void initConfiguration(){
 	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.engineSettings.injectorFlow) * fixedConfigs1.engineSettings.perCylinderVolume) / fixedConfigs1.engineSettings.stoichiometricAFR;
 
 	/* The MAP range used to convert fake TPS from MAP and vice versa */
-	TPSMAPRange = fixedConfigs1.sensorRanges.TPSOpenMAP - fixedConfigs1.sensorRanges.TPSClosedMAP;
+	TPSMAPRange = fixedConfigs2.sensorRanges.TPSOpenMAP - fixedConfigs2.sensorRanges.TPSClosedMAP;
 
 	/* The ADC range used to generate TPS percentage */
-	TPSADCRange = fixedConfigs1.sensorRanges.TPSMaximumADC - fixedConfigs1.sensorRanges.TPSMinimumADC;
+	TPSADCRange = fixedConfigs2.sensorRanges.TPSMaximumADC - fixedConfigs2.sensorRanges.TPSMinimumADC;
 
 
 	/* Use like flags for now, just add one for each later */
@@ -651,7 +651,7 @@ void initConfiguration(){
 	/* Check various aspects of config which will cause problems */
 
 	/* BRV max bigger than variable that holds it */
-	if(((unsigned long)fixedConfigs1.sensorRanges.BRVMinimum + fixedConfigs1.sensorRanges.BRVRange) > 65535){
+	if(((unsigned long)fixedConfigs2.sensorRanges.BRVMinimum + fixedConfigs2.sensorRanges.BRVRange) > 65535){
 		//sendError(BRV_MAX_TOO_LARGE);
 		cumulativeConfigErrors++;
 	}
