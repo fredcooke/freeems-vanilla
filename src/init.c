@@ -60,19 +60,19 @@
  * @author Fred Cooke
  */
 void init(){
-	ATOMIC_START();			/* Disable ALL interrupts while we configure the board ready for use */
-	initPLL();				/* Set up the PLL and use it */
-	initIO();				/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
-	initAllPagedRAM();			/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
+	ATOMIC_START();         	/* Disable ALL interrupts while we configure the board ready for use */
+	initPLL();              	/* Set up the PLL and use it */
+	initIO();               	/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
+	initAllPagedRAM();      	/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
 	initAllPagedAddresses();	/* Save the paged memory addresses to variables such that we can access them from another paged block with no warnings */
-	initVariables();		/* Initialise the rest of the running variables etc */
-	initFlash(16000);		/* TODO, finalise this */
-	initECTTimer();			/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
-	initPITTimer();			/* TODO ditto... */
-	initSCIStuff();			/* Setup the sci module(s) that we will use. */
-	initConfiguration();	/* TODO Set user/feature/config up here! */
-	initInterrupts();		/* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
-	ATOMIC_END(); /* Re-enable any configured interrupts */
+	initVariables();        	/* Initialise the rest of the running variables etc */
+	initFlash();            	/* TODO, finalise this */
+	initECTTimer();         	/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
+	initPITTimer();         	/* TODO ditto... */
+	initSCIStuff();         	/* Setup the sci module(s) that we will use. */
+	initConfiguration();    	/* TODO Set user/feature/config up here! */
+	initInterrupts();       	/* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
+	ATOMIC_END();           	/* Re-enable any configured interrupts */
 }
 
 
@@ -492,35 +492,45 @@ void initVariables(){
 	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
 }
 
+
 /** @brief Flash module setup
  *
- * Initialize configuration registers for the flash module to allow burning of
+ * Initialise configuration registers for the flash module to allow burning of
  * non-volatile flash memory from within the firmware.
- * Clock Divider Bits — The combination of PRDIV8 and FDIV[5:0] must divide the oscillator clock down to a
- * frequency of 150 kHz–200 kHz. The maximum divide ratio is 512.
+ *
+ * The FCLKDIV register can be written once only after reset, thus the lower
+ * seven bits and the PRDIV8 bit must be set at the same time.
+ *
+ * We want to put the flash clock as high as possible between 150kHz and 200kHz
+ *
+ * The oscillator clock is 16MHz and because that is above 12.8MHz we will set
+ * the PRDIV8 bit to further divide by 8 bits as per the manual.
+ *
+ * 16MHz = 16000KHz which pre-divided by 8 is 2000kHz
+ *
+ * 2000kHz / 200kHz = 10 thus we want to set the divide register to 10 or 0x0A
+ *
+ * Combining 0x0A with PRDIV8 gives us 0x4A (0x0A | 0x40 = 0x4A) so we use that
  *
  * @author Sean Keys
  *
- * @param sysClock The frequency of the system clock in KHz.
+ * @note If you use a different crystal lower than 12.8MHz PRDIV8 should not be set.
+ *
+ * @warning If the frequency you end up with is outside 150kHz - 200kHz you may
+ *          damage your flash module or get corrupt data written to it.
  */
-void initFlash(unsigned short sysClock){
-	unsigned char flashClock;
-	if (sysClock >= 12000){
-		flashClock = sysClock/8/200 + 1 ;
-		FCLKDIV = flashClock | PRDIV8;
-	}
-	else{
-		flashClock = sysClock/8/200 + 1 ;
-		FCLKDIV =  flashClock;
-	}
-	FPROT = 0xFF;  /* disable all flash protection */
-	FSTAT = FSTAT|(PVIOL|ACCERR);  /* clear any errors */
+void initFlash(){
+	FCLKDIV = 0x4A;                  	/* Set the flash clock frequency	*/
+	FPROT = 0xFF;                    	/* Disable all flash protection 	*/
+	FSTAT = FSTAT | (PVIOL | ACCERR);	/* Clear any errors             	*/
 }
+
 
 /* Set up the timer module and its various interrupts */
 void initECTTimer(){
 
 	// TODO rearrange the order of this stuff and pull enable and interrupt enable out to the last function call of init.
+
 
 #ifndef NO_INIT
 	/* Timer channel interrupts */
@@ -557,6 +567,7 @@ void initECTTimer(){
 	MCFLG = 0x80; // clear the flag up front
 #endif
 }
+
 
 /* Configure the PIT timers for their various uses. */
 void initPITTimer(){
