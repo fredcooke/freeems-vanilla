@@ -23,12 +23,12 @@
  * - Shameem Hameed
  *
  * @b Hardware @b Design:
- * - Jared
+ * - Jared Harvey
  * - Dave
  * - Delta
- * - Baldur
- * - Jean
- * - Abe
+ * - Baldur Gislason
+ * - Jean Bélanger
+ * - Abe Mara
  *
  * @b Technical @b Advice:
  * - Karsten Sperling
@@ -39,9 +39,10 @@
  * - Others
  *
  * @b Bug @b Reports/Feedback:
- * - Dude from OS
- * - Jared
- * - Aaron
+ * - Steve from OS
+ * - Jared Harvey
+ * - Sean Keys
+ * - Aaron Barnes
  *
  * @b Forum @b Discussions:
  * - Many Many
