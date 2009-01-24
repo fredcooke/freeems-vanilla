@@ -29,6 +29,8 @@
  *
  * @brief Missing teeth, mostly 36-1 and 60-2
  *
+ * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
+ *
  * @todo TODO This file contains SFA but GearHead is going to fill it up with
  * @todo TODO wonderful goodness very soon ;-)
  *

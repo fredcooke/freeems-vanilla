@@ -29,6 +29,8 @@
  *
  * @brief LT1 Optispark
  *
+ * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
+ *
  * @todo TODO This file contains SFA but Sean Keys is going to fill it up with
  * @todo TODO wonderful goodness very soon ;-)
  *
@@ -36,61 +38,77 @@
  */
 
 
+#define LT1_360_8_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+#include "inc/LT1-360-8.h"
+
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
  *  @todo TODO Put this in the correct place
  *
  */
-void LT1PTInit(void)
-{
+void LT1PTInit(void){
 	/* set pt1 to capture on rising and falling */
 
 }
+
+
 /*	set overflow to 8 so that it will fire an interrupt on every 8th tooth, basically making it a 45tooth CAS */
 /** Primary RPM ISR
  *
  * @todo TODO Docs here!
  */
-void PrimaryRPMISR(void)
-{
+void PrimaryRPMISR(void){
+	/* Clear the interrupt flag for this input compare channel */
+	TFLG = 0x01;
+
+	/* Save all relevant available data here */
+//	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
+//	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
+	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+//	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
+
 //	unsigned char risingEdge; /* in LT1s case risingEdge means signal is high */
-	//			if(fixedConfigs1.coreSettingsA & PRIMARY_POLARITY){
-		//			risingEdge = PTITCurrentState & 0x01;
-			//	}else{
-				//	risingEdge = !(PTITCurrentState & 0x01);
-			//	}
+//	if(fixedConfigs1.coreSettingsA & PRIMARY_POLARITY){
+//		risingEdge = PTITCurrentState & 0x01;
+//	}else{
+//		risingEdge = !(PTITCurrentState & 0x01);
+//	}
 
-		PORTJ |= 0x80; /* Echo input condition on J7 */
-				if (!isSynced)  /* If the CAS is not in sync get window counts so SecondaryRPMISR can set position */
-				{
-					if (PTITCurrentState & 0x02)
-					{
-						Counters.PrimaryTeethDuringHigh++;  /* if low resolution signal is high count number of pulses */
-					}
-					else
-					{
-						Counters.PrimaryTeethDuringLow++;  /* if low resolution signal is low count number of pulses */
-					}
-				}
-				else /* The CAS is synced and we need to update our 360/5=72 tooth wheel */
-				{
-
-				}
+	PORTJ |= 0x80; /* Echo input condition on J7 */
+	if(!isSynced){  /* If the CAS is not in sync get window counts so SecondaryRPMISR can set position */
+		if (PTITCurrentState & 0x02){
+			PrimaryTeethDuringHigh++;  /* if low resolution signal is high count number of pulses */
+		}else{
+			PrimaryTeethDuringLow++;  /* if low resolution signal is low count number of pulses */
+		}
+	}else{ /* The CAS is synced and we need to update our 360/5=72 tooth wheel */
+		/// @todo TODO fill in or remove the else
+	}
 }
+
+
 /** Secondary RPM ISR
  * @brief Use the rising and falling edges...................
  * @todo TODO Docs here!
  * @todo TODO Add a check for 1 skip pulse of the 8x track, to prevent possible incorrect sync.
  * @todo TODO Possibily make virtual CAS 16-bit so was can get rid of floating points and use for syncing
  */
-void SecondaryRPMISR(void)
-{
+void SecondaryRPMISR(void){
+	/* Clear the interrupt flag for this input compare channel */
+	TFLG = 0x02;
+
+	/* Save all relevant available data here */
+//	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
+//	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
+	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+//	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
+
 	PORTJ |= 0x40;  /* echo input condition */
 	if (!isSynced){ /* If the CAS is not in sync get window counts and set virtual CAS position */
-		if (PTITCUrrentState & 0x02){  /* if signal is high that means we can count the lows */
-			switch Counters.PrimaryTeethDuringLow{
+		if (PTITCurrentState & 0x02){  /* if signal is high that means we can count the lows */
+			switch (PrimaryTeethDuringLow){
 			case 23: /* wheel is at 0 deg TDC #1, set our virtual CAS to tooth 0 of 72 */
 			{
 
@@ -116,11 +134,10 @@ void SecondaryRPMISR(void)
 			Counters.crankSyncLosses++; /* use crankSyncLosses variable to store number of invalid count cases while attempting to sync*/
 				break;
 			}
-			Counters.PrimaryTeechDuringLow = 0; /* In any case reset counter */
-		}
-		else    /* if the signal is low that means we can count the highs */
-		{
-			switch Counters.PrimaryTeethDuringHigh{
+			PrimaryTeethDuringLow = 0; /* In any case reset counter */
+			}
+		}else{    /* if the signal is low that means we can count the highs */
+			switch (PrimaryTeethDuringHigh){
 			case 7: /* wheel is at 52 deg, 7 deg ATDC #8 set our virtual CAS to tooth 10.4 of 72 */
 			{
 
@@ -148,12 +165,10 @@ void SecondaryRPMISR(void)
 			}
 
 	    	}
-			Counters.PrimaryTeethDuringHigh = 0;  /* In any case reset counter */
+			PrimaryTeethDuringHigh = 0;  /* In any case reset counter */
     	}
-	}
-	else    /* System is synced so use adjusted count numbers to check sync */
-	{
-
+	}else{    /* System is synced so use adjusted count numbers to check sync */
+		/// @todo TODO fill in or remove the else
 	}
 }
 		//	Counter.primaryTeethAfterSecondaryRise = 0;
@@ -170,15 +185,16 @@ void SecondaryRPMISR(void)
  * @brief Change the accumulator mode of PT7
  * @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
  */
-void changeAccumulatorMode(mode char)
-{
- if (mode == 0){ /* disable accumulator counter, so an ISR is fired on all 360 teeth */
-	 PACTL = 0x00; /* disable PAEN and PBOIV */
- }
- else{  /* enable accumulator so an ISR is only fired on every "8th tooth of the 360x track" */
-	 TIOS = TIOS &  ̃0x80;  /* PT7 input */
-	 TCTL1 = TCTL1 &  ̃0xC0; /* Disconnect IC/OC logic from PT7 */
-	 PACNT = 0x0005 ; /* set to overflow every 5 inputs on PT7 making our 360 tooth wheel act like a 72 tooth wheel */
-	 PACTL = 0x52; /* Enable PA in count mode,rising edge, interrupt on overflow  01010010*/
- }
+void changeAccumulatorMode(char mode){
+	if (mode == 0){ /* disable accumulator counter, so an ISR is fired on all 360 teeth */
+		PACTL = 0x00; /* disable PAEN and PBOIV */
+	}else{  /* enable accumulator so an ISR is only fired on every "8th tooth of the 360x track" */
+//		TIOS = TIOS &  "0xCC0x83" WTF!?LOL!! 0x80;  /* PT7 input */
+//		TCTL1 = TCTL1 &  "0xCC0x83" WTF!?LOL!! 0xC0; /* Disconnect IC/OC logic from PT7 */
+		TIOS = TIOS & 0x80;  /* PT7 input */
+		TCTL1 = TCTL1 & 0xC0; /* Disconnect IC/OC logic from PT7 */
+		/// @todo TODO the register below does not exist and I couldn't figure out what you meant to do...
+//		PACNT = 0x0005 ; /* set to overflow every 5 inputs on PT7 making our 360 tooth wheel act like a 72 tooth wheel */
+		PACTL = 0x52; /* Enable PA in count mode, rising edge and interrupt on overflow  01010010 */
+	}
 }

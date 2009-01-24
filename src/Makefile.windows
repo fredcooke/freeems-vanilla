@@ -119,6 +119,7 @@ LINKER = memory.x regions.x hc9s12xdp512elfb.x
 GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h
 GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
+RPMH = NipponDenso.h LT1-360-8.h Subaru-36-2-2-2.h MissingTeeth.h MiataNB.h
 
 # Let's keep this to a bare minimum! If you write ASM code
 # please provide an matching alternate C implementation too.
@@ -126,7 +127,7 @@ HANDASMS = flashBurn.s
 #RPMHANDASMS = 
 
 # .c files from inc/ should be included here as deps for the parts they are relied on by!!
-ALLHEADERS = $(GLOBALH1) $(GLOBALH2) $(COMMSH) $(ISRSH) $(UTILH) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(FLASHH) $(LOOKUPH)
+ALLHEADERS = $(GLOBALH1) $(GLOBALH2) $(COMMSH) $(ISRSH) $(UTILH) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(FLASHH) $(LOOKUPH) $(RPMH)
 ALLH = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS)) $(LINKER) $(MFILE) $(patsubst %.c,$(INCDIR)/%.c,$(CINCS)) $(INCDIR)/$(ASMH)
 
 # Warning : do not include .c files from inc/ as they are included into the other C files and automatically compiled.

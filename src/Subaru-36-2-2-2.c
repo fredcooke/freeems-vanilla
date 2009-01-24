@@ -29,6 +29,8 @@
  *
  * @brief Subaru 36 minus 2 2 2
  *
+ * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
+ *
  * @todo TODO This file contains SFA but [anon] is going to fill it up with
  * @todo TODO wonderful goodness very soon ;-)
  *

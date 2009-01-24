@@ -87,6 +87,7 @@ EXTERN void init(void) FPAGE_FE;
 #define PRDIV8			0x40 /* Mask for flash module to divide the oscillator clock by 8  */
 
 /// @todo TODO define other macros such that raw values aren't used in the code
+/// @todo TODO move all the reg masks to a header of their own for general use.
 
 
 #undef EXTERN

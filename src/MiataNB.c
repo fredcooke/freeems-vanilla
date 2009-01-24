@@ -29,6 +29,8 @@
  *
  * @brief Miata from 9x to 0x
  *
+ * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
+ *
  * @todo TODO This file contains SFA but Abe Mara is going to fill it up with
  * @todo TODO wonderful goodness very soon ;-)
  *
