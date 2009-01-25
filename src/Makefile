@@ -86,15 +86,19 @@ PPCDIR = preprocessedc
 # with the debian one so we can grep the deb line out and
 # end up with a working windows make file in an automated
 # way. Additionally, please ensure you do not add any sets
-# of three .. . in a row or the line will be missing from
+# of three . . . in a row or the line will be missing from
 # the windows version. Likewise sets of ### longer than 6
 # or so are also at risk :-)
 PREFIX = m6811-elf-
 PREFIX = m68hc11-
+PATHSEP = \\
+PATHSEP = /#...
 
 # All of the tools
 CP = cp
 RM = rm -rf
+MKDIR = mkdir
+MKDIR = mkdir -p #...
 ZIP = zip
 GCC = $(PREFIX)gcc
 COPY = $(PREFIX)objcopy
@@ -636,31 +640,36 @@ $(BUGDIR):
 	################################################################################
 	#                       Creating the debug directory....                       #
 	################################################################################
-	mkdir -p $(BUGDIR)
+	$(MKDIR) $(BUGDIR)$(PATHSEP)hack
+	rmdir $(BUGDIR)$(PATHSEP)hack
 
 $(S19DIR):
 	################################################################################
 	#                      Creating the firmware directory...                      #
 	################################################################################
-	mkdir -p $(S19DIR)
+	$(MKDIR) $(S19DIR)$(PATHSEP)hack
+	rmdir $(S19DIR)$(PATHSEP)hack
 
 $(PPCDIR):
 	################################################################################
 	#                   Creating the preprocessedc directory....                   #
 	################################################################################
-	mkdir -p $(PPCDIR)
+	$(MKDIR) $(PPCDIR)$(PATHSEP)hack
+	rmdir $(PPCDIR)$(PATHSEP)hack
 
 $(OUTDIR):
 	################################################################################
 	#                       Creating the output directory...                       #
 	################################################################################
-	mkdir -p $(OUTDIR)
+	$(MKDIR) $(OUTDIR)$(PATHSEP)hack
+	rmdir $(OUTDIR)$(PATHSEP)hack
 
 $(OBJDIR):
 	################################################################################
 	#                       Creating the object directory...                       #
 	################################################################################
-	mkdir -p $(OBJDIR)
+	$(MKDIR) $(OBJDIR)$(PATHSEP)hack
+	rmdir $(OBJDIR)$(PATHSEP)hack
 
 
 
