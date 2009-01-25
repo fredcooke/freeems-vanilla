@@ -404,6 +404,28 @@ clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
 #maps
 #rees
 
+mapsmsg:
+	################################################################################
+	#                          Generating memory maps....                          #
+	################################################################################
+
+maps: link $(BUGDIR) mapsmsg $(ALLMAPS)
+
+$(ALLMAPS): $(BUGDIR)/%.map: $(OUTDIR)/%.elf
+	$(NM) $< | sort > $@
+
+
+reesmsg:
+	################################################################################
+	#                           Reading all elf files...                           #
+	################################################################################
+
+rees: link $(BUGDIR) reesmsg $(ALLREAD)
+
+$(ALLREAD): $(BUGDIR)/%.ree: $(OUTDIR)/%.elf
+	$(RE) -a -W $< > $@
+
+
 elfdmpsmsg:
 	################################################################################
 	#                           Dumping all elf files...                           #
