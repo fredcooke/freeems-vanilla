@@ -379,20 +379,51 @@ allfull: s19 size
 allgc: gcs19 size #...
 
 # Build minimally and quickly
-fast: lessthings here
+#fast: lessthings here
 
 # Load the s19 of your choice
-install: clean fast loader
+#install: clean fast loader
 
 # Perform a release
-release: clean cleanrelease fast someMoreStuffHere
+#release: clean cleanrelease fast someMoreStuffHere
 
 clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
 
-final: link copy 
+#final: link copy 
 
-debug: dump map read dumpsmall
+#debug: dump map read dumpsmall
 
+
+
+
+################################################################################
+#                           Debug Target Definitions                           #
+################################################################################
+
+
+#maps
+#rees
+
+elfdmpsmsg:
+	################################################################################
+	#                           Dumping all elf files...                           #
+	################################################################################
+
+elfdmps: link $(BUGDIR) elfdmpsmsg $(ALLDMPS)
+
+$(ALLDMPS): $(BUGDIR)/%.dmp: $(OUTDIR)/%.elf
+	$(DUMP) -spSd $< > $@
+
+
+objdmpmsg:
+	################################################################################
+	#                         Dumping all object files....                         #
+	################################################################################
+
+objdmps: assemble $(BUGDIR) objdmpmsg $(DUMPS) $(DUMPSRPM)
+
+$(DUMPS) $(DUMPSRPM): $(BUGDIR)/%.dmp: $(OBJDIR)/%.o
+	$(DUMP) -spSd $< > $@
 
 
 
