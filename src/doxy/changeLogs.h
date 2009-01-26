@@ -9,7 +9,7 @@
  *
  * @version 0.0.19 Doxygenated
  *
- * @date ?/?/? ??:?? GMT
+ * @date 26/1/09 00:02 GMT
  *
  * @b Changes:
  * - Fred 25/12/08 15:30 GMT:
@@ -101,6 +101,15 @@
  *     - Added core vars test generator file
  *     - Added note about s19 files
  *     - More doxygen docs and titles in gpl headers
+ * - Fred 25/1/09 23:55 GMT:
+ *     - More doxygen docs
+ *     - Sean started work on the LT1 decoder
+ *     - Split up fixed conf 2 into a bunch of parts
+ *     - Added all memory to the block lookup dictionary
+ *     - Updated doxyfile to 1.5.8 spec
+ *     - Removed redundant flash files and code and documented it better
+ *     - Implemented most features of the new makefile
+ *     - Added hack to work around windows mkdir commands differences
  *
  * @anchor oldChangeLogs
  * @b Old @b Changes:

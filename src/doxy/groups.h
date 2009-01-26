@@ -28,6 +28,8 @@
  *
  * All of the code that reads the high speed engine
  * position signals can be found linked to from here.
+ *
+ * Currently only NipponDenso is semi functional.
  */
 
 /** @defgroup communicationsFiles Communications

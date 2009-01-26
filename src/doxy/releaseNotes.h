@@ -4,16 +4,14 @@
  * old change logs click @ref oldReleaseNotes "here".
  *
  * @b New @b Features:
- * - An awesome feature
- * - Another awesome feature
+ * - Almost all the code is doxygen commented
+ * - The Makefile has been majorly reworked to allow for multiple output files
  *
  * @b Differences:
- * - This changed
- * - This also changed
+ * - Make now produces a help message by default
  *
  * @b Known @b Issues:
- * - A nasty bug
- * - Another nasty bug
+ * - The windows makefile is out of date and does not work
  *
  * @anchor oldReleaseNotes
  * @b Old @b Notes:
