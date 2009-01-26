@@ -200,10 +200,8 @@ void sleepMicro(unsigned short us){
  */
 unsigned char checksum(unsigned char *block, unsigned short length){
 	unsigned char sum = 0;
-	unsigned short i;
-	for(i=0;i<length;i++){
-		sum += *block;
-		block++;
+	while (length-- > 0){
+		sum += *block++;
 	}
 	return sum;
 }
@@ -221,13 +219,10 @@ unsigned char checksum(unsigned char *block, unsigned short length){
  * @return the length of the string copied.
  */
 unsigned short stringCopy(unsigned char* dest, unsigned char* source){
-	unsigned short length = 0;
-	while(*source != 0){
-		*dest = *source;
-		dest++;
-		source++;
+	short length = -1;
+	do {
+		*dest++ = *source++;
 		length++;
-	}
-	*dest = 0;
-	return length;
+	} while(*(source-1) != 0);
+	return (unsigned short) length;
 }

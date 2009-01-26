@@ -148,8 +148,7 @@ void checksumAndSend(){
 	unsigned short TXPacketLengthToSend = (unsigned short)TXBufferCurrentPositionHandler - (unsigned short)&TXBuffer;
 
 	/* Tag the checksum on the end */
-	*TXBufferCurrentPositionHandler = checksum((unsigned char*)&TXBuffer, TXPacketLengthToSend);
-	TXPacketLengthToSend++;
+	*TXBufferCurrentPositionHandler = checksum((unsigned char*)&TXBuffer, TXPacketLengthToSend++);
 
 	/* Send it out on all the channels required. */
 
