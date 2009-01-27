@@ -1,6 +1,8 @@
-/*	This file is part of the FreeEMS project.
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
+
+	This file is part of the FreeEMS project.
 
 	FreeEMS software is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by

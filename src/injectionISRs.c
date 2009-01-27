@@ -1,4 +1,4 @@
-/*	injectionISRs.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -21,6 +21,22 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file injectionISRs.c
+ * @ingroup interruptHandlers
+ *
+ * @brief Injection ISR substitutions
+ *
+ * This file defines the pin specific names for each interrupt and all of it's
+ * pin specific variables then imports the actual code from inc/injectorISR.c
+ * for each pin such that each one is unique and references a separate set of
+ * values specific to it while only maintaining a single copy of the code.
+ *
+ * @see injectorISR.c
+ *
+ * @author Fred Cooke
+ */
 
 
 #define INJECTIONISRS_C

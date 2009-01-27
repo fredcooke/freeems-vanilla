@@ -1,4 +1,4 @@
-/*	main.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -23,9 +23,40 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/** @file main.c
+ *
+ * @brief The main function!
+ *
+ * The function main is traditionally an applications starting point. For us
+ * it has two jobs. The first is to call init() which initialises everything
+ * before any normal code runs. After that main() is simply an infinite loop
+ * from which low priority non-realtime code runs. The most important units of
+ * code that runs under the main loop umbrella are the injection, ignition and
+ * scheduling calculations.
+ *
+ * @author Fred Cooke
+ */
+
+
 #include "inc/main.h"
 
 
+/** @brief The main function!
+ *
+ * The centre of the application is here. From here all non-ISR code is called
+ * directly or indirectly. The two coarse blocks are init and the main loop.
+ * Init is called first to set everything up and then the main loop is entered
+ * where the flow of control continues until the device is switched off or
+ * reset (excluding asynchronous ISR code). Currently the main loop only runs
+ * the fuel, ignition and scheduling calculation code, and only when actually
+ * required. The intention is to maintain a very low latency for calculations
+ * such that the behaviour of the device more closely reflects the attached
+ * engines rapidly changing requirements. When accessory code is added a new
+ * scheduling algorithm will be required to keep the latency low without
+ * starving any particular blocks of CPU time.
+ *
+ * @author Fred Cooke
+ */
 int  main(){ // TODO maybe move this to paged flash ?
 	// Set everything up.
 	init();

@@ -1,4 +1,4 @@
-/*	staticInit.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -21,6 +21,19 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/** @file staticInit.c
+ *
+ * This file contains static initialisations for fields that require a non-zero
+ * initial value after reset. Zero fields are taken care of by GCC and doing
+ * this here means less init time and init code, both good things. Variables
+ * initialised here are placed together by the compiler in flash and copied up
+ * to RAM as a linear block before the main method runs. This is significantly
+ * more efficient than doing them one-by-one in an init routine.
+ *
+ * @author Fred Cooke
+ */
 
 
 #include "inc/freeEMS.h"

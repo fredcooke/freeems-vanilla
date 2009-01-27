@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -21,7 +23,7 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/** @file blockDetailsLookup.h
+/** @file commsISRs.h
  * @ingroup allHeaders
  */
 

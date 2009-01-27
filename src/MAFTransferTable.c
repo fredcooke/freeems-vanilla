@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -22,7 +24,6 @@
 
 
 /**	@file MAFTransferTable.c
- *
  * @ingroup dataInitialisers
  *
  * @brief Mass Air Flow Transfer Table
@@ -37,6 +38,13 @@
 #include "inc/freeEMS.h"
 
 
+/** @brief Mass Air Flow Transfer Table
+ *
+ * Using this table it is possible to accurately and quickly convert
+ * a raw ADC reading to a measured mass air flow value.
+ *
+ * @author Fred Cooke
+ */
 const volatile unsigned short MAFTransferTable[1024] LOOKUPD = {
 	3,		3,		3,		3,		4,		4,		4,		4,		5,		5,		5,		5,		6,		6,		6,		6,
 	7,		7,		7,		8,		8,		8,		9,		9,		10,		10,		10,		11,		11,		12,		12,		13,

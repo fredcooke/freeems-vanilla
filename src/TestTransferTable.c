@@ -1,4 +1,4 @@
-/*	TestTransferTable.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -21,6 +21,18 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/** @file TestTransferTable.c
+ * @ingroup dataInitialisers
+ * @ingroup testing
+ *
+ * @brief Test data for comms
+ *
+ * An array of bytes from 0 - 255 repeated 8 times for testing serial comms.
+ *
+ * @author Fred Cooke
+ */
 
 
 #include "inc/freeEMS.h"

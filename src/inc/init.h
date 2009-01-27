@@ -44,6 +44,7 @@
 void initPLL(void) FPAGE_FE;
 void initIO(void) FPAGE_FE;
 void initAllPagedRAM(void) FPAGE_FE;
+void initAllPagedAddresses(void) FPAGE_FE;
 void initVariables(void) FPAGE_FE;
 void initFlash(void) FPAGE_FE;
 void initECTTimer(void) FPAGE_FE;
@@ -52,6 +53,9 @@ void initSCIStuff(void) FPAGE_FE;
 void initConfiguration(void) FPAGE_FE;
 void initInterrupts(void) FPAGE_FE;
 void initLookupAddresses(void) LOOKUPF;
+void initFuelAddresses(void) FUELTABLESF;
+void initTimingAddresses(void) TIMETABLESF;
+void initTunableAddresses(void) TUNETABLESF;
 void initPagedRAMFuel(void) FUELTABLESF;
 void initPagedRAMTime(void) TIMETABLESF;
 void initPagedRAMTune(void) TUNETABLESF;
@@ -79,7 +83,11 @@ EXTERN void init(void) FPAGE_FE;
 #define PLLDIVISOR		0x03 /* Input crystal frequency is divided by this number */
 #define PLLMULTIPLIER	0x09 /* The result of the above is multiplied by this number to give the bus frequency */
 
+// Flash control values
+#define PRDIV8			0x40 /* Mask for flash module to divide the oscillator clock by 8  */
+
 /// @todo TODO define other macros such that raw values aren't used in the code
+/// @todo TODO move all the reg masks to a header of their own for general use.
 
 
 #undef EXTERN

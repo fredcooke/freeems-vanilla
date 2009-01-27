@@ -4,6 +4,7 @@ src/firmware/
 src/output/
 src/preprocessedc/
 src/objects/
+src/debug/
 src/assembly/*.s
 !src/assembly/flashBurn.s
 

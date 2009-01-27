@@ -45,6 +45,8 @@
  *
  * @author Fred Cooke
  *
+ * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
+ *
  * @todo TODO make this generic for evenly spaced teeth with a pulse per revolution from the second input.
  */
 
@@ -78,8 +80,7 @@
  * @todo TODO bring the above docs up to date with reality
  * @todo TODO finish this off to a usable standard
  */
-void PrimaryRPMISR(void)
-{
+void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 
@@ -271,7 +272,7 @@ void PrimaryRPMISR(void)
 
 					// increment queue length
 					dwellQueueLength++;
-				}else if(dwellQueueLength > fixedConfigs2.combustionEventsPerEngineCycle){ //TODO sensible figures here for array index OOBE
+				}else if(dwellQueueLength > fixedConfigs1.engineSettings.combustionEventsPerEngineCycle){ //TODO sensible figures here for array index OOBE
 					// do nothing, or increment a counter or something similar.
 				}else{
 					unsigned short sumOfDwells = PITLD0;
@@ -325,7 +326,7 @@ void PrimaryRPMISR(void)
 
 					// increment to 1
 					ignitionQueueLength++;
-				}else if(ignitionQueueLength > fixedConfigs2.combustionEventsPerEngineCycle){ //TODO sensible figures here for array index OOBE
+				}else if(ignitionQueueLength > fixedConfigs1.engineSettings.combustionEventsPerEngineCycle){ //TODO sensible figures here for array index OOBE
 					// do nothing, or increment a counter or something similar.
 				}else{
 					unsigned short sumOfIgnitions = PITLD1;
@@ -373,8 +374,7 @@ void PrimaryRPMISR(void)
  * @todo TODO bring this documentation up to date.
  * @todo TODO finish this off to a usable standard.
  */
-void SecondaryRPMISR(void)
-{
+void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 

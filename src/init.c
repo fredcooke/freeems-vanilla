@@ -1,4 +1,4 @@
-/*	init.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -23,6 +23,24 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
+/**	@file init.c
+ *
+ * @brief Initialise the devices state
+ *
+ * Setup, configure and initialise all aspects of the devices state including
+ * but not limited to:
+ *
+ * - Setup the bus clock speed
+ * - Configuration based variable initialisation
+ * - I/O register behaviour and initial state
+ * - Configure and enable interrupts
+ * - Copy tunable data up to RAM from flash
+ * - Configure peripheral module behaviour
+ *
+ * @author Fred Cooke
+ */
+
+
 #define INIT_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
@@ -33,20 +51,28 @@
 #include <string.h>
 
 
-/* Main init function to be called from main.c before entering the main loop */
+/** @brief The main top level init
+ *
+ * The main init function to be called from main.c before entering the main
+ * loop. This function is simply a delegator to the finer grained special
+ * purpose init functions.
+ *
+ * @author Fred Cooke
+ */
 void init(){
-	ATOMIC_START();			/* Disable ALL interrupts while we configure the board ready for use */
-	initPLL();				/* Set up the PLL and use it */
-	initIO();				/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
-	initAllPagedRAM();			/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
-	initVariables();		/* Initialise the rest of the running variables etc */
-	initFlash();			/* TODO, populate */
-	initECTTimer();			/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
-	initPITTimer();			/* TODO ditto... */
-	initSCIStuff();			/* Setup the sci module(s) that we will use. */
-	initConfiguration();	/* TODO Set user/feature/config up here! */
-	initInterrupts();		/* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
-	ATOMIC_END(); /* Re-enable any configured interrupts */
+	ATOMIC_START();         	/* Disable ALL interrupts while we configure the board ready for use */
+	initPLL();              	/* Set up the PLL and use it */
+	initIO();               	/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
+	initAllPagedRAM();      	/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
+	initAllPagedAddresses();	/* Save the paged memory addresses to variables such that we can access them from another paged block with no warnings */
+	initVariables();        	/* Initialise the rest of the running variables etc */
+	initFlash();            	/* TODO, finalise this */
+	initECTTimer();         	/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
+	initPITTimer();         	/* TODO ditto... */
+	initSCIStuff();         	/* Setup the sci module(s) that we will use. */
+	initConfiguration();    	/* TODO Set user/feature/config up here! */
+	initInterrupts();       	/* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
+	ATOMIC_END();           	/* Re-enable any configured interrupts */
 }
 
 
@@ -54,7 +80,13 @@ void init(){
 //#define NO_INIT
 
 
-/* Set the Phase Locked Loop to our desired frequency (80MHz) and switch to using it for clock (40MHz bus speed) */
+/** @brief Set the PLL clock frequency
+ *
+ * Set the Phase Locked Loop to our desired frequency (80MHz) and switch to
+ * using it for clock (40MHz bus speed).
+ *
+ * @author Fred Cooke
+ */
 void initPLL(){
 	CLKSEL &= PLLSELOFF;	/* Switches to base external OSCCLK to ensure PLL is not being used (off out of reset, but not sure if the monitor turns it on before passing control or not) */
 	PLLCTL &= PLLOFF;		/* Turn the PLL device off to adjust its speed (on by default out of reset) */
@@ -176,8 +208,15 @@ void initIO(){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initLookupAddresses(void){
+/** @brief Buffer lookup tables addresses
+ *
+ * Save pointers to the lookup tables which live in paged flash.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initLookupAddresses(){
 	IATTransferTableLocation = (void*)&IATTransferTable;
 	CHTTransferTableLocation = (void*)&CHTTransferTable;
 	MAFTransferTableLocation = (void*)&MAFTransferTable;
@@ -185,8 +224,15 @@ void initLookupAddresses(void){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initPagedRAMFuel(void){
+/** @brief Buffer fuel tables addresses
+ *
+ * Save pointers to the fuel tables which live in paged flash.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initFuelAddresses(){
 	/* Setup addresses within the page to avoid warnings */
 	VETableMainFlashLocation		= (void*)&VETableMainFlash;
 	VETableSecondaryFlashLocation	= (void*)&VETableSecondaryFlash;
@@ -196,8 +242,17 @@ void initPagedRAMFuel(void){
 	VETableSecondaryFlash2Location	= (void*)&VETableSecondaryFlash2;
 	VETableTertiaryFlash2Location	= (void*)&VETableTertiaryFlash2;
 	LambdaTableFlash2Location		= (void*)&LambdaTableFlash2;
-	/* Copy the tables from flash to RAM */
+}
 
+
+/** @brief Copy fuel tables to RAM
+ *
+ * Initialises the fuel tables in RAM by copying them up from flash.
+ *
+ * @author Fred Cooke
+ */
+void initPagedRAMFuel(void){
+	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_FUEL_ONE;
 	memcpy((void*)&TablesA,	VETableMainFlashLocation,		MAINTABLE_SIZE);
 	memcpy((void*)&TablesB,	(void*)&VETableSecondaryFlash,	MAINTABLE_SIZE);
@@ -211,8 +266,15 @@ void initPagedRAMFuel(void){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initPagedRAMTime(void){
+/** @brief Buffer timing tables addresses
+ *
+ * Save pointers to the timing tables which live in paged flash.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initTimingAddresses(){
 	/* Setup addresses within the page to avoid warnings */
 	IgnitionAdvanceTableMainFlashLocation			= (void*)&IgnitionAdvanceTableMainFlash;
 	IgnitionAdvanceTableSecondaryFlashLocation		= (void*)&IgnitionAdvanceTableSecondaryFlash;
@@ -222,8 +284,17 @@ void initPagedRAMTime(void){
 	IgnitionAdvanceTableSecondaryFlash2Location		= (void*)&IgnitionAdvanceTableSecondaryFlash2;
 	InjectionAdvanceTableMainFlash2Location			= (void*)&InjectionAdvanceTableMainFlash2;
 	InjectionAdvanceTableSecondaryFlash2Location	= (void*)&InjectionAdvanceTableSecondaryFlash2;
-	/* Copy the tables from flash to RAM */
+}
 
+
+/** @brief Copy timing tables to RAM
+ *
+ * Initialises the timing tables in RAM by copying them up from flash.
+ *
+ * @author Fred Cooke
+ */
+void initPagedRAMTime(){
+	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TIME_ONE;
 	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlashLocation,			MAINTABLE_SIZE);
 	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlashLocation,		MAINTABLE_SIZE);
@@ -237,8 +308,16 @@ void initPagedRAMTime(void){
 }
 
 
-/* Many thanks to Jean Bélanger for the inspiration/idea to do this! */
-void initPagedRAMTune(void){
+/** @brief Buffer tunable tables addresses
+ *
+ * Save pointers to the tunable tables which live in paged flash and their
+ * sub-sections too.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initTunableAddresses(){
 	/* Setup addresses within the page to avoid warnings */
 	SmallTablesAFlashLocation 	= (void*)&SmallTablesAFlash;
 	SmallTablesBFlashLocation 	= (void*)&SmallTablesBFlash;
@@ -284,7 +363,13 @@ void initPagedRAMTune(void){
 	fillerC2Location = (void*)&SmallTablesCFlash2.filler;
 	fillerDLocation  = (void*)&SmallTablesDFlash.filler;
 	fillerD2Location = (void*)&SmallTablesDFlash2.filler;
+}
 
+
+/**
+ *
+ */
+void initPagedRAMTune(){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TUNE_ONE;
 	memcpy((void*)&TablesA,	SmallTablesAFlashLocation,	MAINTABLE_SIZE);
@@ -299,19 +384,48 @@ void initPagedRAMTune(void){
 }
 
 
-/* Take the tables and config from flash up to RAM and initialise pointers to them.
+/** @brief Buffer addresses of paged data
+ *
+ * If you try to access paged data from the wrong place you get nasty warnings.
+ * These calls to functions that live in the same page that they are addressing
+ * prevent those warnings.
+ *
+ * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
+ *
+ * @author Fred Cooke
+ */
+void initAllPagedAddresses(){
+	/* Setup pointers to lookup tables */
+	initLookupAddresses();
+	/* Setup pointers to the main tables */
+	initFuelAddresses();
+	initTimingAddresses();
+	initTunableAddresses();
+}
+
+
+/** @brief Copies paged flash to RAM
+ *
+ * Take the tables and config from flash up to RAM to allow live tuning.
  *
  * For the main tables and other paged config we need to adjust
  * the RPAGE value to the appropriate one before copying up.
+ *
+ * This function is simply a delegator to the ones for each flash page. Each
+ * one lives in the same paged space as the data it is copying up.
+ *
+ * @author Fred Cooke
  */
 void initAllPagedRAM(){
-	/* Setup pointers to lookup tables */
-	initLookupAddresses();
-
 	/* Copy the tables up to their paged ram blocks through the window from flash */
 	initPagedRAMFuel();
 	initPagedRAMTime();
 	initPagedRAMTune();
+
+	/* Default to page one for now, perhaps read the configured port straight out of reset in future? TODO */
+	setupPagedRAM(TRUE); // probably something like (PORTA & TableSwitchingMask)
+}
+
 
 	/* Init all pointers to tunable items with direct addresses */
 	/* Pointers remain the same when switching pages so are initialised only once */
@@ -334,10 +448,6 @@ void initAllPagedRAM(){
 //	dwellMaxVersusRPMTable = &TablesA.SmallTablesA.dwellMaxVersusRPMTable;
 //
 //	perCylinderFuelTrims = TablesB.SmallTablesB.perCylinderFuelTrims;
-
-	/* Default to page one for now, perhaps read the configured port straight out of reset in future? TODO */
-	setupPagedRAM(TRUE); // probably something like (PORTA & TableSwitchingMask)
-}
 
 
 /* Initialise and set up all running variables that require a non-zero start value here */
@@ -382,31 +492,45 @@ void initVariables(){
 	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
 }
 
-/* TODO initialise the flash burning configuration regs */
+
+/** @brief Flash module setup
+ *
+ * Initialise configuration registers for the flash module to allow burning of
+ * non-volatile flash memory from within the firmware.
+ *
+ * The FCLKDIV register can be written once only after reset, thus the lower
+ * seven bits and the PRDIV8 bit must be set at the same time.
+ *
+ * We want to put the flash clock as high as possible between 150kHz and 200kHz
+ *
+ * The oscillator clock is 16MHz and because that is above 12.8MHz we will set
+ * the PRDIV8 bit to further divide by 8 bits as per the manual.
+ *
+ * 16MHz = 16000KHz which pre-divided by 8 is 2000kHz
+ *
+ * 2000kHz / 200kHz = 10 thus we want to set the divide register to 10 or 0x0A
+ *
+ * Combining 0x0A with PRDIV8 gives us 0x4A (0x0A | 0x40 = 0x4A) so we use that
+ *
+ * @author Sean Keys
+ *
+ * @note If you use a different crystal lower than 12.8MHz PRDIV8 should not be set.
+ *
+ * @warning If the frequency you end up with is outside 150kHz - 200kHz you may
+ *          damage your flash module or get corrupt data written to it.
+ */
 void initFlash(){
-	// TBC
-	unsigned char flashclock;
-	unsigned short SysClock = 16000;    //TODO see if Fred already specified this var and/or move to configs/constants
-
-	if (SysClock >= 12000){
-		flashclock = (unsigned char) (SysClock/8/200 );
-	}
-	else{
-		flashclock = (unsigned char) (SysClock/200 +1);
-	}
-// TODO FIX SO EQUASION WORKS
-//	FCLKDIV = FCLKDIV|flashclock;
-	FCLKDIV = 0x4A;
-
-	FPROT = 0xFF;  //disable all flash protection
-	FSTAT = FSTAT|(PVIOL|ACCERR);  //clear any errors
-
+	FCLKDIV = 0x4A;                  	/* Set the flash clock frequency	*/
+	FPROT = 0xFF;                    	/* Disable all flash protection 	*/
+	FSTAT = FSTAT | (PVIOL | ACCERR);	/* Clear any errors             	*/
 }
+
 
 /* Set up the timer module and its various interrupts */
 void initECTTimer(){
 
 	// TODO rearrange the order of this stuff and pull enable and interrupt enable out to the last function call of init.
+
 
 #ifndef NO_INIT
 	/* Timer channel interrupts */
@@ -437,12 +561,13 @@ void initECTTimer(){
 	//DLYCT = ??; built in noise filter
 
 	/* Configurable tachometer output */
-	PTMCPSR = fixedConfigs2.tachoTickFactor - 1; // Precision prescaler - fastest is 1 represented by 0, slowest/longest possible is 256 represented by 255 or 0xFF
+	PTMCPSR = fixedConfigs1.tachoSettings.tachoTickFactor - 1; // Precision prescaler - fastest is 1 represented by 0, slowest/longest possible is 256 represented by 255 or 0xFF
 	MCCNT = ONES16; // init to slowest possible, first
 	MCCTL = 0xC4; // turn on and setup the mod down counter
 	MCFLG = 0x80; // clear the flag up front
 #endif
 }
+
 
 /* Configure the PIT timers for their various uses. */
 void initPITTimer(){
@@ -471,7 +596,7 @@ void initSCIStuff(){
 	/* The alternative register set selector defaults to zero */
 
 	// set the baud/data speed
-	SCI0BD = fixedConfigs2.baudDivisor;
+	SCI0BD = fixedConfigs1.serialSettings.baudDivisor;
 
 	// etc
 
@@ -522,13 +647,13 @@ void initConfiguration(){
 	 *nstant = ((masterConst / injectorFlow) * perCylinderVolume) / stoichiometricAFR;
 	 *nstant = ((139371764	 / 4096		   ) * 16384			) / 15053			 ;
 	 * http://www.google.com/search?hl=en&safe=off&q=((139371764++%2F+4096+++++)+*+16384+++)+%2F+15053++++&btnG=Search */
-	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.injectorFlow) * fixedConfigs1.perCylinderVolume) / fixedConfigs1.stoichiometricAFR;
+	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.engineSettings.injectorFlow) * fixedConfigs1.engineSettings.perCylinderVolume) / fixedConfigs1.engineSettings.stoichiometricAFR;
 
 	/* The MAP range used to convert fake TPS from MAP and vice versa */
-	TPSMAPRange = fixedConfigs1.TPSOpenMAP - fixedConfigs1.TPSClosedMAP;
+	TPSMAPRange = fixedConfigs2.sensorRanges.TPSOpenMAP - fixedConfigs2.sensorRanges.TPSClosedMAP;
 
 	/* The ADC range used to generate TPS percentage */
-	TPSADCRange = fixedConfigs1.TPSMaximumADC - fixedConfigs1.TPSMinimumADC;
+	TPSADCRange = fixedConfigs2.sensorRanges.TPSMaximumADC - fixedConfigs2.sensorRanges.TPSMinimumADC;
 
 
 	/* Use like flags for now, just add one for each later */
@@ -537,7 +662,7 @@ void initConfiguration(){
 	/* Check various aspects of config which will cause problems */
 
 	/* BRV max bigger than variable that holds it */
-	if(((unsigned long)fixedConfigs1.BRVMinimum + fixedConfigs1.BRVRange) > 65535){
+	if(((unsigned long)fixedConfigs2.sensorRanges.BRVMinimum + fixedConfigs2.sensorRanges.BRVRange) > 65535){
 		//sendError(BRV_MAX_TOO_LARGE);
 		cumulativeConfigErrors++;
 	}

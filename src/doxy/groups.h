@@ -28,6 +28,8 @@
  *
  * All of the code that reads the high speed engine
  * position signals can be found linked to from here.
+ *
+ * Currently only NipponDenso is semi functional.
  */
 
 /** @defgroup communicationsFiles Communications
@@ -85,6 +87,13 @@
  * Most of these are fairly uninteresting, hence being clost to the bottom of
  * the modules list. Typically they just contain function declarations for
  * inclusion in other source files.
+ */
+
+/** @defgroup testing Test Files
+ *
+ * A very small group at this stage, this is intended to contain various files
+ * that manipulate the functional code by providing it with artificial inputs
+ * instead of real values read from sensors.
  */
 
 /** @defgroup doxygenDocFiles Doxygen Documentation Files

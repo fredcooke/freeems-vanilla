@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -73,7 +75,7 @@ void calculateFuelAndIgnition(){
 			/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!
 			airInletTemp = roomTemperature; // 293.15k is 20c * 100 to get value, so divide by 100 to get real number
 		}else if(FALSE /*FixedAF*/){ /* Fixed air flow from config */
-			DerivedVars->AirFlow = fixedConfigs1.presetAF;
+			DerivedVars->AirFlow = fixedConfigs2.sensorPresets.presetAF;
 		}else{ /* Default to no fuel delivery and error */
 			DerivedVars->AirFlow = 0;
 			/* If anyone is listening, let them know something is wrong */
@@ -82,7 +84,7 @@ void calculateFuelAndIgnition(){
 
 
 		/* This won't overflow until well past 125C inlet, 1.5 Lambda and fuel as dense as water */
-		DerivedVars->densityAndFuel = (((unsigned long)((unsigned long)airInletTemp * DerivedVars->Lambda) / stoichiometricLambda) * fixedConfigs1.densityOfFuelAtSTP) / densityOfFuelTotalDivisor;
+		DerivedVars->densityAndFuel = (((unsigned long)((unsigned long)airInletTemp * DerivedVars->Lambda) / stoichiometricLambda) * fixedConfigs1.engineSettings.densityOfFuelAtSTP) / densityOfFuelTotalDivisor;
 		/* Result is 7500 - 60000 always. */
 
 		/* Divisors for air inlet temp and pressure :
@@ -93,7 +95,7 @@ void calculateFuelAndIgnition(){
 
 		DerivedVars->BasePW = (bootFuelConst * DerivedVars->AirFlow) / DerivedVars->densityAndFuel;
 	}else if(FALSE /*configured*/){ /* Fixed PW from config */
-		DerivedVars->BasePW = fixedConfigs1.presetBPW;
+		DerivedVars->BasePW = fixedConfigs2.sensorPresets.presetBPW;
 	}else{ /* Default to no fuel delivery and error */
 		DerivedVars->BasePW = 0;
 		/* If anyone is listening, let them know something is wrong */

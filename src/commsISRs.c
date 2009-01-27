@@ -51,7 +51,7 @@
  * http://gcc.gnu.org/onlinedocs/gcc-3.3.6/Inline.html#Inline	*/
 
 
-/** Send And Increment
+/** @brief Send And Increment
  *
  * Increment the pointer, decrement the length, and send it!
  *
@@ -68,9 +68,11 @@ extern inline void sendAndIncrement(unsigned char rawValue){
 }
 
 
-/** Receive And Increment
+/** @brief Receive And Increment
  *
  * Store the value and add it to the checksum, then increment the pointer and length.
+ *
+ * @author Fred Cooke
  *
  * @note This is an extern inline function and as such is always inlined.
  *
@@ -84,9 +86,11 @@ extern inline void receiveAndIncrement(const unsigned char value){
 }
 
 
-/** Reset Receive State
+/** @brief Reset Receive State
  *
  * Reset communications reception to the state provided.
+ *
+ * @author Fred Cooke
  *
  * @todo TODO this is in the wrong file!! Either move the header declaration or move the function!
  *
@@ -128,12 +132,14 @@ void resetReceiveState(unsigned char sourceIDState){
 }
 
 
-/** UART Serial Communication Interface 0 ISR
+/** @brief Serial Communication Interface 0 ISR
  *
  * SCI0 ISR handles all interrupts for SCI0 by reading flags and acting
  * appropriately. Its functions are to send raw bytes out over the wire from a
  * buffer and to receive bytes from the wire un-escape them, checksum them and
  * store them in a buffer.
+ *
+ * @author Fred Cooke
  *
  * @todo TODO Move this code into an include file much like the fuel interrupts such that it can be used for multiple UART SCI devices without duplication.
  * @todo TODO Remove the debug code that uses the IO ports to light LEDs during specific actions.

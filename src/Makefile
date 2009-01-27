@@ -69,7 +69,7 @@
 
 
 # Constants
-VERSION = 0.0.19
+VERSION = 0.0.20
 OUTPREFIX = freeems
 
 # Directories here
@@ -86,15 +86,19 @@ PPCDIR = preprocessedc
 # with the debian one so we can grep the deb line out and
 # end up with a working windows make file in an automated
 # way. Additionally, please ensure you do not add any sets
-# of three .. . in a row or the line will be missing from
+# of three . . . in a row or the line will be missing from
 # the windows version. Likewise sets of ### longer than 6
 # or so are also at risk :-)
 PREFIX = m6811-elf-
 PREFIX = m68hc11-
+PATHSEP = \\
+PATHSEP = /#...
 
 # All of the tools
 CP = cp
 RM = rm -rf
+MKDIR = mkdir
+MKDIR = mkdir -p #...
 ZIP = zip
 GCC = $(PREFIX)gcc
 COPY = $(PREFIX)objcopy
@@ -111,7 +115,8 @@ SIZE = $(PREFIX)size
 ################################################################################
 
 
-# Indirect dependencies - any header change means a full recompile. This can be improved upon and made more specific.
+# Indirect dependencies - any header change means a full
+# recompile. This can be improved upon and made more specific.
 MAINH = main.h
 INITH = init.h
 UTILH = utils.h
@@ -128,6 +133,7 @@ LINKER = memory.x regions.x hc9s12xdp512elfb.x
 GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h
 GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
+RPMH = NipponDenso.h LT1-360-8.h Subaru-36-2-2-2.h MissingTeeth.h MiataNB.h
 
 # Let's keep this to a bare minimum! If you write ASM code
 # please provide an matching alternate C implementation too.
@@ -135,10 +141,16 @@ HANDASMS = flashBurn.s
 #RPMHANDASMS = 
 
 # .c files from inc/ should be included here as deps for the parts they are relied on by!!
-ALLHEADERS = $(GLOBALH1) $(GLOBALH2) $(COMMSH) $(ISRSH) $(UTILH) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(FLASHH) $(LOOKUPH)
-ALLH = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS)) $(LINKER) $(MFILE) $(patsubst %.c,$(INCDIR)/%.c,$(CINCS)) $(INCDIR)/$(ASMH)
+ALLHEADERS1 = $(GLOBALH1) $(COMMSH) $(ISRSH) $(UTILH) $(RPMH) $(FLASHH)
+ALLHEADERS2 = $(GLOBALH2) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(LOOKUPH)
+ALLH1 = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS1))
+ALLH2 = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS2))
+ALLH3 = $(patsubst %.c,$(INCDIR)/%.c,$(CINCS))
+ALLH4 = $(LINKER) $(MFILE) $(INCDIR)/$(ASMH)
+ALLH = $(ALLH1) $(ALLH2) $(ALLH3) $(ALLH4)
 
-# Warning : do not include .c files from inc/ as they are included into the other C files and automatically compiled.
+# Warning : do not include .c files from inc/ as they are
+# included into the other C files and automatically compiled.
 
 # Flash data files
 FIXEDCLASSES = FixedConfig1.c FixedConfig2.c
@@ -177,15 +189,29 @@ OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst %.s,$(OBJDI
 DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
 # Convert to output files
-ALLELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMCLASSES)) #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMHANDASMS))
-ALLDMPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMHANDASMS))
-ALLMAPS = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
-ALLREAD = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
-ALLS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES)) #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
+ALLELFSC = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMCLASSES))
+ALLELFSASM = #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMHANDASMS))
+ALLDMPSC = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES))
+ALLDMPSASM = #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMHANDASMS))
+ALLMAPSC = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES))
+ALLMAPSASM = #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
+ALLREADC = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES))
+ALLREADASM = #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
+ALLS19SC = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES))
+ALLS19SASM = #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
+ALLELFS = $(ALLELFSC) $(ALLELFSASM)
+ALLDMPS = $(ALLDMPSC) $(ALLDMPSASM)
+ALLMAPS = $(ALLMAPSC) $(ALLMAPSASM)
+ALLREAD = $(ALLREADC) $(ALLREADASM)
+ALLS19S = $(ALLS19SC) $(ALLS19SASM)
 
 # Convert to output files for GC variants
-GCDELFS = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES)) #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMHANDASMS))
-GCDS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES)) #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
+GCDELFSC = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES))
+GCDELFSASM = #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMHANDASMS))
+GCDS19SC = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES))
+GCDS19SASM = #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
+GCDELFS = $(GCDELFSC) $(GCDELFSASM)
+GCDS19S = $(GCDS19SC) $(GCDELFSASM)
 
 
 
@@ -199,7 +225,9 @@ GCDS19S = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES
 
 # http://www.gnu.org/software/m68hc11/m68hc11_gcc.html shows code size with different options used
 # include debug info, optimise , 16 bit ints, hcs12 platform
-GCCOPTS = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
+GCCOPTS1 = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections
+GCCOPTS2 = -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
+GCCOPTS = $(GCCOPTS1) $(GCCOPTS2)
 # -ffunction-sections option splits out the functions such that the garbage collection can get
 # them on a per section basis. I'm not sure, but this could be harmful to paged code so may
 # have to review this at a later date perhaps splitting paged functions from nonpaged ones.
@@ -208,11 +236,10 @@ GCCOPTS = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -fo
 # The vectors address in the linker options is the VMA address and must be short form 0xF710, not a paged address.
 LINKOPTS = -Wl,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
 LINKOPTSGC = -Wl,--gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
-# Use this to get a map dump when the linker fails in a confusing way :
-#LINKOPTSGC = -Wl,--print-map,--gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
+# Use this to get a map dump when the linker fails in a confusing way : --print-map
 
-# If using the below option for paged flash, the ADDRESS_TYPE field in the freeEMSloader script should be updated to match.
-# --change-section-lma .ppagePP=0xPP8000 \ (where PP = the ppage value for that page of flash) OR if using linear address per formula
+# If using the below option for paged flash, the ADDRESS_TYPE
+# field in the freeEMSloader script should be updated to match.
 COPYOPTS =  --output-target=srec \
 		--change-section-lma .fixedconf1+0xFD4000 \
 		--change-section-lma .fixedconf2+0xFD4000 \
@@ -320,49 +347,46 @@ COPYOPTS =  --output-target=srec \
 
 
 
-
-################################################################################
-#                        Dependency And Target Summary                         #
-################################################################################
-#                                                                              #
-#   Top level targets:                                                         #
-#                                                                              #
-#       1) all                                                                 #
-#       2) fast                                                                #
-#       3) install                                                             #
-#       4) release                                                             #
-#       5) clean                                                               #
-#                                                                              #
-#   Second level targets:                                                      #
-#                                                                              #
-#       1) nonrpm:                                                             #
-#                                                                              #
-#           1) preprocess [list] Generate preprocessed C from sources          #
-#           2) assemble   [list] Generate assembly from preprocessed C         #
-#           3) compile    [list] Generate object files from assembly           #
-#                                                                              #
-#       2) rpm:                                                                #
-#                                                                              #
-#           1) preprocessrpm [list] Generate preprocessed C from sources       #
-#           2) assemblerpm   [list] Generate assembly from preprocessed C      #
-#           3) compilerpm    [list] Generate object files from assembly        #
-#                                                                              #
-#       3) final:                                                              #
-#                                                                              #
-#           1) link [list] Generate ELFs objects                               #
-#           2) copy [list] s19s from elfs                                      #
-#                                                                              #
-#       4) debug:                                                              #
-#                                                                              #
-#           1) link      [list] Generate ELFs objects                          #
-#           2) dump      [list] dumpslarge from elfs                           #
-#           3) map       [list] mapslarge from elfs                            #
-#           4) read      [list] relarge from elfs                              #
-#           5) dumpsmall [list] dumpsall from obj + rpmobj                     #
-#                                                                              #
-#        release : md5sum, export, zip, copy, docs, etc                                                                      #
-#                                                                              #
-################################################################################
+help:
+	################################################################################
+	#                        Dependency And Target Summary                         #
+	################################################################################
+	#                                                                              #
+	#   Common targets:                                                            #
+	#                                                                              #
+	#       1) help - This comment block                                           #
+	#       2) all - Executes alldebug, slow, slowgc and size                      #
+	#       3) fast - Compiles direct to object code and links once with no debug  #
+	#       4) slow - Three stage compilation with assembly retained               #
+	#       5) slowgc - As above, but with garbage collection during linking       #
+	#       6) alldebug - Generates all debug output files                         #
+	#       7) install - Not yet implemented                                       #
+	#       8) release - Not yet implemented                                       #
+	#       9) clean - Removes all files and directories generated by building     #
+	#                                                                              #
+	#   Second level targets:                                                      #
+	#                                                                              #
+	#       Stage one:                                                             #
+	#                                                                              #
+	#           1) preprocess - run the C preprocessor over the raw C files        #
+	#           2) compile - compile the preprocessed C into assembly              #
+	#           3) assemble - assemble the assembly files into object files        #
+	#                                                                              #
+	#       Stage two                                                              #
+	#                                                                              #
+	#           1) link - Generate ELFs objects                                    #
+	#           2) gclink - As above, but with garbage collection                  #
+	#           3) s19 - Create s19s from elfs                                     #
+	#           4) gcs19 - Create s19s from gc elfs                                #
+	#                                                                              #
+	#       Stage three:                                                           #
+	#                                                                              #
+	#           1) maps - Memory map files                                         #
+	#           2) rees - Readelf dumps                                            #
+	#           3) elfdmps - Classic objdump output for final elfs                 #
+	#           4) objdmps - Classic objdump output for each object file           #
+	#                                                                              #
+	################################################################################
 
 
 
@@ -372,25 +396,84 @@ COPYOPTS =  --output-target=srec \
 ################################################################################
 
 
-# Build everything the long way (default)
-all: gcs19 s19
-allfull: s19
-allgc: gcs19 #...
-
-# Build minimally and quickly
-fast: lessthings here
-
-# Load the s19 of your choice
-install: clean fast loader
-
-# Perform a release
-release: clean cleanrelease fast someMoreStuffHere
-
+# Build everything the long way
+all: alldebug gcs19 s19 size
+# Single stage compilation
+fast: single s19 size
+# Multi stage compilation
+slow: s19 size
+# Multi stage compilation with garbage collection
+slowgc: gcs19 size #...
+# Clean all except release
 clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
+# Generate all debug
+alldebug: maps rees elfdmps objdmps
+# Load the s19 of your choice
+#install: clean fast loader
+# Perform a release
+#release: clean cleanrelease fast someMoreStuffHere checksums zipping etc
 
-final: link copy 
 
-debug: dump map read dumpsmall
+
+
+################################################################################
+#                           Debug Target Definitions                           #
+################################################################################
+
+
+mapsmsg:
+	################################################################################
+	#                          Generating memory maps....                          #
+	################################################################################
+
+maps: link $(BUGDIR) mapsmsg $(ALLMAPS)
+
+$(ALLMAPS): $(BUGDIR)/%.map: $(OUTDIR)/%.elf
+	$(NM) $< | sort > $@
+
+
+reesmsg:
+	################################################################################
+	#                           Reading all elf files...                           #
+	################################################################################
+
+rees: link $(BUGDIR) reesmsg $(ALLREAD)
+
+$(ALLREAD): $(BUGDIR)/%.ree: $(OUTDIR)/%.elf
+	$(RE) -a -W $< > $@
+
+
+elfdmpsmsg:
+	################################################################################
+	#                           Dumping all elf files...                           #
+	################################################################################
+
+elfdmps: link $(BUGDIR) elfdmpsmsg $(ALLDMPS)
+
+$(ALLDMPS): $(BUGDIR)/%.dmp: $(OUTDIR)/%.elf
+	$(DUMP) -spSd $< > $@
+
+
+objdmpmsg:
+	################################################################################
+	#                         Dumping all object files....                         #
+	################################################################################
+
+objdmps: assemble $(BUGDIR) objdmpmsg $(DUMPS) $(DUMPSRPM)
+
+$(DUMPS) $(DUMPSRPM): $(BUGDIR)/%.dmp: $(OBJDIR)/%.o
+	$(DUMP) -spSd $< > $@
+
+
+
+
+################################################################################
+#                 Fast Single Stage Compile Target Definition                  #
+################################################################################
+
+
+single:
+	# TODO fast compile and figure out overlapping dependencies...
 
 
 
@@ -446,6 +529,10 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	#               Building $@ ...
 	################################################################################
 	$(COPY) $(COPYOPTS) $< $@
+	################################################################################
+	#               Measuring $@ ...
+	################################################################################
+	echo "Flash image size of $@ is" `echo \`cat $@ | wc -l\` "* 16" | bc -l` "bytes..."
 
 
 gcs19msg: #...
@@ -461,18 +548,37 @@ $(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf #...
 	#               Building $@ ...
 	################################################################################
 	$(COPY) $(COPYOPTS) $< $@ #...
+	################################################################################
+	#               Measuring $@ ...
+	################################################################################
+	echo "Flash image size of $@ is" `echo \`cat $@ | wc -l\` "* 16" | bc -l` "bytes..."
 
 
-sizemsg: #...
-	################################################################################
-	#                          Measuring The S19 Files...                          #
-	################################################################################
+
+
+################################################################################
+#                     Size Measuring Target Definition                         #
+################################################################################
+
 
 size: # TODO this should be run for each s19 target with only the one rpm .o file
+	################################################################################
+	#                          Measuring The Decoder Binaries...                   #
+	################################################################################
+	$(SIZE) $(OBJECTSRPM)
+	################################################################################
+	#                          Measuring All Other Binaries...                     #
+	################################################################################
 	$(SIZE) -t $(OBJECTS)
-
-sizes: # TODO this should be run for each s19 file too...
-	echo "Flash image size for $(VERSION) is" `echo \`cat $(S19OUT) | wc -l\` "* 16" | bc -l` "bytes..."
+	################################################################################
+	#                    Add one decoder to the total above and                    #
+	#                   subtract the size reported for freeEMS.o                   #
+	#                   this will give you the actual image size                   #
+	################################################################################
+	#                                                                              #
+	#                  Thank you for building FreeEMS firmware!!!                  #
+	#                                                                              #
+	################################################################################
 
 
 
@@ -532,7 +638,7 @@ $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
 
 #copy s19s up
 
-#md5sum s19s above
+#md5sum/sha1sum s19s above
 
 ### clean all
 
@@ -559,31 +665,36 @@ $(BUGDIR):
 	################################################################################
 	#                       Creating the debug directory....                       #
 	################################################################################
-	mkdir -p $(BUGDIR)
+	$(MKDIR) $(BUGDIR)$(PATHSEP)hack
+	rmdir $(BUGDIR)$(PATHSEP)hack
 
 $(S19DIR):
 	################################################################################
 	#                      Creating the firmware directory...                      #
 	################################################################################
-	mkdir -p $(S19DIR)
+	$(MKDIR) $(S19DIR)$(PATHSEP)hack
+	rmdir $(S19DIR)$(PATHSEP)hack
 
 $(PPCDIR):
 	################################################################################
 	#                   Creating the preprocessedc directory....                   #
 	################################################################################
-	mkdir -p $(PPCDIR)
+	$(MKDIR) $(PPCDIR)$(PATHSEP)hack
+	rmdir $(PPCDIR)$(PATHSEP)hack
 
 $(OUTDIR):
 	################################################################################
 	#                       Creating the output directory...                       #
 	################################################################################
-	mkdir -p $(OUTDIR)
+	$(MKDIR) $(OUTDIR)$(PATHSEP)hack
+	rmdir $(OUTDIR)$(PATHSEP)hack
 
 $(OBJDIR):
 	################################################################################
 	#                       Creating the object directory...                       #
 	################################################################################
-	mkdir -p $(OBJDIR)
+	$(MKDIR) $(OBJDIR)$(PATHSEP)hack
+	rmdir $(OBJDIR)$(PATHSEP)hack
 
 
 
@@ -626,13 +737,16 @@ cleandebug:
 	################################################################################
 	#                          Removing debug directory...                         #
 	################################################################################
-	$(RM) $(DEBUGDIR)
+	$(RM) $(BUGDIR)
 
 cleanrelease:
 	################################################################################
-	#                         Removing s19 release files...                        #
+	#                         Removing all release files...                        #
 	################################################################################
-	$(RM) $(RELEASEDIR)/*
+	$(RM) $(RELEASEDIR)/*.zip
+	$(RM) $(RELEASEDIR)/*.s19
+	$(RM) $(RELEASEDIR)/*.md5
+	$(RM) $(RELEASEDIR)/*.sha1
 
 
 
@@ -642,13 +756,18 @@ cleanrelease:
 ################################################################################
 
 
-# Top level
-.PHONY: all fast release clean
-# Second level
-.PHONY: rpm nonrpm final debug
-## Third level
-.PHONY: preprocess assemble compile
-# Comments
-.PHONY: etc etc etc
+# Aggregators top level
+.PHONY: all fast slow slowgc single help
+
+# Aggregators middle level
+.PHONY: preprocess compile assemble link gclink s19 gcs19
+
+# Aggregators debug level
+.PHONY: alldebug maps rees objdmps elfdmps
+
+# Messages
+.PHONY: mapsmsg reesmsg elfdmpsmsg objdmpmsg linkmsg gclinkmsg
+.PHONY: s19msg gcs19msg preprocessmsg compilemsg assemblemsg
+
 # Clean targets
-.PHONY: cleanasm cleandebug cleanobj cleanout cleanppc cleanrelease cleans19
+.PHONY: clean cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleanrelease

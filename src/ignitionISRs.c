@@ -1,4 +1,4 @@
-/*	ignitionISRs.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -21,6 +21,20 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/**	@file ignitionISRs.c
+ * @ingroup interruptHandlers
+ *
+ * @brief Turn ignition channels on and off
+ *
+ * This currently semi-working but broken code is intended to one day provide
+ * multi-channel ignition capabilities. The basic method will be to turn a pin
+ * or set of pins on or another pin or set of pins off during each run of the
+ * appropriate handler. Each run will be triggered either by the scheduler and
+ * possibly this code itself as well. Currently it does not work correctly and
+ * isn't suitable for actual use as an ignition control solution.
+ */
 
 
 #define IGNITIONISRS_C
@@ -46,6 +60,15 @@
 
 /* further reading : ftp://ftp-sop.inria.fr/esterel/pub/papers/FDL99-camready.pdf section 4.1 has a nice diagram */
 
+
+/**	@brief Ignition dwell control
+ *
+ * This function turns ignition pins on to dwell when required.
+ *
+ * @author Fred Cooke
+ *
+ * @todo TODO make this actually work.
+ */
 void IgnitionDwellISR(void)
 {
 	// clear flag
@@ -65,7 +88,7 @@ void IgnitionDwellISR(void)
 		dwellQueueLength--;
 
 		// increment channel counter to next channel
-		if(nextDwellChannel < (fixedConfigs2.combustionEventsPerEngineCycle - 1)){
+		if(nextDwellChannel < (fixedConfigs1.engineSettings.combustionEventsPerEngineCycle - 1)){
 			nextDwellChannel++; // if not the last channel, increment
 		}else{
 			nextDwellChannel = 0; // if the last channel, reset to zero
@@ -88,6 +111,14 @@ void IgnitionDwellISR(void)
 }
 
 
+/**	@brief Ignition discharge control
+ *
+ * This function turns ignition pins off to discharge when required.
+ *
+ * @author Fred Cooke
+ *
+ * @todo TODO make this actually work.
+ */
 void IgnitionFireISR(void)
 {
 	// clear flag
@@ -107,7 +138,7 @@ void IgnitionFireISR(void)
 		ignitionQueueLength--;
 
 		// increment channel counter to next channel
-		if(nextIgnitionChannel < (fixedConfigs2.combustionEventsPerEngineCycle - 1)){
+		if(nextIgnitionChannel < (fixedConfigs1.engineSettings.combustionEventsPerEngineCycle - 1)){
 			nextIgnitionChannel++; // if not the last channel, increment
 		}else{
 			nextIgnitionChannel = 0; // if the last channel, reset to zero
@@ -115,7 +146,7 @@ void IgnitionFireISR(void)
 
 		// if the queue length after decrement is greater than 0 then we need to load the timer, if it is zero and we decremented, the timer was already loaded.
 		if(ignitionQueueLength > 0){
-			if(ignitionQueueLength > fixedConfigs2.combustionEventsPerEngineCycle){ // TODO as above!!!!!!!!!!
+			if(ignitionQueueLength > fixedConfigs1.engineSettings.combustionEventsPerEngineCycle){ // TODO as above!!!!!!!!!!
 				//throw a nasty error of some sort for index out of range issue that should never occur (for now just light a LED)
 				PORTS |= 0x10;
 			}else{

@@ -1,4 +1,4 @@
-/*	AdvanceTables2.c
+/*	FreeEMS - the open source engine management system
 
 	Copyright 2008 Fred Cooke
 
@@ -21,6 +21,22 @@
 	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 
 	Thank you for choosing FreeEMS to run your engine! */
+
+
+/** @file TimingTables2.c
+ * @ingroup dataInitialisers
+ *
+ * @brief Injection and ignition timing tables
+ *
+ * This file contains the definitions of the secondary group timing tables. The
+ * declaration can be found in the global constants header file.
+ *
+ * @note At least one Doxygen bug prevents the data structures below being show
+ *       correctly in the documentation for this file. Please see the source
+ *       code itself for more information.
+ *
+ * @author Fred Cooke
+ */
 
 
 #include "inc/freeEMS.h"

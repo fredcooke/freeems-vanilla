@@ -264,7 +264,7 @@ void decodePacketAndRespond(){
 	/* If the header has addresses, check them and if OK copy them */
 	if(RXHeaderFlags & HEADER_HAS_ADDRS){
 		/* Check the destination address against our address */
-		if(*RXBufferCurrentPosition != fixedConfigs2.networkAddress){
+		if(*RXBufferCurrentPosition != fixedConfigs1.serialSettings.networkAddress){
 			/* Addresses do not match, discard packet without error */
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			TXBufferInUseFlags = 0;
@@ -280,7 +280,7 @@ void decodePacketAndRespond(){
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
 		}
-		if(RXHeaderSourceAddress == fixedConfigs2.networkAddress){
+		if(RXHeaderSourceAddress == fixedConfigs1.serialSettings.networkAddress){
 			sendErrorInternal(sourceAddressIsDuplicate);
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
@@ -292,7 +292,7 @@ void decodePacketAndRespond(){
 		*TXBufferCurrentPositionHandler = RXHeaderSourceAddress;
 		TXBufferCurrentPositionHandler++;
 		/* TX source = our address */
-		*TXBufferCurrentPositionHandler = fixedConfigs2.networkAddress;
+		*TXBufferCurrentPositionHandler = fixedConfigs1.serialSettings.networkAddress;
 		TXBufferCurrentPositionHandler++;
 		/* Decrement for both at once to save a cycle */
 		RXCalculatedPayloadLength -= 2;

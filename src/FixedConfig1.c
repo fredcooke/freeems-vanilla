@@ -1,4 +1,6 @@
-/*	Copyright 2008 Fred Cooke
+/*	FreeEMS - the open source engine management system
+
+	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -49,38 +51,34 @@
 /** @copydoc fixedConfig1 */
 const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 
-		0x07F0,                 	/* coreSettingsA */
-
-		roomTemperature,        	/* presetIAT */
-		runningTemperature,     	/* presetCHT */
-		halfThrottle,           	/* presetTPS */
-		stoichiometricLambda,   	/* presetEGO */
-		runningVoltage,         	/* presetBRV */
-		idleManifoldPressure,   	/* presetMAP */
-		seaLevelKPa,            	/* presetAAP */
-		roomTemperature,        	/* presetMAT */
-		stoichiometricLambda,   	/* presetEGO2 */
-		maxExpectedBoost,       	/* presetIAP */
-		idlePulseWidth,         	/* presetBPW */
-		idleAirFlow,            	/* presetAF */
-
+		{
 		typicalCylinderSize,    	/* perCylinderVolume */
 		stoichiometricAFROctane,	/* stoichiometricAFR */
 		typicalInjectorSize,    	/* injectorFlow */
 		densityOfOctane,        	/* densityOfFuelAtSTP */
+		/* new and old.... */
+		500,                  	/* capacityOfAirPerCombustionEvent */
+		550,                  	/* perPrimaryInjectorChannelFlowRate */
+		550,                  	/* perSecondaryInjectorChannelFlowRate */
+		6,                    	/* ports */
+		6,                    	/* coils */
+		6,                    	/* combustionEventsPerEngineCycle */
+		2,                    	/* revolutionsPerEngineCycle */
+		24,                   	/* primaryTeeth */
+		0                    	/* missingTeeth */
+		},
 
-		offIdleMAP,             	/* TPSClosedMAP */
-		nearlyWOTMAP,           	/* TPSOpenMAP */
-		MPX4250AMin,            	/* MAPMinimum */
-		MPX4250ARange,          	/* MAPRange */
-		MPX4100AMin,            	/* AAPMinimum */
-		MPX4100ARange,          	/* AAPRange */
-		LC1LambdaMin,           	/* EGOMinimum */
-		LC1LambdaRange,         	/* EGORange */
-		batteryVoltageMin,      	/* BRVMinimum */
-		batteryVoltageRange,    	/* BRVRange */
-		TPSDefaultMin,          	/* TPSMinimumADC */
-		TPSDefaultMax,          	/* TPSMaximumADC */
+		{
+		divisorFor115200bps,  	/* baudDivisor */
+		1                    	/* networkAddress */
+		},
 
-		{"Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but"}	/* userTextField[] */
+		{
+		tachoTickFactor4at50, 	/* tachoTickFactor */
+		tachoTotalFactor4at50	/* tachoTotalFactor */
+		},
+
+		0x07F0,                 	/* coreSettingsA */
+
+		{"Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but more won't be possible later!!"}
 };
