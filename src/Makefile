@@ -561,7 +561,7 @@ $(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf #...
 ################################################################################
 
 
-size: # TODO this should be run for each s19 target with only the one rpm .o file
+size: assemble # TODO this should be run for each s19 target with only the one rpm .o file
 	################################################################################
 	#                          Measuring The Decoder Binaries...                   #
 	################################################################################
@@ -763,7 +763,7 @@ cleanrelease:
 .PHONY: preprocess compile assemble link gclink s19 gcs19
 
 # Aggregators debug level
-.PHONY: alldebug maps rees objdmps elfdmps
+.PHONY: alldebug maps rees objdmps elfdmps size
 
 # Messages
 .PHONY: mapsmsg reesmsg elfdmpsmsg objdmpmsg linkmsg gclinkmsg
