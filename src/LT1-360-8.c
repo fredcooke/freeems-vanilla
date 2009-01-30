@@ -29,6 +29,12 @@
  *
  * @brief LT1 Optispark
  *
+ * Uses PT1 to interrupt on rising and falling events of the 8x cam sensor track.
+ * A certain number of 360x teeth will pass while PT1 is in a high or low state.
+ * Using that uniquek count we can set the positing of your Virtual CAS clock.
+ * After VCAS's position is set set PT7 to only interrupt on every 5th tooth, lowering
+ * the amount of interrupts generated, to a reasonable level.
+ *
  * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
  *
  * @todo TODO This file contains SFA but Sean Keys is going to fill it up with
@@ -43,6 +49,8 @@
 #include "inc/interrupts.h"
 #include "inc/LT1-360-8.h"
 
+
+unsigned short VCAS = 0;  /* create our virtual Cam Angle Sensor */
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
  *  @todo TODO Put this in the correct place
@@ -109,24 +117,24 @@ void SecondaryRPMISR(void){
 	if (!isSynced){ /* If the CAS is not in sync get window counts and set virtual CAS position */
 		if (PTITCurrentState & 0x02){  /* if signal is high that means we can count the lows */
 			switch (PrimaryTeethDuringLow){
-			case 23: /* wheel is at 0 deg TDC #1, set our virtual CAS to tooth 0 of 72 */
+			case 23: /* wheel is at 0 deg TDC #1, set our virtual CAS to tooth 0 of 720 */
 			{
-
+				VCAS = 0 ;
 				break;
 			}
-			case 38: /* wheel is at 90 deg TDC #4, set our virtual CAS to tooth 18 of 72 */
+			case 38: /* wheel is at 90 deg TDC #4, set our virtual CAS to tooth 180 of 720 */
 			{
-
+				VCAS = 180;
 				break;
 			}
-			case 33: /* wheel is at 180 deg TDC #6 set our virtual CAS to tooth 36 of 72 */
+			case 33: /* wheel is at 180 deg TDC #6 set our virtual CAS to tooth 360 of 720 */
 			{
-
+				VCAS = 360;
 				break;
 			}
-			case 28: /* wheel is at 270 deg TDC #7 set our virtual CAS to tooth 54 of 72 */
+			case 28: /* wheel is at 270 deg TDC #7 set our virtual CAS to tooth 540 of 720 */
 			{
-
+				VCAS = 540;
 				break;
 			}
 			default :
@@ -137,23 +145,24 @@ void SecondaryRPMISR(void){
 			PrimaryTeethDuringLow = 0; /* In any case reset counter */
 			}
 		}else{    /* if the signal is low that means we can count the highs */
-			switch (PrimaryTeethDuringHigh){
-			case 7: /* wheel is at 52 deg, 7 deg ATDC #8 set our virtual CAS to tooth 10.4 of 72 */
+			switch (PrimaryTeethDuringHigh){   /* will need to additional code to off-set the initialization of PACNT since they are not
+												 evenly divisible by 5 */
+			case 7: /* wheel is at 52 deg, 7 deg ATDC #8 set our virtual CAS to tooth 104 of 720 */
 			{
 
 				break;
 			}
-			case 12: /* wheel is at 147 deg, 12 deg ATDC #3 set our virtual CAS to tooth 29.4 of 72 */
+			case 12: /* wheel is at 147 deg, 12 deg ATDC #3 set our virtual CAS to tooth 294 of 720 */
 			{
 
 				break;
 			}
-			case 17: /* wheel is at 242 deg, 17 deg ATDC #5 set our virtual CAS to tooth 48.4 of 72 */
+			case 17: /* wheel is at 242 deg, 17 deg ATDC #5 set our virtual CAS to tooth 484 of 720 */
 			{
 
 				break;
 			}
-			case 22: /* wheel is at 337 deg, 22 deg ATDC #2 set our virtual CAS to tooth 67.4 of 72 */
+			case 22: /* wheel is at 337 deg, 22 deg ATDC #2 set our virtual CAS to tooth 674 of 720 */
 			{
 
 			 	break;
