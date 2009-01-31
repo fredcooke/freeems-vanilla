@@ -149,14 +149,14 @@ EXTERN unsigned short	RXHeaderPayloadLength;
 /* Always has flags (obviously)			*/
 /* Always has payload ID so no flag		*/
 /* Always has checksum, so no flag		*/
-#define HEADER_IS_PROTO		BIT0
-#define HEADER_HAS_ACK		BIT1
-#define HEADER_IS_NACK		BIT2
-#define HEADER_HAS_ADDRS	BIT3
-#define HEADER_HAS_LENGTH	BIT4
-#define HEADER_USER_BIT_A	BIT5
-#define HEADER_USER_BIT_B	BIT6
-#define HEADER_USER_BIT_C	BIT7
+#define HEADER_HAS_ACK		BIT0
+#define HEADER_IS_NACK		BIT1
+#define HEADER_HAS_ADDRS	BIT2
+#define HEADER_HAS_LENGTH	BIT3
+#define HEADER_RESERVED_A	BIT4
+#define HEADER_RESERVED_B	BIT5
+#define HEADER_RESERVED_C	BIT6
+#define HEADER_RESERVED_D	BIT7
 
 
 /*&&&&&&&&&&&&&&&&&&&&  Payload Type ID Name Value Pairs  &&&&&&&&&&&&&&&&&&&&*/
@@ -190,35 +190,36 @@ EXTERN unsigned short	RXHeaderPayloadLength;
 /*&&&&&&&&&&&&&&&&&&&&&&&&  Firmware Payload Type IDs  &&&&&&&&&&&&&&&&&&&&&&&*/
 
 /* Whole block manipulation */
-#define replaceBlockInRAM			  0
-#define replaceBlockInFlash			  2
-#define retrieveBlockFromRAM		  4
-#define retrieveBlockFromFlash		  6
-#define burnBlockFromRamToFlash 	  8
-#define eraseAllBlocksFromFlash 	 10
-#define burnAllBlocksOfFlash 		 12
+#define replaceBlockInRAM			256
+#define replaceBlockInFlash			258
+#define retrieveBlockFromRAM		260
+#define retrieveBlockFromFlash		262
+#define burnBlockFromRamToFlash 	264
+#define eraseAllBlocksFromFlash 	266
+#define burnAllBlocksOfFlash 		268
 
 /* Main table manipulation */
-#define adjustMainTableCell			100
-#define adjustMainTableRPMAxis		102
-#define	adjustMainTableLoadAxis		104
+#define adjustMainTableCell			300
+#define adjustMainTableRPMAxis		302
+#define	adjustMainTableLoadAxis		304
 
 /* 2d table manipulation */
-#define adjust2dTableAxis			200
-#define adjust2dTableCell			202
+#define adjust2dTableAxis			306
+#define adjust2dTableCell			308
 
 /* Datalog request packets */
-#define requestBasicDatalog			300
-#define responseBasicDatalog		301
-#define requestConfigurableDatalog	302
-#define responseConfigurableDatalog	303
-#define setAsyncDatalogType			304
+#define requestBasicDatalog			400
+#define responseBasicDatalog		401 /* Defined because it can be used both synchronously and asynchronously */
+#define requestConfigurableDatalog	402
+#define responseConfigurableDatalog	403 /* Defined because it can be used both synchronously and asynchronously */
+#define setAsyncDatalogType			404
 
 /* Special function */
-#define forwardPacketOverCAN		400
-#define forwardPacketOverOtherUART	402
-#define invalidRAMLocationID		404
-#define invalidFlashLocationID		406
+#define forwardPacketOverCAN		500
+#define forwardPacketOverOtherUART	502
+
+/* Generic memory grabber for debugging */
+#define retrieveArbitraryMemory		600
 
 /* 8 payload IDs for testing purposes */
 #define testPayloadIDPacketType0	65520

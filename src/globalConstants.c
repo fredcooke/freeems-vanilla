@@ -53,7 +53,6 @@
  */
 
 
-const unsigned short memdumplength = 0x100;
 const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar) + sizeof(ADCArray);
 
 

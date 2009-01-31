@@ -109,6 +109,7 @@ EXTERN unsigned char portHDebounce;
 extern unsigned char asyncDatalogType;
 #define asyncDatalogOff			0x00
 #define asyncDatalogBasic		0x01
+// currently unimplemented :
 #define asyncDatalogConfig		0x02
 #define asyncDatalogLogic		0x03
 #define asyncDatalogADC			0x04
@@ -119,7 +120,6 @@ EXTERN unsigned short configuredBasicDatalogLength;
 
 
 // temporary test vars
-EXTERN void* memdumpaddr;
 EXTERN unsigned char ShouldSendLog;
 
 /* Declare instances of variable structs for use */

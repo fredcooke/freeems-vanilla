@@ -283,14 +283,17 @@
 #define RPAGE_FUEL_TWO	0xFB
 #define RPAGE_TIME_ONE	0xFC
 #define RPAGE_TIME_TWO	0xFD
-
+#define RPAGE_MIN     	0xF8
+#define PPAGE_MIN     	0xE0
+#define EPAGE_MIN     	0x??
 
 /* The TX and RX buffers are slightly larger than 2k because the RX buffer */
 /* needs to also receive a header, checksum and attributes for the data    */
 /* involved and the TX buffer needs to handle all of those two fold.       */
-#define TX_BUFFER_SIZE 0x0820
-#define RX_BUFFER_SIZE 0x0810
-#define TransferTableSize 2048
+#define TX_BUFFER_SIZE      0x0820
+#define RX_BUFFER_SIZE      0x0810
+#define TransferTableSize   2048
+#define TX_MAX_PAYLOAD_SIZE 2048
 
 
 #else
