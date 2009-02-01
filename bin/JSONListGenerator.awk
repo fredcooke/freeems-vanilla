@@ -32,7 +32,7 @@ BEGIN {
 /^[[:space:]]*\/\*.*\*\/[[:space:]]*$/ {
   print
 }
-/^[[:space:]]*#define[[:space:]]+[a-zA-Z0-9]+[[:space:]]+[0-9]+[[:space:]]*$/ {
+/^[[:space:]]*#define[[:space:]]+[a-zA-Z0-9_]+[[:space:]]+(0x)?[0-9A-F]+[[:space:]]*$/ {
   print "        \"" $3 "\": \"" $2 "\","
 }
 END {
