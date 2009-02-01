@@ -247,7 +247,7 @@ int  main(){ // TODO maybe move this to paged flash ?
 					}
 					}
 				}
-				ShouldSendLog = FALSE;
+				//ShouldSendLog = FALSE;
 //				// mechanism to ensure we send once per clock tick without doing it in the RTC section.
 //				lastTime = logTimeBuffer;
 //				// mechanism to ensure we only send something if the data has been updated
