@@ -50,9 +50,10 @@
 // hash defines here
 
 // declarations here
-EXTERN unsigned short PrimaryTeethDuringHigh;
-EXTERN unsigned short PrimaryTeethDuringLow;
+EXTERN unsigned char PrimaryTeethDuringHigh;
+EXTERN unsigned char PrimaryTeethDuringLow;
 EXTERN unsigned char isSynced; // make it compile... need a shared var/bit for this
+EXTERN void changeSyncStatus(unsigned char);
 
 
 #undef EXTERN
