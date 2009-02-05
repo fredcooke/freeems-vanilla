@@ -111,7 +111,7 @@ void RTIISR(){
 				// temp throttling for log due to tuner performance issues (in the bedroom)
 				ShouldSendLog = TRUE;
 				/* Flash the user LED as a "heartbeat" to let new users know it's alive */
-				PORTP ^= 0x80;
+				//PORTP ^= 0x80;
 
 				/* Every 60 seconds is one minute, 65535 minutes is enough for us :-) */
 				if(Clocks.secondsToMinutes % 60 == 0){
