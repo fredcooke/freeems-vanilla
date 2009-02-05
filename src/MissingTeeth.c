@@ -128,7 +128,6 @@ void PrimaryRPMISR(void) {
 		}
 	}
 	lastPeriod.timeLong = thisPeriod.timeLong;
-	lastTimeStamp.timeLong = thisTimeStamp.timeLong;
 	Counters.primaryTeethSeen++;
 }
 
