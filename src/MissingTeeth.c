@@ -1,6 +1,6 @@
 /*	FreeEMS - the open source engine management system
 
-	Copyright 2009 Philip Johnson
+	Copyright 2009 Philip L Johnson
 
 	This file is part of the FreeEMS project.
 
