@@ -48,7 +48,6 @@ void PrimaryRPMISR(void) {
 	static LongTime lastTimeStamp = { 0 };
 	static unsigned int count = 0;
 	LongTime thisTimeStamp;
-	unsigned short syncFound = FALSE;
 	LongTime thisPeriod;
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -80,14 +79,6 @@ void PrimaryRPMISR(void) {
 	}
 	lastTimeStamp.timeLong = thisTimeStamp.timeLong;
 
-	/* Is this a sync transition? A missing tooth will give 2 transitions 2 times the length of a tooth transition. */
-	if (lastPeriod.timeLong == 0) {
-		lastPeriod.timeLong = thisPeriod.timeLong;
-	} else {
-		if ((thisPeriod.timeLong > (lastPeriod.timeLong + (lastPeriod.timeLong>>4))) && (thisPeriod.timeLong < (lastPeriod.timeLong<<1))) {
-			syncFound = TRUE;
-		}
-	}
 	/* Set up edges as per config */
 	unsigned char risingEdge;
 	if (fixedConfigs1.coreSettingsA & PRIMARY_POLARITY) {
@@ -136,9 +127,9 @@ void PrimaryRPMISR(void) {
 		}
 	}
 	lastPeriod.timeLong = thisPeriod.timeLong;
-	lastTimeStamp.timeLong = thisTimeStamp.timeLong;
 	Counters.primaryTeethSeen++;
 }
+
 
 /** Secondary RPM ISR
  *
@@ -187,5 +178,6 @@ void SecondaryRPMISR(void) {
 		PORTJ &= 0xBF;
 		RuntimeVars.secondaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
+
 	Counters.secondaryTeethSeen++;
 }
