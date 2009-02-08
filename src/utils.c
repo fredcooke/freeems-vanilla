@@ -166,8 +166,10 @@ void sampleBlockADC(ADCArray *Arrays){
  */
 void sleep(unsigned short ms){
 	unsigned short j, k;
-	for(j=0;j<ms;j++)
-		for(k=0;k<5714;k++);
+	for(j=0;j<ms;j++){
+		for(k=0;k<5714;k++){
+		}
+	}
 }
 
 
@@ -183,8 +185,10 @@ void sleep(unsigned short ms){
  */
 void sleepMicro(unsigned short us){
 	unsigned short j, k;
-	for(j=0;j<us;j++)
-		for(k=0;k<6;k++);
+	for(j=0;j<us;j++){
+		for(k=0;k<6;k++){
+		}
+	}
 }
 
 
