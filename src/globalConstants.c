@@ -1,6 +1,6 @@
 /*	FreeEMS - the open source engine management system
 
-	Copyright 2008 Fred Cooke
+	Copyright 2008, 2009 Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -74,7 +74,7 @@ const unsigned char interfaceVersionAndType[20] = {0,0,2,'I','F','r','e','e','E'
  *
  * This should change every time the code is changed at all (even a little) before each release.
  */
-const unsigned char firmwareVersion[45] = {"FreeEMS Vanilla 0.0.19 Doxygenated pre-alpha"};
+const unsigned char firmwareVersion[45] = {"FreeEMS Vanilla 0.0.20 pre-release pre-alpha"};
 
 /** Divisors and untunable physical constants combined into a single master fuel constant
  *
