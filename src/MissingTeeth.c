@@ -81,11 +81,11 @@ void PrimaryRPMISR(void) {
 
 	/* Set up edges as per config */
 	unsigned char risingEdge;
-	if (fixedConfigs1.coreSettingsA & PRIMARY_POLARITY) {
+	//if (fixedConfigs1.coreSettingsA & PRIMARY_POLARITY) {
 		risingEdge = PTITCurrentState & 0x01;
-	} else {
-		risingEdge = !(PTITCurrentState & 0x01);
-	}
+	//} else {
+	//	risingEdge = !(PTITCurrentState & 0x01);
+	//}
 
 	if (lastPeriod.timeLong != 0) {
 		if (risingEdge) {
@@ -98,6 +98,7 @@ void PrimaryRPMISR(void) {
 				} else {
 					//We have lost sync
 					count = 0;
+					PORTP &= 0x7F;
 				}
 			}else if (count >= 2) {
 				count++;
