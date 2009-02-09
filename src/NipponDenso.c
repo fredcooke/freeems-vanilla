@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008 Fred Cooke
+ * Copyright 2008, 2009 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -94,17 +94,19 @@ void PrimaryRPMISR(){
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
-	// TODO discard narrow ones! test for tooth width and tooth period
+	/** @todo TODO discard narrow ones! test for tooth width and tooth period
+	 * the width should be based on how the hardware is setup. IE the LM1815
+	 * is adjusted to have a pulse output of a particular width. This noise
+	 * filter should be matched to that width as should the hardware filter.
+	 */
 
-	/* Set up edges as per config */
-	unsigned char risingEdge;
-	if(fixedConfigs1.coreSettingsA & PRIMARY_POLARITY){
-		risingEdge = PTITCurrentState & 0x01;
-	}else{
-		risingEdge = !(PTITCurrentState & 0x01);
-	}
-
-	if(risingEdge){
+	/* The LM1815 variable reluctance sensor amplifier allows the output to be
+	 * pulled high starting at the center of a tooth. So, what we see as the
+	 * start of a tooth is actually the centre of a physical tooth. Because
+	 * tooth shape, profile and spacing may vary this is the only reliable edge
+	 * for us to schedule from, hence the trailing edge code is very simple.
+	 */
+	if(PTITCurrentState & 0x01){
 		/* Echo input condition on J7 */
 		PORTJ |= 0x80;
 
@@ -388,17 +390,19 @@ void SecondaryRPMISR(){
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
-	// TODO discard narrow ones! test for tooth width and tooth period
+	/** @todo TODO discard narrow ones! test for tooth width and tooth period
+	 * the width should be based on how the hardware is setup. IE the LM1815
+	 * is adjusted to have a pulse output of a particular width. This noise
+	 * filter should be matched to that width as should the hardware filter.
+	 */
 
-	/* Set up edges as per config */
-	unsigned char risingEdge;
-	if(fixedConfigs1.coreSettingsA & SECONDARY_POLARITY){
-		risingEdge = PTITCurrentState & 0x02;
-	}else{
-		risingEdge = !(PTITCurrentState & 0x02);
-	}
-
-	if(risingEdge){
+	/* The LM1815 variable reluctance sensor amplifier allows the output to be
+	 * pulled high starting at the center of a tooth. So, what we see as the
+	 * start of a tooth is actually the centre of a physical tooth. Because
+	 * tooth shape, profile and spacing may vary this is the only reliable edge
+	 * for us to schedule from, hence the trailing edge code is very simple.
+	 */
+	if(PTITCurrentState & 0x02){
 		// echo input condition
 		PORTJ |= 0x40;
 
