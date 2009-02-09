@@ -1,6 +1,6 @@
 /*	FreeEMS - the open source engine management system
 
-	Copyright 2009 Philip Johnson
+	Copyright 2009 Philip L Johnson
 
 	This file is part of the FreeEMS project.
 
@@ -44,6 +44,9 @@
  * @todo TODO Docs here!
  */
 void PrimaryRPMISR(void) {
+	static LongTime thisHighLowTime = { 0 };
+	static LongTime lastHighLowTime = { 0 };
+	static LongTime lowTime = { 0 };
 	static LongTime lastPeriod = { 0 };
 	static LongTime lastTimeStamp = { 0 };
 	static unsigned int count = 0;
@@ -80,50 +83,51 @@ void PrimaryRPMISR(void) {
 	lastTimeStamp.timeLong = thisTimeStamp.timeLong;
 
 	/* Set up edges as per config */
-	unsigned char risingEdge;
-	if (fixedConfigs1.coreSettingsA & PRIMARY_POLARITY) {
-		risingEdge = PTITCurrentState & 0x01;
-	} else {
-		risingEdge = !(PTITCurrentState & 0x01);
-	}
+	unsigned char risingEdge = PTITCurrentState & 0x01;
 
 	if (lastPeriod.timeLong != 0) {
 		if (risingEdge) {
+			thisHighLowTime.timeLong = thisPeriod.timeLong + lowTime.timeLong;
 			//Find the missing tooth
 			if (count == 0 || count == 70) {
-				PORTP &= 0x7F;
-				if (thisPeriod.timeLong > (lastPeriod.timeLong + (lastPeriod.timeLong>>1)) &&
-					thisPeriod.timeLong < ((lastPeriod.timeLong<<1) + (lastPeriod.timeLong>>1))) {
+				if (thisHighLowTime.timeLong > (lastHighLowTime.timeLong + (lastHighLowTime.timeLong>>1)) &&
+						thisHighLowTime.timeLong < ((lastHighLowTime.timeLong<<1) + (lastHighLowTime.timeLong>>1))) {
+					// We have sync
+					PORTP |= 0x80;
 					count = 1;
 				} else {
 					//We have lost sync
 					count = 0;
+					PORTP &= 0x7F;
 				}
-			}else if (count >= 2) {
+			}else if (count == 2 || (count%2 == 0 &&
+					thisHighLowTime.timeLong > (lastHighLowTime.timeLong>>1) &&
+					thisHighLowTime.timeLong < (lastHighLowTime.timeLong<<1) )) {
 				count++;
+			} else {
+				//We have lost sync
+				count = 0;
+				PORTP &= 0x7F;
 			}
+
 			/* Echo input condition on J7 */
 			PORTJ |= 0x80;
 			// increment crank pulses TODO this needs to be wrapped in tooth period and width checking
+			lastHighLowTime.timeLong = thisHighLowTime.timeLong;
 			primaryPulsesPerSecondaryPulse++;
 			RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 		} else {
-			//Is this really a missing tooth?
-			if (count == 1) {
-				if ((thisPeriod.timeLong > ((lastPeriod.timeLong) - (lastPeriod.timeLong>>2))) &&
-						(thisPeriod.timeLong < ((lastPeriod.timeLong) + (lastPeriod.timeLong>>2)))) {
-					count++;
-					PORTP |= 0x80;
-				} else {
-					//We have lost sync
-					count=0;
-					PORTP &= 0x7F;
-				}
-			}else if (count >= 3) {
+			if (count%2 == 1) {
 				count++;
+			} else {
+				//We have lost sync
+				count = 0;
+				PORTP &= 0x7F;
 			}
+			/* Echo input condition on J7 */
 			PORTJ &= 0x7F;
 			RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
+			lowTime.timeLong = thisPeriod.timeLong;
 		}
 	}
 	lastPeriod.timeLong = thisPeriod.timeLong;
