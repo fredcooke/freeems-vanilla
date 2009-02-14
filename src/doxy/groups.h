@@ -84,7 +84,7 @@
 
 /** @defgroup allHeaders All Header Files
  *
- * Most of these are fairly uninteresting, hence being clost to the bottom of
+ * Most of these are fairly uninteresting, hence being close to the bottom of
  * the modules list. Typically they just contain function declarations for
  * inclusion in other source files.
  */
