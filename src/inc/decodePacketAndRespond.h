@@ -48,7 +48,7 @@
 #endif
 
 
-// to be filled out in 0.0.19
+// to be filled out in 0.0.?
 
 
 #undef EXTERN

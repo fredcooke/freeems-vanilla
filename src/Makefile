@@ -74,6 +74,8 @@ OUTPREFIX = freeems
 
 # Directories here
 RELEASEDIR = ../firmware
+DOXYDOCDIR = ../docs/doxygen-html
+MAINDIR = freeems-vanilla
 INCDIR = inc
 BUGDIR = debug
 OUTDIR = output
@@ -81,6 +83,10 @@ OBJDIR = objects
 ASMDIR = assembly
 S19DIR = firmware
 PPCDIR = preprocessedc
+
+# Release tag message file
+RELTAG = $(OUTDIR)/gitTagMessage.txt
+TAGNAME = $(OUTDIR)/gitTagName.txt
 
 # Set the windows/non debian path first and then overwrite
 # with the debian one so we can grep the deb line out and
@@ -204,6 +210,9 @@ ALLDMPS = $(ALLDMPSC) $(ALLDMPSASM)
 ALLMAPS = $(ALLMAPSC) $(ALLMAPSASM)
 ALLREAD = $(ALLREADC) $(ALLREADASM)
 ALLS19S = $(ALLS19SC) $(ALLS19SASM)
+ALLMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(ALLS19S))
+ALLSHA1S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.sha1,$(ALLS19S))
+ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.zip,$(ALLS19S))
 
 # Convert to output files for GC variants
 GCDELFSC = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES))
@@ -419,7 +428,11 @@ alldebug: maps rees elfdmps objdmps
 # Load the s19 of your choice
 #install: clean fast loader
 # Perform a release
-#release: clean cleanrelease fast someMoreStuffHere checksums zipping etc
+release: relprep relbuild relpack relperf
+relprep: testgit clean cleanrelease cleandoxy
+relbuild: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
+relpack: zipdocs zipmain zipsite zipsrc
+relperf: clean relcommit tagmessage tagrelease
 
 
 
@@ -638,28 +651,91 @@ $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
 #                     Release Procedure Target Definitions                     #
 ################################################################################
 
-### clean all
 
-#check git status for changes, fail build if not fully commited
+testgit:
+	#check git status for changes, fail build if not fully commited
 
-### build all
 
-#copy s19s up
+ALLMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(ALLS19S))
 
-#md5sum/sha1sum s19s above
+md5sumsmsg:
+	################################################################################
+	#                            Generating MD5 Sums...                            #
+	################################################################################
 
-### clean all
+md5sums: s19 md5sumsmsg $(ALLMD5S)
 
-#git commit s19s
+$(ALLMD5S): $(RELEASEDIR)/%.s19.md5: $(S19DIR)/%.s19
+	md5sum $< > $@
 
-#zip each s19 to parent
 
-#zip docs to parent
+sha1sumsmsg:
+	################################################################################
+	#                           Generating SHA1 Sums...                            #
+	################################################################################
 
-#zip without docs to parent
+sha1sums: s19 sha1sumsmsg $(ALLSHA1S)
 
-#zip entire directory to parent
+$(ALLSHA1S): $(RELEASEDIR)/%.s19.sha1: $(S19DIR)/%.s19
+	sha1sum $< > $@
 
+
+s19zipsmsg:
+	################################################################################
+	#                                Zipping S19s...                               #
+	################################################################################
+
+s19zips: s19 s19zipsmsg $(ALLS19ZIPS)
+
+$(ALLS19ZIPS): $(RELEASEDIR)/%.s19.zip: $(S19DIR)/%.s19
+	zip $@ $<
+
+
+relcommit:
+	git commit -m "Automatically committing release files for FreeEMS version $(VERSION)!" $(RELEASEDIR)/
+
+
+tagmessage:
+	vim $(RELTAG)
+
+tagname:
+	vim $(TAGNAME)
+
+tagrelease: tagname tagmessage
+	git tag -F $(RELTAG) `cat $(TGANAME)` HEAD
+
+.PHONY: cleandoxy
+cleandoxy:
+	#remove doxy dir
+
+.PHONY: zipmain
+zipmain:
+	#zip entire directory to parent
+
+.PHONY: zipdocs
+zipdocs:
+	#zip docs to parent
+
+.PHONY: gendoxy
+gendoxy:
+	#doxygen -f Doxyfile ouput file option | grep Warning
+
+.PHONY: zipsite
+zipsite:
+	#zip doxygen to parent
+
+.PHONY: zipsource
+zipsrc:
+	#zip just src to parent
+
+#EXCLUDES = --exclude=$${OLDPWD}/../.git --exclude=$${OLDPWD}/../docs --exclude=$${OLDPWD}/../src/$(OBJDIR) --exclude=$${OLDPWD}/../src/$(PPCDIR) --exclude=$${OLDPWD}/../src/$(OUTDIR) --exclude=$${OLDPWD}/../src/$(BUGDIR) --exclude=$${OLDPWD}/../src/$(S19DIR) --exclude=$${OLDPWD}/$(DOXYDOCDIR) --exclude=$${OLDPWD}/$(RELEASEDIR)
+EXCLUDES = --exclude=${MAINDIR}/.git --exclude=${MAINDIR}/docs --exclude=${MAINDIR}/src/$(OBJDIR) --exclude=${MAINDIR}/src/$(PPCDIR) --exclude=${MAINDIR}/src/$(OUTDIR) --exclude=${MAINDIR}/src/$(BUGDIR) --exclude=${MAINDIR}/src/$(S19DIR) --exclude=${MAINDIR}/$(S19DIR) --exclude=${MAINDIR}/src/$(DOXYDOCDIR)
+
+#archive:
+#	cd ../../;tar --show-omitted-dirs ${EXCLUDES} -cjf freeems-${VERSION}-`date +%s`.tar.bz2 $${OLDPWD}/../;cd -
+
+archive:
+	tar -C ../../ ${EXCLUDES} -cjf ../../freeems-${VERSION}-`date +%s`.tar.bz2 ${MAINDIR}
 
 
 
@@ -754,7 +830,6 @@ cleanrelease:
 	#                         Removing all release files...                        #
 	################################################################################
 	$(RM) $(RELEASEDIR)/*.zip
-	$(RM) $(RELEASEDIR)/*.s19
 	$(RM) $(RELEASEDIR)/*.md5
 	$(RM) $(RELEASEDIR)/*.sha1
 
@@ -775,9 +850,15 @@ cleanrelease:
 # Aggregators debug level
 .PHONY: alldebug maps rees objdmps elfdmps size
 
+# Release targets
+.PHONY: release relprep relperf relbuild relpack
+.PHONY: md5sums sha1sums s19zips sha1sumsgc s19zips s19zipsgc
+.PHONY: testgit relcommit tagname tagmessage tagrelease
+
 # Messages
 .PHONY: mapsmsg reesmsg elfdmpsmsg objdmpmsg linkmsg gclinkmsg
 .PHONY: s19msg gcs19msg preprocessmsg compilemsg assemblemsg
+.PHONY: md5sumsmsg sha1sumsmsg s19zipsmsg
 
 # Clean targets
 .PHONY: clean cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleanrelease

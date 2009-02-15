@@ -156,7 +156,6 @@ EXTERN const unsigned long MAFFuelConstant;
 
 
 /* Serial data log stuff, temporary */
-EXTERN const unsigned short memdumplength;
 EXTERN const unsigned short maxBasicDatalogLength;
 
 
