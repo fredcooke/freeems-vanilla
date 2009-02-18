@@ -37,6 +37,7 @@
 
 
 #define FLASHWRITE_C
+#include "inc/utils.h"
 #include "inc/freeEMS.h"
 #include "inc/flashWrite.h"
 #include "inc/flashBurn.h"
@@ -75,6 +76,7 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 	StackBurner();   //PPAGE loaded into Register B, PPAGE is set with Reg B in StackBurn asm file
 	//TODO add return for accerr and pviol error bits
 
+	// @todo TODO verify the erase, is this necessary or is it taken care of by the hardware??
 	return 0;
 }
 
@@ -181,6 +183,7 @@ unsigned short writeBlock(blockDetails* details, void* buffer){
 		RAMAddress += flashSectorSizeInWords;
 		FlashAddress += flashSectorSizeInWords;
 	}
+	// @todo TODO verify the write? necessary??
 	return 0;
 }
 
@@ -241,6 +244,7 @@ unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress
 	/* Restore pages */
 	RPAGE = currentRPage;
 	PPAGE = currentPPage;
+	// @todo TODO verify the write? necessary??
 	return 0;
 }
 
@@ -272,5 +276,6 @@ unsigned short writeWord(unsigned short* flashDestination, unsigned short data){
 	FCMD = WORD_PROGRAM;        //Load Flash Command Register With Word_Program mask
     StackBurner();
 
+	// @todo TODO verify the write? necessary??
     return 0;
 }

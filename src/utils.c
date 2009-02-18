@@ -231,3 +231,18 @@ unsigned short stringCopy(unsigned char* dest, unsigned char* source){
 	} while(*(source-1) != 0);
 	return (unsigned short) length;
 }
+
+/**
+ * @returns a one based index of the failure point
+ *
+ * @note this will return a positive result with bad data in the last position of a maximum sized block
+ */
+unsigned short compare(unsigned char* original, unsigned char* toCheck, unsigned short length){
+	unsigned short i;
+	for(i=0;i<length;i++){
+		if(original[i] != toCheck[i]){
+			return i + 1; // zero = success
+		}
+	}
+	return 0;
+}

@@ -443,10 +443,16 @@ void decodePacketAndRespond(){
 			RPAGE = details.RAMPage;
 			/* Copy from the RX buffer to the block of ram */
 			memcpy(details.RAMAddress, RXBufferCurrentPosition, details.size);
+			/* Check that the write was successful */
+			unsigned char index = compare(RXBufferCurrentPosition, details.RAMAddress, details.size);
 			/* Restore the original ram and flash pages */
 			RPAGE = oldRamPage;
 
-			sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+			if(index != 0){
+				sendErrorInternal(MEMORY_WRITE_ERROR);
+			}else{
+				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+			}
 			break;
 		}
 		case replaceBlockInFlash:
@@ -507,11 +513,18 @@ void decodePacketAndRespond(){
 				RPAGE = originalRAMPage;
 				/* Copy from the RX buffer to the block of ram */
 				memcpy(originalRAMAddress, RXBufferCurrentPosition, details.size);
+				/* Check that the write was successful */
+				unsigned char index = compare(RXBufferCurrentPosition, details.RAMAddress, details.size);
 				/* Restore the original ram and flash pages */
 				RPAGE = oldRamPage;
+
+				if(index != 0){
+					sendErrorInternal(MEMORY_WRITE_ERROR);
+					break;
+				}
 			}
 
-			sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+			sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			// TODO document errors can always be returned and add error check in to send as response for ack and async otherwise
 			break;
 		}
@@ -644,7 +657,7 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+			sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			break;
 		}
 		case eraseAllBlocksFromFlash:
@@ -723,7 +736,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -758,7 +771,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -793,7 +806,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -828,7 +841,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -863,7 +876,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -912,7 +925,7 @@ void decodePacketAndRespond(){
 				asyncDatalogType = newDatalogType;
 			}
 
-			sendAckIfRequired(); /// @todo TODO implement default return of empty packet.
+			sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
 			break;
 		}
 		case forwardPacketOverCAN:
@@ -1038,11 +1051,11 @@ void sendErrorIfClear(unsigned short errorID){
  *
  * @param errorID is the error ID to be passed out to listening devices.
  */
-void sendErrorBusyWait(unsigned short errorID){
-	while(TXBufferInUseFlags){} /* Wait till clear to send */
-	TXBufferInUseFlags = ONES;
-	sendErrorInternal(errorID);
-}
+//void sendErrorBusyWait(unsigned short errorID){
+//	while(TXBufferInUseFlags){} /* Wait till clear to send */
+//	TXBufferInUseFlags = ONES;
+//	sendErrorInternal(errorID);
+//}
 
 
 /** @brief Send an error
@@ -1132,11 +1145,11 @@ void sendDebugIfClear(unsigned char* message){
  *
  * @param message is a pointer to the null terminated debug message string.
  */
-void sendDebugBusyWait(unsigned char* message){
-	while(TXBufferInUseFlags){} /* Wait till clear to send */
-	TXBufferInUseFlags = ONES;
-	sendDebugInternal(message);
-}
+//void sendDebugBusyWait(unsigned char* message){
+//	while(TXBufferInUseFlags){} /* Wait till clear to send */
+//	TXBufferInUseFlags = ONES;
+//	sendDebugInternal(message);
+//}
 
 
 /** @brief Send a debug message
@@ -1276,7 +1289,7 @@ void sendDebugInternal(unsigned char* message){
  *
  * @todo TODO when implementing, check that ppage is OK!!!
  */
-void sendAckIfRequired(){
-	TXBufferInUseFlags = 0;
-	// check PPAGE while implementing TODO
-}
+//void sendAckIfRequired(){
+//	TXBufferInUseFlags = 0;
+//	// check PPAGE while implementing TODO
+//}

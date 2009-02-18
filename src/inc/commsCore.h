@@ -57,11 +57,11 @@ EXTERN void decodePacketAndRespond(void) TEXT;
 
 EXTERN void sendErrorIfClear(unsigned short) FPAGE_FE;
 EXTERN void sendDebugIfClear(unsigned char*) FPAGE_FE;
-EXTERN void sendErrorBusyWait(unsigned short) FPAGE_FE;
-EXTERN void sendDebugBusyWait(unsigned char*) FPAGE_FE;
+//EXTERN void sendErrorBusyWait(unsigned short) FPAGE_FE;
+//EXTERN void sendDebugBusyWait(unsigned char*) FPAGE_FE;
 
 EXTERN void resetReceiveState(unsigned char) FPAGE_FE;
-EXTERN void sendAckIfRequired(void) FPAGE_FE;
+//EXTERN void sendAckIfRequired(void) FPAGE_FE;
 EXTERN void checksumAndSend(void) FPAGE_FE;
 
 EXTERN void populateBasicDatalog(void) FPAGE_FE;

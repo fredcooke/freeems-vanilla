@@ -46,6 +46,8 @@
 
 /** @todo TODO Introduce some structure to the numbering such that they can be interpreted somewhat without a chart */
 
+// A OK Nothing is wrong No error error.
+#define NO_PROBLEMO						0x0666
 
 /* Unconfigured options */
 #define IAT_NOT_CONFIGURED_CODE			0x1000
@@ -81,6 +83,9 @@
 #define flashAccessError				0x3007
 #define flashProtectionError			0x3008
 
+
+// memory check error
+#define MEMORY_WRITE_ERROR				0x3009
 
 /* Communications error codes */
 #define unimplementedFunction			0x4000

@@ -60,6 +60,7 @@ EXTERN void sampleBlockADC(ADCArray*) FPAGE_F8;
 
 EXTERN unsigned char checksum(unsigned char *, unsigned short) FPAGE_F8;
 EXTERN unsigned short stringCopy(unsigned char*, unsigned char*) FPAGE_F8;
+EXTERN unsigned short compare(unsigned char*, unsigned char*, unsigned short);
 
 
 #undef EXTERN
