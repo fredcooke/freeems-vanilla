@@ -63,6 +63,8 @@ int main( int argc, char *argv[] ){
 		unsigned int goodChecksums = 0;
 		unsigned int startsInsidePacket = 0;
 		unsigned int totalFalseStartLost = 0;
+		unsigned int doubleStartByteOccurances = 0;
+		unsigned int strayDataBytesOccurances = 0;
 		unsigned int escapeBytesFound = 0;
 		unsigned int escapedStopBytesFound = 0;
 		unsigned int escapedStartBytesFound = 0;
@@ -88,11 +90,16 @@ int main( int argc, char *argv[] ){
 				if(insidePacket){
 					/* Increment the counter */
 					startsInsidePacket++;
+					if(currentPacketLength == 0){
+						doubleStartByteOccurances++;
+					}else{
+						totalFalseStartLost += currentPacketLength; // remember how much we lost
+						strayDataBytesOccurances++;
+					}
 				}
 				/* Reset to us using it unless someone else was */
 				insidePacket = 1;
 				checksum = 0;
-				totalFalseStartLost += currentPacketLength; // remember how much we lost
 				currentPacketLength = 0;
 
 			}else if(insidePacket){
@@ -169,6 +176,8 @@ int main( int argc, char *argv[] ){
 		printf("\nGeneral issues :\n");
 		printf("%u leading characters were dropped\n", charsDropped);
 		printf("%u false starts occurred\n", startsInsidePacket);
+		printf("%u double start bytes occurred\n", doubleStartByteOccurances);
+		printf("%u stray part packets occurred\n", strayDataBytesOccurances);
 		printf("%u chars lost from false starts \n", totalFalseStartLost);
 
 		printf("\nEscaped byte profile :\n");
