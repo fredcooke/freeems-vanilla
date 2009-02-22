@@ -174,7 +174,7 @@ void PrimaryRPMISR(){
 		if((primaryPulsesPerSecondaryPulse % 2) == 0){
 
 			// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
-			sampleBlockADC(ADCArrays);
+			sampleEachADC(ADCArrays);
 			Counters.syncedADCreadings++;
 			*mathSampleTimeStampRecord = TCNT;
 

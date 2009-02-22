@@ -142,6 +142,34 @@ void sampleEachADC(ADCArray *Arrays){
 }
 
 
+/** @brief Read ADCs in a loop
+ *
+ * Read ADCs into the correct bank in a loop using pointers.
+ *
+ * @author Fred Cooke
+ *
+ * @param Arrays a pointer to an ADCArray struct to store ADC values in.
+ */
+void sampleLoopADC(ADCArray *Arrays){
+	// get the address of the ADC array
+	unsigned short addr = (unsigned short)Arrays;
+
+	//sendUS(addr);
+	unsigned char loop;
+	/* (value of((address of ADCArrays struct) + (offset to start of bank(0 or half struct length)) + (offset to particular ADC (loopcounter * 4)) + (offset to correct element(0 or 2)))) =
+	 * (value of((address of ARRAY block) + (loop counter * 2))) */
+
+	for(loop=0;loop<16;loop += 2){
+		/* Do the first block */
+		DVUSP(addr + loop) = DVUSP(ATD0_BASE + loop);
+
+		/* Do the second block */
+		DVUSP(addr + 16 + loop) = DVUSP(ATD1_BASE + loop);
+		/// @todo TODO this needs to be split into two loops one for the small block and one for hte big one for the future chips.
+	}
+}
+
+
 /** @brief Read ADCs with memcpy()
  *
  * Read ADCs into the correct bank using two fixed calls to memcpy()
@@ -149,6 +177,9 @@ void sampleEachADC(ADCArray *Arrays){
  * @author Fred Cooke
  *
  * @param Arrays a pointer to an ADCArray struct to store ADC values in.
+ *
+ * @warning this will corrupt your comms if you use it... don't use it
+ * @bug this will corrupt your comms if you use it... don't use it
  */
 void sampleBlockADC(ADCArray *Arrays){
 	memcpy(Arrays, (void*)ATD0_BASE, 16);

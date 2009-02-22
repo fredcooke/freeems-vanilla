@@ -56,7 +56,8 @@ EXTERN void setupPagedRAM(unsigned char) FPAGE_F8;
 EXTERN void resetToNonRunningState(void) FPAGE_F8;
 
 EXTERN void sampleEachADC(ADCArray*) FPAGE_F8;
-EXTERN void sampleBlockADC(ADCArray*) FPAGE_F8;
+EXTERN void sampleLoopADC(ADCArray*) FPAGE_F8;
+//EXTERN void sampleBlockADC(ADCArray*) FPAGE_F8; broken, do not use
 
 EXTERN unsigned char checksum(unsigned char *, unsigned short) FPAGE_F8;
 EXTERN unsigned short stringCopy(unsigned char*, unsigned char*) FPAGE_F8;
