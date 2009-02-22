@@ -54,16 +54,19 @@ int main( int argc, char *argv[] ){
 		int length = ftell(inputFile);
 		rewind(inputFile);
 		printf("The length of file %s is %u\n\n", argv[1], length);
-		printf("Attempting to parse file...\n");
+		printf("Attempting to parse file...\n\n");
 
 		/* Statistic collection variables */
 		unsigned int packets = 0;
 		unsigned int charsDropped = 0;
 		unsigned int badChecksums = 0;
+		unsigned int goodChecksums = 0;
 		unsigned int startsInsidePacket = 0;
-		unsigned int currentPacketLength = 0;
-		unsigned int escapePairMismatches = 0;
 		unsigned int escapeBytesFound = 0;
+		unsigned int escapedStopBytesFound = 0;
+		unsigned int escapedStartBytesFound = 0;
+		unsigned int escapedEscapeBytesFound = 0;
+		unsigned int escapePairMismatches = 0;
 
 		/* Loop and state variables */
 		unsigned char insidePacket = 0;
@@ -71,6 +74,7 @@ int main( int argc, char *argv[] ){
 		unsigned int processed = 0;
 		unsigned char checksum = 0;
 		unsigned char lastChar = 0;
+		unsigned int currentPacketLength = 0;
 
 		/* Iterate through the file char at a time */
 		while(processed < length){
@@ -86,6 +90,8 @@ int main( int argc, char *argv[] ){
 				}
 				/* Reset to us using it unless someone else was */
 				insidePacket = 1;
+				checksum = 0;
+				currentPacketLength = 0;
 
 			}else if(insidePacket){
 				if(unescapeNext){
@@ -95,15 +101,26 @@ int main( int argc, char *argv[] ){
 					if(character == ESCAPED_ESCAPE_BYTE){
 						/* Store and checksum escape byte */
 						checksum += ESCAPE_BYTE;
+						lastChar = ESCAPE_BYTE;
+						escapedEscapeBytesFound++;
+						currentPacketLength++;
 					}else if(character == ESCAPED_START_BYTE){
 						/* Store and checksum start byte */
 						checksum += START_BYTE;
+						lastChar = START_BYTE;
+						escapedStartBytesFound++;
+						currentPacketLength++;
 					}else if(character == ESCAPED_STOP_BYTE){
 						/* Store and checksum stop byte */
 						checksum += STOP_BYTE;
+						lastChar = STOP_BYTE;
+						escapedStopBytesFound++;
+						currentPacketLength++;
 					}else{
 						/* Otherwise reset and record as data is bad */
 						insidePacket = 0;
+						checksum = 0;
+						currentPacketLength = 0;
 						escapePairMismatches++;
 					}
 				}else if(character == ESCAPE_BYTE){
@@ -113,20 +130,26 @@ int main( int argc, char *argv[] ){
 				}else if(character == STOP_BYTE){
 					packets++;
 
-					/* Clear the in packet flag */
-					insidePacket = 0;
-
 					/* Bring the checksum back to where it should be */
 					checksum -= lastChar;
 
 					/* Check that the checksum matches */
 					if(checksum != lastChar){
 						badChecksums++;
+						printf("Packet number %u ending of length %u at char number %u failed checksum! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
+					}else{
+						goodChecksums++;
+					//	printf("Packet number %u ending of length %u at char number %u checked out OK! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
 					}
+					/* Clear the state */
+					insidePacket = 0;
+					currentPacketLength= 0;
+					checksum = 0;
 				}else{
 					/* If it isn't special checksum it! */
 					checksum += character;
 					lastChar = character;
+					currentPacketLength++;
 				}
 			}else{
 				/* Do nothing : drop the byte */
@@ -134,7 +157,23 @@ int main( int argc, char *argv[] ){
 			}
 		}
 
-		printf("There were %u chars dropped and %u packets of which %u had bad checksums.\n", charsDropped, packets, badChecksums);
+		printf("\nData stream statistics :\n");
+
+		printf("\nPackets and checksums :\n");
+		printf("%u packets were found\n", packets);
+		printf("%u had good checksums\n", goodChecksums);
+		printf("%u had incorrect checksums\n", badChecksums);
+
+		printf("\nGeneral issues :\n");
+		printf("%u leading characters were dropped\n", charsDropped);
+		printf("%u false starts occurred\n", startsInsidePacket);
+
+		printf("\nEscaped byte profile :\n");
+		printf("%u escape bytes were found\n", escapeBytesFound);
+		printf("%u escaped stop bytes were found\n", escapedStopBytesFound);
+		printf("%u escaped start bytes were found\n", escapedStartBytesFound);
+		printf("%u escaped escape bytes were found\n", escapedEscapeBytesFound);
+		printf("%u escape pairs were mismatched\n", escapePairMismatches);
 	}else{
 		/* Subtract one to eliminate command name. */
 		printf("Wrong number of arguments!! Was %u should be 1...\n", argc - 1);
