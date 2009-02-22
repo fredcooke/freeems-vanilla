@@ -94,13 +94,13 @@ int main( int argc, char *argv[] ){
 
 					if(character == ESCAPED_ESCAPE_BYTE){
 						/* Store and checksum escape byte */
-						checksum += character;
+						checksum += ESCAPE_BYTE;
 					}else if(character == ESCAPED_START_BYTE){
 						/* Store and checksum start byte */
-						checksum += character;
+						checksum += START_BYTE;
 					}else if(character == ESCAPED_STOP_BYTE){
 						/* Store and checksum stop byte */
-						checksum += character;
+						checksum += STOP_BYTE;
 					}else{
 						/* Otherwise reset and record as data is bad */
 						insidePacket = 0;
@@ -111,18 +111,16 @@ int main( int argc, char *argv[] ){
 					unescapeNext = 1;
 					escapeBytesFound++;
 				}else if(character == STOP_BYTE){
+					packets++;
+
 					/* Clear the in packet flag */
 					insidePacket = 0;
 
 					/* Bring the checksum back to where it should be */
-					unsigned char RXReceivedChecksum = (unsigned char)*(RXBufferCurrentPosition - 1);
 					checksum -= lastChar;
 
 					/* Check that the checksum matches */
-					if(checksum == lastChar){
-						/* If it's OK set process flag */
-						packets++;
-					}else{
+					if(checksum != lastChar){
 						badChecksums++;
 					}
 				}else{
