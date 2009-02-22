@@ -92,9 +92,11 @@ int main( int argc, char *argv[] ){
 					startsInsidePacket++;
 					if(currentPacketLength == 0){
 						doubleStartByteOccurances++;
+//						printf("Double start byte occurred following packet number %u\n", packets);
 					}else{
 						totalFalseStartLost += currentPacketLength; // remember how much we lost
 						strayDataBytesOccurances++;
+//						printf("Stray data or unfinished packet found following packet number %u\n", packets);
 					}
 				}
 				/* Reset to us using it unless someone else was */
@@ -148,7 +150,7 @@ int main( int argc, char *argv[] ){
 						printf("Packet number %u ending of length %u at char number %u failed checksum! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
 					}else{
 						goodChecksums++;
-					//	printf("Packet number %u ending of length %u at char number %u checked out OK! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
+//						printf("Packet number %u ending of length %u at char number %u checked out OK! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
 					}
 					/* Clear the state */
 					insidePacket = 0;
