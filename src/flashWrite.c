@@ -37,8 +37,8 @@
 
 
 #define FLASHWRITE_C
-#include "inc/utils.h"
 #include "inc/freeEMS.h"
+#include "inc/utils.h"
 #include "inc/flashWrite.h"
 #include "inc/flashBurn.h"
 #include "inc/commsISRs.h"
