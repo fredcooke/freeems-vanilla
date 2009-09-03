@@ -50,8 +50,7 @@ void PrimaryRPMISR(void) {
 	static LongTime lastPeriod = { 0 };
 	static LongTime lastTimeStamp = { 0 };
 	static unsigned int count = 0;
-	LongTime thisTimeStamp;
-	LongTime thisPeriod;
+
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 
@@ -64,6 +63,7 @@ void PrimaryRPMISR(void) {
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
+	LongTime thisTimeStamp;
 	/* Install the low word */
 	thisTimeStamp.timeShorts[1] = edgeTimeStamp;
 	/* Find out what our timer value means and put it in the high word */
@@ -74,6 +74,7 @@ void PrimaryRPMISR(void) {
 	}
 
 	/* How many ticks between transitions? */
+	LongTime thisPeriod;
 	if (thisTimeStamp.timeLong > lastTimeStamp.timeLong) {
 		thisPeriod.timeLong = thisTimeStamp.timeLong - lastTimeStamp.timeLong;
 	} else {
