@@ -115,6 +115,27 @@ void generateDerivedVars(){
 		/* Don't throw error as correction may not be required */
 	}
 
+	// debug
+
+	LongTime breakout2, breakout4;
+//	breakout.timeLong = timeBetweenSuccessivePrimaryPulsesBuffer;
+	breakout2.timeLong = timeBetweenSuccessivePrimaryPulses;
+//	breakout3.timeLong = lengthOfSecondaryHighPulses;
+	breakout4.timeLong = lengthOfSecondaryLowPulses;
+
+//	DerivedVars->sp1 = Counters.primaryTeethSeen;
+//	DerivedVars->sp2 = Counters.secondaryTeethSeen;
+
+//	DerivedVars->sp3 = breakout4.timeShorts[0];
+	DerivedVars->sp1 = breakout4.timeShorts[1];
+
+//	DerivedVars->TFCTotal = *RPMRecord;
+
+//	CoreVars->DMAP = breakout3.timeShorts[0];
+//	CoreVars->DTPS = breakout3.timeShorts[1];
+
+	CoreVars->DRPM = breakout2.timeShorts[0];
+	CoreVars->DDRPM = breakout2.timeShorts[1];
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 }
