@@ -134,10 +134,10 @@ void PrimaryRPMISR(){
 		}
 
 		// temporary data from inputs
-		primaryLeadingEdgeTimeStamp = edgeTimeStamp;
+		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 		timeBetweenSuccessivePrimaryPulses = lastPrimaryPulseTimeStamp - primaryLeadingEdgeTimeStamp;
 		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
-		timeBetweenSuccessivePrimaryPulsesBuffer = (timeBetweenSuccessivePrimaryPulses >> 1) + (timeBetweenSuccessivePrimaryPulsesBuffer >> 1);
+//		timeBetweenSuccessivePrimaryPulsesBuffer = (timeBetweenSuccessivePrimaryPulses >> 1) + (timeBetweenSuccessivePrimaryPulsesBuffer >> 1);
 
 		// TODO make scheduling either fixed from boot with a limited range, OR preferrably if its practical scheduled on the fly to allow arbitrary advance and retard of both fuel and ignition.
 
@@ -407,13 +407,14 @@ void SecondaryRPMISR(){
 		PORTJ |= 0x40;
 
 		// display the crank pulses
-		PORTM = (char)primaryPulsesPerSecondaryPulseBuffer;
+		PORTM = (char)primaryPulsesPerSecondaryPulse;
 
-		primaryPulsesPerSecondaryPulseBuffer = primaryPulsesPerSecondaryPulse;
+// was this code like this because of a good reason?
+//		primaryPulsesPerSecondaryPulseBuffer = primaryPulsesPerSecondaryPulse;
 		primaryPulsesPerSecondaryPulse = 0;
 
 		// if we didn't get the right number of pulses drop sync and start over
-		if((primaryPulsesPerSecondaryPulseBuffer != 12) && (coreStatusA & PRIMARY_SYNC)){
+		if((primaryPulsesPerSecondaryPulse != 12) && (coreStatusA & PRIMARY_SYNC)){
 			coreStatusA &= CLEAR_PRIMARY_SYNC;
 			Counters.crankSyncLosses++;
 		}
