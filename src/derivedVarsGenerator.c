@@ -77,7 +77,7 @@ void generateDerivedVars(){
 
 
 	/* Look up injector dead time with battery voltage */
-	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
+	DerivedVars->IDT = 1200 ;//lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
 
 	/* Calculate the engine temperature enrichment */
