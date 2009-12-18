@@ -540,6 +540,7 @@ void initECTTimer(){
 	TFLGOF = ONES; /* Clear all the flags such that we are up and running before they first occur */
 
 	/* TODO Turn the timer on and set the rate and overflow interrupt */
+//	DLYCT = 0xFF; /* max noise filtering as experiment for volvo this will come from flash config */ // just hiding a wiring/circuit issue...
 	TSCR1 = 0x88; /* 0b_1000_1000 Timer enabled, and precision timer turned on */
 	TSCR2 = 0x87; /* 0b_1000_0111 Overflow interrupt enable, divide by 256 if precision turned off */
 //	PTPSR = 0x03; /* 4 prescaler gives .1uS resolution and max period of 7ms measured */
