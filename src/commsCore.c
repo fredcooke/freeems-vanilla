@@ -214,7 +214,7 @@ void checksumAndSend(){
 
 /** @brief Decode a packet and respond
  *
- * This is the core function that controls what functionality is run when a
+ * This is the core function that controls which functionality is run when a
  * packet is received in full by the ISR code and control is passed back to the
  * main loop code. The vast majority of communications action happens here.
  *
@@ -319,7 +319,7 @@ void decodePacketAndRespond(){
 	 *
 	 * Please Note: Length and it's flag should be set by each return packet
 	 * type handler if required or desired.	If an ack has been requested,
-	 * ensure the negative ack flag is set if the opration failed.
+	 * ensure the negative ack flag is set if the operation failed.
 	 */
 	switch (RXHeaderPayloadID){
 		case requestInterfaceVersion:
