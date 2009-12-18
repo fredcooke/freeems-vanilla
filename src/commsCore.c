@@ -65,6 +65,8 @@ void populateBasicDatalog(){
 	/* Save the current position */
 	unsigned char* position = TXBufferCurrentPositionHandler;
 
+	DerivedVars->sp5++; // increment as basic log sequence generator
+
 	/* Get core vars */
 	memcpy(TXBufferCurrentPositionHandler, CoreVars, sizeof(CoreVar));
 	TXBufferCurrentPositionHandler += sizeof(CoreVar);
