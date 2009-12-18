@@ -255,7 +255,7 @@ void initFuelAddresses(){
 void initPagedRAMFuel(void){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_FUEL_ONE;
-	memcpy((void*)&TablesA,	VETableMainFlashLocation,		MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	(void*)&VETableMainFlash,		MAINTABLE_SIZE);
 	memcpy((void*)&TablesB,	(void*)&VETableSecondaryFlash,	MAINTABLE_SIZE);
 	memcpy((void*)&TablesC,	(void*)&VETableTertiaryFlash,	MAINTABLE_SIZE);
 	memcpy((void*)&TablesD,	(void*)&LambdaTableFlash,		MAINTABLE_SIZE);
