@@ -210,9 +210,9 @@ typedef struct {
 /** @copydoc fixedConfig1 */
 typedef struct {
 
-	sensorRange sensorRanges;
-
 	sensorPreset sensorPresets;
+
+	sensorRange sensorRanges;
 
 	sensorSetting sensorSettings;
 
