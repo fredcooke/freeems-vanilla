@@ -107,6 +107,7 @@ void generateCoreVars(){
 
 	unsigned short localIAT;
 	/* Get IAT from ADC using the transfer table (all installations need this) */
+//	if(FALSE){ /* If IAT connected  */ using false here causes iat to default to room temp, useful with heatsoaked OEM sensors
 	if(TRUE){ /* If IAT connected  */
 		localIAT = IATTransferTable[ADCArrays->IAT];
 	}else if(FALSE){ /* Configured to be read From ADC as dashpot */
