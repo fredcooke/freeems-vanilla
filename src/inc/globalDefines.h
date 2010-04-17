@@ -288,7 +288,7 @@
 #define RPAGE_TIME_TWO	0xFD
 #define RPAGE_MIN     	0xF8
 #define PPAGE_MIN     	0xE0
-#define EPAGE_MIN     	0x??
+#define EPAGE_MIN     	0x?? // TODO
 
 /* The TX and RX buffers are slightly larger than 2k because the RX buffer */
 /* needs to also receive a header, checksum and attributes for the data    */
