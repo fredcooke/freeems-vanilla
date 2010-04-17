@@ -42,6 +42,10 @@
 #include "inc/derivedVarsGenerator.h"
 
 
+// temp while fixing bug TODO remove this
+#include "inc/pagedLocationBuffers.h"
+
+
 /** @brief Generate the derived variables.
  *
  * This function uses the core variables to lookup and calculate further second
@@ -77,7 +81,15 @@ void generateDerivedVars(){
 
 
 	/* Look up injector dead time with battery voltage */
-	DerivedVars->IDT = 1200 ;//lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
+	DerivedVars->IDT = 1200 ; // TODO temporary, below code did not seem to function - should work as default rpage is tuneables 1 so no page swapping required and pointer seems correct
+
+	// the below does not work, they both produce 0x00 as output irrespective of the batt voltage.
+//	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
+//	DerivedVars->IDT = ((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable)->Values[6];
+
+	// the below does not work, they both produce 0xFF as output irrespective of the batt voltage.
+//	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)injectorDeadTimeTableLocation, CoreVars->BRV);
+//	DerivedVars->IDT = ((twoDTableUS*)injectorDeadTimeTableLocation)->Values[6];
 
 
 	/* Calculate the engine temperature enrichment */
