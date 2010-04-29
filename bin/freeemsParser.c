@@ -79,6 +79,10 @@ int main( int argc, char *argv[] ){
 		unsigned char lastChar = 0;
 		unsigned int currentPacketLength = 0;
 
+		// To store a packet in for purposes of further diagnostics
+		unsigned char packetBuffer[3000]; // more than sufficient for current FreeEMS increase for other variants.
+		unsigned short packetTypeCounts[65536]; // upto 65535 of each type, then it'll overflow...
+
 		/* Iterate through the file char at a time */
 		while(processed < length){
 			processed++;
@@ -114,18 +118,21 @@ int main( int argc, char *argv[] ){
 						checksum += ESCAPE_BYTE;
 						lastChar = ESCAPE_BYTE;
 						escapedEscapeBytesFound++;
+						packetBuffer[currentPacketLength] = ESCAPE_BYTE;
 						currentPacketLength++;
 					}else if(character == ESCAPED_START_BYTE){
 						/* Store and checksum start byte */
 						checksum += START_BYTE;
 						lastChar = START_BYTE;
 						escapedStartBytesFound++;
+						packetBuffer[currentPacketLength] = START_BYTE;
 						currentPacketLength++;
 					}else if(character == ESCAPED_STOP_BYTE){
 						/* Store and checksum stop byte */
 						checksum += STOP_BYTE;
 						lastChar = STOP_BYTE;
 						escapedStopBytesFound++;
+						packetBuffer[currentPacketLength] = STOP_BYTE;
 						currentPacketLength++;
 					}else{
 						/* Otherwise reset and record as data is bad */
@@ -151,6 +158,11 @@ int main( int argc, char *argv[] ){
 					}else{
 						goodChecksums++;
 //						printf("Packet number %u ending of length %u at char number %u checked out OK! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
+						{ // process packet
+							// Increment count for packet type that it is
+							unsigned short packetType = packetBuffer[1] * 256 + packetBuffer[2];
+							packetTypeCounts[packetType]++;
+						}
 					}
 					/* Clear the state */
 					insidePacket = 0;
@@ -160,6 +172,7 @@ int main( int argc, char *argv[] ){
 					/* If it isn't special checksum it! */
 					checksum += character;
 					lastChar = character;
+					packetBuffer[currentPacketLength] = character;
 					currentPacketLength++;
 				}
 			}else{
@@ -168,7 +181,7 @@ int main( int argc, char *argv[] ){
 			}
 		}
 
-		printf("\nData stream statistics :\n");
+		printf("Data stream statistics :\n");
 
 		printf("\nPackets and checksums :\n");
 		printf("%u packets were found\n", packets);
@@ -188,6 +201,16 @@ int main( int argc, char *argv[] ){
 		printf("%u escaped start bytes were found\n", escapedStartBytesFound);
 		printf("%u escaped escape bytes were found\n", escapedEscapeBytesFound);
 		printf("%u escape pairs were mismatched\n", escapePairMismatches);
+
+		printf("\nReport counts for all non-zero packet types\n");
+		unsigned long oCount = 0;
+		while(oCount < 65536){
+			if(packetTypeCounts[oCount] != 0){
+				printf("    Packet of type %#.4x / %u was found %u times!\n", oCount, oCount, packetTypeCounts[oCount]);
+			}
+			oCount++;
+		}
+
 	}else{
 		/* Subtract one to eliminate command name. */
 		printf("Wrong number of arguments!! Was %u should be 1...\n", argc - 1);
