@@ -25,14 +25,32 @@
 
 # These are all we can use now as we are paging flash finally :-)
 
+# Set up the variables
+export EXPECTED_ARGS="1"
+export NUMBER_OF_ARGS="$#"
+
+# Formalise the error codes
+export WRONG_NUMBER_OF_ARGS="-20"
+
+# Test for the correct number of arguments
+if [ $EXPECTED_ARGS -ne $NUMBER_OF_ARGS ]
+then
+	echo "$USAGE"
+	echo "Expected $EXPECTED_ARGS parameter(s), got $NUMBER_OF_ARGS, exiting..."
+	exit "$WRONG_NUMBER_OF_ARGS"
+fi
+
+export SERIAL_DEVICE="$1"
+
+
 # This pulls down the entire devices flash contents including all erased regions
-#hcs12mem -b 115200 -i sm -p /dev/ttyUSB0 -t mc9s12xdp512 -a banked-ppage -e --flash-read freeems.full.dump.ppage.`date +%s`.s19
+#hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a banked-ppage -e --flash-read freeems.full.dump.ppage.`date +%s`.s19
 
 # This only pulls down what has been written.
-hcs12mem -b 115200 -i sm -p /dev/ttyUSB0 -t mc9s12xdp512 -a banked-ppage --flash-read freeems.full.dump.ppage.`date +%s`.s19
+hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a banked-ppage --flash-read freeems.full.dump.ppage.`date +%s`.s19
 
 # non banked only outputs 48k which is too small.
-#hcs12mem -b 115200 -i sm -p /dev/ttyUSB0 -t mc9s12xdp512 -a non-banked -e --flash-read zoutput/freeems.full.dump.48k.s19
+#hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a non-banked -e --flash-read zoutput/freeems.full.dump.48k.s19
 # banked linear outputs incorrect numbers on our system.
-#hcs12mem -b 115200 -i sm -p /dev/ttyUSB0 -t mc9s12xdp512 -a banked-linear -e --flash-read zoutput/freeems.full.dump.linear.s19
+#hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a banked-linear -e --flash-read zoutput/freeems.full.dump.linear.s19
 
