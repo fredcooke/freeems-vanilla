@@ -107,10 +107,10 @@ welcome ()
 	echo "Please see http://www.gnu.org/licenses/ for details"
 	echo
 	echo "This version is for $DEVICE_TYPE based FreeEMS's"
-	echo
-	echo "Do you have a $DEVICE_TYPE based FreeEMS? [ yes | quit ]"
-
-	continue "yes" "quit" "$WRONG_EMS"
+#	echo
+#	echo "Do you have a $DEVICE_TYPE based FreeEMS? [ yes | quit ]"
+#
+#	continue "yes" "quit" "$WRONG_EMS"
 }
 
 
