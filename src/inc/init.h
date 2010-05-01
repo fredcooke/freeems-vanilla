@@ -44,6 +44,8 @@
 #ifdef INIT_C
 #define EXTERN
 /* For private internal use of init.c init() function only, hence wrapped in this ifdef */
+
+/* Keep this non ISR stuff out of linear flash space */
 void initPLL(void) FPAGE_FE;
 void initIO(void) FPAGE_FE;
 void initAllPagedRAM(void) FPAGE_FE;
@@ -55,6 +57,8 @@ void initPITTimer(void) FPAGE_FE;
 void initSCIStuff(void) FPAGE_FE;
 void initConfiguration(void) FPAGE_FE;
 void initInterrupts(void) FPAGE_FE;
+
+/* Place these functions in the same block of flash as the data upon which they operate! */
 void initLookupAddresses(void) LOOKUPF;
 void initFuelAddresses(void) FUELTABLESF;
 void initTimingAddresses(void) TIMETABLESF;
@@ -62,6 +66,7 @@ void initTunableAddresses(void) TUNETABLESF;
 void initPagedRAMFuel(void) FUELTABLESF;
 void initPagedRAMTime(void) TIMETABLESF;
 void initPagedRAMTune(void) TUNETABLESF;
+
 #else
 #define EXTERN extern
 #endif

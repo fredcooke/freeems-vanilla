@@ -65,7 +65,6 @@ void init(){
 	initPLL();              	/* Set up the PLL and use it */
 	initIO();               	/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
 	initAllPagedRAM();      	/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
-	initAllPagedAddresses();	/* Save the paged memory addresses to variables such that we can access them from another paged block with no warnings */
 	initVariables();        	/* Initialise the rest of the running variables etc */
 	initFlash();            	/* TODO, finalise this */
 	initECTTimer();         	/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
@@ -255,15 +254,15 @@ void initFuelAddresses(){
 void initPagedRAMFuel(void){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_FUEL_ONE;
-	memcpy((void*)&TablesA,	(void*)&VETableMainFlash,		MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	(void*)&VETableSecondaryFlash,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	(void*)&VETableTertiaryFlash,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	(void*)&LambdaTableFlash,		MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	VETableMainFlashLocation,		MAINTABLE_SIZE);
+	memcpy((void*)&TablesB,	VETableSecondaryFlashLocation,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesC,	VETableTertiaryFlashLocation,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesD,	LambdaTableFlashLocation,		MAINTABLE_SIZE);
 	RPAGE = RPAGE_FUEL_TWO;
-	memcpy((void*)&TablesA,	(void*)&VETableMainFlash2,		MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	(void*)&VETableSecondaryFlash2,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	(void*)&VETableTertiaryFlash2,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	(void*)&LambdaTableFlash2,		MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	VETableMainFlash2Location,		MAINTABLE_SIZE);
+	memcpy((void*)&TablesB,	VETableSecondaryFlash2Location,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesC,	VETableTertiaryFlash2Location,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesD,	LambdaTableFlash2Location,		MAINTABLE_SIZE);
 }
 
 
@@ -387,6 +386,9 @@ void initPagedRAMTune(){
 
 /** @brief Buffer addresses of paged data
  *
+ * Save the paged memory addresses to variables such that we can access them
+ * from another paged block with no warnings.
+ *
  * If you try to access paged data from the wrong place you get nasty warnings.
  * These calls to functions that live in the same page that they are addressing
  * prevent those warnings.
@@ -418,7 +420,10 @@ void initAllPagedAddresses(){
  * @author Fred Cooke
  */
 void initAllPagedRAM(){
-	/* Copy the tables up to their paged ram blocks through the window from flash */
+	/* Setup the flash block pointers before copying flash to RAM using them */
+	initAllPagedAddresses();
+
+	/* Copy the tables up to their paged RAM blocks through the window from flash */
 	initPagedRAMFuel();
 	initPagedRAMTime();
 	initPagedRAMTune();
