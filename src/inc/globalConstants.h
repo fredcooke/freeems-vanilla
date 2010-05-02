@@ -81,7 +81,7 @@ EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 
 /* Version strings */
 EXTERN const unsigned char interfaceVersionAndType[20];
-EXTERN const unsigned char firmwareVersion[45];
+EXTERN const unsigned char firmwareVersion[40];
 
 /* Ignition */
 EXTERN const unsigned short dwellStartMasks[IGNITION_CHANNELS];

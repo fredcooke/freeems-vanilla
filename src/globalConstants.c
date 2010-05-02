@@ -68,13 +68,13 @@ const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar
  * This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
  * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID
  */
-const unsigned char interfaceVersionAndType[20] = {0,0,2,'I','F','r','e','e','E','M','S',' ','V','a','n','i','l','l','a',0};
+const unsigned char interfaceVersionAndType[20] = {0,0,0,'I','F','r','e','e','E','M','S',' ','V','a','n','i','l','l','a',0};
 
 /** Displayable firmware version identifier
  *
  * This should change every time the code is changed at all (even a little) before each release.
  */
-const unsigned char firmwareVersion[45] = {"FreeEMS Vanilla 0.0.20 pre-release pre-alpha"};
+const unsigned char firmwareVersion[40] = {"FreeEMS Vanilla 0.1.0 pre-release alpha"};
 
 /** Divisors and untunable physical constants combined into a single master fuel constant
  *
