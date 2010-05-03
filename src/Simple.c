@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -24,31 +24,24 @@
  */
 
 
-/**	@file NipponDenso.c
+/**	@file Simple.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief Reads Nippon Denso 24/2 sensors
+ * @brief Reads any signal that is once per cylinder
  *
- * This file contains the two interrupt service routines for handling engine
- * position and RPM signals from mainly Toyota engines using this sensor style.
+ * This file contains the two interrupt service routines required for to build
+ * cleanly. However, only the first one is used due to the simple nature of it.
  *
- * One ISR handles the 24 evenly spaced teeth and the other handles the two
- * adjacent teeth. This signal style provides enough information for wasted
- * spark ignition and semi sequential fuel injection.
+ * The functional ISR just blindly injects fuel for every input it receives.
+ * Thus a perfectly clean input is absolutely essential at this time.
  *
  * Supported engines include:
- * - 4A-GE
- * - 7A-FE
- * - 3S-GE
- * - 1UZ-FE
- * - Mazda F2T
+ * B230F
  *
  * @author Fred Cooke
  *
- * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
- *
- * @todo TODO make this generic for evenly spaced teeth with a pulse per revolution from the second input.
+ * @note Even though I ran my US road trip car on this exact code, I don't recommend it unless you REALLY know what you are doing!
  */
 
 
@@ -59,16 +52,8 @@
 
 /** Primary RPM ISR
  *
- * Summary of intended engine position capture scheme (out of date as at 3/1/09)
- *
- * Position/RPM signal interpretation :
- * Discard edges that have arrived too soon (lose sync here?)
- * Check to ensure we haven't lost sync (pulse arrives too late)
- * Compare time stamps of successive edges and calculate RPM
- * Store RPM and position in globals
- *
  * Schedule events :
- * loop through all events (spark and fuel), schedule those that fall sufficiently after this tooth and before the next one we expect.
+ * Blindly start fuel pulses for each and every input pulse.
  *
  * Sample ADCs :
  * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
@@ -78,8 +63,7 @@
  *
  * @warning These are for testing and demonstration only, not suitable for driving with just yet.
  *
- * @todo TODO bring the above docs up to date with reality
- * @todo TODO finish this off to a usable standard
+ * @todo TODO make this code more general and robust such that it can be used for real simple applications
  */
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
@@ -118,8 +102,8 @@ void PrimaryRPMISR(){
 		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
 		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
 
-#define ticksPerMinute   75000000
-//#define ticksPerCylinder 37500000
+#define ticksPerMinute   75000000 // this is correct.
+
 		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
 
 		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
@@ -187,10 +171,7 @@ void PrimaryRPMISR(){
 
 /** Secondary RPM ISR
  *
- * Similar to the primary one.
- *
- * @todo TODO bring this documentation up to date.
- * @todo TODO finish this off to a usable standard.
+ * Unused in this decoder.
  */
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
