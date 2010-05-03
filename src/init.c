@@ -433,29 +433,6 @@ void initAllPagedRAM(){
 }
 
 
-	/* Init all pointers to tunable items with direct addresses */
-	/* Pointers remain the same when switching pages so are initialised only once */
-//	VETableMain = &TablesA.VETableMain;
-//	VETableSecondary = &TablesB.VETableSecondary;
-//	VETableTertiary = &TablesC.VETableMainTertiary;
-//	LambdaTable = &TablesD.LambdaTable;
-//
-//	IgnitionAdvanceTableMain = &TablesA.IgnitionAdvanceTableMain;
-//	IgnitionAdvanceTableSecondary = &TablesB.IgnitionAdvanceTableSecondary;
-//	InjectionAdvanceTableMain = &TablesC.InjectionAdvanceTableMain;
-//	InjectionAdvanceTableSecondary = &TablesD.InjectionAdvanceTableSecondary;
-//
-//	dwellDesiredVersusVoltageTable = &TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
-//	injectorDeadTimeTable = &TablesA.SmallTablesA.injectorDeadTimeTable;
-//	postStartEnrichmentTable = &TablesA.SmallTablesA.postStartEnrichmentTable;
-//	engineTempEnrichmentTableFixed = &TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
-//	primingVolumeTable = &TablesA.SmallTablesA.primingVolumeTable;
-//	engineTempEnrichmentTablePercent = &TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
-//	dwellMaxVersusRPMTable = &TablesA.SmallTablesA.dwellMaxVersusRPMTable;
-//
-//	perCylinderFuelTrims = TablesB.SmallTablesB.perCylinderFuelTrims;
-
-
 /* Initialise and set up all running variables that require a non-zero start value here */
 /* All other variables are initialised to zero by the premain built in code				*/
 void initVariables(){
