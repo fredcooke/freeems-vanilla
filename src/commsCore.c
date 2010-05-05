@@ -1039,7 +1039,8 @@ void sendErrorIfClear(unsigned short errorID){
 }
 
 
-/** @brief Send an error even if we must wait
+/* not currently used...
+ *  @brief Send an error even if we must wait
  *
  * This is a wrapper for use outside the communication handler function. This
  * function will block until the error is able to be sent. This behaviour is
