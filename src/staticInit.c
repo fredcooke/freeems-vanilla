@@ -26,6 +26,8 @@
 
 /** @file staticInit.c
  *
+ * @brief Static initialisation of non-zero variables
+ *
  * This file contains static initialisations for fields that require a non-zero
  * initial value after reset. Zero fields are taken care of by GCC and doing
  * this here means less init time and init code, both good things. Variables

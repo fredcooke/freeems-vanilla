@@ -27,6 +27,8 @@
 /**	@file TunableConfig.c
  * @ingroup dataInitialisers
  *
+ * @brief Small tables and other live tunable data
+ *
  * This file contains the definition of the primary set of tunable
  * configuration data. The declaration can be found in the global
  * constants header file.
