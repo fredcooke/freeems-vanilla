@@ -53,7 +53,7 @@
  * - IDT - Injector Dead Time
  * - TFC - Transient Fuel Correction
  *
- * @b Terminology
+ * @b Terminology:
  * - Function - A block of code with aname, optional input and optional output.
  * - Method - An alternative OO name for a function.
  * - Void - Indicates that no input or output is required or will be given.
