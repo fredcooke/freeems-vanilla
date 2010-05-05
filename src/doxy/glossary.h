@@ -4,7 +4,7 @@
  * page exists to help make sense of them for the uninitiated who want to come
  * up to speed as quickly as possible.
  *
- * @b Acronyms and Abbreviations:
+ * @b Acronyms @b and @b Abbreviations:
  * - EMS - Engine Management System
  * - EFI - Electronic Fuel Injection
  * - ECT - Ehanced Capture Timer
@@ -52,7 +52,6 @@
  * - AFR - Air Fuel Ratio
  * - IDT - Injector Dead Time
  * - TFC - Transient Fuel Correction
- * -
  *
  * @b Terminology
  * - Function - A block of code with aname, optional input and optional output.
