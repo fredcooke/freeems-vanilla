@@ -5,53 +5,54 @@
  * up to speed as quickly as possible.
  *
  * @b Acronyms @b and @b Abbreviations:
- * - EMS - Engine Management System
- * - EFI - Electronic Fuel Injection
- * - ECT - Ehanced Capture Timer
- * - PIT - Precision Interrupt Timer??
- * - GNU - GNU's Not Unix
- * - GCC - GNU C Compiler
- * - GPL - GNU Public License
- * - RAM - Random Access Memory
- * - ROM - Read Only Memory
+ * - AAP - Absolute Atmospheric Pressure
+ * - ADC - Analog to Digital Converter
+ * - AFR - Air Fuel Ratio
  * - Asm - Assembly Code
- * - SCI - Serial Communication Interface
- * - SPI - Serial Peripheral Interface
- * - TX - Transmit/Transmission
- * - RX - Receive/Reception
- * - ISR - Interrupt Service Routine
+ * - ATD - Analog To Digital
+ * - BDM - Background Debug Module
+ * - BPW - Base Pulse Width
+ * - BRV - Battery Reference Voltage
+ * - CAN - Controller Area Network
+ * - CAS - Cam Angle Sensor
+ * - CHT - Coolant/Head Temperature
+ * - CLT - CooLant Temperature
+ * - CNP - Coil Near Plug
  * - COP - Computer Operating Properly
  * - COP - Coil On Plug
- * - CNP - Coil Near Plug
- * - OO - Object Oriented
- * - RPM - Revolutions Per Minute
- * - MAP - Manifold Absolute Pressure
- * - IAP - Intercooler Absolute Pressure
- * - AAP - Absolute Atmospheric Pressure
- * - MAF - Mass Air Flow
- * - ATD - Analog To Digital
- * - ADC - Analog to Digital Converter
- * - PW - Pulse Width
- * - PWM - Pulse Width Modulation
- * - BPW - Base Pulse Width
  * - ECO - Exhaust Gas Oxygen
- * - WBO2 - Wide Band Oxygen
- * - RTC - Real Time Clock
- * - RTI - Real Time Interrupt
- * - BDM - Background Debug Module
- * - CAN - Controller Area Network
- * - IAT - Intake Air Temperature
- * - MAT - Manifold Air Temperature
- * - CLT - CooLant Temperature
- * - CHT - Coolant/Head Temperature
+ * - ECT - Ehanced Capture Timer
+ * - EFI - Electronic Fuel Injection
+ * - EMS - Engine Management System
  * - ERT - Engine Reference Temperature
  * - ETE - Engine Temperature Enrichment
- * - VE - Volumetric Efficiency
- * - TPS - Throttle Position Sensor
- * - BRV - Battery Reference Voltage
- * - AFR - Air Fuel Ratio
+ * - GCC - GNU C Compiler
+ * - GPL - GNU Public License
+ * - GNU - GNU's Not Unix
+ * - IAP - Intercooler Absolute Pressure
+ * - IAT - Intake Air Temperature
  * - IDT - Injector Dead Time
+ * - ISR - Interrupt Service Routine
+ * - MAF - Mass Air Flow
+ * - MAP - Manifold Absolute Pressure
+ * - MAT - Manifold Air Temperature
+ * - OO - Object Oriented
+ * - PIT - Precision Interrupt Timer??
+ * - PW - Pulse Width
+ * - PWM - Pulse Width Modulation
+ * - RAM - Random Access Memory
+ * - ROM - Read Only Memory
+ * - RPM - Revolutions Per Minute
+ * - RTC - Real Time Clock
+ * - RTI - Real Time Interrupt
+ * - RX - Receive/Reception
+ * - SCI - Serial Communication Interface
+ * - SPI - Serial Peripheral Interface
  * - TFC - Transient Fuel Correction
+ * - TPS - Throttle Position Sensor
+ * - TX - Transmit/Transmission
+ * - VE - Volumetric Efficiency
+ * - WBO2 - Wide Band Oxygen
  *
  * @b Terminology:
  * - Function - A block of code with aname, optional input and optional output.
