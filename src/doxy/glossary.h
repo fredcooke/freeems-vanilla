@@ -20,8 +20,8 @@
  * - CNP - Coil Near Plug
  * - COP - Computer Operating Properly
  * - COP - Coil On Plug
- * - ECO - Exhaust Gas Oxygen
- * - ECT - Ehanced Capture Timer
+ * - EGO - Exhaust Gas Oxygen
+ * - ECT - Enhanced Capture Timer
  * - EFI - Electronic Fuel Injection
  * - EMS - Engine Management System
  * - ERT - Engine Reference Temperature
@@ -55,7 +55,7 @@
  * - WBO2 - Wide Band Oxygen
  *
  * @b Terminology:
- * - Function - A block of code with aname, optional input and optional output.
+ * - Function - A block of code with a name, optional input and optional output.
  * - Method - An alternative OO name for a function.
  * - Void - Indicates that no input or output is required or will be given.
  * - Stack - An area of memory where code is stored that grows as it is run.
