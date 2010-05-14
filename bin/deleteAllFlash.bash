@@ -2,7 +2,7 @@
 
 #       deleteAllFlash.bash
 #
-#       Copyright 2008 Fred Cooke
+#       Copyright 2008, 2009 Fred Cooke
 #
 #       This file is part of the FreeEMS project.
 #

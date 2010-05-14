@@ -1,6 +1,6 @@
 /*	flashBurn.s
 
-	Copyright 2008 Sean Keys
+	Copyright 2008, 2009 Sean Keys
 
 	This file is part of the FreeEMS project.
 
