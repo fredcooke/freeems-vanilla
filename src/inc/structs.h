@@ -218,9 +218,9 @@ typedef struct {
 	unsigned short CHT;			/* Coolant / Head Temperature (CLT JS)		*/ /* COMPULSORY! */
 	unsigned short TPS;			/* Throttle Position Sensor (TPS JS)		*/ /* Reduced performance without */
 	unsigned short EGO;			/* Exhaust Gas Oxygen (O2 JS)				*/ /* Recommended */
-	unsigned short BRV;			/* Battery Reference Voltage (4euroh1)		*/ /* COMPULSORY! */
 	unsigned short MAP;			/* Manifold Absolute Pressure (5euroh1)		*/ /* COMPULSORY OR TPS OR MAF */
 	unsigned short AAP;			/* Atmospheric Absolute Pressure (6euroh1)	*/ /* Recommended */
+	unsigned short BRV;			/* Battery Reference Voltage (4euroh1)		*/ /* COMPULSORY! */
 	unsigned short MAT;			/* Manifold Air Temperature (Spare JS)		*/ /* Could help heat soak issues */
 
 	/* ADC1 raw readings */
@@ -373,9 +373,9 @@ typedef struct {
 	unsigned short realTimeClockSeconds;				/* Variable to count seconds exactly					*/
 	unsigned short realTimeClockMinutes;				/* Variable to count minutes exactly					*/
 
-	unsigned short millisToTenths;						/* Rollover variable for counting tenths				*/
-	unsigned short tenthsToSeconds;						/* Rollover variable for counting seconds				*/
-	unsigned short secondsToMinutes;					/* Rollover variable for counting minutes				*/
+	unsigned short millisToTenths;						/* Roll-over variable for counting tenths				*/
+	unsigned short tenthsToSeconds;						/* Roll-over variable for counting seconds				*/
+	unsigned short secondsToMinutes;					/* Roll-over variable for counting minutes				*/
 
 	unsigned short timeoutADCreadingClock;				/* Timeout clock/counter for synced ADC readings		*/
 } Clock;
