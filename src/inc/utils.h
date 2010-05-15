@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -47,6 +47,8 @@
 #define EXTERN extern
 #endif
 
+EXTERN unsigned short safeAdd(unsigned short, unsigned short);
+EXTERN unsigned short safeTrim(unsigned short addend1, signed short addend2);
 
 EXTERN void sleep(unsigned short) FPAGE_FE;
 EXTERN void sleepMicro(unsigned short) FPAGE_FE;

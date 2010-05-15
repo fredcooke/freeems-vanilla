@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke, Philip L Johnson
+ * Copyright 2008, 2009, 2010 Fred Cooke, Philip L Johnson
  *
  * This file is part of the FreeEMS project.
  *
@@ -41,6 +41,53 @@
 #include "inc/commsISRs.h"
 #include "inc/utils.h"
 #include <string.h>
+
+
+/** @brief Add two unsigned shorts safely
+ *
+ * This will either return short max or the sum of the two arguments.
+ *
+ * @author Fred Cooke
+ *
+ * @param addend1
+ * @param addend2
+ */
+unsigned short safeAdd(unsigned short addend1, unsigned short addend2){
+	if((SHORTMAX - addend1) > addend2){
+		return addend1 + addend2;
+	}else{
+		return SHORTMAX;
+	}
+}
+
+
+/** @brief Add two unsigned shorts safely
+ *
+ * This will either return short max or the sum of the two arguments.
+ *
+ * @author Fred Cooke
+ *
+ * @param addend1
+ * @param addend2
+ */
+unsigned short safeTrim(unsigned short addend1, signed short addend2){
+
+	if(addend2 < 0){
+		if(addend1 > -addend2){
+			return addend1 + addend2;
+		}else{
+			return 0;
+		}
+	}else if(addend2 > 0){
+		if(addend2 < (SHORTMAX - addend1)){
+			return addend1 + addend2;
+		}else{
+			return SHORTMAX;
+		}
+	}else{
+		return addend1;
+	}
+}
 
 
 /** @brief Setup tune switching
