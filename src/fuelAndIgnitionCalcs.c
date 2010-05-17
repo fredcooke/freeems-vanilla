@@ -117,7 +117,6 @@ void calculateFuelAndIgnition(){
 
 
 	unsigned char channel; // the declaration of this variable is used in multiple loops below.
-	#define oneHundredPercentPCFT 32768 /** @todo TODO move oneHundredPercentPCFT to a header with all other #defines found in code */
 
 	/* "Calculate" the individual fuel pulse widths */
 	for(channel = 0; channel < INJECTION_CHANNELS; channel++){ /// @todo TODO make injector channels come from config, not defines.
