@@ -34,23 +34,23 @@
  *
  * Each channel performs the following actions
  *
- * 1	Clear its interrupt flag
- * 2	Record its start time
- * 3	Measure and record its latency
- * 4	Check to see if its just turned on
- * 4.1	Copy the channels pulse width to a local variable
- * 4.2	Determine the minimum pulse width based on code run time const and latency
- * 4.3	Clamp used pulsewidth inside min and max
- * 4.4	If used pulse width is larger than the current period of the engines cycle flag as always on
- * 4.5	Set the action to turn off
- * 4.6	Increment the time by pulse width
- * 4.7	If staging required, either, switch them on and sched to turn off, or sched to turn on
- * 5	Else it has just turned off
- * 5.1	If staged channel is still on, turn it off
- * 5.2	If(self schedule flagged) schedule the next start
- * 5.3	Else disable itself
- * 6	Calculate and record code run time
- * 7	Return
+ * - 1	Clear its interrupt flag
+ * - 2	Record its start time
+ * - 3	Measure and record its latency
+ * - 4	Check to see if its just turned on
+ *   - 4.1	Copy the channels pulse width to a local variable
+ *   - 4.2	Determine the minimum pulse width based on code run time const and latency
+ *   - 4.3	Clamp used pulsewidth inside min and max
+ *   - 4.4	If used pulse width is larger than the current period of the engines cycle flag as always on
+ *   - 4.5	Set the action to turn off
+ *   - 4.6	Increment the time by pulse width
+ *   - 4.7	If staging required, either, switch them on and sched to turn off, or sched to turn on
+ * - 5	Else it has just turned off
+ *   - 5.1	If staged channel is still on, turn it off
+ *   - 5.2	If(self schedule flagged) schedule the next start
+ *   - 5.3	Else disable itself
+ * - 6	Calculate and record code run time
+ * - 7	Return
  *
  * @author Fred Cooke
  */
