@@ -42,10 +42,6 @@
 #include "inc/derivedVarsGenerator.h"
 
 
-// temp while fixing bug TODO remove this
-#include "inc/pagedLocationBuffers.h"
-
-
 /** @brief Generate the derived variables.
  *
  * This function uses the core variables to lookup and calculate further second
@@ -84,9 +80,8 @@ void generateDerivedVars(){
 	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
 
-	/* Calculate the engine temperature enrichment */
-//	unsigned short localETEPercentage = lookupTwoDTableUS(&engineTempEnrichmentTable, CoreVars.CHT);
-//	DerivedVars->ETE = ((unsigned long)finalMasterTotalEndPW * localETEPercentage) / oneHundredPercentETE;
+	/* Look up the engine temperature enrichment percentage with temperature */
+	DerivedVars->ETE = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent, CoreVars->CHT);
 	/* TODO The above needs some careful thought put into it around different loads and correction effects. */
 
 

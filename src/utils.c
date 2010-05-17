@@ -90,6 +90,31 @@ unsigned short safeTrim(unsigned short addend1, signed short addend2){
 }
 
 
+/** @brief Scale without overflow
+ *
+ * Takes a base value and a scaler where 0x8000/32768 means 100%, 0 means 0%
+ * and 0xFFFF/65535 means 200%, and returns the baseValue multiplied, in effect, by the
+ * resulting percentage figure.
+ *
+ * @author Fred Cooke
+ *
+ * @param baseValue
+ * @param scaler
+ */
+unsigned short safeScale(unsigned short baseValue, unsigned short scaler){
+	/* Perform the scaling */
+	unsigned short scaled = ((unsigned long)baseValue * scaler) / SHORTHALF;
+
+	/* If the trim is greater than 100% then the trimmedPW MUST be larger */
+	/* If it's less than 100% it can't have overflowed */		 /* If it's not larger, it overflowed */
+	if((scaler > SHORTHALF) && (baseValue > scaled)){
+		return SHORTMAX;
+	}else{
+		return scaled;
+	}
+}
+
+
 /** @brief Setup tune switching
  *
  * Place the correct set of tables in RAM based on a boolean parameter

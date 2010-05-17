@@ -48,7 +48,8 @@
 #endif
 
 EXTERN unsigned short safeAdd(unsigned short, unsigned short);
-EXTERN unsigned short safeTrim(unsigned short addend1, signed short addend2);
+EXTERN unsigned short safeTrim(unsigned short, signed short);
+EXTERN unsigned short safeScale(unsigned short, unsigned short);
 
 EXTERN void sleep(unsigned short) FPAGE_FE;
 EXTERN void sleepMicro(unsigned short) FPAGE_FE;

@@ -38,6 +38,7 @@
 
 #define FUELANDIGNITIONCALCS_C
 #include "inc/freeEMS.h"
+#include "inc/utils.h"
 #include "inc/commsCore.h"
 #include "inc/tableLookup.h"
 #include "inc/fuelAndIgnitionCalcs.h"
@@ -111,9 +112,8 @@ void calculateFuelAndIgnition(){
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&& Apply All Corrections PCFC, ETE, IDT, TFC etc &&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 	/* Apply the corrections after calculating */
-	DerivedVars->FinalPW = DerivedVars->BasePW;
-	DerivedVars->FinalPW += DerivedVars->TFCTotal;	/** @todo TODO check for overflow when TFC is positive and underflow when negative */
-	DerivedVars->FinalPW += DerivedVars->ETE;     	/** @todo TODO check for overflow of ETE always */
+	DerivedVars->FinalPW = safeTrim(DerivedVars->BasePW, DerivedVars->TFCTotal);
+	DerivedVars->FinalPW = safeScale(DerivedVars->FinalPW, DerivedVars->ETE);
 
 
 	unsigned char channel; // the declaration of this variable is used in multiple loops below.
@@ -122,27 +122,11 @@ void calculateFuelAndIgnition(){
 	/* "Calculate" the individual fuel pulse widths */
 	for(channel = 0; channel < INJECTION_CHANNELS; channel++){ /// @todo TODO make injector channels come from config, not defines.
 		/* Add or subtract the per cylinder fuel trims */
-		unsigned short trimmedPW;
-		trimmedPW = ((unsigned long)DerivedVars->FinalPW * TablesB.SmallTablesB.perCylinderFuelTrims[channel]) / oneHundredPercentPCFT;
+		unsigned short channelPW;
+		channelPW = safeScale(DerivedVars->FinalPW, TablesB.SmallTablesB.perCylinderFuelTrims[channel]);
 
-		/* Check for overflow */
-		unsigned short absoluteLastPW;
-		/* If the trim is greater than 100% then the trimmedPW MUST be larger */
-		/* If it's less than 100% it can't have overflowed */		 /* If it's not larger, it overflowed */
-		if((TablesB.SmallTablesB.perCylinderFuelTrims[channel] > oneHundredPercentPCFT) && (DerivedVars->FinalPW > trimmedPW)){
-			absoluteLastPW = SHORTMAX; /* So max it out! */
-		}else{
-			/* Add on the IDT and check again */
-			unsigned short withIDTPW = trimmedPW + DerivedVars->IDT;
-			if(trimmedPW > withIDTPW){ /* If it's not larger, it overflowed */
-				absoluteLastPW = SHORTMAX; /* So max it out! */
-			}else{
-				absoluteLastPW = withIDTPW;
-			}
-		}
-
-		/* Load the final value with trim and opening time checked for overflow into the array */
-		injectorMainPulseWidthsMath[channel] = absoluteLastPW;
+		/* Add on the IDT to get the final value and put it into the array */
+		injectorMainPulseWidthsMath[channel] = safeAdd(channelPW, DerivedVars->IDT);
 	}
 
 	/* Reference PW for comparisons etc */
