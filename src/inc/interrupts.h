@@ -66,12 +66,17 @@ extern void _start(void);
 
 /* Interrupt sub-routine prototypes - assigned to text1 region in linear space */
 void UISR(void) INT TEXT1;				/* Unimplemented Interrupt Sub Routine */
-
+/** @brief Injector1ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
 void Injector1ISR(void) INT TEXT1;		/* OC timer for injector channel 1 */
+/** @brief Injector2ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
 void Injector2ISR(void) INT TEXT1;		/* OC timer for injector channel 2 */
+/** @brief Injector3ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
 void Injector3ISR(void) INT TEXT1;		/* OC timer for injector channel 3 */
+/** @brief Injector4ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
 void Injector4ISR(void) INT TEXT1;		/* OC timer for injector channel 4 */
+/** @brief Injector5ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
 void Injector5ISR(void) INT TEXT1;		/* OC timer for injector channel 5 */
+/** @brief Injector6ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
 void Injector6ISR(void) INT TEXT1;		/* OC timer for injector channel 6 */
 
 void PrimaryRPMISR(void) INT TEXT1;		/* IC timer for primary engine position and RPM */
