@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -130,10 +130,7 @@ void calculateFuelAndIgnition(){
 	}
 
 	/* Reference PW for comparisons etc */
-	unsigned short refPW = DerivedVars->FinalPW + DerivedVars->IDT;
-	if(DerivedVars->FinalPW > refPW){ /* If it's not larger, it overflowed */
-		refPW = SHORTMAX; /* So max it out! */
-	}
+	unsigned short refPW = safeAdd(DerivedVars->FinalPW, DerivedVars->IDT);
 	DerivedVars->RefPW = refPW;
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
