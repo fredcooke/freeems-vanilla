@@ -117,29 +117,6 @@
  * - @subpage changeLogs_0_1_X
  */
 
-/* cache
- * @b Changes:
- * - Fred 25/12/08 15:30 GMT:
- *     - Modified writeBlock to burn small blocks via buffer
- *     - Added validation to flash burn direct function
- *     - Added upper range to small table validation check
- *     - Added test packets for small chunk write/burn
- *     - Wrapped braces around protocol case blocks
- * - Fred 26/12/08 12:26 GMT:
- *     - Added addresses for all the small table stuff
- *     - Fixed buffer address creation code by casting
- *     - Finished validation call blocks off
- *     - Added return to block lookup for when ID not found
- *     - Added more test packets for small chunk write/burn
- * - Fred 26/12/08 21:41 GMT:
- *     - Removed stale comments from flashWrite.c
- *     - Filled out file names in comments and header defs for decode
- *     - Updated some TODOs entries etc in preparation for the weekends work
- * - Fred 31/12/08 09:45 GMT:
- *     - Doxygenated the source code
- *     - more even more lots more etc
- */
-
 /** @page changeLogs_0_0_X Change Logs - 0.0.X Versions
  *
  * - @subpage changeLog_0_0_1
