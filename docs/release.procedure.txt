@@ -11,7 +11,7 @@ update all documentation
 check in all changes
 tag it
 archive it
-upload all zips to sourceforge (sftp fredcooke@frs.sourceforge.net, password, cd uploads, put *.bz2)
+upload all zips to sourceforge or somewhere else?(sftp fredcooke@frs.sourceforge.net, password, cd uploads, put *.bz2)
 check "keep my format" buttons in sourceforge
 update goals,firmware,hardware threads as appropriate linking sourceforge,video,pics
 increment version number in makefile and globals for next iteration + commit and push
