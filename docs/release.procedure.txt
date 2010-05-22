@@ -4,9 +4,10 @@ update the interface and version fields length in header too if changed
 update serial documentation
 update interface data map
 do make;make clean
-update changelog and bugs and tasks
+update changelog and bugs and tasks - check mantis and git log since last release
 generate windows make file if possible
-generate doxygen
+generate doxygen - setup something of a structure on docs.freeems.org for this
+update all documentation
 check in all changes
 tag it
 archive it
