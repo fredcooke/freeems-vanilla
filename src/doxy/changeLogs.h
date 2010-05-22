@@ -3,148 +3,43 @@
  * This page contains a log of all changes made to the FreeEMS firmware since
  * the beginning of the project, ever such a long time ago. The changes that
  * occurred between the last version and this version are listed below. For
- * old change logs see the @ref oldChangeLogs page.
+ * old change logs see the @subpage oldChangeLogs page.
  *
  * Please place your entries at the bottom of the list in the same format as the rest.
  *
- * @version 0.0.19 Doxygenated
+ * @version 0.1.0 ??????
  *
- * @date 26/1/09 00:02 GMT
+ * @date 23/05/10 ??? 23:58 GMT
  *
  * @b Changes:
- * - Fred 25/12/08 15:30 GMT:
- *     - Modified writeBlock to burn small blocks via buffer
- *     - Added validation to flash burn direct function
- *     - Added upper range to small table validation check
- *     - Added test packets for small chunk write/burn
- *     - Wrapped braces around protocol case blocks
- * - Fred 26/12/08 12:26 GMT:
- *     - Added addresses for all the small table stuff
- *     - Fixed buffer address creation code by casting
- *     - Finished validation call blocks off
- *     - Added return to block lookup for when ID not found
- *     - Added more test packets for small chunk write/burn
- * - Fred 26/12/08 21:41 GMT:
- *     - Removed stale comments from flashWrite.c
- *     - Filled out file names in comments and header defs for decode
- *     - Updated some TODOs entries etc in preparation for the weekends work
- * - Fred 31/12/08 09:45 GMT:
- *     - Doxygenated the source code
- *     - Modularised the initial contents of the tunable config structs for reuse
- *     - Separated the content from the two copies of the tunable config structs in a shared header
- *     - Added extra header checks for EXTERN pre definition
- *     - Moved zassembly to assembly
- *     - Removed the silly z prefix from the build dir names in the Makefiles
- *     - Added .gitignore for generated .s, .o, .pp.c and output files and doxygen output files
- *     - Moved this change logs to this doxygen html format for easier releases
- *     - Added coding style document
- *     - Added doc page for files not parsed by doxy
- * - Fred 1/1/09 00:36 GMT:
- *     - Named the next release :-)
- *     - Started converting TODOs into doxy format
- *     - Added mainPage doxy page for an intro page when entering the doxy docs
- * - Fred 1/1/09 13:24 GMT:
- *     - Rearranged headers and comments for FixedConfigs.h and TunableConfigs.h
- *     - Fixed up random comments in various headers
- *     - Changed the way the headers are used for core global stuff
- * - Fred 1/1/09 15:35 GMT:
- *     - Removed dangerous and unrequired EXTERN stuff from flash header
- *     - Added note on include order to code style doc
- *     - Fixed all links to gnu.org/licenses to not be wrapped in < >
- *     - Changed some TODOs to appear in todo list
- *     - Tidied line spacing of headers
- *     - Added checks for extern predef to headers
- *     - Removed non functional header checks from asm header
- *     - Updated various copyright statements to include 2009
- *     - Removed all empty headers - not needed now, shouldn't be in there!
- * - Fred 1/1/09 18:34 GMT:
- *     - Added the three linker scripts to be processed by doxygen
- *     - Formatted global constants files a bit as a reason to push a commit
- * - Fred 4/1/09 14:18 GMT:
- *     - Added more coding style information to the docs
- *     - Merged in Seans branch via git cherry-pick
- *     - Doxygenated the template files
- *     - Added tune switching documentation in its own file
- *     - Added grouping file to make doc navigation easier
- *     - Tweaked Doxyfile a bit to format things more nicely
- *     - Removed the gfdl.txt file as we won't be using that license
- *     - Split the GPL and Doxygen comments in the templates
- *     - Added ref to github and sanitised my diyefi admin email in the GPL comments
- *     - Finalised the Doxygen docs for now
- * - Fred 5/1/09 18:08 GMT:
- *     - Added contributors page to docs - incomplete
- *     - Added headers group to modules/groups and populated it
- *     - Added rest of doxy page files to doxy group
- *     - Added EXTERN predef check to more headers
- *     - Formatted some old headers a bit with blank lines
- *     - Removed another empty header file
- *     - Documented many special header files
- * - Fred 6/1/09 18:58 GMT:
- *     - Added brief descriptions to .c files
- *     - Added ISR doc group
- *     - Added comms doc group
- *     - Added and reformatted file documentation for doxygen in about half of all .c files
- * - Fred 9/1/09 21:40 GMT:
- *     - Heavily refactored the Makefile to cleanly build many variants with different wheel decoders
- *     - Added documenation to the Makefile to describe how it works
- * - Fred 10/1/09 22:39 GMT:
- *     - Added .PHONY declarations to the Makefile
- * - Fred 11/1/09 21:42 GMT:
- *     - Added 4 new decoders in skeleton form for others to work from.
- *     - Added a new group for decoders in doxygen groups
- *     - Added preprocessing, compiling, assembling, linking and copying to s19s to the make file
- *     - Added file name conventions to the code style doc
- * - Fred 15/1/09 22:26 GMT:
- *     - Added size reporting to linux makefile
- *     - Refactored init functions for paged ram copies and addresses
- *     - Split up fixed conf 1 into 5 addressable chunks
- *     - Added core vars test generator file
- *     - Added note about s19 files
- *     - More doxygen docs and titles in gpl headers
- * - Fred 25/1/09 23:55 GMT:
- *     - More doxygen docs
- *     - Sean started work on the LT1 decoder
- *     - Split up fixed conf 2 into a bunch of parts
- *     - Added all memory to the block lookup dictionary
- *     - Updated doxyfile to 1.5.8 spec
- *     - Removed redundant flash files and code and documented it better
- *     - Implemented most features of the new makefile
- *     - Added hack to work around windows mkdir commands differences
- *
- * @anchor oldChangeLogs
- * @b Old @b Changes:
- * - @subpage changeLogs_0_0_X
- * - @subpage changeLogs_0_1_X
- */
-
-/** @page changeLogs_0_0_X Change Logs - 0.0.X Versions
- *
- * - @subpage changeLog_0_0_1
- * - @subpage changeLog_0_0_2
- * - @subpage changeLog_0_0_3
- * - @subpage changeLog_0_0_4
- * - @subpage changeLog_0_0_5
- * - @subpage changeLog_0_0_6
- * - @subpage changeLog_0_0_7
- * - @subpage changeLog_0_0_8
- * - @subpage changeLog_0_0_9
- * - @subpage changeLog_0_0_10
- * - @subpage changeLog_0_0_11
- * - @subpage changeLog_0_0_12
- * - @subpage changeLog_0_0_13
- * - @subpage changeLog_0_0_14
- * - @subpage changeLog_0_0_15
- * - @subpage changeLog_0_0_16
- * - @subpage changeLog_0_0_17
- * - @subpage changeLog_0_0_18
- *
- */
-
-/** @page changeLogs_0_1_X Change Logs - 0.1.X Versions
- *
- * It is wishful thinking putting this here at this stage, but never the less, here it is :-)
- *
- * Hopefully we can put it to good use fairly soon!
+ * - Added awk script to auto generate JSON lists from C source files
+ * - Added serial device as parameter to dump script
+ * - Added a simple C reference implementation of the serial comms spec for parsing binary streams
+ * - Added a perl script to auto update copyright years based on git list
+ * - Added json error code:error name pair list file
+ * - Added json location code:location name pair list file
+ * - Changed format of all GPL header comments
+ * - Modularised some of the table data out to a data directory
+ * - Added flat target lambda table data
+ * - Added Bosch thermistor curve data
+ * - Added flat 80% VE table data
+ * - Improved and added various doxygen docs
+ * - Fixed spelling mistakes in comments here and there
+ * - Added simple decoder for use with the Volvo
+ * - Added checksum targets to makefile
+ * - Added phonys to makefile
+ * - Various other makefile changes and improvments
+ * - Added functional 36-1 decoder
+ * - Improved default table data for small tables
+ * - Numerous comms changes such as removal of proto/impl bit etc etc
+ * - Serial missing start and end byte hack fixes
+ * - Added ETE correction maths
+ * - Added glossary page to docs
+ * - Refactored main Speed Density math to do full overflow checking
+ * - Fixed init code order bug resulting in small tables not being inited, large tables containing garbage and more
+ * - Reworked the time stamp math in all decoders to make more sense
+ * - Added utils for single instance of overflow safe add/trim/scale
+ * - Improved efficiency of code size and speed in utils
  */
 
 /** @page changeLog_0_0_1 FreeEMS 0.0.1
@@ -748,6 +643,152 @@
  *     - Added more comments etc
  *     - Moved old bugs to mantis and removed bugs.txt
  *     - Cleaned out HEAPS of old cruft, tidied up and commented stuff
+ */
+
+/** @page changeLog_0_0_19 FreeEMS 0.0.19 Doxygenated
+ *
+ * @version 0.0.19 Doxygenated
+ *
+ * @date 26/1/09 00:02 GMT
+ *
+ * @b Changes:
+ * - Fred 25/12/08 15:30 GMT:
+ *     - Modified writeBlock to burn small blocks via buffer
+ *     - Added validation to flash burn direct function
+ *     - Added upper range to small table validation check
+ *     - Added test packets for small chunk write/burn
+ *     - Wrapped braces around protocol case blocks
+ * - Fred 26/12/08 12:26 GMT:
+ *     - Added addresses for all the small table stuff
+ *     - Fixed buffer address creation code by casting
+ *     - Finished validation call blocks off
+ *     - Added return to block lookup for when ID not found
+ *     - Added more test packets for small chunk write/burn
+ * - Fred 26/12/08 21:41 GMT:
+ *     - Removed stale comments from flashWrite.c
+ *     - Filled out file names in comments and header defs for decode
+ *     - Updated some TODOs entries etc in preparation for the weekends work
+ * - Fred 31/12/08 09:45 GMT:
+ *     - Doxygenated the source code
+ *     - Modularised the initial contents of the tunable config structs for reuse
+ *     - Separated the content from the two copies of the tunable config structs in a shared header
+ *     - Added extra header checks for EXTERN pre definition
+ *     - Moved zassembly to assembly
+ *     - Removed the silly z prefix from the build dir names in the Makefiles
+ *     - Added .gitignore for generated .s, .o, .pp.c and output files and doxygen output files
+ *     - Moved this change logs to this doxygen html format for easier releases
+ *     - Added coding style document
+ *     - Added doc page for files not parsed by doxy
+ * - Fred 1/1/09 00:36 GMT:
+ *     - Named the next release :-)
+ *     - Started converting TODOs into doxy format
+ *     - Added mainPage doxy page for an intro page when entering the doxy docs
+ * - Fred 1/1/09 13:24 GMT:
+ *     - Rearranged headers and comments for FixedConfigs.h and TunableConfigs.h
+ *     - Fixed up random comments in various headers
+ *     - Changed the way the headers are used for core global stuff
+ * - Fred 1/1/09 15:35 GMT:
+ *     - Removed dangerous and unrequired EXTERN stuff from flash header
+ *     - Added note on include order to code style doc
+ *     - Fixed all links to gnu.org/licenses to not be wrapped in < >
+ *     - Changed some TODOs to appear in todo list
+ *     - Tidied line spacing of headers
+ *     - Added checks for extern predef to headers
+ *     - Removed non functional header checks from asm header
+ *     - Updated various copyright statements to include 2009
+ *     - Removed all empty headers - not needed now, shouldn't be in there!
+ * - Fred 1/1/09 18:34 GMT:
+ *     - Added the three linker scripts to be processed by doxygen
+ *     - Formatted global constants files a bit as a reason to push a commit
+ * - Fred 4/1/09 14:18 GMT:
+ *     - Added more coding style information to the docs
+ *     - Merged in Seans branch via git cherry-pick
+ *     - Doxygenated the template files
+ *     - Added tune switching documentation in its own file
+ *     - Added grouping file to make doc navigation easier
+ *     - Tweaked Doxyfile a bit to format things more nicely
+ *     - Removed the gfdl.txt file as we won't be using that license
+ *     - Split the GPL and Doxygen comments in the templates
+ *     - Added ref to github and sanitised my diyefi admin email in the GPL comments
+ *     - Finalised the Doxygen docs for now
+ * - Fred 5/1/09 18:08 GMT:
+ *     - Added contributors page to docs - incomplete
+ *     - Added headers group to modules/groups and populated it
+ *     - Added rest of doxy page files to doxy group
+ *     - Added EXTERN predef check to more headers
+ *     - Formatted some old headers a bit with blank lines
+ *     - Removed another empty header file
+ *     - Documented many special header files
+ * - Fred 6/1/09 18:58 GMT:
+ *     - Added brief descriptions to .c files
+ *     - Added ISR doc group
+ *     - Added comms doc group
+ *     - Added and reformatted file documentation for doxygen in about half of all .c files
+ * - Fred 9/1/09 21:40 GMT:
+ *     - Heavily refactored the Makefile to cleanly build many variants with different wheel decoders
+ *     - Added documenation to the Makefile to describe how it works
+ * - Fred 10/1/09 22:39 GMT:
+ *     - Added .PHONY declarations to the Makefile
+ * - Fred 11/1/09 21:42 GMT:
+ *     - Added 4 new decoders in skeleton form for others to work from.
+ *     - Added a new group for decoders in doxygen groups
+ *     - Added preprocessing, compiling, assembling, linking and copying to s19s to the make file
+ *     - Added file name conventions to the code style doc
+ * - Fred 15/1/09 22:26 GMT:
+ *     - Added size reporting to linux makefile
+ *     - Refactored init functions for paged ram copies and addresses
+ *     - Split up fixed conf 1 into 5 addressable chunks
+ *     - Added core vars test generator file
+ *     - Added note about s19 files
+ *     - More doxygen docs and titles in gpl headers
+ * - Fred 25/1/09 23:55 GMT:
+ *     - More doxygen docs
+ *     - Sean started work on the LT1 decoder
+ *     - Split up fixed conf 2 into a bunch of parts
+ *     - Added all memory to the block lookup dictionary
+ *     - Updated doxyfile to 1.5.8 spec
+ *     - Removed redundant flash files and code and documented it better
+ *     - Implemented most features of the new makefile
+ *     - Added hack to work around windows mkdir commands differences
+ */
+
+/** @page oldChangeLogs Old Change Logs
+ *
+ * This page contains links to all the old change logs from every version.
+ *
+ * @b Old @b Changes:
+ * - @subpage changeLogs_0_0_X
+ * - @subpage changeLogs_0_1_X
+ */
+
+/** @page changeLogs_0_0_X Change Logs - 0.0.X Versions
+ *
+ * - @subpage changeLog_0_0_1
+ * - @subpage changeLog_0_0_2
+ * - @subpage changeLog_0_0_3
+ * - @subpage changeLog_0_0_4
+ * - @subpage changeLog_0_0_5
+ * - @subpage changeLog_0_0_6
+ * - @subpage changeLog_0_0_7
+ * - @subpage changeLog_0_0_8
+ * - @subpage changeLog_0_0_9
+ * - @subpage changeLog_0_0_10
+ * - @subpage changeLog_0_0_11
+ * - @subpage changeLog_0_0_12
+ * - @subpage changeLog_0_0_13
+ * - @subpage changeLog_0_0_14
+ * - @subpage changeLog_0_0_15
+ * - @subpage changeLog_0_0_16
+ * - @subpage changeLog_0_0_17
+ * - @subpage changeLog_0_0_18
+ * - @subpage changeLog_0_0_19
+ */
+
+/** @page changeLogs_0_1_X Change Logs - 0.1.X Versions
+ *
+ * It is wishful thinking putting this here at this stage, but never the less, here it is :-)
+ *
+ * Hopefully we can put it to good use fairly soon!
  */
 
 /**	@file changeLogs.h
