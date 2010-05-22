@@ -90,6 +90,8 @@ const unsigned char firmwareVersion[40] = {"FreeEMS Vanilla 0.1.0 pre-release al
  * hash define molarMassOfAirDivisor 100
  * hash define perCylinderVolumeDivisor 32768
  *
+ * TODO hash define the fuel constant for different clock tick setups (msToTicks will vary)
+ *
  * master = (msToTicks * molarMassOfAir * universalGasConstantDivisor * stoichiometricAFRDivisor * injectorFlowTotalDivisor) / (universalGasConstant * molarMassOfAirDivisor * perCylinderVolumeDivisor);
  * master = (1250	   * 2897			* 4096						  * 1024				     * 1024000				   ) / (34056				 * 100					 * 32768				   );
  * http://www.google.com/search?hl=en&safe=off&q=((1250+*+2897+*+4096+*+1024+*+1024000)+%2F+(34056+*++100+*+32768)&btnG=Search
