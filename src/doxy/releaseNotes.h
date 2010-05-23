@@ -34,13 +34,21 @@
  * the code : http://github.com/fredcooke/freeems-vanilla/commit/0cc18370652f096cbcca2226e779a0370a77b113
  *
  * @b New @b Features:
- * - ?
+ * - Simple decoder
+ * - 36-1 decoder
+ * - Functional ETE
+ * - Functional IDT
+ * - Script to generate JSON lists from C
+ * - Dump script serial device parameter
+ * - Reference implementation of packet decoding in C
+ * - Modular data structure allows easy custom builds
  *
  * @b Differences:
- * - ?
+ * - Comms implementation and standards
  *
  * @b Known @b Issues:
- * - ?
+ * - Transition from partial duty to 100% duty is not smooth
+ * - Start and end of each packet could have superfluous bytes
  */
 
 /** @page releaseNotes_0_0_19 FreeEMS 0.0.19 Doxygenated
