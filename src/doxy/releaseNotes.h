@@ -1,7 +1,7 @@
 /** @page releaseNotes Release Notes
  *
  * This page contains a list of all notable properties of this release. For
- * old change logs click @ref oldReleaseNotes "here".
+ * old change logs click @subpage oldReleaseNotes "here".
  *
  *
  * @b General @b Notes
