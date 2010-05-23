@@ -5,11 +5,23 @@
  *
  * @b General @b Notes
  *
- * A version of the code very similar to 0.1.0 was the first version of FreeEMS to run an engine!
+ * A version of the code very similar to 0.1.0 was the first version of FreeEMS to run an engine! That
+ * is the reason for moving the versioning from the 0.0.X series to the 0.1.X series. After a few minor
+ * false starts, FreeEMS first ran in Baltimore on Friday October 23rd, 2009 at around 2:15am GMT. The
+ * first drive was in Pompano Beach on Sunday November 1st, 2009 at around 8:45pm GMT. The first tuning
+ * occurred in Naples, Florida at around 1:00am local time on Thursday November 5th, 2009 using freshly
+ * written code git pulled from Aaron Barnes in Wellingon NZ in real time. The first significant drive
+ * was from there up to Tampa covering ~150 miles and arriving at ~3am. Seat of pants wideband-free
+ * tuning continued in Tampa over the next few days after which time the car ran exclusively (and most
+ * excellently) on FreeEMS. I drove it from Tampa to Daytona Beach and then up to Atlanta Georgia with
+ * Rob Ebersol fine tuning as we went. The first FreeEMS was finally uninstalled on the afternoon of
+ * Monday November 9th, 2009 in Atlana after covering around 900 miles or 1500 km. During that time eight
+ * people, including myself, rode in and winessed the first FreeEMS powered vehicle.
  *
- * The version that I used on my Volvo 740GL wagon sporting a B230F engine was a little less functional
- * and more hacked together. What you see here represents the same code tidied up and with some minor
- * bug fixes and documentation changes.
+ * The version that I used on my B230F powered Volvo 740GL wagon was a little less functional and more
+ * hacked together. What you see here represents the same code tidied up and with some minor bug fixes
+ * and documentation changes. Also note that the car used fuel-only control, not full control. When an
+ * engine is run with fuel and ignition control, I will release 0.2.0 to mark the occasion.
  *
  * The version of the tuner used to talk to and tune the very first FreeEMS prototype can be found with
  * the following git commit hash 5188317b6e7418238686602d3b787250398f1ad4 or more conveniently at the
