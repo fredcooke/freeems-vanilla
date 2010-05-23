@@ -237,12 +237,12 @@ void sampleLoopADC(ADCArray *Arrays){
 
 		/* Do the second block */
 		DVUSP(addr + 16 + loop) = DVUSP(ATD1_BASE + loop);
-		/// @todo TODO this needs to be split into two loops one for the small block and one for hte big one for the future chips.
+		/// @todo TODO this needs to be split into two loops one for the small block and one for the big one for the future chips.
 	}
 }
 
 
-/** @brief Read ADCs with memcpy()
+/* @brief Read ADCs with memcpy()
  *
  * Read ADCs into the correct bank using two fixed calls to memcpy()
  *
@@ -252,11 +252,11 @@ void sampleLoopADC(ADCArray *Arrays){
  *
  * @warning this will corrupt your comms if you use it... don't use it
  * @bug this will corrupt your comms if you use it... don't use it
- */
+ *
 void sampleBlockADC(ADCArray *Arrays){
 	memcpy(Arrays, (void*)ATD0_BASE, 16);
 	memcpy(Arrays+16, (void*)ATD1_BASE, 16);
-}
+}*/
 
 
 /** @brief Sleep for X milli seconds
