@@ -136,7 +136,7 @@
  * Initial version
  */
 
-/* @page oldReleaseNotes Old Release Notes
+/** @page oldReleaseNotes Old Release Notes
  *
  * @b Old @b Notes:
  * - @subpage releaseNotes_0_0_X
