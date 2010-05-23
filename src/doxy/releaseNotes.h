@@ -1,8 +1,7 @@
 /** @page releaseNotes Release Notes
  *
- * This page contains a list of all notable properties of this release. For
- * old change logs click @subpage oldReleaseNotes "here".
- *
+ * This page contains a list of all notable properties of this release. To see
+ * the release notes from older releases see the @subpage oldReleaseNotes page.
  *
  * @b General @b Notes
  *
@@ -17,7 +16,7 @@
  * following link http://github.com/fredcooke/freeems-tuner/commit/5188317b6e7418238686602d3b787250398f1ad4
  *
  * To get the exact code used on the volvo, take any hash between 97f5ad1f0e6b2ef30bd987c3becc764a5d658bf5
- * and 0cc18370652f096cbcca2226e779a0370a77b113, go to line 110 or 110 and change TRUE to FALSE and build.
+ * and 0cc18370652f096cbcca2226e779a0370a77b113, go to line 110 or 111 and change TRUE to FALSE and build.
  * What you have if you do the above is exactly what I used on my Volvo sans the tune itself. If you want
  * the tune too, the S19 is included in the firmware directory. Here is a link to an appropriate version
  * of the code : http://github.com/fredcooke/freeems-vanilla/commit/0cc18370652f096cbcca2226e779a0370a77b113
@@ -137,6 +136,8 @@
  */
 
 /** @page oldReleaseNotes Old Release Notes
+ *
+ * This page contains links to all the old release notes from every version.
  *
  * @b Old @b Notes:
  * - @subpage releaseNotes_0_0_X

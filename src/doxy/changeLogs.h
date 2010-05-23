@@ -1,9 +1,8 @@
 /** @page changeLogs Change Logs
  *
  * This page contains a log of all changes made to the FreeEMS firmware since
- * the beginning of the project, ever such a long time ago. The changes that
- * occurred between the last version and this version are listed below. For
- * old change logs see the @subpage oldChangeLogs page.
+ * the last release. For a full change history from the beginning ever such a
+ * long time ago see the @subpage oldChangeLogs page.
  *
  * Please place your entries at the bottom of the list in the same format as the rest.
  *
