@@ -714,7 +714,7 @@ tagname:
 	vim $(TAGNAME)
 
 tagrelease: tagname tagmessage
-	git tag -F $(RELTAG) `cat $(TGANAME)` HEAD
+	git tag -F $(RELTAG) `cat $(TAGNAME)` HEAD
 
 .PHONY: cleandoxy
 cleandoxy:
