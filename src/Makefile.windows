@@ -63,7 +63,7 @@
 
 
 # Constants
-VERSION = 0.1.0-SNAPSHOT
+VERSION = 0.1.0
 OUTPREFIX = freeems
 
 # Directories here
@@ -540,8 +540,15 @@ $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
 #                     Release Procedure Target Definitions                     #
 
 
+	
 testgit:
-	#check git status for changes, fail build if not fully commited
+	git fetch
+	@echo "Is everything checked in?"
+	test `git status -s | wc -l` -eq 0
+	@echo "Are we behind?"
+	test `git rev-list \`git show-ref --hash refs/heads/master\`..\`git show-ref --hash refs/remotes/origin/master\` | wc -l` -eq 0
+	@echo "Are we ahead?"
+	test `git rev-list \`git show-ref --hash refs/remotes/origin/master\`..\`git show-ref --hash refs/heads/master\` | wc -l` -eq 0
 
 
 ALLMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(ALLS19S))

@@ -6,9 +6,9 @@
  *
  * Please place your entries at the bottom of the list in the same format as the rest.
  *
- * @version 0.1.0 ??????
+ * @version 0.1.0 UltraJizz
  *
- * @date 23/05/10 ??? 23:58 GMT
+ * @date 24/05/10 06:45 GMT
  *
  * @b Changes:
  * - Added awk script to auto generate JSON lists from C source files
