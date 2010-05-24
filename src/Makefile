@@ -430,7 +430,8 @@ alldebug: maps rees elfdmps objdmps
 # Perform a release
 release: relprep relbuild relpack relperf
 relprep: testgit clean cleanrelease cleandoxy
-relbuild: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
+relbuild: md5sums sha1sums s19zips
+#relbuild: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
 relpack: zipdocs zipmain zipsite zipsrc
 relperf: clean relcommit tagmessage tagrelease
 
