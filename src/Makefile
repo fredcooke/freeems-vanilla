@@ -70,10 +70,12 @@
 
 # Constants
 VERSION = 0.1.0
+PREVIOUSVERSION = 0.0.19
 OUTPREFIX = freeems
 
 # Directories here
 RELEASEDIR = ../firmware
+DISTRIBUTIONDIR = ../../$(OUTPREFIX)-$(VERSION)
 DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
 INCDIR = inc
@@ -212,7 +214,8 @@ ALLREAD = $(ALLREADC) $(ALLREADASM)
 ALLS19S = $(ALLS19SC) $(ALLS19SASM)
 ALLMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(ALLS19S))
 ALLSHA1S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.sha1,$(ALLS19S))
-ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.zip,$(ALLS19S))
+ALLS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(ALLS19S))
+ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(ALLS19S))
 
 # Convert to output files for GC variants
 GCDELFSC = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES))
@@ -221,6 +224,10 @@ GCDS19SC = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSE
 GCDS19SASM = #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
 GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
+GCDMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(GCDS19S))
+GCDSHA1S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.sha1,$(GCDS19S))
+GCDS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(GCDS19S))
+GCDS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(GCDS19S))
 
 
 
@@ -428,11 +435,11 @@ alldebug: maps rees elfdmps objdmps
 # Load the s19 of your choice
 #install: clean fast loader
 # Perform a release
-release: relprep relbuild relpack relperf
+release: relprep relbuild relpack1 relpack2 relperf
 relprep: testgit clean cleanrelease cleandoxy
-relbuild: md5sums sha1sums s19zips
-#relbuild: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
-relpack: zipdocs zipmain zipsite zipsrc
+relbuild: s19rel s19relgc gendoxy
+relpack1: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
+relpack2: zipdocs zipmain zipsite zipsrc
 relperf: clean relcommit tagmessage tagrelease
 
 
@@ -675,9 +682,9 @@ md5sumsmsg:
 	#                            Generating MD5 Sums...                            #
 	################################################################################
 
-md5sums: s19 md5sumsmsg $(ALLMD5S)
+md5sums: s19 distributiondir md5sumsmsg $(ALLMD5S)
 
-$(ALLMD5S): $(RELEASEDIR)/%.s19.md5: $(S19DIR)/%.s19
+$(ALLMD5S): $(DISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19
 	md5sum $< > $@
 
 
@@ -686,9 +693,33 @@ sha1sumsmsg:
 	#                           Generating SHA1 Sums...                            #
 	################################################################################
 
-sha1sums: s19 sha1sumsmsg $(ALLSHA1S)
+sha1sums: s19 distributiondir sha1sumsmsg $(ALLSHA1S)
 
-$(ALLSHA1S): $(RELEASEDIR)/%.s19.sha1: $(S19DIR)/%.s19
+$(ALLSHA1S): $(DISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
+	sha1sum $< > $@
+
+
+GCDMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(GCDS19S))
+
+md5sumsmsggc:
+	################################################################################
+	#                            Generating MD5 Sums...                            #
+	################################################################################
+
+md5sumsgc: gcs19 distributiondir md5sumsmsggc $(GCDMD5S)
+
+$(GCDMD5S): $(DISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19
+	md5sum $< > $@
+
+
+sha1sumsmsggc:
+	################################################################################
+	#                           Generating SHA1 Sums...                            #
+	################################################################################
+
+sha1sumsgc: gcs19 distributiondir sha1sumsmsggc $(GCDSHA1S)
+
+$(GCDSHA1S): $(DISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
 	sha1sum $< > $@
 
 
@@ -697,14 +728,47 @@ s19zipsmsg:
 	#                                Zipping S19s...                               #
 	################################################################################
 
-s19zips: s19 s19zipsmsg $(ALLS19ZIPS)
+s19zips: s19 distributiondir s19zipsmsg $(ALLS19ZIPS)
 
-$(ALLS19ZIPS): $(RELEASEDIR)/%.s19.zip: $(S19DIR)/%.s19
+$(ALLS19ZIPS): $(DISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
 	zip $@ $<
 
 
+s19relmsg:
+	################################################################################
+	#                                Copying S19s...                               #
+	################################################################################
+
+s19rel: s19 s19relmsg $(ALLS19RELS)
+
+$(ALLS19RELS): $(RELEASEDIR)/%.s19: $(S19DIR)/%.s19
+	$(CP) $< $@
+
+
+s19zipsgcmsg:
+	################################################################################
+	#                              Zipping GC S19s...                              #
+	################################################################################
+
+s19zipsgc: gcs19 distributiondir s19zipsmsg $(GCDS19ZIPS)
+
+$(GCDS19ZIPS): $(DISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
+	zip $@ $<
+
+
+s19relgcmsg:
+	################################################################################
+	#                              Copying GC S19s...                              #
+	################################################################################
+
+s19relgc: gcs19 s19relgcmsg $(GCDS19RELS)
+
+$(GCDS19RELS): $(RELEASEDIR)/%.s19: $(S19DIR)/%.s19
+	$(CP) $< $@
+
+
 relcommit:
-	git commit -m "Automatically committing release files for FreeEMS version $(VERSION)!" $(RELEASEDIR)/
+	git commit -m "Automatically committing release files for FreeEMS version $(VERSION)!" ..
 
 
 tagmessage:
@@ -716,28 +780,20 @@ tagname:
 tagrelease: tagname tagmessage
 	git tag -F $(RELTAG) `cat $(TAGNAME)` HEAD
 
-.PHONY: cleandoxy
-cleandoxy:
-	#remove doxy dir
 
-.PHONY: zipmain
-zipmain:
+zipmain: distributiondir
 	#zip entire directory to parent
 
-.PHONY: zipdocs
-zipdocs:
+zipdocs: distributiondir
 	#zip docs to parent
 
-.PHONY: gendoxy
 gendoxy:
-	#doxygen -f Doxyfile ouput file option | grep Warning
+	cd ..;doxygen docs/Doxyfile | grep Warning > src/doxygen.output;cd -
 
-.PHONY: zipsite
-zipsite:
-	#zip doxygen to parent
+zipsite: distributiondir
+	cd ../docs/;zip -r $(DISTRIBUTIONDIR)/doxygen-html.zip doxygen-html/;cd -
 
-.PHONY: zipsource
-zipsrc:
+zipsrc: distributiondir
 	#zip just src to parent
 
 #EXCLUDES = --exclude=$${OLDPWD}/../.git --exclude=$${OLDPWD}/../docs --exclude=$${OLDPWD}/../src/$(OBJDIR) --exclude=$${OLDPWD}/../src/$(PPCDIR) --exclude=$${OLDPWD}/../src/$(OUTDIR) --exclude=$${OLDPWD}/../src/$(BUGDIR) --exclude=$${OLDPWD}/../src/$(S19DIR) --exclude=$${OLDPWD}/$(DOXYDOCDIR) --exclude=$${OLDPWD}/$(RELEASEDIR)
@@ -794,6 +850,13 @@ $(OBJDIR):
 	$(MKDIR) $(OBJDIR)$(PATHSEP)hack
 	rmdir $(OBJDIR)$(PATHSEP)hack
 
+distributiondir:
+	################################################################################
+	#                    Creating the distribution directory...                    #
+	################################################################################
+	$(MKDIR) $(DISTRIBUTIONDIR)$(PATHSEP)hack
+	rmdir $(DISTRIBUTIONDIR)$(PATHSEP)hack
+
 
 
 
@@ -841,11 +904,13 @@ cleanrelease:
 	################################################################################
 	#                         Removing all release files...                        #
 	################################################################################
-	$(RM) $(RELEASEDIR)/*.zip
-	$(RM) $(RELEASEDIR)/*.md5
-	$(RM) $(RELEASEDIR)/*.sha1
+	$(RM) $(RELEASEDIR)/*-$(PREVIOUSVERSION)*
 
-
+cleandoxy:
+	################################################################################
+	#                            Removing Doxygen HTML...                          #
+	################################################################################
+	$(RM) ../docs/doxygen-html/
 
 
 ################################################################################
@@ -866,6 +931,7 @@ cleanrelease:
 .PHONY: release relprep relperf relbuild relpack
 .PHONY: md5sums sha1sums s19zips sha1sumsgc s19zips s19zipsgc
 .PHONY: testgit relcommit tagname tagmessage tagrelease
+.PHONY: zipmain zipdocs zipsite zipsource
 
 # Messages
 .PHONY: mapsmsg reesmsg elfdmpsmsg objdmpmsg linkmsg gclinkmsg
@@ -873,4 +939,7 @@ cleanrelease:
 .PHONY: md5sumsmsg sha1sumsmsg s19zipsmsg
 
 # Clean targets
-.PHONY: clean cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleanrelease
+.PHONY: clean cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleanrelease cleandoxy
+
+# Lonely documentation target :-(
+.PHONY: gendoxy
