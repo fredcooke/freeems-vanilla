@@ -200,8 +200,8 @@ ALLDMPS = $(ALLDMPSC) $(ALLDMPSASM)
 ALLMAPS = $(ALLMAPSC) $(ALLMAPSASM)
 ALLREAD = $(ALLREADC) $(ALLREADASM)
 ALLS19S = $(ALLS19SC) $(ALLS19SASM)
-ALLMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(ALLS19S))
-ALLSHA1S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.sha1,$(ALLS19S))
+ALLMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(ALLS19S))
+ALLSHA1S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.sha1,$(ALLS19S))
 ALLS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(ALLS19S))
 ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(ALLS19S))
 
@@ -212,8 +212,8 @@ GCDS19SC = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSE
 GCDS19SASM = #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
 GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
-GCDMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(GCDS19S))
-GCDSHA1S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.sha1,$(GCDS19S))
+GCDMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(GCDS19S))
+GCDSHA1S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.sha1,$(GCDS19S))
 GCDS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(GCDS19S))
 GCDS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(GCDS19S))
 
@@ -559,7 +559,7 @@ testgit:
 	test `git rev-list \`git show-ref --hash refs/remotes/origin/master\`..\`git show-ref --hash refs/heads/master\` | wc -l` -eq 0
 
 
-ALLMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(ALLS19S))
+
 
 md5sumsmsg:
 
@@ -577,7 +577,7 @@ $(ALLSHA1S): $(DISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
 	sha1sum $< > $@
 
 
-GCDMD5S = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%.md5,$(GCDS19S))
+
 
 md5sumsmsggc:
 
