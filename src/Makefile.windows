@@ -629,6 +629,7 @@ $(GCDS19RELS): $(RELEASEDIR)/%.s19: $(S19DIR)/%.s19
 
 
 relcommit:
+	git add $(RELEASEDIR)
 	git commit -m "Automatically committing release files for FreeEMS version $(VERSION)!" ..
 
 
