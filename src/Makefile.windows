@@ -66,10 +66,11 @@
 VERSION = 0.1.0
 PREVIOUSVERSION = 0.0.19
 OUTPREFIX = freeems
+LABEL = $(OUTPREFIX)-$(VERSION)
 
 # Directories here
 RELEASEDIR = ../firmware
-DISTRIBUTIONDIR = ../../$(OUTPREFIX)-$(VERSION)
+DISTRIBUTIONDIR = ../../$(LABEL)
 DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
 INCDIR = inc
@@ -415,12 +416,12 @@ alldebug: maps rees elfdmps objdmps
 # Load the s19 of your choice
 #install: clean fast loader
 # Perform a release
-release: relprep relbuild relpack1 relpack2 relperf
+release: relprep relbuild relperf relpack1 relpack2
 relprep: testgit clean cleanrelease cleandoxy
 relbuild: s19rel s19relgc gendoxy
-relpack1: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
-relpack2: zipdocs zipmain zipsite zipsrc
 relperf: clean relcommit tagmessage tagrelease
+relpack1: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
+relpack2: zipsite zipdocs zipmain zipsite zipsrc
 
 
 
@@ -642,28 +643,20 @@ tagrelease: tagname tagmessage
 
 
 zipmain: distributiondir
-	#zip entire directory to parent
+	cd ../;git archive --format=zip --prefix=$(LABEL)/ HEAD > ../$(LABEL)/$(LABEL).zip;cd -
 
 zipdocs: distributiondir
-	#zip docs to parent
+	cd ../;git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ../$(LABEL)/$(LABEL)-docs.zip;cd -
 
 gendoxy:
 	cd ..;doxygen docs/Doxyfile | grep Warning > src/doxygen.output;cd -
 
-zipsite: distributiondir
+zipsite: distributiondir gendoxy
 	cd ../docs/;zip -r $(DISTRIBUTIONDIR)/doxygen-html.zip doxygen-html/;cd -
 
 zipsrc: distributiondir
-	#zip just src to parent
+	cd ../;git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ../$(LABEL)/$(LABEL)-src.zip;cd -
 
-#EXCLUDES = --exclude=$${OLDPWD}/../.git --exclude=$${OLDPWD}/../docs --exclude=$${OLDPWD}/../src/$(OBJDIR) --exclude=$${OLDPWD}/../src/$(PPCDIR) --exclude=$${OLDPWD}/../src/$(OUTDIR) --exclude=$${OLDPWD}/../src/$(BUGDIR) --exclude=$${OLDPWD}/../src/$(S19DIR) --exclude=$${OLDPWD}/$(DOXYDOCDIR) --exclude=$${OLDPWD}/$(RELEASEDIR)
-EXCLUDES = --exclude=${MAINDIR}/.git --exclude=${MAINDIR}/docs --exclude=${MAINDIR}/src/$(OBJDIR) --exclude=${MAINDIR}/src/$(PPCDIR) --exclude=${MAINDIR}/src/$(OUTDIR) --exclude=${MAINDIR}/src/$(BUGDIR) --exclude=${MAINDIR}/src/$(S19DIR) --exclude=${MAINDIR}/$(S19DIR) --exclude=${MAINDIR}/src/$(DOXYDOCDIR)
-
-#archive:
-#	cd ../../;tar --show-omitted-dirs ${EXCLUDES} -cjf freeems-${VERSION}-`date +%s`.tar.bz2 $${OLDPWD}/../;cd -
-
-archive:
-	tar -C ../../ ${EXCLUDES} -cjf ../../freeems-${VERSION}-`date +%s`.tar.bz2 ${MAINDIR}
 
 
 
