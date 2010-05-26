@@ -3,16 +3,15 @@ FreeEMS release procedure
 update the interface and version fields length in header too if changed
 update serial documentation
 update interface data map
-do make;make clean
+do make;make clean to check that it builds cleanly
 update changelog and bugs and tasks - check mantis and git log since last release
 generate windows make file if possible
 generate doxygen - setup something of a structure on docs.freeems.org for this
 update all documentation
-check in all changes
-tag it
-archive it
+git commit;git push
+cd src;make release
 upload all zips to sourceforge or somewhere else?(sftp fredcooke@frs.sourceforge.net, password, cd uploads, put *.bz2)
 check "keep my format" buttons in sourceforge
 update goals,firmware,hardware threads as appropriate linking sourceforge,video,pics
 increment version number in makefile and globals for next iteration + commit and push
-push changes up last including tag
+push changes up including tag
