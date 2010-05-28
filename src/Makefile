@@ -198,16 +198,16 @@ OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst %.s,$(OBJDI
 DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
 # Convert to output files
-ALLELFSC = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMCLASSES))
-ALLELFSASM = #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf,$(RPMHANDASMS))
-ALLDMPSC = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMCLASSES))
-ALLDMPSASM = #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.dmp,$(RPMHANDASMS))
-ALLMAPSC = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMCLASSES))
-ALLMAPSASM = #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.map,$(RPMHANDASMS))
-ALLREADC = $(patsubst %.c,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMCLASSES))
-ALLREADASM = #$(patsubst %.s,$(BUGDIR)/$(OUTPREFIX)-$(VERSION)-%.ree,$(RPMHANDASMS))
-ALLS19SC = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMCLASSES))
-ALLS19SASM = #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.s19,$(RPMHANDASMS))
+ALLELFSC = $(patsubst %.c,$(OUTDIR)/$(LABEL)-%.elf,$(RPMCLASSES))
+ALLELFSASM = #$(patsubst %.s,$(OUTDIR)/$(LABEL)-%.elf,$(RPMHANDASMS))
+ALLDMPSC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.dmp,$(RPMCLASSES))
+ALLDMPSASM = #$(patsubst %.s,$(BUGDIR)/$(LABEL)-%.dmp,$(RPMHANDASMS))
+ALLMAPSC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.map,$(RPMCLASSES))
+ALLMAPSASM = #$(patsubst %.s,$(BUGDIR)/$(LABEL)-%.map,$(RPMHANDASMS))
+ALLREADC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.ree,$(RPMCLASSES))
+ALLREADASM = #$(patsubst %.s,$(BUGDIR)/$(LABEL)-%.ree,$(RPMHANDASMS))
+ALLS19SC = $(patsubst %.c,$(S19DIR)/$(LABEL)-%.s19,$(RPMCLASSES))
+ALLS19SASM = #$(patsubst %.s,$(S19DIR)/$(LABEL)-%.s19,$(RPMHANDASMS))
 ALLELFS = $(ALLELFSC) $(ALLELFSASM)
 ALLDMPS = $(ALLDMPSC) $(ALLDMPSASM)
 ALLMAPS = $(ALLMAPSC) $(ALLMAPSASM)
@@ -219,10 +219,10 @@ ALLS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(ALLS19S))
 ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(ALLS19S))
 
 # Convert to output files for GC variants
-GCDELFSC = $(patsubst %.c,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMCLASSES))
-GCDELFSASM = #$(patsubst %.s,$(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf,$(RPMHANDASMS))
-GCDS19SC = $(patsubst %.c,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMCLASSES))
-GCDS19SASM = #$(patsubst %.s,$(S19DIR)/$(OUTPREFIX)-$(VERSION)-%.gc.s19,$(RPMHANDASMS))
+GCDELFSC = $(patsubst %.c,$(OUTDIR)/$(LABEL)-%.gc.elf,$(RPMCLASSES))
+GCDELFSASM = #$(patsubst %.s,$(OUTDIR)/$(LABEL)-%.gc.elf,$(RPMHANDASMS))
+GCDS19SC = $(patsubst %.c,$(S19DIR)/$(LABEL)-%.gc.s19,$(RPMCLASSES))
+GCDS19SASM = #$(patsubst %.s,$(S19DIR)/$(LABEL)-%.gc.s19,$(RPMHANDASMS))
 GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
 GCDMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(GCDS19S))
@@ -521,7 +521,7 @@ linkmsg: #...
 link: assemble $(OUTDIR) linkmsg $(ALLELFS)
 
 # link the object files into an elf executable
-$(ALLELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
+$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
@@ -536,7 +536,7 @@ gclinkmsg: #...
 gclink: assemble $(OUTDIR) linkmsg $(GCDELFS) #...
 
 # link the object files into an elf executable with gc...
-$(GCDELFS): $(OUTDIR)/$(OUTPREFIX)-$(VERSION)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS) #...
+$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS) #...
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
