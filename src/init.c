@@ -120,26 +120,26 @@ void initIO(){
 	/* Turn off and on and configure all the modules in an explicit way */
 	// TODO set up and turn off all modules (CAN,SCI,SPI,IIC,etc)
 
-	/* Turn off the digital input buffers on the ATD channels */
-	ATD0DIEN = ZEROS; /* You are out of your mind if you waste this on digital Inputs */
-	ATD1DIEN0 = ZEROS; /* You are out of your mind if you waste this on digital Inputs (NOT-bonded, can't use) */
-	ATD1DIEN1 = ZEROS; /* You are out of your mind if you waste this on digital Inputs */
-	/* TODO Second half of ATD1 - can we disable this somehow */
+	/* Digital input buffers on the ATD channels are off by default, leave them this way! */
+	//ATD0DIEN = ZEROS; /* You are out of your mind if you waste this on digital Inputs */
+	//ATD1DIEN0 = ZEROS; /* You are out of your mind if you waste this on digital Inputs (NOT-bonded, can't use) */
+	//ATD1DIEN1 = ZEROS; /* You are out of your mind if you waste this on digital Inputs */
 
 	/* And configure them all for analog input */
-	ATD0CTL2 = 0x80; /* Turns on the ADC block. */
+	//ATD0CTL0 = 0x07/* With mult turned on this is required to be set to cause wrap around, but is correct out of reset */
+	//ATD0CTL1 = 0x07/* Trigger and interrupt configuration, unused for now. */
+	ATD0CTL2 = 0xC0; /* Turns on the ADC block and sets auto flag clear */
 	ATD0CTL3 = 0x40; /* Set sequence length = 8 */
-	ATD0CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. */
-	// TODO find out if this is the default (i suspect it is)
-	// TODO look into sampling techniques
+	ATD0CTL4 = 0x73; /* Set the ADC clock and sample period for best accuracy */
+	ATD0CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. Writing to this causes conversions to begin */
 
 	/* And configure them all for analog input */
-	ATD1CTL0 = 0x07; /* Sets wrap on 8th ADC because we can't use the other 8 */
-	ATD1CTL2 = 0x80; /* Turns on the ADC block. */
+	ATD1CTL0 = 0x07; /* TODO bring this out of config based on chip variant variable. Sets wrap on 8th ADC because we can't use the other 8 on 112 pin version */
+	//ATD0CTL1 = 0x07/* Trigger and interrupt configuration, unused for now. */
+	ATD1CTL2 = 0xC0; /* Turns on the ADC block and sets auto flag clear */
 	ATD1CTL3 = 0x40; /* Set sequence length = 8 */
-	ATD1CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. */
-	// TODO find out if this is the default (i suspect it is)
-	// TODO look into sampling techniques
+	ATD0CTL4 = 0x73; /* Set the ADC clock and sample period for best accuracy */
+	ATD0CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. Writing to this causes conversions to begin */
 
 #ifndef NO_INIT
 	/* Set up the PWM component and initialise its values to off */
