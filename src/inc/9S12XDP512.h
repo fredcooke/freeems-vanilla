@@ -872,48 +872,47 @@
 #define XGMCTL DVUSP(0x0380) /* TODO: 7th bit of this should be set to 0 for now to turn the XGATE off */
 #define XGMCTLHI DVUCP(0x0380)
 #define XGMCTLLO DVUCP(0x0381) /* TODO: or 7th bit of this should be set to 0 for now to turn the XGATE off */
-//0x0382 XGCHID
-//0x0384 XGVBR
-//0x0385 XGVBR
-//0x0386 XGVBR
-//0x0387 XGVBR
-//0x0388 XGIF
-//0x0389 XGIF
-//0x038A XGIF
-//0x023B XGIF /* TODO WRONG value 0x023B stated in the manual as being both xgate and can3!!!!! should be 0x038B i believe!!!!! */
-//0x023C XGIF /* TODO WRONG value 0x023C stated in the manual as being both xgate and can3!!!!! should be 0x038C i believe!!!!! */
-//0x038D XGIF
-//0x038E XGIF
-//0x038F XGIF
-//0x0390 XGIF
-//0x0391 XGIF
-//0x0392 XGIF
-//0x0393 XGIF
-//0x0394 XGIF
-//0x0395 XGIF
-//0x0396 XGIF
-//0x0397 XGIF
-//0x0398 XGSWT (hi)
-//0x0399 XGSWT (lo)
-//0x039A XGSEM (hi)
-//0x039B XGSEM (lo)
-//0x039D XGCCR
-//0x039E XGPC (hi)
-//0x039F XGPC (lo)
-//0x03A2 XGR1 (hi)
-//0x03A3 XGR1 (lo)
-//0x03A4 XGR2 (hi)
-//0x03A5 XGR2 (lo)
-//0x03A6 XGR3 (hi)
-//0x03A7 XGR3 (lo)
-//0x03A8 XGR4 (hi)
-//0x03A9 XGR4 (lo)
-//0x03AA XGR5 (hi)
-//0x03AB XGR5(lo)
-//0x03AC XGR6 (hi)
-//0x03AD XGR6 (lo)
-//0x03AE XGR7 (hi)
-//0x03AF XGR7 (lo)
+#define XGCHID DVUCP(0x0382)
+// unused on xdp512 #define XGVBR DVUCP(0x0384)
+// unused on xdp512 #define XGVBR DVUCP(0x0385)
+#define XGVBR DVUSP(0x0386)  /* This is all that is used on the xdp512! 16 bit (0x0386 DVUCP (hi), 0x0387 DVUCP (lo)) */
+#define XGIF_0 DVUCP(0x0388)
+#define XGIF_1 DVUCP(0x0389)
+#define XGIF_2 DVUCP(0x038A)
+#define XGIF_3 DVUCP(0x038B)  /* WRONG value 0x023B stated in the manual as being both xgate and can3!!!!! should be 0x038B i believe!!!!! */
+#define XGIF_4 DVUCP(0x038C)  /* WRONG value 0x023C stated in the manual as being both xgate and can3!!!!! should be 0x038C i believe!!!!! */
+#define XGIF_5 DVUCP(0x038D)
+#define XGIF_6 DVUCP(0x038E)
+#define XGIF_7 DVUCP(0x038F)
+#define XGIF_8 DVUCP(0x0390)
+#define XGIF_9 DVUCP(0x0391)
+#define XGIF_A DVUCP(0x0392)
+#define XGIF_B DVUCP(0x0393)
+#define XGIF_C DVUCP(0x0394)
+#define XGIF_D DVUCP(0x0395)
+#define XGIF_E DVUCP(0x0396)
+#define XGIF_F DVUCP(0x0397)
+#define XGSWT DVUSP(0x0398)
+//#define  DVUCP(0x0399 XGSWT (lo)
+#define XGSEM DVUSP(0x039A)
+//#define  DVUCP(0x039B XGSEM (lo)
+#define XGCCR DVUCP(0x039D)
+#define XGPC DVUSP(0x039E)
+//#define  DVUCP(0x039F XGPC (lo)
+#define XGR1 DVUSP(0x03A2)
+//#define  DVUCP(0x03A3 XGR1 (lo)
+#define XGR2 DVUSP(0x03A4)
+//#define  DVUCP(0x03A5 XGR2 (lo)
+#define XGR3 DVUSP(0x03A6)
+//#define  DVUCP(0x03A7 XGR3 (lo)
+#define XGR4 DVUSP(0x03A8)
+//#define  DVUCP(0x03A9 XGR4 (lo)
+#define XGR5 DVUSP(0x03AA)
+//#define  DVUCP(0x03AB XGR5 (lo)
+#define XGR6 DVUSP(0x03AC)
+//#define  DVUCP(0x03AD XGR6 (lo)
+#define XGR7 DVUSP(0x03AE)
+//#define  DVUCP(0x03AF XGR7 (lo)
 
 
 //// DBG
