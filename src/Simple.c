@@ -102,6 +102,7 @@ void PrimaryRPMISR(){
 		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
 		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
 
+// = 60 * (1000000 / 0.8)
 #define ticksPerMinute   75000000 // this is correct.
 
 		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
