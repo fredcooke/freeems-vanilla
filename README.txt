@@ -31,6 +31,10 @@ Loading the firmware S19 file to the device :
 Firstly you will need hcs12mem setup correctly. Install it as normal, then copy
 the file mc9s12xdp512.dat from the bin directory to /usr/local/share/hcs12mem/
 
+If you are working on the dev board, you need to flip the load/run switch
+to "load" and depress the reset button, prior to flashing.  Return the switch
+to the "run" position when complete.
+
 Also in the bin directory is a bash script, use it with the first argument
 being your serial device, and the second being your s19 file.
 

@@ -34,6 +34,7 @@ export XDP512="mc9s12xdp512"
 export XEP100="mc9s12xep100"
 export DEVICE_TYPE=$XDP512
 export LOAD_TOOL=`which hcs12mem`
+export HCS12MEM_PATH="/usr/local/share/hcs12mem"
 #export ADDRESS_TYPE="non-banked"
 export ADDRESS_TYPE="banked-ppage"
 #export ADDRESS_TYPE="banked-linear"
@@ -64,6 +65,7 @@ export S19_FILE_NOT_REGULAR_FILE="-32"
 export HCS12MEM_EXECUTABLE_DOES_NOT_EXIST="-40"
 export HCS12MEM_EXECUTABLE_NOT_READABLE="-41"
 export HCS12MEM_EXECUTABLE_NOT_EXECUTABLE="-42"
+export HCS12MEM_DAT_NOT_FOUND="-43"
 
 export ABORT_PRE_ERASE="-50"
 export ERASE_FAILED="-51"
@@ -185,6 +187,12 @@ check_args ()
 	then
 		echo "$LOAD_TOOL is NOT executable! exiting..."
 		exit "$HCS12MEM_EXECUTABLE_NOT_EXECUTABLE"
+
+	# Ensure the needed dat file has been put in place
+	elif [ ! -e "$HCS12MEM_PATH/${XDP512}.dat" ]
+	then
+		echo "$HCS12MEM_PATH/${XDP512}.dat is missing, please copy ../bin/${XDP512}.dat to $HCS12MEM_PATH and retry, exiting..."
+		exit "$HCS12MEM_DAT_NOT_FOUND"
 	fi
 
 	echo "Everything looks good!"
