@@ -112,8 +112,8 @@ void calculateFuelAndIgnition(){
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&& Apply All Corrections PCFC, ETE, IDT, TFC etc &&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 	/* Apply the corrections after calculating */
-	DerivedVars->FinalPW = safeTrim(DerivedVars->BasePW, DerivedVars->TFCTotal);
-	DerivedVars->FinalPW = safeScale(DerivedVars->FinalPW, DerivedVars->ETE);
+	DerivedVars->EffectivePW = safeTrim(DerivedVars->BasePW, DerivedVars->TFCTotal);
+	DerivedVars->EffectivePW = safeScale(DerivedVars->EffectivePW, DerivedVars->ETE);
 
 
 	unsigned char channel; // the declaration of this variable is used in multiple loops below.
@@ -122,14 +122,14 @@ void calculateFuelAndIgnition(){
 	for(channel = 0; channel < INJECTION_CHANNELS; channel++){ /// @todo TODO make injector channels come from config, not defines.
 		/* Add or subtract the per cylinder fuel trims */
 		unsigned short channelPW;
-		channelPW = safeScale(DerivedVars->FinalPW, TablesB.SmallTablesB.perCylinderFuelTrims[channel]);
+		channelPW = safeScale(DerivedVars->EffectivePW, TablesB.SmallTablesB.perCylinderFuelTrims[channel]);
 
 		/* Add on the IDT to get the final value and put it into the array */
 		injectorMainPulseWidthsMath[channel] = safeAdd(channelPW, DerivedVars->IDT);
 	}
 
 	/* Reference PW for comparisons etc */
-	unsigned short refPW = safeAdd(DerivedVars->FinalPW, DerivedVars->IDT);
+	unsigned short refPW = safeAdd(DerivedVars->EffectivePW, DerivedVars->IDT);
 	DerivedVars->RefPW = refPW;
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 

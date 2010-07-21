@@ -110,7 +110,7 @@ typedef struct {
 	unsigned short ETE;				/* 0.8us ticks */
 	signed short TFCTotal;			/* Transient fuel correction */
 
-	unsigned short FinalPW;			/* In timer ticks of 0.8us */
+	unsigned short EffectivePW;		/* In timer ticks of 0.8us */
 	unsigned short RefPW;			/* In timer ticks of 0.8us */
 
 	unsigned short sp1;		/*  */
