@@ -95,23 +95,23 @@ typedef struct {
 /* Use this block to make it easy to manage the derived variables */
 typedef struct {
 	/* Calculated from core vars */
-	unsigned short LoadMain;			/* Configurable unit of load */
+	unsigned short LoadMain;		/* Configurable unit of load */
 //	unsigned short LoadSecondary;
 
 	unsigned short VEMain;			/* Divide by 512 to get % */
 //	unsigned short VESecondary;
 
 	unsigned short Lambda;			/* Divide by 32768 to get Lamda */
-	unsigned short AirFlow;			/* top half */
-	unsigned short densityAndFuel;	/* bottom half */
+	unsigned short AirFlow;			/* Top half of the equation */
+	unsigned short densityAndFuel;	/* Bottom half of the equation */
 
-	unsigned short BasePW;			/* In timer ticks of 0.8us */
-	unsigned short IDT;				/* 0.8us ticks */
-	unsigned short ETE;				/* 0.8us ticks */
-	signed short TFCTotal;			/* Transient fuel correction */
+	unsigned short BasePW;			/* Raw PW before corrections */
+	unsigned short ETE;				/* Additional PW for ETE correction */
+	signed short TFCTotal;			/* Transient fuel correction PW (+/-) */
 
-	unsigned short EffectivePW;		/* In timer ticks of 0.8us */
-	unsigned short RefPW;			/* In timer ticks of 0.8us */
+	unsigned short EffectivePW;		/* Actual PW of fuel delivery */
+	unsigned short IDT;				/* Minimum PW before fuel flow begins */
+	unsigned short RefPW;			/* Reference electrical PW */
 
 	unsigned short sp1;		/*  */
 	unsigned short sp2;		/*  */
