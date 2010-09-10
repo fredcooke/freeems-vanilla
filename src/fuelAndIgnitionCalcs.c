@@ -41,6 +41,7 @@
 #include "inc/utils.h"
 #include "inc/commsCore.h"
 #include "inc/tableLookup.h"
+#include "inc/DecoderInterface.h"
 #include "inc/fuelAndIgnitionCalcs.h"
 
 

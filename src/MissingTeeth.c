@@ -1,6 +1,6 @@
 /*	FreeEMS - the open source engine management system
 
-	Copyright 2009 Philip L Johnson
+	Copyright 2009, 2010 Philip L Johnson, Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -37,6 +37,7 @@
 
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+#include "inc/DecoderInterface.h"
 
 
 /** Primary RPM ISR

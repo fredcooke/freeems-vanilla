@@ -49,6 +49,7 @@
 #include "inc/commsISRs.h"
 #include "inc/pagedLocationBuffers.h"
 #include "inc/init.h"
+#include "inc/DecoderInterface.h"
 #include <string.h>
 
 

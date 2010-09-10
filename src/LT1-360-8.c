@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009 Sean Keys
+ * Copyright 2009, 2010 Sean Keys, Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -48,6 +48,7 @@
 #define LT1_360_8_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+#include "inc/DecoderInterface.h"
 #include "inc/LT1-360-8.h"
 
 

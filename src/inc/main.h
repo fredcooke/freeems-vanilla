@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -44,6 +44,7 @@
 #include "coreVarsGenerator.h"
 #include "derivedVarsGenerator.h"
 #include "fuelAndIgnitionCalcs.h"
+#include "DecoderInterface.h"
 
 
 /* Computer Operating Properly reset sequence MC9S12XDP512V2.PDF Section 2.4.1.5 */
