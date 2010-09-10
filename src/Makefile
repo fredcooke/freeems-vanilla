@@ -251,8 +251,8 @@ GCCOPTS = $(GCCOPTS1) $(GCCOPTS2)
 
 # pass to linker, link for hc12
 # The vectors address in the linker options is the VMA address and must be short form 0xF710, not a paged address.
-LINKOPTS = -Wl,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
-LINKOPTSGC = -Wl,--gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
+LINKOPTS = -defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
+LINKOPTSGC = --gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
 # Use this to get a map dump when the linker fails in a confusing way : --print-map
 
 # If using the below option for paged flash, the ADDRESS_TYPE
@@ -525,7 +525,7 @@ $(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
-	$(GCC) $(GCCOPTS) $(LINKOPTS) -o $@ $< $(OBJECTS)
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $< $(OBJECTS)
 
 
 gclinkmsg: #...
@@ -540,7 +540,7 @@ $(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS) #...
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
-	$(GCC) $(GCCOPTS) $(LINKOPTSGC) -o $@ $< $(OBJECTS) # ...
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $< $(OBJECTS) # ...
 # The links with garbage collection are to ensure that there are no warnings ...
 # TODO find out how to stop .tramp from being collected (or inserted)! ...
 
