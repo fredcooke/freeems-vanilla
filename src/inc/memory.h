@@ -126,8 +126,8 @@
 /* ONLY use the pages below this line for now (Or you won't be able to load them...) */
 
 /* General Purpose Page with PPAGE = 0xF8 */
-#define FPAGE_F8 FFAR(".ppageF8")
-#define DPAGE_F8 DFAR(".ppageF8")
+#define FPAGE_F8 FFAR(".fpageF8")
+#define DPAGE_F8 DFAR(".dpageF8")
 #define PAGE_F8_PPAGE 0xF8
 
 /* Function and large lookup tables for ADC to value mapping */
