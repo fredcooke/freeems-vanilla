@@ -98,11 +98,8 @@ TAGNAME = $(OUTDIR)/gitTagName.txt
 # of three . . . in a row or the line will be missing from
 # the windows version. Likewise sets of ### longer than 6
 # or so are also at risk :-)
-GCCLIBBASEDIR = /usr/lib/gcc-lib/m68hc11/3.3.6-m68hc1x-20060122
-GCCPREFIX = m6811-elf-
-GCCPREFIX = m68hc11-
 PREFIX = m6811-elf-
-PREFIX = m68hc12-
+PREFIX = m68hc11-
 PATHSEP = \\
 PATHSEP = /#...
 
@@ -112,9 +109,7 @@ RM = rm -rf
 MKDIR = mkdir
 MKDIR = mkdir -p #...
 ZIP = zip
-GCC = $(GCCPREFIX)gcc
-AS = $(PREFIX)as
-LD = $(PREFIX)ld
+GCC = $(PREFIX)gcc
 COPY = $(PREFIX)objcopy
 DUMP = $(PREFIX)objdump
 NM = $(PREFIX)nm
@@ -256,8 +251,8 @@ GCCOPTS = $(GCCOPTS1) $(GCCOPTS2)
 
 # pass to linker, link for hc12
 # The vectors address in the linker options is the VMA address and must be short form 0xF710, not a paged address.
-LINKOPTS = -defsym vectors_addr=0xF710 -T hc9s12xdp512elfb.x
-LINKOPTSGC = --gc-sections --print-gc-sections -defsym vectors_addr=0xF710 -T hc9s12xdp512elfb.x
+LINKOPTS = -no-warn-mismatch,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
+LINKOPTSGC = -no-warn-mismatch,--gc-sections,--print-gc-sections,-defsym,vectors_addr=0xF710,-m,m68hc12elfb,-T,hc9s12xdp512elfb.x
 # Use this to get a map dump when the linker fails in a confusing way : --print-map
 
 # If using the below option for paged flash, the ADDRESS_TYPE
@@ -530,7 +525,7 @@ $(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
-	$(LD) -o $@ -L$(GCCLIBBASEDIR)/m68hc12/mshort -L$(GCCLIBBASEDIR) -L/usr/m68hc11/lib $(LINKOPTS) $< $(GCCLIBBASEDIR)/m68hc12/mshort/crt1.o $(OBJECTS) -lgcc
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $< $(OBJECTS)
 
 
 gclinkmsg: #...
@@ -545,7 +540,7 @@ $(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS) #...
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
-	$(LD) -o $@ -L$(GCCLIBBASEDIR)/m68hc12/mshort -L$(GCCLIBBASEDIR) -L/usr/m68hc11/lib $(LINKOPTSGC) $< $(GCCLIBBASEDIR)/m68hc12/mshort/crt1.o $(OBJECTS) -lgcc  # ...
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $< $(OBJECTS) # ...
 # The links with garbage collection are to ensure that there are no warnings ...
 # TODO find out how to stop .tramp from being collected (or inserted)! ...
 # This will be the only way once Sean's stuff is done and distributed, I can't wait to cut all this bullshit out!
@@ -657,7 +652,7 @@ assemble: compile $(OBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM)
 
 # Generate object files to link
 $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
-	$(AS) --gdwarf2 -mshort -mlong-double -o $@ $<
+	$(GCC) $(GCCOPTS) -c -o $@ $<
 
 
 
