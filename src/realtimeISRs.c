@@ -101,6 +101,7 @@ void RTIISR(){
 			if(Clocks.tenthsToSeconds % 10 == 0){
 				/* Increment the seconds counter */
 				Clocks.realTimeClockSeconds++;
+				XGSWT = 0x0101; /* set off software trigger 0 that is handled by xgate */
 
 				/* Increment the seconds roll over variable */
 				Clocks.secondsToMinutes++;

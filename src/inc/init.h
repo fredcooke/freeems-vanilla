@@ -52,11 +52,16 @@ void initAllPagedRAM(void) FPAGE_FE;
 void initAllPagedAddresses(void) FPAGE_FE;
 void initVariables(void) FPAGE_FE;
 void initFlash(void) FPAGE_FE;
+void initXgate(void) TEXT1; // Can't be paged because it has to burn to a page, for now...
 void initECTTimer(void) FPAGE_FE;
 void initPITTimer(void) FPAGE_FE;
 void initSCIStuff(void) FPAGE_FE;
 void initConfiguration(void) FPAGE_FE;
 void initInterrupts(void) FPAGE_FE;
+
+// XGATE assembly symbols, only used for address/size
+extern void xgateThread0(void);
+extern void xgateThread0End(void);
 
 /* Place these functions in the same block of flash as the data upon which they operate! */
 void initLookupAddresses(void) LOOKUPF;
@@ -93,6 +98,7 @@ EXTERN void init(void) FPAGE_FE;
 
 // Flash control values
 #define PRDIV8			0x40 /* Mask for flash module to divide the oscillator clock by 8  */
+
 
 /// @todo TODO define other macros such that raw values aren't used in the code
 /// @todo TODO move all the reg masks to a header of their own for general use.

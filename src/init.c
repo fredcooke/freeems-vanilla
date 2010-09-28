@@ -44,12 +44,14 @@
 
 #define INIT_C
 #include "inc/freeEMS.h"
+#include "inc/flashWrite.h"
 #include "inc/interrupts.h"
 #include "inc/utils.h"
 #include "inc/commsISRs.h"
 #include "inc/pagedLocationBuffers.h"
 #include "inc/init.h"
 #include "inc/DecoderInterface.h"
+#include "inc/xgateVectors.h"
 #include <string.h>
 
 
@@ -72,6 +74,7 @@ void init(){
 	initPITTimer();         	/* TODO ditto... */
 	initSCIStuff();         	/* Setup the sci module(s) that we will use. */
 	initConfiguration();    	/* TODO Set user/feature/config up here! */
+	initXgate();
 	initInterrupts();       	/* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
 	ATOMIC_END();           	/* Re-enable any configured interrupts */
 }
@@ -509,6 +512,48 @@ void initFlash(){
 	FSTAT = FSTAT | (PVIOL | ACCERR);	/* Clear any errors             	*/
 }
 
+/** @brief Xgate module setup
+ *
+ * Configure XGATE setup registers and prepare XGATE code to be run by copying
+ * it from flash hcs12mem can write to to flash XGATE can read from.
+ *
+ * @author Sean Keys and Fred Cooke
+ *
+ * @note A thanks goes out to Edward Karpicz for helping me get xgate configured
+ * properly.
+ *
+ * @warning If executing from RAM you must copy the code from Flash to RAM before
+ * starting Xgate
+ *
+ */
+void initXgate(){
+	/* route interrupt to xgate */
+	INT_CFADDR = (0x72 & 0xF0); /* vector address = channel_id * 2 */
+	INT_CFDATA0 = 0x01; 		/* RQST = 1 */
+	INT_CFDATA1 = 0x81;			/* PRIO = 1 */
+
+	/* HCS12mem currently limits us to half of the available flash, hence this copy code. */
+	/* XGATE sees flash starting at paged address 0xE0, 0x8800 */
+
+	// copy the XGATE vector table into the visible region.
+	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, sizeof(xgateIntVectorTable));
+//	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, (0x79 * sizeof(xgateIntVector)) );
+	eraseSector(0xE0,(unsigned short *)0x8800);
+	writeSector(RPAGE, (unsigned short*)&TXBuffer, 0xE0, (unsigned short*)0x8800);
+
+	// copy xgatethread0 code into the visible region
+	memcpy((void*)&TXBuffer, (void*)&xgateThread0, ((void*)&xgateThread0End - (void*)&xgateThread0));
+	eraseSector(0xE1,(unsigned short *)0x8000);
+	writeSector(RPAGE, (unsigned short*)&TXBuffer, 0xE1, (unsigned short *)0x8000);
+
+	// XGATE threads execute from flash at the moment
+
+	// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)
+	XGVBR = (unsigned short )0x0800;
+
+	// Enable XGate and XGate interrupts
+	XGMCTL= (unsigned short)0x8181;
+}
 
 /* Set up the timer module and its various interrupts */
 void initECTTimer(){

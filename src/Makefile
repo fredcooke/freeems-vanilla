@@ -86,6 +86,8 @@ OBJDIR = objects
 ASMDIR = assembly
 S19DIR = firmware
 PPCDIR = preprocessedc
+XGASMDIR = $(ASMDIR)/xgate
+XGOBJDIR = $(OBJDIR)/xgate
 
 # Release tag message file
 RELTAG = $(OUTDIR)/gitTagMessage.txt
@@ -98,8 +100,8 @@ TAGNAME = $(OUTDIR)/gitTagName.txt
 # of three . . . in a row or the line will be missing from
 # the windows version. Likewise sets of ### longer than 6
 # or so are also at risk :-)
-PREFIX = m6811-elf-
 PREFIX = m68hc11-
+XGPREFIX = mc9xgate-
 PATHSEP = \\
 PATHSEP = /#...
 
@@ -115,6 +117,7 @@ DUMP = $(PREFIX)objdump
 NM = $(PREFIX)nm
 RE = $(PREFIX)readelf
 SIZE = $(PREFIX)size
+XGAS = $(XGPREFIX)as
 
 
 
@@ -173,7 +176,7 @@ TUNECLASSES = TunableConfig.c TunableConfig2.c
 UTILCLASSES = tableLookup.c init.c utils.c globalConstants.c
 MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c
 COMCLASSES = flashWrite.c commsCore.c blockDetailsLookup.c
-ISRCLASSES = interrupts.c injectionISRs.c ignitionISRs.c commsISRs.c realtimeISRs.c miscISRs.c
+ISRCLASSES = interrupts.c injectionISRs.c ignitionISRs.c commsISRs.c realtimeISRs.c miscISRs.c xgateVectors.c
 
 # All but the engine position/RPM combined here
 SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSES) $(ISRCLASSES)
@@ -183,6 +186,7 @@ CLASSES = $(SOURCE) $(DATA)
 # Engine position/RPM here
 RPMCLASSES = Simple.c NipponDenso.c LT1-360-8.c Subaru-36-2-2-2.c MissingTeeth.c MiataNB.c
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
+XGASMSRCS = xgate.s
 
 
 # Convert extensions
@@ -190,6 +194,7 @@ PREPROCESSED = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(CLASSES))
 ASSEMBLIES = $(patsubst %.c,$(ASMDIR)/%.s,$(CLASSES))
 OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
 DUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(HANDASMS))
+XGOBJECTS = $(patsubst %.s,$(XGOBJDIR)/%.o,$(XGASMSRCS))
 
 # Convert RPM extensions
 PREPROCESSEDRPM = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(RPMCLASSES))
@@ -521,11 +526,11 @@ linkmsg: #...
 link: assemble $(OUTDIR) linkmsg $(ALLELFS)
 
 # link the object files into an elf executable
-$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/%.o $(OBJECTS)
+$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/%.o $(OBJECTS) $(XGOBJECTS)
 	################################################################################
 	#               Linking $@ ...
 	################################################################################
-	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $< $(OBJECTS)
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $< $(OBJECTS) $(XGOBJECTS)
 
 
 gclinkmsg: #...
@@ -648,12 +653,14 @@ assemblemsg: #...
 	#                          Assembling Object Files...                          #
 	################################################################################
 
-assemble: compile $(OBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM)
+assemble: compile $(OBJDIR) $(XGOBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM) $(XGOBJECTS)
 
 # Generate object files to link
 $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
 	$(GCC) $(GCCOPTS) -c -o $@ $<
 
+$(XGOBJECTS): $(XGOBJDIR)/%.o: $(XGASMDIR)/%.s
+	$(XGAS) -o $@ $<
 
 
 
@@ -808,7 +815,7 @@ zipsrc: distributiondir
 
 # Assembly, release and inc directories don't get removed.
 
-dirs: $(BUGDIR) $(S19DIR) $(PPCDIR) $(OUTDIR) $(OBJDIR)
+dirs: $(BUGDIR) $(S19DIR) $(PPCDIR) $(OUTDIR) $(OBJDIR) $(XGOBJDIR)
 
 $(BUGDIR):
 	################################################################################
@@ -844,6 +851,13 @@ $(OBJDIR):
 	################################################################################
 	$(MKDIR) $(OBJDIR)$(PATHSEP)hack
 	rmdir $(OBJDIR)$(PATHSEP)hack
+
+$(XGOBJDIR):
+	################################################################################
+	#                    Creating the xgate object directory...                    #
+	################################################################################
+	$(MKDIR) $(XGOBJDIR)$(PATHSEP)hack
+	rmdir $(XGOBJDIR)$(PATHSEP)hack
 
 distributiondir:
 	################################################################################
