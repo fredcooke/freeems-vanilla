@@ -537,7 +537,6 @@ void initXgate(){
 
 	// copy the XGATE vector table into the visible region.
 	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, sizeof(xgateIntVectorTable));
-//	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, (0x79 * sizeof(xgateIntVector)) );
 	eraseSector(0xE0,(unsigned short *)0x8800);
 	writeSector(RPAGE, (unsigned short*)&TXBuffer, 0xE0, (unsigned short*)0x8800);
 
