@@ -76,7 +76,7 @@ LABEL = $(OUTPREFIX)-$(VERSION)
 
 # Windows hack
 PATHSEP = \\
-PATHSEP = /#REMOVE
+PATHSEP = /#REMOVE this line to build on Windows!
 
 # Directories here
 RELEASEDIR = ../firmware
@@ -111,7 +111,7 @@ XGPREFIX = mc9xgate-
 CP = cp
 RM = rm -rf
 MKDIR = mkdir
-MKDIR = mkdir -p #REMOVE
+MKDIR = mkdir -p #REMOVE this line to build on Windows!
 ZIP = zip
 GCC = $(PREFIX)gcc
 COPY = $(PREFIX)objcopy
