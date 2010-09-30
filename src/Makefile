@@ -74,6 +74,10 @@ PREVIOUSVERSION = 0.1.0
 OUTPREFIX = freeems
 LABEL = $(OUTPREFIX)-$(VERSION)
 
+# Windows hack
+PATHSEP = \\
+PATHSEP = /#REMOVE
+
 # Directories here
 RELEASEDIR = ../firmware
 DISTRIBUTIONDIR = ../../$(LABEL)
@@ -86,8 +90,8 @@ OBJDIR = objects
 ASMDIR = assembly
 S19DIR = firmware
 PPCDIR = preprocessedc
-XGASMDIR = $(ASMDIR)/xgate
-XGOBJDIR = $(OBJDIR)/xgate
+XGASMDIR = $(ASMDIR)$(PATHSEP)xgate
+XGOBJDIR = $(OBJDIR)$(PATHSEP)xgate
 
 # Release tag message file
 RELTAG = $(OUTDIR)/gitTagMessage.txt
@@ -102,8 +106,6 @@ TAGNAME = $(OUTDIR)/gitTagName.txt
 # or so are also at risk :-)
 PREFIX = m68hc11-
 XGPREFIX = mc9xgate-
-PATHSEP = \\
-PATHSEP = /#REMOVE
 
 # All of the tools
 CP = cp
