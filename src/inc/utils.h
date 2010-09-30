@@ -64,7 +64,7 @@ EXTERN void sampleLoopADC(ADCArray*) FPAGE_F8;
 
 EXTERN unsigned char checksum(unsigned char *, unsigned short) FPAGE_F8;
 EXTERN unsigned short stringCopy(unsigned char*, unsigned char*) FPAGE_F8;
-EXTERN unsigned short compare(unsigned char*, unsigned char*, unsigned short);
+EXTERN unsigned short compare(unsigned char*, unsigned char*, unsigned short); // In unpaged flash as it needs to compare paged flash with unpaged things
 
 
 #undef EXTERN

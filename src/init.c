@@ -528,22 +528,48 @@ void initFlash(){
  */
 void initXgate(){
 	/* route interrupt to xgate */
-	INT_CFADDR = (0x72 & 0xF0); /* vector address = channel_id * 2 */
+	INT_CFADDR = (0x72 & 0xF0);	/* vector address = channel_id * 2 */
 	INT_CFDATA0 = 0x01; 		/* RQST = 1 */
-	INT_CFDATA1 = 0x81;			/* PRIO = 1 */
+	INT_CFDATA1 = 0x81;		/* PRIO = 1 */
 
 	/* HCS12mem currently limits us to half of the available flash, hence this copy code. */
 	/* XGATE sees flash starting at paged address 0xE0, 0x8800 */
 
-	// copy the XGATE vector table into the visible region.
-	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, sizeof(xgateIntVectorTable));
-	eraseSector(0xE0,(unsigned short *)0x8800);
-	writeSector(RPAGE, (unsigned short*)&TXBuffer, 0xE0, (unsigned short*)0x8800);
+	// Reuse variables across multiple blocks of unreachable code copying code
+	unsigned short * xgateDataDestination;
+	unsigned char destinationPage;
+	// Save old flash page value
+	unsigned char OldPPAGE = PPAGE;
 
-	// copy xgatethread0 code into the visible region
-	memcpy((void*)&TXBuffer, (void*)&xgateThread0, ((void*)&xgateThread0End - (void*)&xgateThread0));
-	eraseSector(0xE1,(unsigned short *)0x8000);
-	writeSector(RPAGE, (unsigned short*)&TXBuffer, 0xE1, (unsigned short *)0x8000);
+	// Copy the XGATE vector table into the visible region only if it differs from what is already there (save on flash burns for now)
+	xgateDataDestination = (unsigned short *)0x8800;
+	destinationPage = 0xE0;
+	// Copy to ram first as only one paged flash block at a time is visible
+	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, sizeof(xgateIntVectorTable));
+	// Switch to destination page for comparison
+	PPAGE = destinationPage;
+	// Do the check, from the copy in RAM to the destination.
+	if(compare((unsigned char*)&TXBuffer, (unsigned char*)xgateDataDestination, sizeof(xgateIntVectorTable))){
+		eraseSector(destinationPage, xgateDataDestination);
+		writeSector(RPAGE, (unsigned short*)&TXBuffer, destinationPage, xgateDataDestination);
+	}
+
+	// Copy xgatethread0 code into the visible region only if it differs from what is already there (save on flash burns for now)
+	xgateDataDestination = (unsigned short *)0x9000;
+	destinationPage = 0xE1;
+	unsigned short xgateThread0Size = (void*)&xgateThread0End - (void*)&xgateThread0;
+	// Copy to ram first as only one paged flash block at a time is visible
+	memcpy((void*)&TXBuffer, (void*)&xgateThread0, xgateThread0Size);
+	// Switch to destination page for comparison
+	PPAGE = destinationPage;
+	// Do the check, from the copy in RAM to the destination.
+	if(compare((unsigned char*)&TXBuffer, (unsigned char*)xgateDataDestination, xgateThread0Size)){
+		eraseSector(destinationPage, xgateDataDestination);
+		writeSector(RPAGE, (unsigned short*)&TXBuffer, destinationPage, xgateDataDestination);
+	}
+
+	// Switch the page back to how it was
+	PPAGE = OldPPAGE;
 
 	// XGATE threads execute from flash at the moment
 
