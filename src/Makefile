@@ -74,9 +74,12 @@ PREVIOUSVERSION = 0.1.0
 OUTPREFIX = freeems
 LABEL = $(OUTPREFIX)-$(VERSION)
 
-# Windows hack
+# Windows path difference
+#ifdef _WIN32_
 PATHSEP = \\
-PATHSEP = /#REMOVE this line to build on Windows!
+#else
+PATHSEP = /
+#endif
 
 # Directories here
 RELEASEDIR = ../firmware
@@ -108,10 +111,15 @@ PREFIX = m68hc11-
 XGPREFIX = mc9xgate-
 
 # All of the tools
+# Windows mkdir does not accept -p
+#ifdef _WIN32_
+MKDIR = mkdir
+#else
+MKDIR = mkdir -p
+#endif
+
 CP = cp
 RM = rm -rf
-MKDIR = mkdir
-MKDIR = mkdir -p #REMOVE this line to build on Windows!
 ZIP = zip
 GCC = $(PREFIX)gcc
 COPY = $(PREFIX)objcopy
