@@ -578,7 +578,8 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	@echo "################################################################################"
 	@echo "#               Measuring $@ ..."
 	@echo "################################################################################"
-	echo "Flash image size of $@ is" `echo \`cat $@ | wc -l\` "* 16" | bc -l` "bytes!"
+	cat $@ | wc -l > $(OUTDIR)/wcoutput.temp
+	@echo "Flash image size of $@ is" $(shell echo $(shell cat $(OUTDIR)/wcoutput.temp) "* 16" | bc -l) "bytes!"
 
 
 gcs19msg:
@@ -597,7 +598,8 @@ $(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	@echo "################################################################################"
 	@echo "#               Measuring $@ ..."
 	@echo "################################################################################"
-	echo "Flash image size of $@ is" `echo \`cat $@ | wc -l\` "* 16" | bc -l` "bytes!"
+	cat $@ | wc -l > $(OUTDIR)/wcoutput.temp
+	@echo "Flash image size of $@ is" $(shell echo $(shell cat $(OUTDIR)/wcoutput.temp) "* 16" | bc -l) "bytes!"
 
 
 
