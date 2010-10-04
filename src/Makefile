@@ -75,7 +75,7 @@ OUTPREFIX = freeems
 LABEL = $(OUTPREFIX)-$(VERSION)
 
 # Windows path difference
-#ifdef _WIN32_
+#ifdef ProgramFiles
 PATHSEP = \\
 #else
 PATHSEP = /
@@ -112,7 +112,7 @@ XGPREFIX = mc9xgate-
 
 # All of the tools
 # Windows mkdir does not accept -p
-#ifdef _WIN32_
+#ifdef ProgramFiles
 MKDIR = mkdir
 #else
 MKDIR = mkdir -p
