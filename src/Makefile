@@ -75,11 +75,11 @@ OUTPREFIX = freeems
 LABEL = $(OUTPREFIX)-$(VERSION)
 
 # Windows path difference
-#ifdef MAKESHELL
+ifdef COMSPEC
 PATHSEP = \\
-#else
+else
 PATHSEP = /
-#endif
+endif
 
 # Directories here
 RELEASEDIR = ../firmware
@@ -112,11 +112,11 @@ XGPREFIX = mc9xgate-
 
 # All of the tools
 # Windows mkdir does not accept -p
-#ifdef MAKESHELL
+ifdef COMSPEC
 MKDIR = mkdir
-#else
+else
 MKDIR = mkdir -p
-#endif
+endif
 
 CP = cp
 RM = rm -rf
