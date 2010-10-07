@@ -75,7 +75,7 @@ OUTPREFIX = freeems
 LABEL = $(OUTPREFIX)-$(VERSION)
 
 # Windows path difference
-ifdef COMSPEC
+ifdef ComSpec
 PATHSEP = \\
 else
 PATHSEP = /
@@ -112,7 +112,7 @@ XGPREFIX = mc9xgate-
 
 # All of the tools
 # Windows mkdir does not accept -p
-ifdef COMSPEC
+ifdef ComSpec
 MKDIR = mkdir
 else
 MKDIR = mkdir -p
