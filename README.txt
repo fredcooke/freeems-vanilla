@@ -8,19 +8,17 @@ Before using this system, please see the disclaimer here :
 
 www.diyefi.org/disclaimer.htm
 
-Before going any further, please ensure you have the latest release :
+Before going any further, please ensure you have the latest release or latest code by visiting :
 
-http://sourceforge.net/project/showfiles.php?group_id=214452&package_id=258422
+http://github.com/fredcooke/freeems-vanilla
 
-If you want to modify and build this firmware there is a guide available :
+If you want to modify and build this firmware there an out-of-date guide available :
 
 http://www.diyefi.org/forum/viewtopic.php?f=8&t=508
 
-The docs directory contains a fairly comprehensive set of documentation
-describing most aspects of the system. Additionally there is a generated
-doxygen page describing the source on the sourceforge site here :
+For all your documenation needs please see the docs page :
 
-http://freeems.sourceforge.net/doxygen/
+http://docs.freeems.org
 
 Setting up the tuning application is described in the following thread :
 
