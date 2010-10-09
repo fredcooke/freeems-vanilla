@@ -212,7 +212,7 @@ ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
 OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst %.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
 DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
-# Convert to output files
+# Convert to output files for source
 ALLELFSC = $(patsubst %.c,$(OUTDIR)/$(LABEL)-%.elf,$(RPMCLASSES))
 ALLELFSASM = #$(patsubst %.s,$(OUTDIR)/$(LABEL)-%.elf,$(RPMHANDASMS))
 ALLDMPSC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.dmp,$(RPMCLASSES))
@@ -223,11 +223,15 @@ ALLREADC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.ree,$(RPMCLASSES))
 ALLREADASM = #$(patsubst %.s,$(BUGDIR)/$(LABEL)-%.ree,$(RPMHANDASMS))
 ALLS19SC = $(patsubst %.c,$(S19DIR)/$(LABEL)-%.s19,$(RPMCLASSES))
 ALLS19SASM = #$(patsubst %.s,$(S19DIR)/$(LABEL)-%.s19,$(RPMHANDASMS))
+
+# Convert to output files for as-is variants
 ALLELFS = $(ALLELFSC) $(ALLELFSASM)
 ALLDMPS = $(ALLDMPSC) $(ALLDMPSASM)
 ALLMAPS = $(ALLMAPSC) $(ALLMAPSASM)
 ALLREAD = $(ALLREADC) $(ALLREADASM)
 ALLS19S = $(ALLS19SC) $(ALLS19SASM)
+ALLSIZES = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt,$(ALLS19S))
+ALLDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(ALLS19S))
 ALLMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(ALLS19S))
 ALLSHA1S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.sha1,$(ALLS19S))
 ALLS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(ALLS19S))
@@ -240,6 +244,8 @@ GCDS19SC = $(patsubst %.c,$(S19DIR)/$(LABEL)-%.gc.s19,$(RPMCLASSES))
 GCDS19SASM = #$(patsubst %.s,$(S19DIR)/$(LABEL)-%.gc.s19,$(RPMHANDASMS))
 GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
+GCDSIZES = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt,$(GCDS19S))
+GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
 GCDMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(GCDS19S))
 GCDSHA1S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.sha1,$(GCDS19S))
 GCDS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(GCDS19S))
@@ -437,13 +443,13 @@ help:
 
 
 # Build everything the long way
-all: alldebug gcs19 s19 size
+all: alldebug gcsizes sizes size
 # Single stage compilation
-fast: single s19 size
+fast: single sizes size
 # Multi stage compilation
-slow: s19 size
+slow: sizes size
 # Multi stage compilation with garbage collection
-slowgc: gcs19 size
+slowgc: gcsizes size
 # Clean all except release
 clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
 # Generate all debug
@@ -575,16 +581,27 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	@echo "#               Building $@ ..."
 	@echo "################################################################################"
 	$(COPY) $(COPYOPTS) $< $@
+
+
+sizesmsg:
 	@echo "################################################################################"
-	@echo "#               Measuring $@ ..."
+	@echo "#                          Measuring The S19 Files...                          #"
 	@echo "################################################################################"
-	@echo $(shell cat $@ | wc -l) "* 16" > $(OUTDIR)/wcoutput.temp
-	@echo "Flash image size of $@ is" $(shell cat $(OUTDIR)/wcoutput.temp | bc -l) "bytes!"
+
+sizes: s19 $(OUTDIR) sizesmsg $(ALLDUMMY)
+
+# Roughly measure the s19 sizes
+$(ALLSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
+	@echo $(shell cat $< | wc -l) "* 16" > $@
+
+# Have to do this in two stages to allow $(shell exp) use and portability to windows
+$(ALLDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
+	@echo "Flash image size is" $(shell cat $< | bc -l) "bytes for $<"
 
 
 gcs19msg:
 	@echo "################################################################################"
-	@echo "#                          Building The S19 Files....                          #"
+	@echo "#                        Building The GC S19 Files....                         #"
 	@echo "################################################################################"
 
 gcs19: gclink $(S19DIR) gcs19msg  $(GCDS19S)
@@ -595,11 +612,22 @@ $(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	@echo "#               Building $@ ..."
 	@echo "################################################################################"
 	$(COPY) $(COPYOPTS) $< $@
+
+gcsizesmsg:
 	@echo "################################################################################"
-	@echo "#               Measuring $@ ..."
+	@echo "#                        Measuring The GC S19 Files...                         #"
 	@echo "################################################################################"
-	@echo $(shell cat $@ | wc -l) "* 16" > $(OUTDIR)/wcoutput.temp
-	@echo "Flash image size of $@ is" $(shell cat $(OUTDIR)/wcoutput.temp | bc -l) "bytes!"
+
+gcsizes: gcs19 $(OUTDIR) gcsizesmsg $(GCDDUMMY)
+
+# Roughly measure the gc s19 sizes
+$(GCDSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
+	@echo $(shell cat $< | wc -l) "* 16" > $@
+
+# Have to do this in two stages to allow $(shell exp) use and portability to windows
+$(GCDDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
+	@echo "Flash image size is" $(shell cat $< | bc -l) "bytes for $<"
+
 
 
 
