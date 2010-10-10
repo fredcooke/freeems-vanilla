@@ -582,6 +582,11 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	@echo "################################################################################"
 	$(COPY) $(COPYOPTS) $< $@
 
+ifdef ComSpec
+QUOTE = 
+else
+QUOTE = "
+endif
 
 sizesmsg:
 	@echo "################################################################################"
@@ -592,11 +597,11 @@ sizes: s19 $(OUTDIR) sizesmsg $(ALLDUMMY)
 
 # Roughly measure the s19 sizes
 $(ALLSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
-	@echo $(shell cat $< | wc -l) "* 16" > $@
+	@echo $(shell cat $< | wc -l) $(QUOTE)* 16$(QUOTE) > $@
 
 # Have to do this in two stages to allow $(shell exp) use and portability to windows
 $(ALLDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
-	@echo "Flash image size is" $(shell cat $< | bc -l) "bytes for $<"
+	@echo $(QUOTE)Flash image size is$(QUOTE) $(shell cat $< | bc -l) $(QUOTE)bytes for $<$(QUOTE)
 
 
 gcs19msg:
@@ -622,11 +627,11 @@ gcsizes: gcs19 $(OUTDIR) gcsizesmsg $(GCDDUMMY)
 
 # Roughly measure the gc s19 sizes
 $(GCDSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
-	@echo $(shell cat $< | wc -l) "* 16" > $@
+	@echo $(shell cat $< | wc -l) $(QUOTE)* 16$(QUOTE) > $@
 
 # Have to do this in two stages to allow $(shell exp) use and portability to windows
 $(GCDDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
-	@echo "Flash image size is" $(shell cat $< | bc -l) "bytes for $<"
+	@echo $(QUOTE)Flash image size is$(QUOTE) $(shell cat $< | bc -l) $(QUOTE)bytes for $<$(QUOTE)
 
 
 
