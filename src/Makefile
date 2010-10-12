@@ -74,11 +74,18 @@ PREVIOUSVERSION = 0.1.0
 OUTPREFIX = freeems
 LABEL = $(OUTPREFIX)-$(VERSION)
 
-# Windows path difference
+# Windows differences
 ifdef ComSpec
+# Windows uses backslash
 PATHSEP = \\
+# Windows mkdir does not accept -p
+MKDIR = mkdir
+# Windows echo repeats " symbols
+Q =
 else
 PATHSEP = /
+MKDIR = mkdir -p
+Q = "
 endif
 
 # Directories here
@@ -111,13 +118,6 @@ PREFIX = m68hc11-
 XGPREFIX = mc9xgate-
 
 # All of the tools
-# Windows mkdir does not accept -p
-ifdef ComSpec
-MKDIR = mkdir
-else
-MKDIR = mkdir -p
-endif
-
 CP = cp
 RM = rm -rf
 ZIP = zip
@@ -582,11 +582,6 @@ $(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
 	@echo "################################################################################"
 	$(COPY) $(COPYOPTS) $< $@
 
-ifdef ComSpec
-QUOTE = 
-else
-QUOTE = "
-endif
 
 sizesmsg:
 	@echo "################################################################################"
@@ -597,11 +592,11 @@ sizes: s19 $(OUTDIR) sizesmsg $(ALLDUMMY)
 
 # Roughly measure the s19 sizes
 $(ALLSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
-	@echo $(shell cat $< | wc -l) $(QUOTE)* 16$(QUOTE) > $@
+	@echo $(shell cat $< | wc -l) $(Q)* 16$(Q) > $@
 
 # Have to do this in two stages to allow $(shell exp) use and portability to windows
 $(ALLDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
-	@echo $(QUOTE)Flash image size is$(QUOTE) $(shell cat $< | bc -l) $(QUOTE)bytes for $<$(QUOTE)
+	@echo $(Q)Flash image size is$(Q) $(shell cat $< | bc -l) $(Q)bytes for $<$(Q)
 
 
 gcs19msg:
@@ -627,11 +622,11 @@ gcsizes: gcs19 $(OUTDIR) gcsizesmsg $(GCDDUMMY)
 
 # Roughly measure the gc s19 sizes
 $(GCDSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
-	@echo $(shell cat $< | wc -l) $(QUOTE)* 16$(QUOTE) > $@
+	@echo $(shell cat $< | wc -l) $(Q)* 16$(Q) > $@
 
 # Have to do this in two stages to allow $(shell exp) use and portability to windows
 $(GCDDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
-	@echo $(QUOTE)Flash image size is$(QUOTE) $(shell cat $< | bc -l) $(QUOTE)bytes for $<$(QUOTE)
+	@echo $(Q)Flash image size is$(Q) $(shell cat $< | bc -l) $(Q)bytes for $<$(Q)
 
 
 
