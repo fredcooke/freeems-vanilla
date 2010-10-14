@@ -1,16 +1,35 @@
-FreeEMS release procedure
+FreeEMS Release Procedure:
 
-update the interface and version fields length in header too if changed
-update serial documentation
-update interface data map
-make clean all; # to check that it builds cleanly - check win/osx too if possible
-update changelog and bugs and tasks - check mantis and git log since last release
-generate doxygen - setup something of a structure on docs.freeems.org for this
-update all documentation
-generate pdfs from open document files
-git commit;git push; git push alternate
-cd src;make release
+  1) Change Log - doxygen (git log and git diff lastTagName..HEAD)
+  2) Release Notes - doxygen (ditto)
+  3) globalConstants.c/globalConstants.h: firmwareVersion
+  4) optional: globalConstants.c/globalConstants.h: interfaceVersionAndType (only if changed)
+  5) Makefile: VERSION and PREVIOUSVERSION
+  6) Doxyfile: PROJECT_NUMBER
+  7) git commit;git push;git push alternate
+  8) cd src;make release
+  9) generate .pdfs from .od*s
+ 10) verify everything manually from above list
+ 11) git push; git push <tagname>
+ 12) upload all release files to servers (document this during 0.1.1 release!)
+ 13) update appropriate threads (document that during 0.1.1 release!)
+
+General Pre-Release Checklist:
+
+  1) all goals for this release have been achieved
+  2) cd src;make clean all - builds cleanly, on lin/win/mac, if makefile/toolchain has changed
+  3) bench and/or on-vehicle testing of all decoder variants - no regressions, new stuff works
+  4) Doxygen generates cleanly with some version of Doxygen
+  5) Serial documentation up to date?
+  6) Interface data map up to date?
+  7) Issue tracker up to date with bugs/tasks
+  8) Review code changes and ensure matching docs are up to date
+  9) All new functions and files are documented correctly
+ 10) Docs in scripts, README, Makefile, etc are up to date
+
+Old Stuff:
+
 upload all zips to sourceforge or somewhere else?(sftp fredcooke@frs.sourceforge.net, password, cd uploads, put *.bz2)
 check "keep my format" buttons in sourceforge
 update goals,firmware,hardware threads as appropriate linking sourceforge,video,pics
-increment version number in makefile and globals for next iteration + commit and push
+
