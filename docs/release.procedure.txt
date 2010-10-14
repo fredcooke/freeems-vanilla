@@ -8,7 +8,7 @@ FreeEMS Release Procedure:
   6) Doxyfile: PROJECT_NUMBER
   7) git commit;git push;git push alternate
   8) cd src;make release
-  9) generate .pdfs from .od*s
+  9) generate .pdfs from .od*s (integrate into release target before 0.1.2)
  10) verify everything manually from above list
  11) git push; git push <tagname>
  12) upload all release files to servers (document this during 0.1.1 release!)
