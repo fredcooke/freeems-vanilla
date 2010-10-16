@@ -488,8 +488,8 @@ alldebug: maps rees elfdmps objdmps
 # Perform a release
 release: relprep relbuild relperf relpack1 relpack2
 relprep: testgit clean cleanrelease cleandoxy
-relbuild: s19rel s19relgc gendoxy
-relperf: clean relcommit tagrelease
+relbuild: s19rel s19relgc clean gendoxy
+relperf: relcommit tagrelease
 relpack1: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
 relpack2: zipsite zipdocs zipmain zipsrc
 
@@ -817,7 +817,7 @@ s19relmsg:
 	@echo $(Q)#                                Copying S19s...                               #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-s19rel: s19 s19relmsg $(ALLS19RELS)
+s19rel: sizes s19relmsg $(ALLS19RELS)
 
 $(ALLS19RELS): $(RELEASEDIR)/%.s19: $(S19DIR)/%.s19
 	$(CP) $< $@
@@ -839,7 +839,7 @@ s19relgcmsg:
 	@echo $(Q)#                              Copying GC S19s...                              #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-s19relgc: gcs19 s19relgcmsg $(GCDS19RELS)
+s19relgc: gcsizes s19relgcmsg $(GCDS19RELS)
 
 $(GCDS19RELS): $(RELEASEDIR)/%.s19: $(S19DIR)/%.s19
 	$(CP) $< $@
