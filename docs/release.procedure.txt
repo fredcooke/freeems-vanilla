@@ -12,8 +12,8 @@ FreeEMS Release Procedure:
  10) verify everything manually from above list
  11) update above naming and versions to snapshot variants for next dev cycle
  12) git push; git push <tagname>
- 13) upload all release files to servers (document this during 0.1.1 release!)
- 14) update appropriate threads (document that during 0.1.1 release!)
+ 13) scp -r releaseDir raptor: then mv files to downloads and docs directories
+ 14) update facebook, diary thread, releases thread, sprint thread, start new sprint thread
 
 General Pre-Release Checklist:
 
