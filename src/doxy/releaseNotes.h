@@ -5,6 +5,54 @@
  *
  * @b General @b Notes
  *
+ * This release comes to you mostly courtesy of Sean Keys who has done an outstanding job producing an
+ * XGATE assembler and linker for us to use! Sean's work can not be valued enough, it will be absolutely
+ * essential for future versions to perform to the high standards that we try to adhere to. One nice side
+ * effect of the tools being new, is that they now work exactly the same way on all platforms. This now
+ * includes Windows Vista upon which the previous tools would not even run due to a small bug in the GCC
+ * used to build them.
+ *
+ * I would like to thank quite a few people for their involvment in this release:
+ *
+ * - Sean Keys - Wrote XGATE assembler and other binutils, hacked XGATE into FreeEMS, created debian repo
+ * - David Andruczyk - Built windows installer and created scripts to make this repeatable
+ * - Steve Ball - Mac OS X fink tools packaging
+ * - Dave Cramer - Support verifying the Mac tools
+ * - Charles Wilson - Mac OS X testing
+ * - Tim Sutherland - Windows testing
+ * - Tim Zimmerman - Windows testing
+ * - Adrian Dickson - Windows testing
+ * - Me - Makefile changes, integrating Sean's hacking, Linux testing
+ *
+ * Finally, this release would not be possible if not for the kindness of numerous people that have donated
+ * money and food to the cause. During the development of 0.1.1 I have been homeless, living in my car, with
+ * no income and very little money. Just yesterday the last of the money ran out, and I am now living only
+ * on FreeEMS donations from car enthusiasts around the world. My most sincere and heart-felt thanks to each
+ * and every one of you! Most appreciated!
+ *
+ * If anyone else wants to contribute, contact me through any medium for the details.
+ *
+ * The new XGATE tools and information on them are available from here:
+ *
+ * - <a href="http://tools.diyefi.org"><b>FreeEMS Tools</b></a>
+ *
+ * @b New @b Features:
+ * - XGATE core is functional, simple proof code in place
+ * - Decoder interface skeleton in place
+ * - Build is completely cross platform Linux/MacOSX/Windows
+ *
+ * @b Differences:
+ * - ADC sampling more accurate
+ * - freeemsLoader.bash script checks for dat file
+ * - Linker script fix for F8 page
+ * - PDF documentation only generated for releases
+ *
+ * @b Known @b Issues:
+ * - Same as last release, only.
+ */
+
+/** @page releaseNotes_0_1_0 FreeEMS 0.1.0 UltraJizz
+ *
  * A version of the code very similar to 0.1.0 was the first version of FreeEMS to run an engine! That
  * is the reason for moving the versioning from the 0.0.X series to the 0.1.X series. After a few minor
  * false starts, FreeEMS first ran in Baltimore on Friday October 23rd, 2009 at around 2:15am GMT. The
@@ -188,9 +236,8 @@
 
 /** @page releaseNotes_0_1_X Release Notes - 0.1.X Versions
  *
- * It is wishful thinking putting this here at this stage, but never the less, here it is :-)
- *
- * Hopefully we can put it to good use fairly soon!
+ * - @subpage releaseNotes_0_1_0
+ * - @ref releaseNotes 0.1.1
  */
 
 /**	@file releaseNotes.h

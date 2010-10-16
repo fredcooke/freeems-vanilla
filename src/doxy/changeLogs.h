@@ -6,6 +6,30 @@
  *
  * Please place your entries at the bottom of the list in the same format as the rest.
  *
+ * @version 0.1.1 XGATED
+ *
+ * @date 16/10/10 17:?? NZST
+ *
+ * @b Changes
+ * - Combined naming variables in Makefile
+ * - Fixed ADC sampling configuration
+ * - Filled out XGATE section of header
+ * - Add test for correct hcs12mem dat file
+ * - Remove all OpenOffice generated PDFs
+ * - Add decoder interface header skeleton
+ * - Fix page location bug in linker scripts for F8
+ * - Use @echo to make Windows builds work and look like Linux builds
+ * - Filled out interrupt configuration section of header
+ * - Added XGATE assembly file, configuration code and makefile entries
+ * - Removed redundant Windows specific Makefile and script for generating it
+ * - Added ifdef to make Windows "just work"
+ * - Modified size calculation to work on Windows
+ * - Update README, Makefile and release procedure documentation
+ * - Assorted minor code and documentation changes
+ */
+
+/** @page changeLog_0_1_0 FreeEMS 0.1.0 UltraJizz
+ *
  * @version 0.1.0 UltraJizz
  *
  * @date 26/05/10 03:30 GMT
@@ -785,9 +809,8 @@
 
 /** @page changeLogs_0_1_X Change Logs - 0.1.X Versions
  *
- * It is wishful thinking putting this here at this stage, but never the less, here it is :-)
- *
- * Hopefully we can put it to good use fairly soon!
+ * - @subpage changeLog_0_1_0
+ * - @ref changeLogs 0.1.1 
  */
 
 /**	@file changeLogs.h
