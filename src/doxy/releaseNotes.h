@@ -5,6 +5,20 @@
  *
  * @b General @b Notes
  *
+ * A paragraph or two about this release.
+ *
+ * @b New @b Features:
+ * - ?
+ * 
+ * @b Differences:
+ * - ?
+ *
+ * @b Known @b Issues:
+ * - ?
+ */
+
+/** @page releaseNotes_0_1_0 FreeEMS 0.1.0 UltraJizz
+ *
  * This release comes to you mostly courtesy of Sean Keys who has done an outstanding job producing an
  * XGATE assembler and linker for us to use! Sean's work can not be valued enough, it will be absolutely
  * essential for future versions to perform to the high standards that we try to adhere to. One nice side
@@ -237,7 +251,8 @@
 /** @page releaseNotes_0_1_X Release Notes - 0.1.X Versions
  *
  * - @subpage releaseNotes_0_1_0
- * - @ref releaseNotes 0.1.1
+ * - @subpage releaseNotes_0_1_1
+ * - @ref releaseNotes 0.1.2 SNAPSHOT
  */
 
 /**	@file releaseNotes.h

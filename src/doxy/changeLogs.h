@@ -6,6 +6,16 @@
  *
  * Please place your entries at the bottom of the list in the same format as the rest.
  *
+ * @version 0.1.2 SNAPSHOT
+ *
+ * @date release when ready
+ *
+ * @b Changes
+ * - ?
+ */
+
+/** @page changeLog_0_1_1 FreeEMS 0.1.1 XGATED
+ *
  * @version 0.1.1 XGATED
  *
  * @date 16/10/10 21:30 NZST
@@ -810,7 +820,8 @@
 /** @page changeLogs_0_1_X Change Logs - 0.1.X Versions
  *
  * - @subpage changeLog_0_1_0
- * - @ref changeLogs 0.1.1 
+ * - @subpage changeLog_0_1_1
+ * - @ref changeLogs 0.1.2 SNAPSHOT 
  */
 
 /**	@file changeLogs.h
