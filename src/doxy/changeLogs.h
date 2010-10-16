@@ -18,7 +18,7 @@
  * - Remove all OpenOffice generated PDFs
  * - Add decoder interface header skeleton
  * - Fix page location bug in linker scripts for F8
- * - Use @echo to make Windows builds work and look like Linux builds
+ * - Use @ prefixed echo to make Windows builds work and look like Linux builds
  * - Filled out interrupt configuration section of header
  * - Added XGATE assembly file, configuration code and makefile entries
  * - Removed redundant Windows specific Makefile and script for generating it
