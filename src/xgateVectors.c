@@ -23,10 +23,27 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
+
+/**	@file xgateVectors.c
+ * @ingroup interruptHandlers
+ *
+ * @brief XGATE Interrupt Vector Table
+ *
+ * This file contains the definition of the XGATE interrupt vector table.
+ * This table consists only of pointers to xgate code blocks which are by
+ * definition void. These will be called by the hardware when an interrupt
+ * of a certain type occurs.
+ *
+ * @author Sean Keys
+ */
+
+
 #define XGATEVECTORS_C
 #include "inc/freeEMS.h"
 #include "inc/xgateVectors.h"
 
+
+/* Currently this gets copied from wherever it ends up into the XGATE flash pages */
 const xgateIntVector xgateIntVectorTable[] = {
 		/* Channel # = Vector address / 2 */
 		/* channel 0x00-0x08 are not used, 0x09-0x1D are reserved first used must match macro XGATE_VECTOR_OFFSET in xgate.h */
