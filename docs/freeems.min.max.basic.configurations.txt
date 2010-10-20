@@ -1,0 +1,52 @@
+Minimum, recommended and maximum freeems connection configurations.
+
+
+cpu inputs:
+
+iat adc (internal bias resistor)
+cht adc (internal bias resistor)
+map adc (on-board(hose) or external(wire))
+brv adc (relay switched, but individual)
+
+primary rpm timer (through conditioning)
+sleep input digital (internal from switched clean 12v) (can we do this through the BRV input and a threshold interrupt??)
+
+It is strongly recommended that the secondary rpm timer input be connected and filtered too, but this is not required for many configurations. Not doing this WILL limit the applications of your device as some setups require the second input to function at all.
+
+Devices intended to be sold or built internationally or in geographical locations with extremes of altitude are strongly recommended to include an on board AAP (Absolute Atmospheric Pressure) sensor. If included it is recommended to allow connection of the AAP to a hose which will allow it to measure a part of the vehicle with a neutral pressure profile when moving.
+
+It is recommended that most devices include a TPS input. Many functions are not possible without this input and not including it will limit the user in significant ways.
+
+Although not essential, it is recommended that a wide band EGO sensor input be included. Without this datalogging is somewhat pointless and all tuning will need to be done live and while driving or on a dyno.
+
+Optionally, you can provision for an external MAF to be connected to the device on its dedicated pin.
+
+For boxer and V engines, a second EGO input can be provided to allow independent monitoring and control of the banks.
+
+If there is available board realestate, users will be very happy to have the spare ADC inputs brought out for connecting various analog sensors.
+
+cpu outputs:
+
+1 x injector (bit bang) (without this, ignition only box)
+1 x ignition (timer pin, internal/external high/low current) (without this, fuel only box)
+1 x fuel pump (bit bang slow)
+
+Minimum of 1 injector or ignition output, maximum of 6 ignition, 12 injector (maybe + 12 staged injector). Boxes without any ignition outputs must be labeled clearly as "fuel control only". Boxes without any injector outputs must be clearly labeled with "ignition control only". A normal output configuration is 4 - 8 injector outputs and 1 - 6 low power ignition outputs depending upon application. It is recommended to fit 4 high Z injector outputs and 4 low power ignition outputs at minimum. This gives full sequential/COP operation on a 4 cylinder and semi sequential/Wasted Spark on a 6 or 8 cylinder engine.
+
+Accessory outputs are suggested to be connected to some or all of the 8 PWM pins. By far the most likely accessory required is PWM idle control and having 1 FET available on these outputs will allow that to function. If 4 or less accessory outputs are being installed, they should be on the high resolution PWM pins.
+
+additional external connections:
+
+clean constant 12v (cpu power supply)
+clean relay switched 12v (adc vreg and sleep input)
+dirty relay switched 12v (fly back)
+
+clean ground (cpu and adc stuff)
+dirty fuel ground (injector ground supply)
+dirty ignition ground (only if internal igbts fitted)
+dirty accessory ground (fuel pump and others)
+
+
+Communications:
+
+1 serial connection. The serial connection can be an RS232 port, or a USB port, the latter being strongly preferred as this eliminates the physical RS232 layer and leaves communication over UART and USB only, thus improving the connection quality.
