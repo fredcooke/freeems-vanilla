@@ -30,7 +30,5 @@ General Pre-Release Checklist:
 
 Old Stuff:
 
-upload all zips to sourceforge or somewhere else?(sftp fredcooke@frs.sourceforge.net, password, cd uploads, put *.bz2)
-check "keep my format" buttons in sourceforge
 update goals,firmware,hardware threads as appropriate linking sourceforge,video,pics
 
