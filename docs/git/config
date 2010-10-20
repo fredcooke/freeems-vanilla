@@ -1,0 +1,51 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+[remote "origin"]
+	url = git@github.com:fredcooke/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	push = refs/heads/master:refs/heads/master
+[remote "raptor"]
+	url = git:freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/raptor/*
+	push = refs/heads/*:refs/heads/*
+[remote "alternate"]
+	url = git@gitorious.org:freeems-vanilla/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/alternate/*
+	push = refs/heads/master:refs/heads/master
+[remote "seansrepo"]
+        url = git://github.com/seank/freeems-vanilla.git
+        fetch = +refs/heads/*:refs/remotes/seansrepo/*
+[remote "aaronsrepo"]
+        url = git://github.com/srynot4sale/freeems-vanilla.git
+        fetch = +refs/heads/*:refs/remotes/aaronsrepo/*
+[remote "philj"]
+	url = git://github.com/johnsop1/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/johnsop1/*
+[remote "mtxman"]
+	url = git://github.com/djandruczyk/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/djandruczyk/*
+[remote "jaredh"]
+	url = git://github.com/jharvey/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/jharvey/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[branch "release"]
+	remote = origin
+	merge = refs/heads/release
+[branch "daves"]
+	remote = mtxman
+	merge = refs/heads/master
+[branch "seank"]
+	remote = seansrepo
+	merge = refs/heads/master
+[branch "aaronb"]
+	remote = aaronsrepo
+	merge = refs/heads/master
+[branch "philsmaster"]
+	remote = philj
+	merge = refs/heads/master
+[branch "jharvey"]
+	remote = jaredh
+	merge = refs/heads/master
