@@ -2,7 +2,7 @@
 
 For the most up to date inforamation, please see the forums at :
 
-http://www.diyefi.org/forum/
+http://forum.diyefi.org
 
 Before using this system, please see the disclaimer here :
 
@@ -14,7 +14,7 @@ http://github.com/fredcooke/freeems-vanilla
 
 If you want to modify and build this firmware there an out-of-date guide available :
 
-http://www.diyefi.org/forum/viewtopic.php?f=8&t=508
+http://forum.diyefi.org/viewtopic.php?f=8&t=508
 
 For all your documenation needs please see the docs page :
 
@@ -22,7 +22,7 @@ http://docs.freeems.org
 
 Setting up the tuning application is described in the following thread :
 
-http://www.diyefi.org/forum/viewtopic.php?f=43&t=519
+http://forum.diyefi.org/viewtopic.php?f=43&t=519
 
 Loading the firmware S19 file to the device :
 
@@ -39,7 +39,7 @@ being your serial device, and the second being your s19 file.
 Please post any and all feedback on code, documentation, the system, anything
 at all, even subtle and minor stuff to the forums :
 
-http://www.diyefi.org/forum/
+http://forum.diyefi.org
 
 Thanks for playing with FreeEMS :-)
 

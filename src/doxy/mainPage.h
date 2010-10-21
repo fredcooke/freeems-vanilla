@@ -30,8 +30,8 @@
  *
  * @b See @b Also:
  * - <a href="http://www.diyefi.org">DIYEFI.org</a>
- * - <a href="http://www.diyefi.org/forum/index.php">DIYEFI.org forums</a>
- * - <a href="http://www.diyefi.org/forum/viewforum.php?f=19">DIYEFI.org FreeEMS forums</a>
+ * - <a href="http://forum.diyefi.org">DIYEFI.org forums</a>
+ * - <a href="http://forum.diyefi.org/viewforum.php?f=19">DIYEFI.org FreeEMS forums</a>
  * - <a href="http://tools.diyefi.org">FreeEMS/XGATE/S12X Tools</a>
  * - <a href="http://github.com/fredcooke/freeems-vanilla/">FreeEMS Vanilla Git source repository on GitHub.com</a>
  * - <a href="https://www.ohloh.net/p/freeems">FreeEMS code statistics by ohloh.net</a>

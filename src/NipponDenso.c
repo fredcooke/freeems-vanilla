@@ -224,7 +224,7 @@ void PrimaryRPMISR(){
 				unsigned char reschedule = 0;
 				unsigned long diff = startTimeLong - (injectorMainEndTimes[fuelChannel] + injectorSwitchOffCodeTime);
 				if(diff > LONGHALF){
-					reschedule = 1; // http://www.diyefi.org/forum/viewtopic.php?f=8&t=57&p=861#p861
+					reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
 				}
 
 				// schedule the appropriate channel
