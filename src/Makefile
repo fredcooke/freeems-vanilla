@@ -73,7 +73,7 @@ Q = "
 endif
 
 # Directories here
-RELEASEDIR = ../firmware
+RELEASEDIR = ../previous-release
 DISTRIBUTIONDIR = ../../$(LABEL)
 DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
