@@ -24,7 +24,8 @@
  */
 
 
-/**	@file flat80Percent.h
+/** @file flat80Percent.h
+ *
  * @ingroup dataInitialisers
  *
  * @brief A dead flat 80% VE curve to use as a default for typical engines.

@@ -23,25 +23,14 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/** @page generalStrategies General Strategies
+/** @file FE-DOHC.h
  *
- * This page exists to document general coding strategies used in this
- * firmware. Each item should contain a title, description, situations
- * it is useful in and somewhere you can see an example of it in use.
+ * @ingroup dataInitialisers
  *
- * Reading/Writing from/to a specific page :
+ * @brief The OEM naturally aspirated FE-DOHC ignition curve
  *
- * Save the current page value to a variable, change the page value to the desired one, read or write the paged memory, change the page back and return the value
+ * This file only contains the data to be hash included into the ignition timing
+ * tables in the timing table files for car specific builds.
  *
- * This is applicable to all three available memory types: Flash, RAM and EEPROM.
- *
- * Examples of its use can be found in flashWrite.c
- *
- * @todo TODO TBC (other strategies)
- */
-
-/** @file strategies.h
- *
- * @ingroup doxygenDocFiles
- * @brief Doxygen General Strategies page definition
+ * @author Mazda
  */

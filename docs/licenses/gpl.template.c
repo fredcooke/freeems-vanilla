@@ -23,7 +23,8 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/**	@file filename.c
+/** @file filename.c
+ *
  * @ingroup putMeInSomeGroups
  *
  * @brief A summary description only
