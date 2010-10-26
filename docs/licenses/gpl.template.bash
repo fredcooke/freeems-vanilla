@@ -1,6 +1,10 @@
+#!/bin/bash
+
+#	FreeEMS - the open source engine management system
+#
 #	filename here
 #
-#	Copyright 2009 Fred Cooke
+#	Copyright 2010 Fred Cooke
 #
 #	This file is part of the FreeEMS project.
 #

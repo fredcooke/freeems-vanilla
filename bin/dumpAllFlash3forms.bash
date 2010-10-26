@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#	FreeEMS - the open source engine management system
+#
 #       dumpAllFlash3forms.bash
 #
 #       Copyright 2008, 2009, 2010 Fred Cooke
@@ -19,7 +21,8 @@
 #       You should have received a copy of the GNU General Public License
 #       along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 #
-#       We ask that if you make any changes to this file you send them upstream to us at admin@diyefi.org
+#       We ask that if you make any changes to this file you email them upstream to
+#	us at admin(at)diyefi(dot)org or, even better, fork it on www.github.com!!!
 #
 #       Thank you for choosing FreeEMS to run your engine!
 
