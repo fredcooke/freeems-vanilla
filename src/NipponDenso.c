@@ -248,10 +248,10 @@ void PrimaryRPMISR(){
 				// TODO check queue length checks to ensure we dont count up to somewhere we can never count down from. This could be causing the hanging long phenomina
 
 				// DWELL
-
+/*
 				// If dwell is not currently enabled, set it all up
 				if(!(PITCE & DWELL_ENABLE)){
-					/* Schedule Dwell event (do this first because it comes earliest. */
+					// Schedule Dwell event (do this first because it comes earliest.
 					// set the channel to fire
 					nextDwellChannel = ignitionChannel;
 
@@ -305,7 +305,7 @@ void PrimaryRPMISR(){
 
 				// If ignition is not currently enabled, set it all up
 				if(!(PITCE & IGNITION_ENABLE)){
-					/* Schedule Ignition event (do this first because it comes earliest. */
+					// Schedule Ignition event (do this first because it comes earliest.
 					// set the channel to fire
 					nextIgnitionChannel = ignitionChannel;
 
@@ -354,7 +354,7 @@ void PrimaryRPMISR(){
 
 					// increment from 1 or more
 					ignitionQueueLength++;
-				}
+				}*/
 			}
 		}
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
