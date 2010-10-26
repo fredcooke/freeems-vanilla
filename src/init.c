@@ -71,7 +71,7 @@ void init(){
 	initVariables();        	/* Initialise the rest of the running variables etc */
 	initFlash();            	/* TODO, finalise this */
 	initECTTimer();         	/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
-	initPITTimer();         	/* TODO ditto... */
+//	initPITTimer();         	/* TODO ditto... */
 	initSCIStuff();         	/* Setup the sci module(s) that we will use. */
 	initConfiguration();    	/* TODO Set user/feature/config up here! */
 	initXgate();
