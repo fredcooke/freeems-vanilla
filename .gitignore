@@ -1,4 +1,5 @@
 doxygen.output
+bin/a.out
 docs/doxygen-html/
 docs/*.pdf
 src/firmware/
