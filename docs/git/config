@@ -1,10 +1,13 @@
 [core]
 	repositoryformatversion = 0
 	filemode = true
+
+# My redundant remotes
 [remote "origin"]
 	url = git@github.com:fredcooke/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 	push = refs/heads/master:refs/heads/master
+	push = refs/heads/release:refs/heads/release
 [remote "raptor"]
 	url = git:freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/raptor/*
@@ -13,10 +16,24 @@
 	url = git@gitorious.org:freeems-vanilla/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/alternate/*
 	push = refs/heads/master:refs/heads/master
+	push = refs/heads/release:refs/heads/release
 [remote "sourceforge"]
 	url = ssh://fredcooke@freeems.git.sourceforge.net/gitroot/freeems/freeems-vanilla
 	fetch = +refs/heads/*:refs/remotes/sourceforge/*
 	push = refs/heads/master:refs/heads/master
+	push = refs/heads/release:refs/heads/release
+[remote "repoorcz"]
+	url = ssh://repo.or.cz/srv/git/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/sourceforge/*
+	push = refs/heads/master:refs/heads/master
+	push = refs/heads/release:refs/heads/release
+[remote "unfuddle"]
+	url = git@freeems.unfuddle.com:freeems/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/unfudddle/*
+	push = refs/heads/master:refs/heads/master
+	push = refs/heads/release:refs/heads/release
+
+# Others forks
 [remote "seansrepo"]
         url = git://github.com/seank/freeems-vanilla.git
         fetch = +refs/heads/*:refs/remotes/seansrepo/*

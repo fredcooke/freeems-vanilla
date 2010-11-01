@@ -11,7 +11,7 @@ FreeEMS Release Procedure:
   9) generate .pdfs from .od*s (integrate into release target before 0.1.2)
  10) verify everything manually from above list
  11) update above naming and versions to snapshot variants for next dev cycle
- 12) git push; git push <tagname>
+ 12) git checkout release; git merge <tagname>; git checkout master; git push; git push <tagname>; repeat tag push for other remotes...
  13) scp -r releaseDir raptor: then mv files to downloads and docs directories
  14) update facebook, diary thread, releases thread, sprint thread, start new sprint thread
 
