@@ -1,0 +1,33 @@
+(14:01:41) fredcooke: start/stop/esc will NOT change
+(14:01:48) fredcooke: the chars used for them might
+(14:01:56) fredcooke: there will be a checksum of some sort
+(14:02:00) fredcooke: it may change to crc
+(14:02:03) fredcooke: right now its simple
+(14:02:09) fredcooke: there will be async packets
+(14:02:37) fredcooke: the serial stream will be continuous, and you will need to pull packets out of that by searching for start/stop
+
+(14:02:14) Dave: but IS IT IN THE FILE? : Yes ;-)
+
+The other older documents are mostly correct. If you apply the above to them, you can use them. Check with me on email/forum/irc/gmail chat/aim/msn if in doubt or to confirm specifics. I'm available most of the time.
+
+Packets have a header field with information in it. The format of this may change, if it does, it will change in a syncronised way with the author of the most useful tuning package at the time, and preferably all supporting tuners.
+
+To interrogate you'll need to decode the stream, and look ONLY for packets that correspond to answers to your requests. Ignoring all others until you are configured.
+
+Some simple packets to start with:
+
+1) Finding out what the firmware is. There are firmware version and interface version request packets that work - this may change depending upon the semantics for long term supportability that we come up with.
+
+2) Datalog packets. The format of the datalog is currently only defined in the firmware, handle it as a block of data with no home for now, if you like.
+
+3) Comms properties. There is a max packet size request packet This shouldn't be needed due to other specs, but can be probed to confirm, and the value used to ensure no overflows/lost big packets.
+
+4) Testing the device. You can request an echo packet. Your request packet gets wrapped and returned to you unchanged. Payload can be full or empty.
+
+5) Controlling the device. There are packets to cause the device to reset that probably wont change. Soft and hard are available.
+
+I recommend not putting much effort into more specific packet types as they ARE likely to change, especially based on what the tuner authors want, and what makes the most sense.
+
+Grep case commsCore.c to see what is available.
+
+Dave has permission to phone or skype me 24/7 for support/detail/info. Anything to get the ball rolling on this :-)
