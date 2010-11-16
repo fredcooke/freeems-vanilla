@@ -1283,16 +1283,3 @@ void sendDebugInternal(unsigned char* message){
 //	//	the pointer should be correct already
 //}
 
-
-/** @brief Send an ack if required
- *
- * Currently only used to clear the TX buffer flags if we no longer need it.
- *
- * @author Fred Cooke
- *
- * @todo TODO when implementing, check that ppage is OK!!!
- */
-//void sendAckIfRequired(){
-//	TXBufferInUseFlags = 0;
-//	// check PPAGE while implementing TODO
-//}
