@@ -133,7 +133,7 @@
  *     - readme/readme.txt/README/README.txt
  *
  * Please see the following Mantis issue for the original mandate to produce this document:
- * - http://freeems.aaronb.info/tracker/view.php?id=10
+ * - http://issues.freeems.org/view.php?id=10
  */
 
 /** @file codingStyle.h

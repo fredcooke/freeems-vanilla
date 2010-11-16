@@ -143,7 +143,7 @@ void populateBasicDatalog(){
  *
  * @author Fred Cooke
  *
- * @bug http://freeems.aaronb.info/tracker/view.php?id=81
+ * @bug http://issues.freeems.org/view.php?id=81
  * @todo TODO fix the double/none start byte bug and remove the hack!
  */
 void checksumAndSend(){
