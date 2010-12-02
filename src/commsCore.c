@@ -255,7 +255,7 @@ void decodePacketAndRespond(){
 	TXBufferCurrentPositionHandler += 2;
 	RXCalculatedPayloadLength -= 2;
 
-	/* If there is an ack, copy it to the return packet */
+	/* REWORK REMOVE this logic: "If there is an ack, copy it to the return packet" ALL packets get acked! */
 	if(RXHeaderFlags & HEADER_HAS_ACK){
 		*TXBufferCurrentPositionHandler = *RXBufferCurrentPosition;
 		*TXHeaderFlags |= HEADER_HAS_ACK;
@@ -264,7 +264,7 @@ void decodePacketAndRespond(){
 		RXCalculatedPayloadLength--;
 	}
 
-	/* If the header has addresses, check them and if OK copy them */
+	/* REWORK REMOVE this logic and address fields and migrate to a higher layer of comms: "If the header has addresses, check them and if OK copy them" uart is point to point, and these packets can be wrapped if they need intelligent delivery. */
 	if(RXHeaderFlags & HEADER_HAS_ADDRS){
 		/* Check the destination address against our address */
 		if(*RXBufferCurrentPosition != fixedConfigs1.serialSettings.networkAddress){
@@ -304,7 +304,7 @@ void decodePacketAndRespond(){
 	/* Subtract checksum to get final length */
 	RXCalculatedPayloadLength--;
 
-	/* Grab the length if available */
+	/* REWORK MAYBE make this compulsory? Currently optional as some types have implicit length. Think about impl simplicity on both sides, think about speed increase in leaving it out, just tripple check if present: "Grab the length if available" */
 	if(RXHeaderFlags & HEADER_HAS_LENGTH){
 		RXHeaderPayloadLength = *((unsigned short*)RXBufferCurrentPosition);
 		RXBufferCurrentPosition += 2;
@@ -453,7 +453,7 @@ void decodePacketAndRespond(){
 			if(index != 0){
 				sendErrorInternal(MEMORY_WRITE_ERROR);
 			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -526,7 +526,7 @@ void decodePacketAndRespond(){
 				}
 			}
 
-			sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+			sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			// TODO document errors can always be returned and add error check in to send as response for ack and async otherwise
 			break;
 		}
@@ -659,7 +659,7 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+			sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			break;
 		}
 		case eraseAllBlocksFromFlash:
@@ -681,7 +681,7 @@ void decodePacketAndRespond(){
 					eraseSector(page, (unsigned short*)addr);
 				}
 			}
-			sendDebugInternal("Erased three 128k Flash blocks!");
+			sendDebugInternal("Erased three 128k Flash blocks!"); // REWORK remove this block, it's dangerous!!!
 			break;
 		}
 		case burnAllBlocksOfFlash:
@@ -702,7 +702,7 @@ void decodePacketAndRespond(){
 					writeSector(RPAGE, (unsigned short*)0xc000, page, (unsigned short*)addr);
 				}
 			}
-			sendDebugInternal("Overwrote three 128k Flash blocks!");
+			sendDebugInternal("Overwrote three 128k Flash blocks!"); // REWORK remove this block, it's useless, SeanK's loader will be ready soon.
 			break;
 		}
 		case adjustMainTableCell:
@@ -738,7 +738,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -773,7 +773,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -808,7 +808,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -843,7 +843,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -878,7 +878,7 @@ void decodePacketAndRespond(){
 			if(errorID != 0){
 				sendErrorInternal(errorID);
 			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			}
 			break;
 		}
@@ -908,7 +908,7 @@ void decodePacketAndRespond(){
 		}
 		case requestConfigurableDatalog:
 		{
-			// perform function TODO
+			// perform function TODO REWORK review this
 			sendErrorInternal(unimplementedFunction);
 			break;
 		}
@@ -927,18 +927,18 @@ void decodePacketAndRespond(){
 				asyncDatalogType = newDatalogType;
 			}
 
-			sendErrorInternal(NO_PROBLEMO); /// @todo TODO implement default return of empty packet.
+			sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
 			break;
 		}
 		case forwardPacketOverCAN:
 		{
-			// perform function TODO
+			// perform function TODO REWORK review this
 			sendErrorInternal(unimplementedFunction);
 			break;
 		}
 		case forwardPacketOverOtherUART:
 		{
-			// perform function TODO
+			// perform function TODO REWORK review this
 			sendErrorInternal(unimplementedFunction);
 			break;
 		}
