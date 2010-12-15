@@ -65,14 +65,14 @@
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&  Firmware Payload Type IDs  &&&&&&&&&&&&&&&&&&&&&&&*/
 
-/* Whole block manipulation */
-#define replaceBlockInRAM           256
-#define replaceBlockInFlash         258
+/* Data block manipulation */
+#define updateBlockInRAM           256
+#define updateBlockInFlash         258
 #define retrieveBlockFromRAM        260
 #define retrieveBlockFromFlash      262
 #define burnBlockFromRamToFlash     264
-#define eraseAllBlocksFromFlash     266
-#define burnAllBlocksOfFlash        268
+#define eraseAllBlocksFromFlash     266 // TODO @todo remove this
+#define burnAllBlocksOfFlash        268 // TODO @todo remove this
 
 /* Main table manipulation */
 #define adjustMainTableCell         300

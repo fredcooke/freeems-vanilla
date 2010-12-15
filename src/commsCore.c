@@ -405,7 +405,7 @@ void decodePacketAndRespond(){
 			/* Using _start() only resets the app ignoring the monitor switch. It does not work */
 			/* properly because the location of _start is not the master reset vector location. */
 		}
-		case replaceBlockInRAM:
+		case updateBlockInRAM:
 		{
 			/* Extract the ram location ID from the received data */
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
@@ -457,7 +457,7 @@ void decodePacketAndRespond(){
 			}
 			break;
 		}
-		case replaceBlockInFlash:
+		case updateBlockInFlash:
 		{
 			/* Extract the ram location ID from the received data */
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
