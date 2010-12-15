@@ -110,7 +110,7 @@
 /*	Changes to this file should be reflected in memory.h and Makefile also */
   }
 
-  PROVIDE (_stack = 0x4000-1); /* Start the stack immediately after ram */
+  PROVIDE (_stack = 0x4000-1); /* Start the stack immediately after RAM */
   /* Vectors are located via the linker command line, not here. */
 
 

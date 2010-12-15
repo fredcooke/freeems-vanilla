@@ -49,7 +49,7 @@
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 /*&&&&&&&&&&&&&&&&&&&&                                                               &&&&&&&&&&&&&&&&&&&*/
 /*&&&&&&&&&&&&&&&&&&&& These routines rely on the fact that there are no ISRs trying &&&&&&&&&&&&&&&&&&&*/
-/*&&&&&&&&&&&&&&&&&&&& to access the small tables and other live settings in the ram &&&&&&&&&&&&&&&&&&&*/
+/*&&&&&&&&&&&&&&&&&&&& to access the small tables and other live settings in the RAM &&&&&&&&&&&&&&&&&&&*/
 /*&&&&&&&&&&&&&&&&&&&& window as specified by the RPAGE value. If they are then bad  &&&&&&&&&&&&&&&&&&&*/
 /*&&&&&&&&&&&&&&&&&&&& values WILL be occasionally read from random parts of the big &&&&&&&&&&&&&&&&&&&*/
 /*&&&&&&&&&&&&&&&&&&&& tables instead of the correct place. If that occurs it WILL   &&&&&&&&&&&&&&&&&&&*/
@@ -172,7 +172,7 @@ unsigned short lookupPagedMainTableCellValue(mainTable* Table, unsigned short re
 	unsigned short highRPMLowLoad = Table->Table[(Table->LoadLength * highRPMIndex) + lowLoadIndex];
 	unsigned short highRPMHighLoad = Table->Table[(Table->LoadLength * highRPMIndex) + highLoadIndex];
 
-	/* Restore the ram page before doing the math */
+	/* Restore the RAM page before doing the math */
 	RPAGE = oldRPage;
 
 	/* Find the two side values to interpolate between by interpolation */

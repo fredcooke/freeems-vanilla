@@ -45,7 +45,7 @@
 
 /** @brief Lookup memory block details.
  *
- * Flash only blocks leave the ram address and page values
+ * Flash only blocks leave the RAM address and page values
  * set to zero. ID's that don't exist leave all set to zero.
  * Error handling is to be done externally based on that.
  *

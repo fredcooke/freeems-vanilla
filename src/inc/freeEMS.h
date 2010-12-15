@@ -200,15 +200,15 @@ broken too, need to research how to do this.
 see line 80 or so from inc/injectorISR.c for array of pointer use. the above may not be possible... TODO */
 
 
-/* Potentially pointers for data in ram depending on how it gets implemented */
+/* Potentially pointers for data in RAM depending on how it gets implemented */
 // volatile ??
 //EXTERN tunableConfig tunableConfigs;
 
-/* Layout the tunable copies and buffers in ram space */
+/* Layout the tunable copies and buffers in RAM space */
 
 
 
-/* TODO explanation of paged ram operation Unions for paged large table access using RPAGE */
+/* TODO explanation of paged RAM operation Unions for paged large table access using RPAGE */
 typedef union {
 	mainTable VETableMain;
 	mainTable IgnitionAdvanceTableMain;

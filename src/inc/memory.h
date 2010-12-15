@@ -55,7 +55,7 @@
 #define RWINDOW		__attribute__ ((section (".rpage")))		/* ~4k paged RAM window */
 #define RXBUF		__attribute__ ((section (".rxbuf")))		/* ~2k block of RAM for receive buffer */
 #define TXBUF		__attribute__ ((section (".txbuf")))		/* ~2k block of RAM for transmit buffer */
-// 4k of ram for general variable and stack use, need to put some aside for xgate!!
+// 4k of RAM for general variable and stack use, need to put some aside for xgate!!
 
 /* Direct flash blocks */
 #define FIXEDCONF1	__attribute__ ((section (".fixedconf1"))) /*  1k unpaged block, primary static configuration.		*/

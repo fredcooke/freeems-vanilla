@@ -192,7 +192,7 @@
  *     - Added file name conventions to the code style doc
  * - Fred 15/1/09 22:26 GMT:
  *     - Added size reporting to linux makefile
- *     - Refactored init functions for paged ram copies and addresses
+ *     - Refactored init functions for paged RAM copies and addresses
  *     - Split up fixed conf 1 into 5 addressable chunks
  *     - Added core vars test generator file
  *     - Added note about s19 files
@@ -216,7 +216,7 @@
  *
  * @b Changes:
  * - Fred 12/11/08 07:04 GMT:
- *     - Added flash and ram receive functions
+ *     - Added flash and RAM receive functions
  *     - Added wrappers for debug and error
  *     - Modified flash error handling to be compatible with overall scheme
  *     - Renamed all counters more sensibly
@@ -224,7 +224,7 @@
  * - Fred 12/11/08 19:51 GMT:
  *     - Created generic flash burning wrapper
  *     - Moved flash error handling into wrapper
- *     - Moved page ram init to functions per block of data
+ *     - Moved page RAM init to functions per block of data
  *     - Moved tables to 3 pages from 2 and put functions in place to init them
  *     - Created multi sector flash burn function
  *     - Previously added table size guide
@@ -323,8 +323,8 @@
  *     - Removed extra copies of core and derived vars from header
  *     - Documented new pointer scheme in header
  * - Fred 21/12/08 02:37 GMT:
- *     - Fixed bug, flash and ram pages/addresses were swapped in a flash burn function call
- *     - Added check for dest address in ram region
+ *     - Fixed bug, flash and RAM pages/addresses were swapped in a flash burn function call
+ *     - Added check for dest address in RAM region
  * - Fred 21/12/08 22:46 GMT:
  *     - Hacked in datalog delay of 1 second
  *     - Hacked orange button to turn basic datalog off and on
@@ -419,10 +419,10 @@
  * - Fred 08/11/08 13:38 GMT:
  *     - Added soft reset function
  * - Fred 09/11/08 02:37 GMT:
- *     - Added ram block return by ID function
- *     - Added ram to flash burn by ID function
- *     - Added comm to ram write by ID function
- *     - Added comm to flash write by ID function (and update ram)
+ *     - Added RAM block return by ID function
+ *     - Added RAM to flash burn by ID function
+ *     - Added comm to RAM write by ID function
+ *     - Added comm to flash write by ID function (and update RAM)
  * - Fred 09/11/08 12:30 GMT:
  *     - Added memory location lookup and struct
  * - Fred 09/11/08 17:29 GMT:
@@ -486,18 +486,18 @@
  * - Fred: Added output to makefile to see each operation type
  * - Fred: Removed hash define from all constants C files
  * - Fred: Added main table unions
- * - Fred: Added ram regions for the purpose of aligning large blocks of data
+ * - Fred: Added RAM regions for the purpose of aligning large blocks of data
  * - Fred: Added include and memcpy references to bring data up into ram
  * - Fred: Added RPAGE to header to allow paging of tables in and out of visible space
  * - Fred: Added paged tuning blocks such that table switching almost changes a full tune
  * - Fred: Migrated small tables into struct for paging
  * - Fred: Split flash into 5 blocks to ensure no overflow occurs in smalltables
  * - Fred: Created mechanism to ensure paged data is retrieved correctly by implementing basis of table switching
- * - Fred: Moved all references to tables to ram copies
+ * - Fred: Moved all references to tables to RAM copies
  * - Fred: Split flash again for fixed config block.
  * - Fred: General formatting and file name and content changes
  * - Fred: Shifted tunable configs to structs for paging
- * - Fred: Moved copy from flash to ram to start of init
+ * - Fred: Moved copy from flash to RAM to start of init
  * - Fred: Future comms pseudo code added
  * - Fred: Various spelling fixes
  */

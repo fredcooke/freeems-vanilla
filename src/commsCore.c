@@ -90,23 +90,23 @@ void populateBasicDatalog(){
 //}
 
 
-// All of these require some range checking, eg only some registers, and all ram, not flash, not other regs
+// All of these require some range checking, eg only some registers, and all RAM, not flash, not other regs
 // TODO pointer for one byte
 // TODO pointer for one short
 // TODO function to log generic memory region by location and size ? requires length!
 // Ranges are :
-// ram window
+// RAM window
 // bss/data region
 // IO registers etc that can't be altered simply by reading from.
 // NOT :
 // flash makes no sense
 // some regs are sensitive
-// some ram is unused
+// some RAM is unused
 // serial buffers make no sense
 // eeprom makes no sense
 //
 // 2k of regs max - user beware for now
-// 12k of ram max
+// 12k of RAM max
 //
 //init :
 //logaddr = fixed.addr
@@ -118,7 +118,7 @@ void populateBasicDatalog(){
 //if((addr < 0x0800) && (length < (0x0800 - addr))){
 //	// reg space is OK
 //}else if(((0x1000 < addr) && (addr < 0x4000)) && (length < (0x4000 - addr))){
-//	// ram space is OK
+//	// RAM space is OK
 //}else{
 //	// send an error instead
 //}
@@ -407,7 +407,7 @@ void decodePacketAndRespond(){
 		}
 		case updateBlockInRAM:
 		{
-			/* Extract the ram location ID from the received data */
+			/* Extract the RAM location ID from the received data */
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
@@ -441,13 +441,13 @@ void decodePacketAndRespond(){
 
 			/* Save page values for restore */
 			unsigned char oldRamPage = RPAGE;
-			/* Set the viewable ram page */
+			/* Set the viewable RAM page */
 			RPAGE = details.RAMPage;
-			/* Copy from the RX buffer to the block of ram */
+			/* Copy from the RX buffer to the block of RAM */
 			memcpy(details.RAMAddress, RXBufferCurrentPosition, details.size);
 			/* Check that the write was successful */
 			unsigned char index = compare(RXBufferCurrentPosition, details.RAMAddress, details.size);
-			/* Restore the original ram and flash pages */
+			/* Restore the original RAM and flash pages */
 			RPAGE = oldRamPage;
 
 			if(index != 0){
@@ -459,7 +459,7 @@ void decodePacketAndRespond(){
 		}
 		case updateBlockInFlash:
 		{
-			/* Extract the ram location ID from the received data */
+			/* Extract the RAM location ID from the received data */
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
@@ -511,13 +511,13 @@ void decodePacketAndRespond(){
 			if((originalRAMPage != 0) && (originalRAMAddress != 0)){
 				/* Save page values for restore */
 				unsigned char oldRamPage = RPAGE;
-				/* Set the viewable ram page */
+				/* Set the viewable RAM page */
 				RPAGE = originalRAMPage;
-				/* Copy from the RX buffer to the block of ram */
+				/* Copy from the RX buffer to the block of RAM */
 				memcpy(originalRAMAddress, RXBufferCurrentPosition, details.size);
 				/* Check that the write was successful */
 				unsigned char index = compare(RXBufferCurrentPosition, details.RAMAddress, details.size);
-				/* Restore the original ram and flash pages */
+				/* Restore the original RAM and flash pages */
 				RPAGE = oldRamPage;
 
 				if(index != 0){
@@ -537,7 +537,7 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			/* Extract the ram location ID from the received data */
+			/* Extract the RAM location ID from the received data */
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			/* Store it back into the output data */
 			*(unsigned short*)TXBufferCurrentPositionHandler = locationID;
@@ -569,11 +569,11 @@ void decodePacketAndRespond(){
 			unsigned char oldRamPage = RPAGE;
 			RPAGE = details.RAMPage;
 
-			/* Copy the block of ram to the TX buffer */
+			/* Copy the block of RAM to the TX buffer */
 			memcpy(TXBufferCurrentPositionHandler, details.RAMAddress, details.size);
 			TXBufferCurrentPositionHandler += details.size;
 
-			/* Restore the original ram and flash pages */
+			/* Restore the original RAM and flash pages */
 			RPAGE = oldRamPage;
 
 			checksumAndSend();
@@ -622,7 +622,7 @@ void decodePacketAndRespond(){
 			memcpy(TXBufferCurrentPositionHandler, details.FlashAddress, details.size);
 			TXBufferCurrentPositionHandler += details.size;
 
-			/* Restore the original ram and flash pages */
+			/* Restore the original RAM and flash pages */
 			PPAGE = oldFlashPage;
 
 			checksumAndSend();

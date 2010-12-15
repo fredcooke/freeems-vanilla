@@ -67,7 +67,7 @@ void init(){
 	ATOMIC_START();         	/* Disable ALL interrupts while we configure the board ready for use */
 	initPLL();              	/* Set up the PLL and use it */
 	initIO();               	/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
-	initAllPagedRAM();      	/* Copy table and config blocks of data from flash to the paged ram blocks for fast data lookup */
+	initAllPagedRAM();      	/* Copy table and config blocks of data from flash to the paged RAM blocks for fast data lookup */
 	initVariables();        	/* Initialise the rest of the running variables etc */
 	initFlash();            	/* TODO, finalise this */
 	initECTTimer();         	/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
@@ -544,7 +544,7 @@ void initXgate(){
 	// Copy the XGATE vector table into the visible region only if it differs from what is already there (save on flash burns for now)
 	xgateDataDestination = (unsigned short *)0x8800;
 	destinationPage = 0xE0;
-	// Copy to ram first as only one paged flash block at a time is visible
+	// Copy to RAM first as only one paged flash block at a time is visible
 	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, sizeof(xgateIntVectorTable));
 	// Switch to destination page for comparison
 	PPAGE = destinationPage;
@@ -558,7 +558,7 @@ void initXgate(){
 	xgateDataDestination = (unsigned short *)0x9000;
 	destinationPage = 0xE1;
 	unsigned short xgateThread0Size = (void*)&xgateThread0End - (void*)&xgateThread0;
-	// Copy to ram first as only one paged flash block at a time is visible
+	// Copy to RAM first as only one paged flash block at a time is visible
 	memcpy((void*)&TXBuffer, (void*)&xgateThread0, xgateThread0Size);
 	// Switch to destination page for comparison
 	PPAGE = destinationPage;

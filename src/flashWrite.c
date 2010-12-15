@@ -87,7 +87,7 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
  * Additionally, if under 1024 the destination should be within a single flash
  * sector, and if a multiple of 1024, the destination should be sector aligned.
  *
- * Because the ram version will be in an arbitrary place we need to base
+ * Because the RAM version will be in an arbitrary place we need to base
  * our positioning from the flash location. Firstly we need to ensure that
  * it doesn't cross any sector boundaries. Then we need to find the address
  * of the sector to be burned to. We also need to determine if there are

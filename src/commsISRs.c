@@ -160,7 +160,8 @@ void SCI0ISR(){
 		/* Grab the received byte from the register */
 		unsigned char rawByte = SCI0DRL;
 
-		PORTB |= BIT0;
+		//PORTB |= BIT0;
+		PORTB = ONES;
 
 		/* Record error conditions always */
 		unsigned char resetOnError = 0;
