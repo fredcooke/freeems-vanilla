@@ -70,6 +70,7 @@ int main( int argc, char *argv[] ){
 		unsigned int escapedStartBytesFound = 0;
 		unsigned int escapedEscapeBytesFound = 0;
 		unsigned int escapePairMismatches = 0;
+		unsigned long sumOfGoodPacketLengths = 0;
 
 		/* Loop and state variables */
 		unsigned char insidePacket = 0;
@@ -157,6 +158,9 @@ int main( int argc, char *argv[] ){
 						printf("Packet number %u ending of length %u at char number %u failed checksum! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
 					}else{
 						goodChecksums++;
+						/* Add the length to the SUM */
+						sumOfGoodPacketLengths += currentPacketLength;
+
 //						printf("Packet number %u ending of length %u at char number %u checked out OK! Received %u Calculated %u\n", packets, currentPacketLength, processed, lastChar, checksum);
 						{ // process packet
 							// Increment count for packet type that it is
@@ -210,6 +214,10 @@ int main( int argc, char *argv[] ){
 			}
 			oCount++;
 		}
+
+		printf("\nGood packet length stats :\n");
+		printf("%u total sum of good packet bytes\n", sumOfGoodPacketLengths);
+		printf("%u average good packet length (with remainder of %u)\n", (sumOfGoodPacketLengths / goodChecksums), (sumOfGoodPacketLengths % goodChecksums));
 
 	}else{
 		/* Subtract one to eliminate command name. */
