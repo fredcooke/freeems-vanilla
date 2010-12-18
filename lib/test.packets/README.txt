@@ -1,5 +1,7 @@
 All packets are zero byte padded for formatting reasons and also to ensure that we can grab the start out of the middle of a stream.
 
+Need to recreate this packet:
+
 Force Escape : This packet has a sum of 0x55 and therefore a total sum on
 resend of 0xAA which will need to be escaped. The returned packet should be
 two bytes longer with an extra checksum and an escape for it.
