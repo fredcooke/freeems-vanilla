@@ -213,37 +213,37 @@ int  main(){ // TODO maybe move this to paged flash ?
 
 						/* populate data log */
 						populateBasicDatalog();
-						checksumAndSend();
+						finaliseAndSend(0);
 						break;
 					}
 					case asyncDatalogConfig:
 					{
-						// TODO
+						/// TODO @todo
 						break;
 					}
 					case asyncDatalogTrigger:
 					{
-						// TODO
+						/// TODO @todo
 						break;
 					}
 					case asyncDatalogADC:
 					{
-						// TODO
+						/// TODO @todo
 						break;
 					}
 					case asyncDatalogCircBuf:
 					{
-						// TODO
+						/// TODO @todo
 						break;
 					}
 					case asyncDatalogCircCAS:
 					{
-						// TODO
+						/// TODO @todo
 						break;
 					}
 					case asyncDatalogLogic:
 					{
-						// TODO
+						/// TODO @todo
 						break;
 					}
 					}

@@ -135,18 +135,26 @@ void populateBasicDatalog(){
 // what does this mean >> ??? TODO Look at the time stamps and where to write them, also whether to function call these simple blocks or write one function that handles all the logic.
 
 
-/** @brief Checksum a packet and send it
+/** @brief Finalise a packet and send it
  *
  * This functions job is to finalise the main loop part of the packet sending
- * process. It runs a checksum over the packet data and tags it to the end
- * before configuring the various ISRs that need to send the data out.
+ * process. It configures the pos/neg ack header bit, adds the code if neg,
+ * runs a checksum over the packet data and tags it to the end before
+ * configuring the various ISRs that need to send the data out.
  *
  * @author Fred Cooke
  *
  * @bug http://issues.freeems.org/view.php?id=81
  * @todo TODO fix the double/none start byte bug and remove the hack!
  */
-void checksumAndSend(){
+void finaliseAndSend(unsigned short errorID){
+
+	if(errorID != 0){
+		RXHeaderFlags |= HEADER_IS_NACK;
+		*((unsigned short*)TXBufferCurrentPositionHandler) = errorID;
+		TXBufferCurrentPositionHandler += 2;
+	}
+
 	/* Get the length from the pointer */
 	unsigned short TXPacketLengthToSend = (unsigned short)TXBufferCurrentPositionHandler - (unsigned short)&TXBuffer;
 
@@ -255,68 +263,22 @@ void decodePacketAndRespond(){
 	TXBufferCurrentPositionHandler += 2;
 	RXCalculatedPayloadLength -= 2;
 
-	/* REWORK REMOVE this logic: "If there is an ack, copy it to the return packet" ALL packets get acked! */
-	if(RXHeaderFlags & HEADER_HAS_ACK){
-		*TXBufferCurrentPositionHandler = *RXBufferCurrentPosition;
-		*TXHeaderFlags |= HEADER_HAS_ACK;
-		RXBufferCurrentPosition++;
-		TXBufferCurrentPositionHandler++;
-		RXCalculatedPayloadLength--;
-	}
-
-	/* REWORK REMOVE this logic and address fields and migrate to a higher layer of comms: "If the header has addresses, check them and if OK copy them" uart is point to point, and these packets can be wrapped if they need intelligent delivery. */
-	if(RXHeaderFlags & HEADER_HAS_ADDRS){
-		/* Check the destination address against our address */
-		if(*RXBufferCurrentPosition != fixedConfigs1.serialSettings.networkAddress){
-			/* Addresses do not match, discard packet without error */
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			TXBufferInUseFlags = 0;
-			return;
-		}
-		RXBufferCurrentPosition++;
-
-		/* Save and check the source address */
-		RXHeaderSourceAddress = *RXBufferCurrentPosition;
-		RXBufferCurrentPosition++;
-		if(RXHeaderSourceAddress == 0){
-			sendErrorInternal(sourceAddressIsBroadcast);
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
-		if(RXHeaderSourceAddress == fixedConfigs1.serialSettings.networkAddress){
-			sendErrorInternal(sourceAddressIsDuplicate);
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
-
-		/* All is well, setup reply addresses */
-		*TXHeaderFlags |= HEADER_HAS_ADDRS;
-		/* TX destination = RX source */
-		*TXBufferCurrentPositionHandler = RXHeaderSourceAddress;
-		TXBufferCurrentPositionHandler++;
-		/* TX source = our address */
-		*TXBufferCurrentPositionHandler = fixedConfigs1.serialSettings.networkAddress;
-		TXBufferCurrentPositionHandler++;
-		/* Decrement for both at once to save a cycle */
-		RXCalculatedPayloadLength -= 2;
-	}
-
 	/* Subtract checksum to get final length */
 	RXCalculatedPayloadLength--;
 
-	/* REWORK MAYBE make this compulsory? Currently optional as some types have implicit length. Think about impl simplicity on both sides, think about speed increase in leaving it out, just tripple check if present: "Grab the length if available" */
 	if(RXHeaderFlags & HEADER_HAS_LENGTH){
 		RXHeaderPayloadLength = *((unsigned short*)RXBufferCurrentPosition);
 		RXBufferCurrentPosition += 2;
 		RXCalculatedPayloadLength -= 2;
 		/* Already subtracted one for checksum */
 		if(RXHeaderPayloadLength != RXCalculatedPayloadLength){
-			sendErrorInternal(payloadLengthHeaderMismatch);
+			finaliseAndSend(payloadLengthHeaderMismatch);
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
 		}
 	}
 
+	unsigned short errorID = 0;
 	/* This is where all the communication logic resides.
 	 *
 	 * Please Note: Length and it's flag should be set by each return packet
@@ -327,7 +289,7 @@ void decodePacketAndRespond(){
 		case requestInterfaceVersion:
 		{
 			if(RXCalculatedPayloadLength != 0){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -338,13 +300,12 @@ void decodePacketAndRespond(){
 			/* Load the body into place */
 			memcpy((void*)TXBufferCurrentPositionHandler, (void*)&interfaceVersionAndType, sizeof(interfaceVersionAndType));
 			TXBufferCurrentPositionHandler += sizeof(interfaceVersionAndType);
-			checksumAndSend();
 			break;
 		}
 		case requestFirmwareVersion:
 		{
 			if(RXCalculatedPayloadLength != 0){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 			/* This type must have a length field, set that up */
@@ -354,19 +315,17 @@ void decodePacketAndRespond(){
 			/* Load the body into place */
 			memcpy((void*)TXBufferCurrentPositionHandler, (void*)&firmwareVersion, sizeof(firmwareVersion));
 			TXBufferCurrentPositionHandler += sizeof(firmwareVersion);
-			checksumAndSend();
 			break;
 		}
 		case requestMaxPacketSize:
 		{
 			if(RXCalculatedPayloadLength != 0){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 			/* Load the size into place */
 			*((unsigned short*)TXBufferCurrentPositionHandler) = RX_BUFFER_SIZE;
 			TXBufferCurrentPositionHandler += 2;
-			checksumAndSend();
 			break;
 		}
 		case requestEchoPacketReturn:
@@ -380,13 +339,12 @@ void decodePacketAndRespond(){
 			/* Note, there is no overflow check here because the TX buffer is slightly       */
 			/* bigger than the RX buffer and there is overflow checking for receives anyway. */
 			TXBufferCurrentPositionHandler += RXPacketLengthReceived;
-			checksumAndSend();
 			break;
 		}
 		case requestSoftSystemReset:
 		{
 			if(RXCalculatedPayloadLength != 0){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 			/* Perform soft system reset */
@@ -395,7 +353,7 @@ void decodePacketAndRespond(){
 		case requestHardSystemReset:
 		{
 			if(RXCalculatedPayloadLength != 0){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -407,53 +365,50 @@ void decodePacketAndRespond(){
 		}
 		case updateBlockInRAM:
 		{
-			/* Extract the RAM location ID from the received data */
+			// Extract the RAM location ID
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
-			/* Look up the memory location details */
+			// Look up the memory location details
 			blockDetails details;
 			lookupBlockDetails(locationID, &details);
 
-			/* Subtract two to allow for the locationID */
+			// Subtract two to allow for the locationID
 			if((RXCalculatedPayloadLength - 2) != details.size){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
 			if((details.RAMPage == 0) || (details.RAMAddress == 0)){
-				sendErrorInternal(invalidMemoryActionForID);
+				errorID = invalidMemoryActionForID;
 				break;
 			}
 
 			// TODO factor this out into validation delegation function once the number of types increases somewhat
-			unsigned short errorID = 0;
 			if(locationID < 16){
 				errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
 			}else if((locationID > 399) && (locationID < 900)){
 				errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
 			}// TODO add other table types here
-			/* If the validation failed, report it */
+			// If the validation failed, report it
 			if(errorID != 0){
-				sendErrorInternal(errorID);
 				break;
 			}
 
-			/* Save page values for restore */
+			// Save page values for restore
 			unsigned char oldRamPage = RPAGE;
-			/* Set the viewable RAM page */
+			// Set the viewable RAM page
 			RPAGE = details.RAMPage;
-			/* Copy from the RX buffer to the block of RAM */
+
 			memcpy(details.RAMAddress, RXBufferCurrentPosition, details.size);
-			/* Check that the write was successful */
+			// Check that the write was successful
 			unsigned char index = compare(RXBufferCurrentPosition, details.RAMAddress, details.size);
-			/* Restore the original RAM and flash pages */
+
+			// Restore the original RAM and flash pages
 			RPAGE = oldRamPage;
 
 			if(index != 0){
-				sendErrorInternal(MEMORY_WRITE_ERROR);
-			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
+				errorID = MEMORY_WRITE_ERROR;
 			}
 			break;
 		}
@@ -469,17 +424,16 @@ void decodePacketAndRespond(){
 
 			/* Subtract two to allow for the locationID */
 			if((RXCalculatedPayloadLength - 2) != details.size){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
 			if((details.FlashPage == 0) || (details.FlashAddress == 0)){
-				sendErrorInternal(invalidMemoryActionForID);
+				errorID = invalidMemoryActionForID;
 				break;
 			}
 
 			// TODO factor this out into validation delegation function once the number of types increases somewhat
-			unsigned short errorID = 0;
 			if(locationID < 16){
 				errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
 			}else if((locationID > 399) && (locationID < 900)){
@@ -487,7 +441,6 @@ void decodePacketAndRespond(){
 			}// TODO add other table types here
 			/* If the validation failed, report it */
 			if(errorID != 0){
-				sendErrorInternal(errorID);
 				break;
 			}
 
@@ -503,7 +456,6 @@ void decodePacketAndRespond(){
 			/* Copy from the RX buffer to the block of flash */
 			errorID = writeBlock(&details, buffer);
 			if(errorID != 0){
-				sendErrorInternal(errorID);
 				break;
 			}
 
@@ -521,19 +473,16 @@ void decodePacketAndRespond(){
 				RPAGE = oldRamPage;
 
 				if(index != 0){
-					sendErrorInternal(MEMORY_WRITE_ERROR);
-					break;
+					errorID = MEMORY_WRITE_ERROR;
 				}
 			}
 
-			sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
-			// TODO document errors can always be returned and add error check in to send as response for ack and async otherwise
 			break;
 		}
 		case retrieveBlockFromRAM:
 		{
 			if(RXCalculatedPayloadLength != 2){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -561,7 +510,7 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			if((details.RAMPage == 0) || (details.RAMAddress == 0)){
-				sendErrorInternal(invalidMemoryActionForID);
+				errorID = invalidMemoryActionForID;
 				break;
 			}
 
@@ -576,13 +525,12 @@ void decodePacketAndRespond(){
 			/* Restore the original RAM and flash pages */
 			RPAGE = oldRamPage;
 
-			checksumAndSend();
 			break;
 		}
 		case retrieveBlockFromFlash:
 		{
 			if(RXCalculatedPayloadLength != 2){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -610,7 +558,7 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			if((details.FlashPage == 0) || (details.FlashAddress == 0)){
-				sendErrorInternal(invalidMemoryActionForID);
+				errorID = invalidMemoryActionForID;
 				break;
 			}
 
@@ -625,13 +573,12 @@ void decodePacketAndRespond(){
 			/* Restore the original RAM and flash pages */
 			PPAGE = oldFlashPage;
 
-			checksumAndSend();
 			break;
 		}
 		case burnBlockFromRamToFlash:
 		{
 			if(RXCalculatedPayloadLength != 2){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -644,7 +591,7 @@ void decodePacketAndRespond(){
 
 			/* Check that all data we need is present */
 			if((details.RAMPage == 0) || (details.RAMAddress == 0) || (details.FlashPage == 0) || (details.FlashAddress == 0)){
-				sendErrorInternal(invalidMemoryActionForID);
+				errorID = invalidMemoryActionForID;
 				break;
 			}
 
@@ -652,63 +599,13 @@ void decodePacketAndRespond(){
 			void* buffer = (void*)((unsigned short)&RXBuffer + RXPacketLengthReceived);
 
 			/* Write the block down from RAM to Flash */
-			unsigned short errorID = writeBlock(&details, buffer);
-
-			if(errorID != 0){
-				sendErrorInternal(errorID);
-				break;
-			}
-
-			sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
-			break;
-		}
-		case eraseAllBlocksFromFlash:
-		{
-			if(RXCalculatedPayloadLength != 0){
-				sendErrorInternal(payloadLengthTypeMismatch);
-				break;
-			}
-
-			// perform function TODO
-			unsigned char page = 0xE0;
-			unsigned short start = 0x8000;
-			unsigned short end = 0xC000;
-			unsigned short inc = 0x0400;
-			for(;page < 0xF8;page++){
-				unsigned short addr;
-				for(addr = start;addr < end; addr += inc){
-					// TODO create selfDestruct() function for loading larger code to the device using all flash pages.
-					eraseSector(page, (unsigned short*)addr);
-				}
-			}
-			sendDebugInternal("Erased three 128k Flash blocks!"); // REWORK remove this block, it's dangerous!!!
-			break;
-		}
-		case burnAllBlocksOfFlash:
-		{
-			if(RXCalculatedPayloadLength != 0){
-				sendErrorInternal(payloadLengthTypeMismatch);
-				break;
-			}
-
-			// perform function TODO
-			unsigned char page = 0xE0;
-			unsigned short start = 0x8000;
-			unsigned short end = 0xC000;
-			unsigned short inc = 0x0400;
-			for(;page < 0xF8;page++){
-				unsigned short addr;
-				for(addr = start;addr < end; addr += inc){
-					writeSector(RPAGE, (unsigned short*)0xc000, page, (unsigned short*)addr);
-				}
-			}
-			sendDebugInternal("Overwrote three 128k Flash blocks!"); // REWORK remove this block, it's useless, SeanK's loader will be ready soon.
+			errorID = writeBlock(&details, buffer);
 			break;
 		}
 		case adjustMainTableCell:
 		{
 			if(RXCalculatedPayloadLength != 8){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -718,7 +615,7 @@ void decodePacketAndRespond(){
 
 			/* Check the ID to ensure it is a main table */
 			if(15 < locationID){
-				sendErrorInternal(invalidIDForMainTableAction);
+				errorID = invalidIDForMainTableAction;
 				break;
 			}
 
@@ -734,18 +631,13 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
-			unsigned short errorID = setPagedMainTableCellValue(details.RAMPage, details.RAMAddress, RPMIndex, LoadIndex, cellValue);
-			if(errorID != 0){
-				sendErrorInternal(errorID);
-			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
-			}
+			errorID = setPagedMainTableCellValue(details.RAMPage, details.RAMAddress, RPMIndex, LoadIndex, cellValue);
 			break;
 		}
 		case adjustMainTableRPMAxis:
 		{
 			if(RXCalculatedPayloadLength != 6){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -755,7 +647,7 @@ void decodePacketAndRespond(){
 
 			/* Check the ID to ensure it is a main table */
 			if(15 < locationID){
-				sendErrorInternal(invalidIDForMainTableAction);
+				errorID = invalidIDForMainTableAction;
 				break;
 			}
 
@@ -769,18 +661,13 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
-			unsigned short errorID = setPagedMainTableRPMValue(details.RAMPage, details.RAMAddress, RPMIndex, RPMValue);
-			if(errorID != 0){
-				sendErrorInternal(errorID);
-			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
-			}
+			errorID = setPagedMainTableRPMValue(details.RAMPage, details.RAMAddress, RPMIndex, RPMValue);
 			break;
 		}
 		case adjustMainTableLoadAxis:
 		{
 			if(RXCalculatedPayloadLength != 6){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -790,7 +677,7 @@ void decodePacketAndRespond(){
 
 			/* Check the ID to ensure it is a main table */
 			if(15 < locationID){
-				sendErrorInternal(invalidIDForMainTableAction);
+				errorID = invalidIDForMainTableAction;
 				break;
 			}
 
@@ -804,18 +691,13 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
-			unsigned short errorID = setPagedMainTableLoadValue(details.RAMPage, details.RAMAddress, LoadIndex, LoadValue);
-			if(errorID != 0){
-				sendErrorInternal(errorID);
-			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
-			}
+			errorID = setPagedMainTableLoadValue(details.RAMPage, details.RAMAddress, LoadIndex, LoadValue);
 			break;
 		}
 		case adjust2dTableAxis:
 		{
 			if(RXCalculatedPayloadLength != 6){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -825,7 +707,7 @@ void decodePacketAndRespond(){
 
 			/* Check the ID to ensure it is a 2d table */
 			if((locationID > 899) || (locationID < 400)){
-				sendErrorInternal(invalidIDForTwoDTableAction);
+				errorID = invalidIDForTwoDTableAction;
 				break;
 			}
 
@@ -839,18 +721,13 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
-			unsigned short errorID = setPagedTwoDTableAxisValue(details.RAMPage, details.RAMAddress, axisIndex, axisValue);
-			if(errorID != 0){
-				sendErrorInternal(errorID);
-			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
-			}
+			errorID = setPagedTwoDTableAxisValue(details.RAMPage, details.RAMAddress, axisIndex, axisValue);
 			break;
 		}
 		case adjust2dTableCell:
 		{
 			if(RXCalculatedPayloadLength != 6){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -860,7 +737,7 @@ void decodePacketAndRespond(){
 
 			/* Check the ID to ensure it is a 2d table */
 			if((locationID > 899) || (locationID < 400)){
-				sendErrorInternal(invalidIDForTwoDTableAction);
+				errorID = invalidIDForTwoDTableAction;
 				break;
 			}
 
@@ -874,28 +751,23 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
-			unsigned short errorID = setPagedTwoDTableCellValue(details.RAMPage, details.RAMAddress, cellIndex, cellValue);
-			if(errorID != 0){
-				sendErrorInternal(errorID);
-			}else{
-				sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
-			}
+			errorID = setPagedTwoDTableCellValue(details.RAMPage, details.RAMAddress, cellIndex, cellValue);
 			break;
 		}
 		case requestBasicDatalog:
 		{
 			if((RXCalculatedPayloadLength > 2) || (RXCalculatedPayloadLength == 1)){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}else if(RXCalculatedPayloadLength == 2){
 				unsigned short newConfiguredLength = *((unsigned short*)RXBufferCurrentPosition);
 				if(newConfiguredLength > maxBasicDatalogLength){
-					sendErrorInternal(datalogLengthExceedsMax);
+					errorID = datalogLengthExceedsMax;
 					break;
 				}else{
 					configuredBasicDatalogLength = newConfiguredLength;
 				}
-			}
+			}// fall through to use existing configured length
 
 			/* Set the length field up */
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
@@ -903,49 +775,46 @@ void decodePacketAndRespond(){
 
 			/* Fill out the log and send */
 			populateBasicDatalog();
-			checksumAndSend();
 			break;
 		}
 		case requestConfigurableDatalog:
 		{
-			// perform function TODO REWORK review this
-			sendErrorInternal(unimplementedFunction);
+			/// perform function TODO @todo REWORK review this
+			errorID = unimplementedFunction;
 			break;
 		}
 		case setAsyncDatalogType:
 		{
 			if(RXCalculatedPayloadLength != 1){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
 			unsigned char newDatalogType = *((unsigned char*)RXBufferCurrentPosition);
 			if(newDatalogType > 0x01){
-				sendErrorInternal(noSuchAsyncDatalogType);
+				errorID = noSuchAsyncDatalogType;
 				break;
-			}else{
-				asyncDatalogType = newDatalogType;
 			}
 
-			sendErrorInternal(NO_PROBLEMO); /// @todo REWORK TODO implement default return of empty packet.
+			asyncDatalogType = newDatalogType;
 			break;
 		}
 		case forwardPacketOverCAN:
 		{
-			// perform function TODO REWORK review this
-			sendErrorInternal(unimplementedFunction);
+			/// perform function TODO @todo REWORK review this
+			errorID = unimplementedFunction;
 			break;
 		}
 		case forwardPacketOverOtherUART:
 		{
-			// perform function TODO REWORK review this
-			sendErrorInternal(unimplementedFunction);
+			/// perform function TODO @todo REWORK review this
+			errorID = unimplementedFunction;
 			break;
 		}
 		case retrieveArbitraryMemory:
 		{
 			if(RXCalculatedPayloadLength != 6){
-				sendErrorInternal(payloadLengthTypeMismatch);
+				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
@@ -953,7 +822,7 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition += 2;
 			// Make sure the buffer can handle the block
 			if(length > TX_MAX_PAYLOAD_SIZE){
-				sendErrorInternal(requestedLengthTooLarge);
+				errorID = requestedLengthTooLarge;
 				break;
 			}
 
@@ -962,7 +831,7 @@ void decodePacketAndRespond(){
 			// Ensure we don't try to read past the end of the address space
 			if(((unsigned short)address) <= ((0xFFFF - length) + 1)){
 				// TODO Possibly check and limit ranges
-				sendErrorInternal(requestedAddressDisallowed);
+				errorID = requestedAddressDisallowed;
 				break;
 			}
 
@@ -970,14 +839,16 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition++;
 			// Ensure RAM page is valid. Being too high is not possible.
 			if(RAMPage < RPAGE_MIN){
-				sendErrorInternal(requestedRAMPageInvalid);
+				errorID = requestedRAMPageInvalid;
+				break;
 			}
 
 			unsigned char FlashPage = *((unsigned char*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition++;
 			// Ensure Flash page is valid. Being too high is not possible.
 			if(FlashPage < PPAGE_MIN){
-				sendErrorInternal(requestedFlashPageInvalid);
+				errorID = requestedFlashPageInvalid;
+				break;
 			}
 
 			/* This type must have a length field, set that up */
@@ -999,18 +870,21 @@ void decodePacketAndRespond(){
 			memcpy((void*)TXBufferCurrentPositionHandler, address, length);
 			TXBufferCurrentPositionHandler += length;
 
-			checksumAndSend();
 			break;
 		}
 		default:
 		{
 			if((RXHeaderPayloadID % 2) == 1){
-				sendErrorInternal(invalidPayloadID);
+				errorID = invalidPayloadID;
 			}else{
-				sendErrorInternal(unrecognisedPayloadID);
+				errorID = unrecognisedPayloadID;
 			}
 		}
 	}
+
+	// Always reply, if errorID is zero it's just an ack.
+	finaliseAndSend(errorID);
+
 	/* Switch reception back on now that we are done with the received data */
 	resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 	PORTK |= BIT0;
@@ -1026,6 +900,8 @@ void decodePacketAndRespond(){
  * @warning Use of this function signifies that the error you are trying to propagate is not urgent and can be forgotten.
  *
  * @note Consider not throwing an error if it seems appropriate to use this.
+ *
+ * @todo TODO this is only used in coreVarGen, such errors should be caught at init time, NOT runtime, fix that...
  *
  * @param errorID is the error ID to be passed out to listening devices.
  */
@@ -1079,7 +955,7 @@ void sendErrorIfClear(unsigned short errorID){
  *
  * @param errorCode is the error ID to be passed out to listening devices.
  */
-void sendErrorInternal(unsigned short errorCode){
+void sendErrorInternal(unsigned short errorID){
 //	set buffer in use, consider blocking interrupts to do this cleanly
 
 
@@ -1103,16 +979,14 @@ void sendErrorInternal(unsigned short errorCode){
 		TXBufferCurrentPositionHandler = (unsigned char*)&TXBuffer;
 		/* Set the length */
 //		TXPacketLengthToSend = 5; /* Flags + Payload ID + Error Code */
-		/* Flags = protocol with no extra fields */
-		*TXBufferCurrentPositionHandler = 0x01;
+		// Flags = empty
+		*TXBufferCurrentPositionHandler = 0x00;
 		TXBufferCurrentPositionHandler++;
 		/* Set the payload ID */
 		*((unsigned short*)TXBufferCurrentPositionHandler) = asyncErrorCodePacket;
 		TXBufferCurrentPositionHandler += 2;
-		/* Set the error code */
-		*((unsigned short*)TXBufferCurrentPositionHandler) = errorCode;
-		TXBufferCurrentPositionHandler += 2;
-		checksumAndSend();
+
+		finaliseAndSend(errorID);
 //	}
 }
 
@@ -1218,7 +1092,7 @@ void sendDebugInternal(unsigned char* message){
 		*TXLength = messageLength;
 		TXBufferCurrentPositionHandler += messageLength;
 
-		checksumAndSend();
+		finaliseAndSend(0);
 	//}
 }
 

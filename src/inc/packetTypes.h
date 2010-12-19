@@ -71,8 +71,6 @@
 #define retrieveBlockFromRAM        260
 #define retrieveBlockFromFlash      262
 #define burnBlockFromRamToFlash     264
-#define eraseAllBlocksFromFlash     266 // TODO @todo remove this
-#define burnAllBlocksOfFlash        268 // TODO @todo remove this
 
 /* Main table manipulation */
 #define adjustMainTableCell         300

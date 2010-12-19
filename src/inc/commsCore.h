@@ -61,8 +61,7 @@ EXTERN void sendDebugIfClear(unsigned char*) FPAGE_FE;
 //EXTERN void sendDebugBusyWait(unsigned char*) FPAGE_FE;
 
 EXTERN void resetReceiveState(unsigned char) FPAGE_FE;
-//EXTERN void sendAckIfRequired(void) FPAGE_FE;
-EXTERN void checksumAndSend(void) FPAGE_FE;
+EXTERN void finaliseAndSend(unsigned short) FPAGE_FE;
 
 EXTERN void populateBasicDatalog(void) FPAGE_FE;
 
@@ -141,8 +140,7 @@ EXTERN unsigned short	RXCalculatedPayloadLength; // why global??
 
 /* Header components */
 EXTERN unsigned char	RXHeaderFlags;
-EXTERN unsigned short	RXHeaderPayloadID; // why glob
-EXTERN unsigned char	RXHeaderSourceAddress;
+EXTERN unsigned short	RXHeaderPayloadID; /// TODO @todo why global?
 EXTERN unsigned short	RXHeaderPayloadLength;
 
 
@@ -150,10 +148,10 @@ EXTERN unsigned short	RXHeaderPayloadLength;
 /* Always has flags (obviously)			*/
 /* Always has payload ID so no flag		*/
 /* Always has checksum, so no flag		*/
-#define HEADER_HAS_ACK		BIT0
+#define HEADER_HAS_LENGTH	BIT0
 #define HEADER_IS_NACK		BIT1
-#define HEADER_HAS_ADDRS	BIT2
-#define HEADER_HAS_LENGTH	BIT3
+#define HEADER_RESERVED_E	BIT2
+#define HEADER_RESERVED_F	BIT3
 #define HEADER_RESERVED_A	BIT4
 #define HEADER_RESERVED_B	BIT5
 #define HEADER_RESERVED_C	BIT6

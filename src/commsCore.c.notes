@@ -35,6 +35,19 @@ ack should always contain either:
    success flag - empty payload and zero payload length could work well for this and/or with a bit flag in the header.
    requested data
 
+
+
+setup errorID before switch
+
+send packet with data if required
+
+if not, fall through to either default non error return or error return depending if errorID is 0 or not (or whatever default/reset/ok is)
+
+optionally error out in the middle by setting the error code and breaking.
+
+
+
+
 Stu's "stretchy ints", make the protocol more extensible by not limiting various fields. look for standardised way of doing this, and name for it.
 
 move checksum out of rec interrupt if its there
