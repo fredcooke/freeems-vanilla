@@ -369,25 +369,50 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
+			// Extract the size of the data to be stored
+			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the offset to place the data at
+			unsigned short offset = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
 			// Look up the memory location details
 			blockDetails details;
 			lookupBlockDetails(locationID, &details);
 
-			// Subtract two to allow for the locationID
-			if((RXCalculatedPayloadLength - 2) != details.size){
+			// Subtract six to allow for the locationID, size, offset
+			if((RXCalculatedPayloadLength - 6) != details.size){
 				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
+			// If either of these is zero then this block is not in RAM!
 			if((details.RAMPage == 0) || (details.RAMAddress == 0)){
 				errorID = invalidMemoryActionForID;
 				break;
 			}
 
-			// TODO factor this out into validation delegation function once the number of types increases somewhat
+			// Check that size and offset describe a region that is not out of bounds
+			if((size == 0) || (offset > (details.size - 1)) || (size > (details.size - offset))){
+				errorID = invalidSizeOffsetCombination;
+				break;
+			}
+
+			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
 			if(locationID < 16){
+				// Don't allow tables to be manipulated manually
+				if((size != details.size) || (offset != 0)){
+					errorID = uncheckedTableManipulationNotAllowed;
+					break;
+				}
 				errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
 			}else if((locationID > 399) && (locationID < 900)){
+				// Don't allow tables to be manipulated manually
+				if((size != details.size) || (offset != 0)){
+					errorID = uncheckedTableManipulationNotAllowed;
+					break;
+				}
 				errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
 			}// TODO add other table types here
 			// If the validation failed, report it
@@ -400,9 +425,11 @@ void decodePacketAndRespond(){
 			// Set the viewable RAM page
 			RPAGE = details.RAMPage;
 
-			memcpy(details.RAMAddress, RXBufferCurrentPosition, details.size);
+			// Copy from the RX buffer to the block of RAM
+			memcpy(details.RAMAddress, (unsigned char*)(RXBufferCurrentPosition + offset), size);
+
 			// Check that the write was successful
-			unsigned char index = compare(RXBufferCurrentPosition, details.RAMAddress, details.size);
+			unsigned char index = compare((unsigned char*)(RXBufferCurrentPosition + offset), (unsigned char*)(details.RAMAddress + offset), size);
 
 			// Restore the original RAM and flash pages
 			RPAGE = oldRamPage;

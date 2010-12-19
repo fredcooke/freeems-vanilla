@@ -106,6 +106,8 @@
 #define requestedFlashPageInvalid		0x400F
 #define requestedLengthTooLarge			0x4010
 #define requestedAddressDisallowed		0x4011
+#define invalidSizeOffsetCombination            0x4012
+#define uncheckedTableManipulationNotAllowed    0x4013
 
 #define invalidAxisOrder				0 /* prevent parsing */
 #define invalidAxisIndex				1 /* prevent parsing */
