@@ -426,7 +426,7 @@ void decodePacketAndRespond(){
 			RPAGE = details.RAMPage;
 
 			// Copy from the RX buffer to the block of RAM
-			memcpy(details.RAMAddress, (unsigned char*)(RXBufferCurrentPosition + offset), size);
+			memcpy((unsigned char*)(details.RAMAddress + offset), (unsigned char*)(RXBufferCurrentPosition + offset), size);
 
 			// Check that the write was successful
 			unsigned char index = compare((unsigned char*)(RXBufferCurrentPosition + offset), (unsigned char*)(details.RAMAddress + offset), size);
