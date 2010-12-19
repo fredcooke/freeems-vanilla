@@ -85,27 +85,27 @@
 
 
 // memory check error
-#define MEMORY_WRITE_ERROR				0x3009
+#define MEMORY_WRITE_ERROR                      0x3009
 
 /* Communications error codes */
-#define unimplementedFunction			0x4000
-#define packetChecksumMismatch			0x4001
-#define sourceAddressIsBroadcast		0x4002
-#define sourceAddressIsDuplicate		0x4003
-#define payloadLengthTypeMismatch		0x4004
-#define payloadLengthHeaderMismatch		0x4005
-#define invalidPayloadID				0x4006
-#define unrecognisedPayloadID			0x4007
-#define invalidMemoryActionForID		0x4008
-#define invalidIDForMainTableAction		0x4009
-#define invalidIDForTwoDTableAction		0x400A
-#define noSuchAsyncDatalogType			0x400B
-#define datalogLengthExceedsMax			0x400C
-#define locationIDNotFound				0x400D
-#define requestedRAMPageInvalid			0x400E
-#define requestedFlashPageInvalid		0x400F
-#define requestedLengthTooLarge			0x4010
-#define requestedAddressDisallowed		0x4011
+#define unimplementedFunction                   0x4000
+#define packetChecksumMismatch                  0x4001
+#define sourceAddressIsBroadcast                0x4002
+#define sourceAddressIsDuplicate                0x4003
+#define payloadLengthTypeMismatch               0x4004
+#define payloadLengthHeaderMismatch             0x4005
+#define invalidPayloadID                        0x4006
+#define unrecognisedPayloadID                   0x4007
+#define invalidMemoryActionForID                0x4008
+#define invalidIDForMainTableAction             0x4009
+#define invalidIDForTwoDTableAction             0x400A
+#define noSuchAsyncDatalogType                  0x400B
+#define datalogLengthExceedsMax                 0x400C
+#define locationIDNotFound                      0x400D
+#define requestedRAMPageInvalid                 0x400E
+#define requestedFlashPageInvalid               0x400F
+#define requestedLengthTooLarge                 0x4010
+#define requestedAddressDisallowed              0x4011
 #define invalidSizeOffsetCombination            0x4012
 #define uncheckedTableManipulationNotAllowed    0x4013
 
