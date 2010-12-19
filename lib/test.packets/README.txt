@@ -1,9 +1,11 @@
-All packets are zero byte padded for formatting reasons and also to ensure that we can grab the start out of the middle of a stream.
+All packets are zero byte padded for formatting reasons and also to ensure
+that we can grab the start out of the middle of a stream.
 
-Need to recreate this packet:
+Packets to which we expect an error code response live in ./negative.tests/
+Special control bytes for our protocol live in ./special.bytes/
+Control sequences for the Serial Monitor live in ./serial.monitor/
+Old packets that somehow fell out of date live in ./broken/
 
-Force Escape : This packet has a sum of 0x55 and therefore a total sum on
-resend of 0xAA which will need to be escaped. The returned packet should be
-two bytes longer with an extra checksum and an escape for it.
-
+All other packets at this level of the test.packets directory should work as
+described by their filenames!
 
