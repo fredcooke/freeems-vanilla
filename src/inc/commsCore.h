@@ -150,12 +150,12 @@ EXTERN unsigned short	RXHeaderPayloadLength;
 /* Always has checksum, so no flag		*/
 #define HEADER_HAS_LENGTH	BIT0
 #define HEADER_IS_NACK		BIT1
-#define HEADER_RESERVED_E	BIT2
-#define HEADER_RESERVED_F	BIT3
-#define HEADER_RESERVED_A	BIT4
-#define HEADER_RESERVED_B	BIT5
-#define HEADER_RESERVED_C	BIT6
-#define HEADER_RESERVED_D	BIT7
+#define HEADER_HAS_SEQUENCE	BIT2
+#define HEADER_RESERVED_E	BIT3
+#define HEADER_RESERVED_D	BIT4
+#define HEADER_RESERVED_C	BIT5
+#define HEADER_RESERVED_B	BIT6
+#define HEADER_RESERVED_A	BIT7
 
 
 #include "packetTypes.h"
