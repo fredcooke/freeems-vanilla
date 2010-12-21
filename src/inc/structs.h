@@ -339,7 +339,7 @@ typedef struct {
 	unsigned short primaryTeethSeen;					/* Free running counters for number of teeth seen such that...			*/
 	unsigned short secondaryTeethSeen;					/* ...tooth timing can be used to reconstruct the signal at lower rpm	*/
 
-	unsigned short syncedADCreadings;					/* Incremented each time a syncronous ADC reading is taken				*/
+	unsigned short syncedADCreadings;					/* Incremented each time a synchronous ADC reading is taken				*/
 	unsigned short timeoutADCreadings;					/* Incremented for each ADC reading in RTC because of timeout			*/
 
 	unsigned short calculationsPerformed;				/* Incremented for each time the fuel and ign calcs are done			*/
@@ -355,7 +355,8 @@ typedef struct {
 	unsigned short serialParityErrors;					/* Incremented when a parity error occurs								*/
 
 	/* Generic com counters */
-	unsigned short commsChecksumMismatches;			/* Incremented when calculated checksum did not match the received one	*/
+	unsigned short commsChecksumMismatches;				/* Incremented when calculated checksum did not match the received one	*/
+	unsigned short commsPacketsUnderMinLength;			/* Incremented when a packet is found that is too short					*/
 	unsigned short commsDebugMessagesNotSent;			/* Incremented when a debug message can't be sent due to the TX buffer  */
 	unsigned short commsErrorMessagesNotSent;			/* Incremented when an error message can't be sent due to the TX buffer */
 } Counter;

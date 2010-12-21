@@ -251,8 +251,11 @@ void SCI0ISR(){
 					unsigned char RXReceivedChecksum = (unsigned char)*(RXBufferCurrentPosition - 1);
 					RXCalculatedChecksum -= RXReceivedChecksum;
 
-					/* Check that the checksum matches */
-					if(RXCalculatedChecksum == RXReceivedChecksum){
+					/* Check that the checksum matches and that the packet is big enough for header,ID,checksum */
+					if(RXPacketLengthReceived < 4){
+						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+						Counters.commsPacketsUnderMinLength++;
+					}else if(RXCalculatedChecksum == RXReceivedChecksum){
 						/* If it's OK set process flag */
 						RXStateFlags |= RX_READY_TO_PROCESS;
 						PORTA |= BIT2;

@@ -263,8 +263,28 @@ void decodePacketAndRespond(){
 	TXBufferCurrentPositionHandler += 2;
 	RXCalculatedPayloadLength -= 2;
 
+	/* Check that the length is sufficient for the fields configured. Packets
+	 * that are too long will be caught and rejected on an individual payload
+	 * ID basis as the information required to handle that is not available at
+	 * this point. Packets that are too short are rejected immediately!
+	 */
+	if(((RXHeaderFlags & HEADER_HAS_LENGTH) && (RXHeaderFlags & HEADER_HAS_SEQUENCE) && (RXPacketLengthReceived < 7))
+		|| ((RXHeaderFlags & HEADER_HAS_LENGTH) && (RXPacketLengthReceived < 6))
+		|| ((RXHeaderFlags & HEADER_HAS_SEQUENCE) && (RXPacketLengthReceived < 5))){
+		finaliseAndSend(packetTooShortForSpecifiedFields);
+		resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+		return;
+	}
+
 	/* Subtract checksum to get final length */
 	RXCalculatedPayloadLength--;
+
+	if(RXHeaderFlags & HEADER_HAS_SEQUENCE){
+		*TXBufferCurrentPositionHandler = *RXBufferCurrentPosition;
+		RXBufferCurrentPosition++;
+		TXBufferCurrentPositionHandler++;
+		RXCalculatedPayloadLength--;
+	}
 
 	if(RXHeaderFlags & HEADER_HAS_LENGTH){
 		RXHeaderPayloadLength = *((unsigned short*)RXBufferCurrentPosition);

@@ -90,8 +90,8 @@
 /* Communications error codes */
 #define unimplementedFunction                   0x4000
 #define packetChecksumMismatch                  0x4001
-#define sourceAddressIsBroadcast                0x4002
-#define sourceAddressIsDuplicate                0x4003
+#define packetTooShortForSpecifiedFields        0x4002
+// #define ?                                       0x4003
 #define payloadLengthTypeMismatch               0x4004
 #define payloadLengthHeaderMismatch             0x4005
 #define invalidPayloadID                        0x4006
