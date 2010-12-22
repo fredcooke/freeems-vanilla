@@ -64,7 +64,6 @@
 /* Yet to be implemented :
 
 unsigned char lookup8Bit3dUC(
-unsigned short lookup16Bit2dUS(
 unsigned char lookup8Bit2dUC(
 signed short lookup16Bit3dSS(
 signed short lookup16Bit3dSS(

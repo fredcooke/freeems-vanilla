@@ -47,6 +47,7 @@
 #include "inc/interrupts.h"
 #include "inc/utils.h"
 #include "inc/tableLookup.h"
+#include "inc/locationIDs.h"
 #include "inc/blockDetailsLookup.h"
 #include "inc/commsCore.h"
 #include <string.h>
@@ -420,24 +421,23 @@ void decodePacketAndRespond(){
 			}
 
 			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
-			if(locationID < 16){
+			if(locationID < FlashLookupTablesUpper){
 				// Don't allow tables to be manipulated manually
 				if((size != details.size) || (offset != 0)){
 					errorID = uncheckedTableManipulationNotAllowed;
 					break;
 				}
-				errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
-			}else if((locationID > 399) && (locationID < 900)){
-				// Don't allow tables to be manipulated manually
-				if((size != details.size) || (offset != 0)){
-					errorID = uncheckedTableManipulationNotAllowed;
+
+				// Verify all tables
+				if(locationID < MainTableLocationUpper){
+					errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
+				}else if(locationID < twoDTableUSLocationUpper){
+					errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
+				}// TODO add other table types here
+				// If the validation failed, report it
+				if(errorID != 0){
 					break;
 				}
-				errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
-			}// TODO add other table types here
-			// If the validation failed, report it
-			if(errorID != 0){
-				break;
 			}
 
 			// Save page values for restore
@@ -446,10 +446,10 @@ void decodePacketAndRespond(){
 			RPAGE = details.RAMPage;
 
 			// Copy from the RX buffer to the block of RAM
-			memcpy((unsigned char*)(details.RAMAddress + offset), (unsigned char*)(RXBufferCurrentPosition + offset), size);
+			memcpy((unsigned char*)(details.RAMAddress + offset), RXBufferCurrentPosition, size);
 
 			// Check that the write was successful
-			unsigned char index = compare((unsigned char*)(RXBufferCurrentPosition + offset), (unsigned char*)(details.RAMAddress + offset), size);
+			unsigned char index = compare(RXBufferCurrentPosition, (unsigned char*)(details.RAMAddress + offset), size);
 
 			// Restore the original RAM and flash pages
 			RPAGE = oldRamPage;
@@ -461,61 +461,90 @@ void decodePacketAndRespond(){
 		}
 		case updateBlockInFlash:
 		{
-			/* Extract the RAM location ID from the received data */
+			// Extract the RAM location ID
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
-			/* Look up the memory location details */
+			// Extract the size of the data to be stored
+			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the offset to place the data at
+			unsigned short offset = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Look up the memory location details
 			blockDetails details;
 			lookupBlockDetails(locationID, &details);
 
-			/* Subtract two to allow for the locationID */
-			if((RXCalculatedPayloadLength - 2) != details.size){
+			// Subtract six to allow for the locationID, size, offset
+			if((RXCalculatedPayloadLength - 6) != details.size){
 				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
+			// If either of these is zero then this block is not in flash!
 			if((details.FlashPage == 0) || (details.FlashAddress == 0)){
 				errorID = invalidMemoryActionForID;
 				break;
 			}
 
-			// TODO factor this out into validation delegation function once the number of types increases somewhat
-			if(locationID < 16){
-				errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
-			}else if((locationID > 399) && (locationID < 900)){
-				errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
-			}// TODO add other table types here
-			/* If the validation failed, report it */
-			if(errorID != 0){
+			// Check that size and offset describe a region that is not out of bounds
+			if((size == 0) || (offset > (details.size - 1)) || (size > (details.size - offset))){
+				errorID = invalidSizeOffsetCombination;
 				break;
+			}
+
+			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
+			if(locationID < FlashLookupTablesUpper){
+				// Don't allow tables to be manipulated manually
+				if((size != details.size) || (offset != 0)){
+					errorID = uncheckedTableManipulationNotAllowed;
+					break;
+				}
+
+				// Verify all tables
+				if(locationID < MainTableLocationUpper){
+					errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
+				}else if(locationID < twoDTableUSLocationUpper){
+					errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
+				}// TODO add other table types here
+				// If the validation failed, report it
+				if(errorID != 0){
+					break;
+				}
 			}
 
 			/* Calculate the position of the end of the stored packet for use as a buffer */
 			void* buffer = (void*)((unsigned short)&RXBuffer + RXPacketLengthReceived);
 
-			/* Swap the RAM details such that the block gets pulled down from the buffer */
-			unsigned char originalRAMPage = details.RAMPage;
-			void* originalRAMAddress = details.RAMAddress;
-			details.RAMPage = RPAGE;
-			details.RAMAddress = RXBufferCurrentPosition;
+			/* Copy the flash details and populate the RAM details with the buffer location */
+			blockDetails burnDetails;
+			burnDetails.FlashPage = details.FlashPage;
+			burnDetails.FlashAddress = details.FlashAddress + offset;
+			burnDetails.RAMPage = RPAGE;
+			burnDetails.RAMAddress = RXBufferCurrentPosition;
+			burnDetails.size = size;
 
 			/* Copy from the RX buffer to the block of flash */
-			errorID = writeBlock(&details, buffer);
+			errorID = writeBlock(&burnDetails, buffer);
 			if(errorID != 0){
 				break;
 			}
 
 			/* If present in RAM, update that too */
-			if((originalRAMPage != 0) && (originalRAMAddress != 0)){
+			if((details.RAMPage != 0) && (details.RAMAddress != 0)){
 				/* Save page values for restore */
 				unsigned char oldRamPage = RPAGE;
 				/* Set the viewable RAM page */
-				RPAGE = originalRAMPage;
+				RPAGE = details.RAMPage;
+
 				/* Copy from the RX buffer to the block of RAM */
-				memcpy(originalRAMAddress, RXBufferCurrentPosition, details.size);
+				memcpy((unsigned char*)(details.RAMAddress + offset), RXBufferCurrentPosition, size);
+
 				/* Check that the write was successful */
-				unsigned char index = compare(RXBufferCurrentPosition, details.RAMAddress, details.size);
+				unsigned char index = compare(RXBufferCurrentPosition, (unsigned char*)(details.RAMAddress + offset), size);
+
 				/* Restore the original RAM and flash pages */
 				RPAGE = oldRamPage;
 
@@ -540,7 +569,7 @@ void decodePacketAndRespond(){
 			TXBufferCurrentPositionHandler += 2;
 
 			/* If it's a main table we are returning, specify the limits explicitly */
-			if(locationID < 16){
+			if(locationID < MainTableLocationUpper){
 				/* Store it back into the output data */
 				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_RPM_LENGTH;
 				TXBufferCurrentPositionHandler += 2;
@@ -588,7 +617,7 @@ void decodePacketAndRespond(){
 			TXBufferCurrentPositionHandler += 2;
 
 			/* If it's a main table we are returning, specify the limits explicitly */
-			if(locationID < 16){
+			if(locationID < MainTableLocationUpper){
 				/* Store it back into the output data */
 				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_RPM_LENGTH;
 				TXBufferCurrentPositionHandler += 2;
@@ -661,7 +690,7 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition += 2;
 
 			/* Check the ID to ensure it is a main table */
-			if(15 < locationID){
+			if(locationID >= MainTableLocationUpper){
 				errorID = invalidIDForMainTableAction;
 				break;
 			}
@@ -693,7 +722,7 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition -= 2;
 
 			/* Check the ID to ensure it is a main table */
-			if(15 < locationID){
+			if(locationID >= MainTableLocationUpper){
 				errorID = invalidIDForMainTableAction;
 				break;
 			}
@@ -723,7 +752,7 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition -= 2;
 
 			/* Check the ID to ensure it is a main table */
-			if(15 < locationID){
+			if(locationID >= MainTableLocationUpper){
 				errorID = invalidIDForMainTableAction;
 				break;
 			}
@@ -753,7 +782,7 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition -= 2;
 
 			/* Check the ID to ensure it is a 2d table */
-			if((locationID > 899) || (locationID < 400)){
+			if((locationID < twoDTableUSLocationLower) || (locationID >= twoDTableUSLocationUpper)){
 				errorID = invalidIDForTwoDTableAction;
 				break;
 			}
@@ -783,7 +812,7 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition -= 2;
 
 			/* Check the ID to ensure it is a 2d table */
-			if((locationID > 899) || (locationID < 400)){
+			if((locationID < twoDTableUSLocationLower) || (locationID >= twoDTableUSLocationUpper)){
 				errorID = invalidIDForTwoDTableAction;
 				break;
 			}

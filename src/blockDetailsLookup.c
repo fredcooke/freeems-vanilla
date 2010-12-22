@@ -39,6 +39,7 @@
 #define BLOCK_DETAILS_LOOKUP_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+#include "inc/locationIDs.h"
 #include "inc/pagedLocationBuffers.h"
 #include "inc/blockDetailsLookup.h"
 
@@ -355,20 +356,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		break;
 
 	/* TablesB small tables */
-	case perCylinderFuelTrimsLocationID:
-		details->size = 12;
-		details->RAMPage = RPAGE_TUNE_ONE;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesB.SmallTablesB.perCylinderFuelTrims;
-		details->FlashAddress = perCylinderFuelTrimsLocation;
-		break;
-	case perCylinderFuelTrims2LocationID:
-		details->size = 12;
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesB.SmallTablesB.perCylinderFuelTrims;
-		details->FlashAddress = perCylinderFuelTrims2Location;
-		break;
+		// TODO add data chunks from TablesC when some are put in
 
 	/* TablesC small tables */
 		// TODO add data chunks from TablesC when some are put in

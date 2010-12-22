@@ -133,8 +133,8 @@ WMFILE = Makefile.windows
 ISRSH = commsISRs.h injectionISRs.h
 COMMSH = commsCore.h blockDetailsLookup.h
 LINKER = memory.x regions.x hc9s12xdp512elfb.x
-GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h
-GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
+GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h packetTypes.h
+GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h locationIDs.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
 RPMH = Simple.h NipponDenso.h LT1-360-8.h Subaru-36-2-2-2.h MissingTeeth.h MiataNB.h
 
