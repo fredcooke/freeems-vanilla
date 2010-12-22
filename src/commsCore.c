@@ -568,19 +568,6 @@ void decodePacketAndRespond(){
 			*(unsigned short*)TXBufferCurrentPositionHandler = locationID;
 			TXBufferCurrentPositionHandler += 2;
 
-			/* If it's a main table we are returning, specify the limits explicitly */
-			if(locationID < MainTableLocationUpper){
-				/* Store it back into the output data */
-				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_RPM_LENGTH;
-				TXBufferCurrentPositionHandler += 2;
-				/* Store it back into the output data */
-				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_LOAD_LENGTH;
-				TXBufferCurrentPositionHandler += 2;
-				/* Store it back into the output data */
-				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_MAIN_LENGTH;
-				TXBufferCurrentPositionHandler += 2;
-			}
-
 			/* Look up the memory location details */
 			blockDetails details;
 			lookupBlockDetails(locationID, &details);
@@ -615,19 +602,6 @@ void decodePacketAndRespond(){
 			/* Store it back into the output data */
 			*(unsigned short*)TXBufferCurrentPositionHandler = locationID;
 			TXBufferCurrentPositionHandler += 2;
-
-			/* If it's a main table we are returning, specify the limits explicitly */
-			if(locationID < MainTableLocationUpper){
-				/* Store it back into the output data */
-				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_RPM_LENGTH;
-				TXBufferCurrentPositionHandler += 2;
-				/* Store it back into the output data */
-				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_LOAD_LENGTH;
-				TXBufferCurrentPositionHandler += 2;
-				/* Store it back into the output data */
-				*(unsigned short*)TXBufferCurrentPositionHandler = MAINTABLE_MAX_MAIN_LENGTH;
-				TXBufferCurrentPositionHandler += 2;
-			}
 
 			/* Look up the memory location details */
 			blockDetails details;
