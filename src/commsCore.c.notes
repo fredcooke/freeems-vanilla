@@ -1,53 +1,3 @@
-2 x reset with no ack/reply - OK
-8 x always reply with contents grep -2 - OK
-9 x always reply with non error error - FIXME ack with standard structure.
-2 x send debug text response - REMOVE, or RESTRUCTURE
-3 x unimplemented - REMOVE, or IMPLEMENT, or MIGRATE to new error scheme.
-
-24 seemingly valid cases
-24 x case statement options grep - 2
-
-grep SystemReset commsCore.c
-grep case commsCore.c | grep -v ISR
-grep checksumAndSend commsCore.c | grep -v void (-2)
-grep NO_PROBLEMO commsCore.c 
-grep sendDebugInternal\(\" commsCore.c 
-grep unimplemented commsCore.c
-
-Packet behaviour:
-
-forward CAN and UART have unimplemented error return
-request configurable datalog unimplemented error return
-erase and write block send strings back - (temp/test only)
-sys reset send nothing back (because they reset...)
-all others produce requested data or "no problem" ack.
-
-need to look at:
-   error/ack semantics
-   header fields
-   header flags
-
-all packets should always contain packet delimiters, flags, header fields, <optional> payload, checksum.
-ack should always contain sequence number of some sort
-ack should always contain matching packet type number
-ack should always contain either:
-   error code
-   success flag - empty payload and zero payload length could work well for this and/or with a bit flag in the header.
-   requested data
-
-
-
-setup errorID before switch
-
-send packet with data if required
-
-if not, fall through to either default non error return or error return depending if errorID is 0 or not (or whatever default/reset/ok is)
-
-optionally error out in the middle by setting the error code and breaking.
-
-
-
-
 Stu's "stretchy ints", make the protocol more extensible by not limiting various fields. look for standardised way of doing this, and name for it.
 
 move checksum out of rec interrupt if its there
@@ -57,8 +7,4 @@ IP/UDP header wrapping, for CAN vs UART why have addresses in the UART packets w
 
 Review and possibly remove multiple interface sending scheme. Why send the same shit over two UARTs, if you want to listen with a logger, just tap the ecuoutput line and do so. Keep possibility of exposing the same interface on two different UARTs, how will this work with one buffer?
 
-async logs get a header sequence? if so how to interleave with requests seq nums? seperate sequence will be included inside log data anyway.
-
 async exception like errors and/or debug, how?
-
-egrep -n "SystemReset|case|checksumAndSend|NO_PROBLEMO|sendDebugInternal\(\"|unimplemented" commsCore.c
