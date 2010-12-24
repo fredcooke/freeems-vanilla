@@ -299,6 +299,9 @@ void decodePacketAndRespond(){
 		}
 	}
 
+	/* Calculate the position of the end of the stored packet for later use as a buffer */
+	void* leftOverBuffer = (void*)((unsigned short)&RXBuffer + RXPacketLengthReceived);
+
 	unsigned short errorID = 0;
 	/* This is where all the communication logic resides.
 	 *
@@ -420,30 +423,47 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
-			if(locationID < FlashLookupTablesUpper){
-				// Don't allow tables to be manipulated manually
-				if((size != details.size) || (offset != 0)){
-					errorID = uncheckedTableManipulationNotAllowed;
-					break;
-				}
-
-				// Verify all tables
-				if(locationID < MainTableLocationUpper){
-					errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
-				}else if(locationID < twoDTableUSLocationUpper){
-					errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
-				}// TODO add other table types here
-				// If the validation failed, report it
-				if(errorID != 0){
-					break;
-				}
+			// Don't allow sub region manipulation where it does not make sense or is unsafe.
+			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+				errorID = uncheckedTableManipulationNotAllowed;
+				break;
 			}
 
 			// Save page values for restore
 			unsigned char oldRamPage = RPAGE;
 			// Set the viewable RAM page
 			RPAGE = details.RAMPage;
+
+			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
+			//
+			if(locationID < twoDTableUSLocationUpper){
+				void* bufferToCheck;
+
+				// For sub regions, construct an image for verification
+				if(size != details.size){
+					// Copy data from destination location to buffer
+					memcpy(leftOverBuffer, details.RAMAddress, details.size);
+
+					// Copy data from rx buffer to buffer over writing old data
+					memcpy(leftOverBuffer + offset, RXBufferCurrentPosition, size);
+
+					bufferToCheck = leftOverBuffer;
+				}else{
+					bufferToCheck = RXBufferCurrentPosition;
+				}
+
+				// Verify all tables
+				if(locationID < MainTableLocationUpper){
+					errorID = validateMainTable((mainTable*)bufferToCheck);
+				}else if(locationID < twoDTableUSLocationUpper){
+					errorID = validateTwoDTable((twoDTableUS*)bufferToCheck);
+				}// TODO add other table types here
+
+				// If the validation failed, report it
+				if(errorID != 0){
+					break;
+				}
+			}
 
 			// Copy from the RX buffer to the block of RAM
 			memcpy((unsigned char*)(details.RAMAddress + offset), RXBufferCurrentPosition, size);
@@ -495,28 +515,49 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			// Don't allow sub region manipulation where it does not make sense or is unsafe.
+			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+				errorID = uncheckedTableManipulationNotAllowed;
+				break;
+			}
+
 			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
-			if(locationID < FlashLookupTablesUpper){
-				// Don't allow tables to be manipulated manually
-				if((size != details.size) || (offset != 0)){
-					errorID = uncheckedTableManipulationNotAllowed;
-					break;
+			//
+			if(locationID < twoDTableUSLocationUpper){
+				void* bufferToCheck;
+
+				// For sub regions, construct an image for verification
+				if(size != details.size){
+					/* Save page value for restore and set the visible page */
+					unsigned char oldFlashPage = PPAGE;
+					PPAGE = details.FlashPage;
+
+					// Copy data from destination location to buffer
+					memcpy(leftOverBuffer, details.FlashAddress, details.size);
+
+					/* Restore the original flash page */
+					PPAGE = oldFlashPage;
+
+					// Copy data from rx buffer to buffer over writing old data
+					memcpy(leftOverBuffer + offset, RXBufferCurrentPosition, size);
+
+					bufferToCheck = leftOverBuffer;
+				}else{
+					bufferToCheck = RXBufferCurrentPosition;
 				}
 
 				// Verify all tables
 				if(locationID < MainTableLocationUpper){
-					errorID = validateMainTable((mainTable*)RXBufferCurrentPosition);
+					errorID = validateMainTable((mainTable*)bufferToCheck);
 				}else if(locationID < twoDTableUSLocationUpper){
-					errorID = validateTwoDTable((twoDTableUS*)RXBufferCurrentPosition);
+					errorID = validateTwoDTable((twoDTableUS*)bufferToCheck);
 				}// TODO add other table types here
+
 				// If the validation failed, report it
 				if(errorID != 0){
 					break;
 				}
 			}
-
-			/* Calculate the position of the end of the stored packet for use as a buffer */
-			void* buffer = (void*)((unsigned short)&RXBuffer + RXPacketLengthReceived);
 
 			/* Copy the flash details and populate the RAM details with the buffer location */
 			blockDetails burnDetails;
@@ -527,7 +568,7 @@ void decodePacketAndRespond(){
 			burnDetails.size = size;
 
 			/* Copy from the RX buffer to the block of flash */
-			errorID = writeBlock(&burnDetails, buffer);
+			errorID = writeBlock(&burnDetails, leftOverBuffer);
 			if(errorID != 0){
 				break;
 			}
