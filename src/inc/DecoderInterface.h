@@ -42,32 +42,34 @@
 #define FILE_DECODER_INTERFACE_H_SEEN
 
 
-// RPM Calculations:
-//
-// Either need a per decoder function that is called from the main loop OR...
-// RPM calculation is done in real time inside one of the RPM interrupts OR...
-// The choice of either, up to the decoder to decide how it is done, in this
-// case the function can either do nothing, or swap some pointers/var values
-// around or similar.
-
-// MAP Sampling:
-//
-// Max number of samples = max number of cylinders, has to be handled by decoder due to
-// potential mismatch between wheel pattern and cylinder firing pattern.
-
-// Scheduling:
-//
-// arrays of output channels, iterate and check for wheel event number, if matched, fire:
-// doesn't allow for firing a pin more than once a cycle!! no use.
-// allows multi channel on a single wheel event (virtually useless) but is slow, one loop
-// and array per type of output channel.
-//
-// array of wheel events, do lookup for wheel event, then if output channel valid, schedule it.
-// single channel per tooth event (acceptable, wire in parallel if required), fast, memory hog,
-// need one array per type of channel, array length = max expected tooth count! do we need to
-// support every single tooth on a nissan 360 style decoder or just cyl event count, what about
-// porsche 130? next stop is 60, seems good. can we use bit-fields to save memory, 1 bit =
-// 2 possible pins, 2 bits = 4, etc, this will be slower, though. probably just an unsigned char[]
+/**
+ * RPM Calculations:
+ *
+ * Either need a per decoder function that is called from the main loop OR...
+ * RPM calculation is done in real time inside one of the RPM interrupts OR...
+ * The choice of either, up to the decoder to decide how it is done, in this
+ * case the function can either do nothing, or swap some pointers/var values
+ * around or similar.
+ *
+ * MAP Sampling:
+ *
+ * Max number of samples = max number of cylinders, has to be handled by decoder due to
+ * potential mismatch between wheel pattern and cylinder firing pattern.
+ *
+ * Scheduling:
+ *
+ * arrays of output channels, iterate and check for wheel event number, if matched, fire:
+ * doesn't allow for firing a pin more than once a cycle!! no use.
+ * allows multi channel on a single wheel event (virtually useless) but is slow, one loop
+ * and array per type of output channel.
+ *
+ * array of wheel events, do lookup for wheel event, then if output channel valid, schedule it.
+ * single channel per tooth event (acceptable, wire in parallel if required), fast, memory hog,
+ * need one array per type of channel, array length = max expected tooth count! do we need to
+ * support every single tooth on a nissan 360 style decoder or just cyl event count, what about
+ * porsche 130? next stop is 60, seems good. can we use bit-fields to save memory, 1 bit =
+ * 2 possible pins, 2 bits = 4, etc, this will be slower, though. probably just an unsigned char[]
+ */
 
 
 // TODO @todo the below vars are just drafts so far, nothing is used, except the RPM stuff which I migrated here from the main header. More work to come.
