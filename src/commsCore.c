@@ -393,12 +393,12 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
-			// Extract the size of the data to be stored
-			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
-			RXBufferCurrentPosition += 2;
-
 			// Extract the offset to place the data at
 			unsigned short offset = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the size of the data to be stored
+			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
 			// Look up the memory location details
@@ -485,12 +485,12 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
-			// Extract the size of the data to be stored
-			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
-			RXBufferCurrentPosition += 2;
-
 			// Extract the offset to place the data at
 			unsigned short offset = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the size of the data to be stored
+			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
 			// Look up the memory location details
