@@ -58,6 +58,20 @@
  *
  * Scheduling:
  *
+ * Fueling pins could be expected to fire once per cylinder event (1 - 12), or
+ * once per engine cycle, or something in between, but what is a reasonable
+ * max, and is it workable to allow some cases and not others?
+ *
+ * Ignition pins will only need to be fired once per cycle or twice per cycle,
+ * unless multi-spark startup is required, however this could be done with
+ * cascaded dwell events, timer self-set:
+ *
+ * on dwell off spark on dwell off spark on dwell off and disable spark
+ *
+ * This example is for triple spark, 2 or more than 3 are also possible.
+ *
+ * OLD notes:
+ *
  * arrays of output channels, iterate and check for wheel event number, if matched, fire:
  * doesn't allow for firing a pin more than once a cycle!! no use.
  * allows multi channel on a single wheel event (virtually useless) but is slow, one loop
