@@ -605,9 +605,6 @@ void decodePacketAndRespond(){
 
 			/* Extract the RAM location ID from the received data */
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
-			/* Store it back into the output data */
-			*(unsigned short*)TXBufferCurrentPositionHandler = locationID;
-			TXBufferCurrentPositionHandler += 2;
 
 			/* Look up the memory location details */
 			blockDetails details;
@@ -640,9 +637,6 @@ void decodePacketAndRespond(){
 
 			/* Extract the flash location ID from the received data */
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
-			/* Store it back into the output data */
-			*(unsigned short*)TXBufferCurrentPositionHandler = locationID;
-			TXBufferCurrentPositionHandler += 2;
 
 			/* Look up the memory location details */
 			blockDetails details;
