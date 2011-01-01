@@ -37,7 +37,7 @@
 
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
-#include "inc/DecoderInterface.h"
+#include "inc/decoderInterface.h"
 
 
 /** Primary RPM ISR

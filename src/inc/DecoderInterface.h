@@ -24,7 +24,7 @@
  */
 
 
-/**	@file DecoderInterface.h
+/**	@file decoderInterface.h
  * @ingroup allHeaders
  *
  * @brief Objects through which a decoder communicates.

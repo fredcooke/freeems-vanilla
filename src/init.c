@@ -50,7 +50,7 @@
 #include "inc/commsISRs.h"
 #include "inc/pagedLocationBuffers.h"
 #include "inc/init.h"
-#include "inc/DecoderInterface.h"
+#include "inc/decoderInterface.h"
 #include "inc/xgateVectors.h"
 #include <string.h>
 

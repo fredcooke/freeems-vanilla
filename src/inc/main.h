@@ -44,7 +44,7 @@
 #include "coreVarsGenerator.h"
 #include "derivedVarsGenerator.h"
 #include "fuelAndIgnitionCalcs.h"
-#include "DecoderInterface.h"
+#include "decoderInterface.h"
 
 
 /* Computer Operating Properly reset sequence MC9S12XDP512V2.PDF Section 2.4.1.5 */

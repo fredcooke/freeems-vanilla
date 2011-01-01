@@ -48,7 +48,7 @@
 #define LT1_360_8_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
-#include "inc/DecoderInterface.h"
+#include "inc/decoderInterface.h"
 #include "inc/LT1-360-8.h"
 
 

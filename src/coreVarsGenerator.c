@@ -40,7 +40,7 @@
 #include "inc/freeEMS.h"
 #include "inc/commsCore.h"
 #include "inc/coreVarsGenerator.h"
-#include "inc/DecoderInterface.h"
+#include "inc/decoderInterface.h"
 
 
 /** @brief Generate the core variables and average them.
