@@ -598,13 +598,22 @@ void decodePacketAndRespond(){
 		}
 		case retrieveBlockFromRAM:
 		{
-			if(RXCalculatedPayloadLength != 2){
+			if(RXCalculatedPayloadLength != 6){
 				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
-			/* Extract the RAM location ID from the received data */
+			// Extract the RAM location ID
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the offset to place the data at
+			unsigned short offset = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the size of the data to be stored
+			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
 
 			/* Look up the memory location details */
 			blockDetails details;
@@ -615,13 +624,25 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			// Check that size and offset describe a region that is not out of bounds
+			if((size == 0) || (offset > (details.size - 1)) || (size > (details.size - offset))){
+				errorID = invalidSizeOffsetCombination;
+				break;
+			}
+
+			// Don't allow sub region retrieval where it does not make sense or is unsafe. (keep it symmetric for djandruczyk)
+			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+				errorID = doesNotMakeSenseToRetrievePartially;
+				break;
+			}
+
 			/* Save page value for restore and set the visible page */
 			unsigned char oldRamPage = RPAGE;
 			RPAGE = details.RAMPage;
 
 			/* Copy the block of RAM to the TX buffer */
-			memcpy(TXBufferCurrentPositionHandler, details.RAMAddress, details.size);
-			TXBufferCurrentPositionHandler += details.size;
+			memcpy(TXBufferCurrentPositionHandler, (unsigned char*)(details.RAMAddress + offset), size);
+			TXBufferCurrentPositionHandler += size;
 
 			/* Restore the original RAM and flash pages */
 			RPAGE = oldRamPage;
@@ -630,13 +651,22 @@ void decodePacketAndRespond(){
 		}
 		case retrieveBlockFromFlash:
 		{
-			if(RXCalculatedPayloadLength != 2){
+			if(RXCalculatedPayloadLength != 6){
 				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
-			/* Extract the flash location ID from the received data */
+			// Extract the RAM location ID
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the offset to place the data at
+			unsigned short offset = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the size of the data to be stored
+			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
 
 			/* Look up the memory location details */
 			blockDetails details;
@@ -647,13 +677,25 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			// Check that size and offset describe a region that is not out of bounds
+			if((size == 0) || (offset > (details.size - 1)) || (size > (details.size - offset))){
+				errorID = invalidSizeOffsetCombination;
+				break;
+			}
+
+			// Don't allow sub region retrieval where it does not make sense or is unsafe. (keep it symmetric for djandruczyk)
+			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+				errorID = doesNotMakeSenseToRetrievePartially;
+				break;
+			}
+
 			/* Save page value for restore and set the visible page */
 			unsigned char oldFlashPage = PPAGE;
 			PPAGE = details.FlashPage;
 
 			/* Copy the block of flash to the TX buffer */
-			memcpy(TXBufferCurrentPositionHandler, details.FlashAddress, details.size);
-			TXBufferCurrentPositionHandler += details.size;
+			memcpy(TXBufferCurrentPositionHandler, (unsigned char*)(details.FlashAddress + offset), size);
+			TXBufferCurrentPositionHandler += size;
 
 			/* Restore the original RAM and flash pages */
 			PPAGE = oldFlashPage;
@@ -662,13 +704,22 @@ void decodePacketAndRespond(){
 		}
 		case burnBlockFromRamToFlash:
 		{
-			if(RXCalculatedPayloadLength != 2){
+			if(RXCalculatedPayloadLength != 6){
 				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
-			/* Extract the flash location ID from the received data */
+			// Extract the RAM location ID
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the offset to place the data at
+			unsigned short offset = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Extract the size of the data to be stored
+			unsigned short size = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
 
 			/* Look up the memory location details */
 			blockDetails details;
@@ -680,11 +731,26 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			/* Calculate the position of the end of the stored packet for use as a buffer */
-			void* buffer = (void*)((unsigned short)&RXBuffer + RXPacketLengthReceived);
+			// Check that size and offset describe a region that is not out of bounds
+			if((size == 0) || (offset > (details.size - 1)) || (size > (details.size - offset))){
+				errorID = invalidSizeOffsetCombination;
+				break;
+			}
+
+			// Don't allow sub region retrieval where it does not make sense or is unsafe. (keep it symmetric for djandruczyk)
+			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+				errorID = doesNotMakeSenseToRetrievePartially;
+				break;
+			}
+
+
+			// adjust details block to feed to represent the subsection of ram and flash that we want to burn down.
+			details.RAMAddress += offset;
+			details.FlashAddress += offset;
+			details.size = size;
 
 			/* Write the block down from RAM to Flash */
-			errorID = writeBlock(&details, buffer);
+			errorID = writeBlock(&details, leftOverBuffer);
 			break;
 		}
 		case adjustMainTableCell:
