@@ -173,7 +173,6 @@ int  main(){ // TODO maybe move this to paged flash ?
 
 
 		if(!(TXBufferInUseFlags)){
-		//	unsigned short logTimeBuffer = Clocks.realTimeClockTenths;
 			/* If the flag for com packet processing is set and the TX buffer is available process the data! */
 			if(RXStateFlags & RX_READY_TO_PROCESS){
 				/* Clear the flag */
@@ -181,7 +180,7 @@ int  main(){ // TODO maybe move this to paged flash ?
 
 				/* Handle the incoming packet */
 				decodePacketAndRespond();
-			}else if(ShouldSendLog){//(lastTime != logTimeBuffer) && (lastCalcCount != Counters.calculationsPerformed)){
+			}else if(lastCalcCount != Counters.calculationsPerformed){ // substitute true for full speed continuous stream test...
 
 				/* send asynchronous data log if required */
 				if(asyncDatalogType!= asyncDatalogOff){
@@ -248,11 +247,8 @@ int  main(){ // TODO maybe move this to paged flash ?
 					}
 					}
 				}
-				//ShouldSendLog = FALSE;
-//				// mechanism to ensure we send once per clock tick without doing it in the RTC section.
-//				lastTime = logTimeBuffer;
-//				// mechanism to ensure we only send something if the data has been updated
-//				lastCalcCount = Counters.calculationsPerformed;
+				// mechanism to ensure we only send something if the data has been updated
+				lastCalcCount = Counters.calculationsPerformed;
 			}
 		}
 		// on once per cycle for main loop heart beat (J0)

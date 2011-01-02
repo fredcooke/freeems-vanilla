@@ -51,10 +51,8 @@
 #define COP_RESET1 0x55
 #define COP_RESET2 0xAA
 
-
-// temp method of ensuring logs sent only once per second
-//unsigned short lastTime = 65535;
-//unsigned short lastCalcCount;
+// method of ensuring no duplicate logs are sent.
+unsigned short lastCalcCount;
 
 
 #else
