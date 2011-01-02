@@ -389,6 +389,12 @@ void decodePacketAndRespond(){
 		}
 		case updateBlockInRAM:
 		{
+			// Subtract six to allow for the locationID, size, offset
+			if(RXCalculatedPayloadLength < 7){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
 			// Extract the RAM location ID
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
@@ -406,8 +412,8 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			// Subtract six to allow for the locationID, size, offset
-			if((RXCalculatedPayloadLength - 6) != details.size){
-				errorID = payloadLengthTypeMismatch;
+			if((RXCalculatedPayloadLength - 6) != size){
+				errorID = payloadShorterThanSpecifiedValue;
 				break;
 			}
 
@@ -481,6 +487,12 @@ void decodePacketAndRespond(){
 		}
 		case updateBlockInFlash:
 		{
+			// Subtract six to allow for the locationID, size, offset
+			if(RXCalculatedPayloadLength < 7){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
 			// Extract the RAM location ID
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
@@ -498,8 +510,8 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			// Subtract six to allow for the locationID, size, offset
-			if((RXCalculatedPayloadLength - 6) != details.size){
-				errorID = payloadLengthTypeMismatch;
+			if((RXCalculatedPayloadLength - 6) != size){
+				errorID = payloadShorterThanSpecifiedValue;
 				break;
 			}
 
