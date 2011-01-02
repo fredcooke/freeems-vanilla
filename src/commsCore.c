@@ -285,6 +285,7 @@ void decodePacketAndRespond(){
 		RXBufferCurrentPosition++;
 		TXBufferCurrentPositionHandler++;
 		RXCalculatedPayloadLength--;
+		*TXHeaderFlags |= HEADER_HAS_SEQUENCE;
 	}
 
 	if(RXHeaderFlags & HEADER_HAS_LENGTH){
