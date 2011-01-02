@@ -959,7 +959,7 @@ void decodePacketAndRespond(){
 				break;
 			}
 
-			asyncDatalogType = newDatalogType;
+			TablesB.SmallTablesB.datalogStreamType = newDatalogType;
 			break;
 		}
 		case forwardPacketOverCAN:

@@ -109,7 +109,6 @@ extern unsigned short tachoPeriod;
 EXTERN unsigned char portHDebounce;
 
 // these should not be here... TODO move to a comms header
-extern unsigned char asyncDatalogType;
 #define asyncDatalogOff			0x00
 #define asyncDatalogBasic		0x01
 // currently unimplemented :

@@ -42,9 +42,6 @@
 #include "inc/freeEMS.h"
 
 
-//unsigned char asyncDatalogType = asyncDatalogOff; // Uncomment for djandruczyk testing
-unsigned char asyncDatalogType = asyncDatalogBasic; // Recomment for djandruczyk testing
-
 unsigned short tachoPeriod = 65535;	/* Lowest RPM at start up time. */
 
 // Values for testing

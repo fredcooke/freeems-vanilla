@@ -183,8 +183,11 @@ int  main(){ // TODO maybe move this to paged flash ?
 			}else if(lastCalcCount != Counters.calculationsPerformed){ // substitute true for full speed continuous stream test...
 
 				/* send asynchronous data log if required */
-				if(asyncDatalogType!= asyncDatalogOff){
-					switch (asyncDatalogType) {
+				switch (TablesB.SmallTablesB.datalogStreamType) {
+					case asyncDatalogOff:
+					{
+						break;
+					}
 					case asyncDatalogBasic:
 					{
 						/* Flag that we are transmitting! */
@@ -244,7 +247,6 @@ int  main(){ // TODO maybe move this to paged flash ?
 					{
 						/// TODO @todo
 						break;
-					}
 					}
 				}
 				// mechanism to ensure we only send something if the data has been updated
