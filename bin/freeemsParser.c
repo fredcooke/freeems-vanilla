@@ -82,7 +82,7 @@ int main( int argc, char *argv[] ){
 
 		// To store a packet in for purposes of further diagnostics
 		unsigned char packetBuffer[3000]; // more than sufficient for current FreeEMS increase for other variants.
-		unsigned short packetTypeCounts[65536]; // upto 65535 of each type, then it'll overflow...
+		unsigned short packetTypeCounts[65536] = {0}; // upto 65535 of each type, then it'll overflow...
 
 		/* Iterate through the file char at a time */
 		while(processed < length){
