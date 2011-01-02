@@ -356,6 +356,13 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		break;
 
 	/* TablesB small tables */
+	case liveTunableBlockNumeroUno:
+		details->size = 1;//sizeof(someSTruct);
+		details->RAMPage = RPAGE_TUNE_ONE;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesB.SmallTablesB;
+		details->FlashAddress = SmallTablesBFlashLocation;
+		break;
 		// TODO add data chunks from TablesC when some are put in
 
 	/* TablesC small tables */
@@ -366,56 +373,56 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 
 	/* filler block entries */
 	case fillerALocationID:
-		details->size = 576;
+		details->size = SMALL_TABLES_1_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.filler;
 		details->FlashAddress = fillerALocation;
 		break;
 	case fillerA2LocationID:
-		details->size = 576;
+		details->size = SMALL_TABLES_1_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.filler;
 		details->FlashAddress = fillerA2Location;
 		break;
 	case fillerBLocationID:
-		details->size = 1012;
+		details->size = SMALL_TABLES_2_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.filler;
 		details->FlashAddress = fillerBLocation;
 		break;
 	case fillerB2LocationID:
-		details->size = 1012;
+		details->size = SMALL_TABLES_2_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.filler;
 		details->FlashAddress = fillerB2Location;
 		break;
 	case fillerCLocationID:
-		details->size = 1024;
+		details->size = SMALL_TABLES_3_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC.SmallTablesC.filler;
 		details->FlashAddress = fillerCLocation;
 		break;
 	case fillerC2LocationID:
-		details->size = 1024;
+		details->size = SMALL_TABLES_3_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC.SmallTablesC.filler;
 		details->FlashAddress = fillerC2Location;
 		break;
 	case fillerDLocationID:
-		details->size = 1024;
+		details->size = SMALL_TABLES_4_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
 		details->FlashAddress = fillerDLocation;
 		break;
 	case fillerD2LocationID:
-		details->size = 1024;
+		details->size = SMALL_TABLES_4_FILLER_SIZE;
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;

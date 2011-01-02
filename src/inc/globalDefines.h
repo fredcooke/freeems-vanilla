@@ -259,6 +259,11 @@
 #define IGNITION_CHANNELS 12	/* How many ignition channels the code should support */
 #define INJECTION_CHANNELS 6	/* How many injection channels the code should support */
 
+#define SMALL_TABLES_1_FILLER_SIZE  576 // Left over space in small tables 2 blocks
+#define SMALL_TABLES_2_FILLER_SIZE 1011 // Left over space in small tables 2 blocks
+#define SMALL_TABLES_3_FILLER_SIZE 1024 // Left over space in small tables 2 blocks
+#define SMALL_TABLES_4_FILLER_SIZE 1024 // Left over space in small tables 2 blocks
+
 /* Ignition defines */
 #define DWELL_ENABLE BIT0
 #define DWELL_DISABLE NBIT0

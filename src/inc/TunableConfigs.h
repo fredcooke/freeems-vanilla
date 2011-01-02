@@ -85,26 +85,27 @@ typedef struct {
 	twoDTableUS primingVolumeTable;
 	twoDTableUS engineTempEnrichmentTablePercent;
 	twoDTableUS dwellMaxVersusRPMTable;
-	unsigned char filler[576];
+	unsigned char filler[SMALL_TABLES_1_FILLER_SIZE];
 } SmallTables1;
 
 
 /** @copydoc SmallTables1 */
 typedef struct {
+	unsigned char datalogStreamType;
 	unsigned short perCylinderFuelTrims[INJECTION_CHANNELS]; /* Trims for injection, from 0% to 200% of base */
-	unsigned char filler[1012];
+	unsigned char filler[SMALL_TABLES_2_FILLER_SIZE];
 } SmallTables2;
 
 
 /** @copydoc SmallTables1 */
 typedef struct {
-	unsigned char filler[1024];
+	unsigned char filler[SMALL_TABLES_3_FILLER_SIZE];
 } SmallTables3;
 
 
 /** @copydoc SmallTables1 */
 typedef struct {
-	unsigned char filler[1024];
+	unsigned char filler[SMALL_TABLES_4_FILLER_SIZE];
 } SmallTables4;
 
 

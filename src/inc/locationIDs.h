@@ -166,6 +166,7 @@
 #define MAFTransferTableLocationID                     0x8002 /* 2k */
 #define TestTransferTableLocationID                    0x8003 /* 2k */
 
+#define liveTunableBlockNumeroUno                      0x9000 // rename when there is some reason to...
 
 /* Flash ONLY fixed config blocks */
 /* Fixed config 1 */
