@@ -637,6 +637,11 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			// Special behaviour for size of zero which returns the whole block
+			if((size == 0) && (offset == 0)){
+				size = details.size;
+			}
+
 			// Check that size and offset describe a region that is not out of bounds
 			if((size == 0) || (offset > (details.size - 1)) || (size > (details.size - offset))){
 				errorID = invalidSizeOffsetCombination;
@@ -688,6 +693,11 @@ void decodePacketAndRespond(){
 			if((details.FlashPage == 0) || (details.FlashAddress == 0)){
 				errorID = invalidMemoryActionForID;
 				break;
+			}
+
+			// Special behaviour for size of zero which returns the whole block
+			if((size == 0) && (offset == 0)){
+				size = details.size;
 			}
 
 			// Check that size and offset describe a region that is not out of bounds
