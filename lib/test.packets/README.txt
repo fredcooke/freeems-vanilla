@@ -5,6 +5,8 @@ Packets to which we expect an error code response live in ./negative.tests/
 Special control bytes for our protocol live in ./special.bytes/
 Control sequences for the Serial Monitor live in ./serial.monitor/
 Old packets that somehow fell out of date live in ./broken/
+Deprecated packets that should still work live in ./deprecated/
+Useful blocks of sample data live in ./sample.data/
 
 All other packets at this level of the test.packets directory should work as
 described by their filenames!
