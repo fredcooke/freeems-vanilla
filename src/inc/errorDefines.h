@@ -109,6 +109,7 @@
 #define invalidSizeOffsetCombination            0x4012
 #define uncheckedTableManipulationNotAllowed    0x4013
 #define payloadShorterThanSpecifiedValue        0x4014
+#define noSuchLocationIDListType                0x4015
 
 #define invalidAxisOrder				0 /* prevent parsing */
 #define invalidAxisIndex				1 /* prevent parsing */

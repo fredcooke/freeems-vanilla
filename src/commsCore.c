@@ -1048,14 +1048,67 @@ void decodePacketAndRespond(){
 		}
 		case retrieveListOfLocationIDs:
 		{
-			/// TODO @todo Implement this!
-			errorID = unimplementedFunction;
+			if(RXCalculatedPayloadLength != 1){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
+			// Extract the type of list we want
+			unsigned char listType = *((unsigned char*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 1;
+
+			// This type must have a length field, set that up
+			unsigned short * listLength = (unsigned short*)TXBufferCurrentPositionHandler;
+			*TXHeaderFlags |= HEADER_HAS_LENGTH;
+			TXBufferCurrentPositionHandler += 2;
+
+			#define listOfAllValidLocationIDs   0x00
+			switch (listType){
+				case listOfAllValidLocationIDs:
+				{
+					unsigned long locationID;
+					blockDetails details;
+					for(locationID = 0;locationID < 65536;locationID++){
+						unsigned short locationIDDoesntExist;
+						locationIDDoesntExist = lookupBlockDetails((unsigned short)locationID, &details);
+
+						if(!locationIDDoesntExist){
+							*((unsigned short*)TXBufferCurrentPositionHandler) = (unsigned short)locationID;
+							TXBufferCurrentPositionHandler += 2;
+							*listLength += 2;
+						}
+					}
+				}
+				default:
+				{
+					errorID = noSuchLocationIDListType;
+					break;
+				}
+			}
+
 			break;
 		}
 		case retrieveLocationIDDetails:
 		{
-			/// TODO @todo Implement this!
-			errorID = unimplementedFunction;
+			if(RXCalculatedPayloadLength != 2){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
+			// Extract the RAM location ID
+			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
+
+			// Write straight to output buffer to save time/code
+			errorID = lookupBlockDetails(locationID, (blockDetails*)TXBufferCurrentPositionHandler);
+
+			if(errorID != 0){
+				break;
+			}
+
+			// Adjust TX buffer position if successful
+			TXBufferCurrentPositionHandler += sizeof(blockDetails);
+
 			break;
 		}
 		default:
