@@ -47,53 +47,57 @@
 /*&&&&&&&&&&&&&&&&&&&&&&&&  Protocol Payload Type IDs  &&&&&&&&&&&&&&&&&&&&&&&*/
 
 /* Firmware Independent functions */
-#define requestInterfaceVersion       0
-#define requestFirmwareVersion        2
-#define requestMaxPacketSize          4
-#define requestEchoPacketReturn       6
-#define requestSoftSystemReset        8	/* System comes up fresh, so no response */
-//efine replytoSoftSystemReset        9	/* This is reserved */
-#define requestHardSystemReset       10	/* System comes up fresh, so no response */
-//efine replytoHardSystemReset       11	/* This is reserved */
+#define requestInterfaceVersion     0x0000
+#define requestFirmwareVersion      0x0002
+#define requestMaxPacketSize        0x0004
+#define requestEchoPacketReturn     0x0006
+#define requestSoftSystemReset      0x0008 /* System comes up fresh, so no response */
+//efine replytoSoftSystemReset      0x0009 /* This is reserved */
+#define requestHardSystemReset      0x000A /* System comes up fresh, so no response */
+//efine replytoHardSystemReset      0x000B /* This is reserved */
 
 
-//efine requestAsyncErrorCode        12	/* This is reserved */
-#define asyncErrorCodePacket         13	/* NOTE : Unrequested error event code packet */
-//efine requestAsyncDebugInfo        14	/* This is reserved */
-#define asyncDebugInfoPacket         15	/* NOTE : Unrequested debug information packet */
+//efine requestAsyncErrorCode       0x000C /* This is reserved */
+#define asyncErrorCodePacket        0x000D /* NOTE : Unrequested error event code packet */
+//efine requestAsyncDebugInfo       0x000E /* This is reserved */
+#define asyncDebugInfoPacket        0x000F /* NOTE : Unrequested debug information packet */
 
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&  Firmware Payload Type IDs  &&&&&&&&&&&&&&&&&&&&&&&*/
 
 /* Data block manipulation */
-#define updateBlockInRAM           256
-#define updateBlockInFlash         258
-#define retrieveBlockFromRAM        260
-#define retrieveBlockFromFlash      262
-#define burnBlockFromRamToFlash     264
+#define updateBlockInRAM            0x0100
+#define updateBlockInFlash          0x0102
+#define retrieveBlockFromRAM        0x0104
+#define retrieveBlockFromFlash      0x0106
+#define burnBlockFromRamToFlash     0x0108
 
 /* Main table manipulation */
-#define adjustMainTableCell         300
-#define adjustMainTableRPMAxis      302
-#define	adjustMainTableLoadAxis     304
+#define adjustMainTableCell         0x012C
+#define adjustMainTableRPMAxis      0x012E
+#define	adjustMainTableLoadAxis     0x0130
 
 /* 2d table manipulation */
-#define adjust2dTableAxis           306
-#define adjust2dTableCell           308
+#define adjust2dTableAxis           0x0132
+#define adjust2dTableCell           0x0134
 
 /* Datalog request packets */
-#define requestBasicDatalog         400
-#define responseBasicDatalog        401 /* Defined because it can be used both synchronously and asynchronously */
-#define requestConfigurableDatalog  402
-#define responseConfigurableDatalog 403 /* Defined because it can be used both synchronously and asynchronously */
-#define setAsyncDatalogType         404
+#define requestBasicDatalog         0x0190
+#define responseBasicDatalog        0x0191 /* Defined because it can be used both synchronously and asynchronously */
+#define requestConfigurableDatalog  0x0192
+#define responseConfigurableDatalog 0x0193 /* Defined because it can be used both synchronously and asynchronously */
+#define setAsyncDatalogType         0x0194
 
 /* Special function */
-#define forwardPacketOverCAN        500
-#define forwardPacketOverOtherUART  502
+#define forwardPacketOverCAN        0x01F4
+#define forwardPacketOverOtherUART  0x01F6
 
 /* Generic memory grabber for debugging */
-#define retrieveArbitraryMemory     600
+#define retrieveArbitraryMemory     0x0258
+
+// Data interrogation gold
+#define retrieveListOfLocationIDs   0xDA5E // Idea is Dave's, impl is Fred's
+#define retrieveLocationIDDetails   0xF8ED // Idea is Fred's, impl is Fred's
 
 
 #else

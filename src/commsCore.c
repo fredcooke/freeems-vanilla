@@ -1046,6 +1046,18 @@ void decodePacketAndRespond(){
 
 			break;
 		}
+		case retrieveListOfLocationIDs:
+		{
+			/// TODO @todo Implement this!
+			errorID = unimplementedFunction;
+			break;
+		}
+		case retrieveLocationIDDetails:
+		{
+			/// TODO @todo Implement this!
+			errorID = unimplementedFunction;
+			break;
+		}
 		default:
 		{
 			if((RXHeaderPayloadID % 2) == 1){
