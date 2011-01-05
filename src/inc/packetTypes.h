@@ -97,7 +97,7 @@
 
 // Data interrogation gold
 #define retrieveListOfLocationIDs   0xDA5E // Idea is Dave's, impl is Fred's
-#define retrieveLocationIDDetails   0xF8ED // Idea is Fred's, impl is Fred's
+#define retrieveLocationIDDetails   0xF8E0 // Idea is Fred's, impl is Fred's
 
 
 #else
