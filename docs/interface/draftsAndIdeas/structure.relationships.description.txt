@@ -1,6 +1,3 @@
-aaron, isolate packet structure from payload ID from contents such that ms and freeems code are the same.
-
-
 a structure can have N components
 each component can be a primitive or other component
 
