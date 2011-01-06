@@ -89,7 +89,7 @@
 #define block_is_2dus_table        BIT12_16
 #define block_is_main_table        BIT13_16
 #define block_is_lookup_data       BIT14_16
-#define block_is_firmware_specific BIT15_16
+#define block_is_configuration     BIT15_16
 
 /**
  * Addressable memory block description. This structure holds
