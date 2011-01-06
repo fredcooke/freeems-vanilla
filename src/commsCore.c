@@ -1048,14 +1048,18 @@ void decodePacketAndRespond(){
 		}
 		case retrieveListOfLocationIDs:
 		{
-			if(RXCalculatedPayloadLength != 1){
+			if(RXCalculatedPayloadLength != 3){
 				errorID = payloadLengthTypeMismatch;
 				break;
 			}
 
-			// Extract the type of list we want
+			// Extract the type of list that we want
 			unsigned char listType = *((unsigned char*)RXBufferCurrentPosition);
-			RXBufferCurrentPosition += 1;
+			RXBufferCurrentPosition++;
+
+			// Extract the mask for the qualities that we want
+			unsigned short blockDetailsMask = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
 
 			// This type must have a length field, set that up
 			unsigned short * listLength = (unsigned short*)TXBufferCurrentPositionHandler;
@@ -1065,29 +1069,28 @@ void decodePacketAndRespond(){
 			// Zero the counter before we start, woops!
 			*listLength = 0;
 
-			#define listOfAllValidLocationIDs   0x00
-			switch (listType){
-				case listOfAllValidLocationIDs:
-				{
-					unsigned long locationID;
-					blockDetails details;
-					for(locationID = 0;locationID < 65536;locationID++){
-						unsigned short locationIDDoesntExist;
-						locationIDDoesntExist = lookupBlockDetails((unsigned short)locationID, &details);
+			/*if(flags & mask){
+				// All items that consist of at least one of the sent flags
+			}
 
-						if(!locationIDDoesntExist){
-							*((unsigned short*)TXBufferCurrentPositionHandler) = (unsigned short)locationID;
-							TXBufferCurrentPositionHandler += 2;
-							*listLength += 2;
-						}
+			if(!(~flags & mask)){
+				// All items that have all of the sent flags
+			}*/
+
+			unsigned long locationID;
+			blockDetails details;
+			for(locationID = 0;locationID < 65536;locationID++){
+				unsigned short locationIDDoesntExist;
+				locationIDDoesntExist = lookupBlockDetails((unsigned short)locationID, &details);
+
+				if(!locationIDDoesntExist){
+					if((listType == 0x00) || // get all
+							((listType == 0x01) && (details.flags & blockDetailsMask)) || // get OR of bits
+							((listType == 0x02) && (!(~(details.flags) & blockDetailsMask)))){ // get AND of bits
+						*((unsigned short*)TXBufferCurrentPositionHandler) = (unsigned short)locationID;
+						TXBufferCurrentPositionHandler += 2;
+						*listLength += 2;
 					}
-
-					break;
-				}
-				default:
-				{
-					errorID = noSuchLocationIDListType;
-					break;
 				}
 			}
 

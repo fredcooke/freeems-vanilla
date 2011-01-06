@@ -71,6 +71,12 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 	/* Initialise the block size to 1024 to save code space and increase readability */
 	details->size = MAINTABLE_SIZE;
 
+	// Initialise the flags to having flash, everything does at the moment, and indexable, most is, negate at end for those that dont.
+	details->flags = block_is_in_flash | block_is_indexable;
+
+	// No need to set parent value to zero as ignored unless flag set, done for clarity in hex stream.
+	details->parent = 0;
+
 	/* Look up the locations and set non default sizes */
 	switch (locationID) {
 	/* flash only fixed conf full blocks */
@@ -262,6 +268,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
 		details->FlashAddress = dwellDesiredVersusVoltageTableLocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case dwellDesiredVersusVoltageTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
@@ -276,6 +283,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.injectorDeadTimeTable;
 		details->FlashAddress = injectorDeadTimeTableLocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case injectorDeadTimeTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
@@ -290,6 +298,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
 		details->FlashAddress = postStartEnrichmentTableLocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case postStartEnrichmentTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
@@ -304,6 +313,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
 		details->FlashAddress = engineTempEnrichmentTableFixedLocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case engineTempEnrichmentTableFixed2LocationID:
 		details->size = TWODTABLEUS_SIZE;
@@ -318,6 +328,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
 		details->FlashAddress = primingVolumeTableLocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case primingVolumeTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
@@ -332,6 +343,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
 		details->FlashAddress = engineTempEnrichmentTablePercentLocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case engineTempEnrichmentTablePercent2LocationID:
 		details->size = TWODTABLEUS_SIZE;
@@ -346,6 +358,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellMaxVersusRPMTable;
 		details->FlashAddress = dwellMaxVersusRPMTableLocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case dwellMaxVersusRPMTable2LocationID:
 		details->size = TWODTABLEUS_SIZE;
@@ -362,6 +375,8 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB;
 		details->FlashAddress = SmallTablesBFlashLocation;
+		details->flags |= block_has_parent;
+		details->parent = SmallTablesBLocationID;
 		break;
 		// TODO add data chunks from TablesC when some are put in
 
@@ -378,6 +393,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.filler;
 		details->FlashAddress = fillerALocation;
+		details->parent = SmallTablesALocationID;
 		break;
 	case fillerA2LocationID:
 		details->size = SMALL_TABLES_1_FILLER_SIZE;
@@ -385,6 +401,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.filler;
 		details->FlashAddress = fillerA2Location;
+		details->parent = SmallTablesA2LocationID;
 		break;
 	case fillerBLocationID:
 		details->size = SMALL_TABLES_2_FILLER_SIZE;
@@ -392,6 +409,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.filler;
 		details->FlashAddress = fillerBLocation;
+		details->parent = SmallTablesBLocationID;
 		break;
 	case fillerB2LocationID:
 		details->size = SMALL_TABLES_2_FILLER_SIZE;
@@ -399,6 +417,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.filler;
 		details->FlashAddress = fillerB2Location;
+		details->parent = SmallTablesB2LocationID;
 		break;
 	case fillerCLocationID:
 		details->size = SMALL_TABLES_3_FILLER_SIZE;
@@ -406,6 +425,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC.SmallTablesC.filler;
 		details->FlashAddress = fillerCLocation;
+		details->parent = SmallTablesCLocationID;
 		break;
 	case fillerC2LocationID:
 		details->size = SMALL_TABLES_3_FILLER_SIZE;
@@ -413,6 +433,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC.SmallTablesC.filler;
 		details->FlashAddress = fillerC2Location;
+		details->parent = SmallTablesC2LocationID;
 		break;
 	case fillerDLocationID:
 		details->size = SMALL_TABLES_4_FILLER_SIZE;
@@ -420,6 +441,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
 		details->FlashAddress = fillerDLocation;
+		details->parent = SmallTablesDLocationID;
 		break;
 	case fillerD2LocationID:
 		details->size = SMALL_TABLES_4_FILLER_SIZE;
@@ -427,6 +449,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD.SmallTablesD.filler;
 		details->FlashAddress = fillerD2Location;
+		details->parent = SmallTablesD2LocationID;
 		break;
 
 	/* Fixed conf 1 small chunks */
@@ -434,26 +457,31 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->size = ENGINE_SETTINGS_SIZE;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.engineSettings);
+		details->parent = FixedConfig1LocationID;
 		break;
 	case serialSettingsLocationID:
 		details->size = SERIAL_SETTINGS_SIZE;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.serialSettings);
+		details->parent = FixedConfig1LocationID;
 		break;
 	case tachoSettingsLocationID:
 		details->size = TACHO_SETTINGS_SIZE;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.tachoSettings);
+		details->parent = FixedConfig1LocationID;
 		break;
 	case coreSettingsALocationID:
 		details->size = 2;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.coreSettingsA);
+		details->parent = FixedConfig1LocationID;
 		break;
 	case userTextFieldLocationID:
 		details->size = userTextFieldArrayLength1;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.userTextField);
+		details->parent = FixedConfig1LocationID;
 		break;
 
 	/* Fixed conf 2 small chunks */
@@ -461,27 +489,72 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->size = SENSOR_RANGES_SIZE;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorRanges);
+		details->parent = FixedConfig2LocationID;
 		break;
 	case sensorPresetsLocationID:
 		details->size = SENSOR_PRESETS_SIZE;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorPresets);
+		details->parent = FixedConfig2LocationID;
 		break;
 	case sensorSettingsLocationID:
 		details->size = SENSOR_SETTINGS_SIZE;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorSettings);
+		details->parent = FixedConfig2LocationID;
 		break;
 	case userTextField2LocationID:
 		details->size = userTextFieldArrayLength2;
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.userTextField2);
+		details->parent = FixedConfig2LocationID;
 		break;
 
 	default:
 		/* Return early if locationID is not valid. */
 		return locationIDNotFound;
 	}
+
+	// Setup all of the flags for various groups here rather than one by one above, MUCH less work...
+/*
+#define block_has_parent           BIT0_16  -
+#define block_is_in_ram            BIT1_16  -
+#define block_is_in_flash          BIT2_16  -
+#define block_is_indexable         BIT3_16  -
+#define block_is_read_only         BIT4_16 unused so far, for var blocks etc. maybe new way of doing datalogs, maybe not.
+#define block_gets_verified        BIT5_16  -
+#define block_is_2dus_table        BIT12_16 -
+#define block_is_main_table        BIT13_16 -
+#define block_is_lookup_data       BIT14_16 -
+#define block_is_firmware_specific BIT15_16 = used in singular case above, move to range...
+*/
+
+	if(locationID >= FlashLookupTablesLower && locationID < FlashLookupTablesUpper){
+		details->flags |= block_is_lookup_data;
+		details->flags &= ~block_is_indexable;
+	}
+	if(locationID >= MainTableLocationLower && locationID < MainTableLocationUpper){
+		details->flags |= block_is_main_table | block_is_in_ram | block_gets_verified;
+	}
+	if(locationID >= twoDTableUSLocationLower && locationID < twoDTableUSLocationUpper){
+		details->flags |= block_is_2dus_table | block_is_in_ram | block_has_parent | block_gets_verified;
+	}
+	if(locationID >= SmallTableBlockFillersLower && locationID < SmallTableBlockFillersUpper){
+		details->flags |= block_has_parent | block_is_in_ram;
+		details->flags &= ~block_is_indexable;
+	}
+/*	if(locationID >= ? && locationID < ??){
+		details->flags |= ??;
+	}
+	if(locationID >= ? && locationID < ??){
+		details->flags |= ??;
+	}
+	if(locationID >= ? && locationID < ??){
+		details->flags |= ??;
+	}
+	if(locationID >= ? && locationID < ??){
+		details->flags |= ??;
+	}*/
 
 	/* Fall through to not return error */
 	return 0;
