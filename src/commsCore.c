@@ -1062,6 +1062,9 @@ void decodePacketAndRespond(){
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
 			TXBufferCurrentPositionHandler += 2;
 
+			// Zero the counter before we start, woops!
+			*listLength = 0;
+
 			#define listOfAllValidLocationIDs   0x00
 			switch (listType){
 				case listOfAllValidLocationIDs:
@@ -1078,6 +1081,8 @@ void decodePacketAndRespond(){
 							*listLength += 2;
 						}
 					}
+
+					break;
 				}
 				default:
 				{
