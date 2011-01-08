@@ -80,7 +80,7 @@
 #define block_is_indexable         BIT3_16
 #define block_is_read_only         BIT4_16
 #define block_gets_verified        BIT5_16
-#define block_spare_flag_6         BIT6_16
+#define block_for_backup_restore   BIT6_16
 #define block_spare_flag_7         BIT7_16
 #define block_spare_flag_8         BIT8_16
 #define block_spare_flag_9         BIT9_16

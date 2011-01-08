@@ -121,20 +121,19 @@ XGAS = $(XGPREFIX)as
 # improved upon and made more specific. GCC actually has a function to output a
 # dependency set for a C source file, maybe we should use that?
 MAINH = main.h
-INITH = init.h
+INITH = init.h xgateVectors.h
 UTILH = utils.h
 MFILE = Makefile
 ISRH = interrupts.h
 CINCS = injectorISR.c
-FLASHH = flashWrite.h
+FLASHH = flashWrite.h flashGlobals.h flashBurn.h
 ASMH = 9S12XDP512asm.s
 LOOKUPH = tableLookup.h
-WMFILE = Makefile.windows
 ISRSH = commsISRs.h injectionISRs.h
-COMMSH = commsCore.h blockDetailsLookup.h
+COMMSH = commsCore.h blockDetailsLookup.h pagedLocationBuffers.h decodePacketAndRespond.h packetTypes.h locationIDs.h
 LINKER = memory.x regions.x hc9s12xdp512elfb.x
-GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h packetTypes.h
-GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h locationIDs.h
+GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h decoderInterface.h
+GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
 RPMH = Simple.h NipponDenso.h LT1-360-8.h Subaru-36-2-2-2.h MissingTeeth.h MiataNB.h
 

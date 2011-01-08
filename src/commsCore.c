@@ -432,7 +432,7 @@ void decodePacketAndRespond(){
 			}
 
 			// Don't allow sub region manipulation where it does not make sense or is unsafe.
-			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+			if((size != details.size) && !(details.flags & block_is_indexable)){
 				errorID = uncheckedTableManipulationNotAllowed;
 				break;
 			}
@@ -444,7 +444,7 @@ void decodePacketAndRespond(){
 
 			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
 			//
-			if(locationID < twoDTableUSLocationUpper){
+			if((details.flags & block_is_main_table) || (details.flags & block_is_2dus_table)){
 				void* bufferToCheck;
 
 				// For sub regions, construct an image for verification
@@ -461,9 +461,9 @@ void decodePacketAndRespond(){
 				}
 
 				// Verify all tables
-				if(locationID < MainTableLocationUpper){
+				if(details.flags & block_is_main_table){
 					errorID = validateMainTable((mainTable*)bufferToCheck);
-				}else if(locationID < twoDTableUSLocationUpper){
+				}else if(details.flags & block_is_2dus_table){
 					errorID = validateTwoDTable((twoDTableUS*)bufferToCheck);
 				}// TODO add other table types here
 
@@ -530,14 +530,14 @@ void decodePacketAndRespond(){
 			}
 
 			// Don't allow sub region manipulation where it does not make sense or is unsafe.
-			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+			if((size != details.size) && !(details.flags & block_is_indexable)){
 				errorID = uncheckedTableManipulationNotAllowed;
 				break;
 			}
 
 			/// TODO @todo factor this out into validation delegation function once the number of types increases somewhat
 			//
-			if(locationID < twoDTableUSLocationUpper){
+			if((details.flags & block_is_main_table) || (details.flags & block_is_2dus_table)){
 				void* bufferToCheck;
 
 				// For sub regions, construct an image for verification
@@ -561,9 +561,9 @@ void decodePacketAndRespond(){
 				}
 
 				// Verify all tables
-				if(locationID < MainTableLocationUpper){
+				if(details.flags & block_is_main_table){
 					errorID = validateMainTable((mainTable*)bufferToCheck);
-				}else if(locationID < twoDTableUSLocationUpper){
+				}else if(details.flags & block_is_2dus_table){
 					errorID = validateTwoDTable((twoDTableUS*)bufferToCheck);
 				}// TODO add other table types here
 
@@ -650,7 +650,7 @@ void decodePacketAndRespond(){
 			}
 
 			// Don't allow sub region retrieval where it does not make sense or is unsafe. (keep it symmetric for djandruczyk)
-			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+			if((size != details.size) && !(details.flags & block_is_indexable)){
 				errorID = doesNotMakeSenseToRetrievePartially;
 				break;
 			}
@@ -708,7 +708,7 @@ void decodePacketAndRespond(){
 			}
 
 			// Don't allow sub region retrieval where it does not make sense or is unsafe. (keep it symmetric for djandruczyk)
-			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+			if((size != details.size) && !(details.flags & block_is_indexable)){
 				errorID = doesNotMakeSenseToRetrievePartially;
 				break;
 			}
@@ -762,7 +762,7 @@ void decodePacketAndRespond(){
 			}
 
 			// Don't allow sub region retrieval where it does not make sense or is unsafe. (keep it symmetric for djandruczyk)
-			if((size != details.size) && (locationID < FlashLookupTablesUpper) && (locationID >= twoDTableUSLocationUpper)){
+			if((size != details.size) && !(details.flags & block_is_indexable)){
 				errorID = doesNotMakeSenseToRetrievePartially;
 				break;
 			}
@@ -788,8 +788,12 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
+			/* Look up the memory location details */
+			blockDetails details;
+			lookupBlockDetails(locationID, &details);
+
 			/* Check the ID to ensure it is a main table */
-			if(locationID >= MainTableLocationUpper){
+			if(!(details.flags & block_is_main_table)){
 				errorID = invalidIDForMainTableAction;
 				break;
 			}
@@ -800,10 +804,6 @@ void decodePacketAndRespond(){
 			unsigned short LoadIndex = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 			unsigned short cellValue = *((unsigned short*)RXBufferCurrentPosition);
-
-			/* Look up the memory location details */
-			blockDetails details;
-			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
 			errorID = setPagedMainTableCellValue(details.RAMPage, details.RAMAddress, RPMIndex, LoadIndex, cellValue);
@@ -820,8 +820,12 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 
+			/* Look up the memory location details */
+			blockDetails details;
+			lookupBlockDetails(locationID, &details);
+
 			/* Check the ID to ensure it is a main table */
-			if(locationID >= MainTableLocationUpper){
+			if(!(details.flags & block_is_main_table)){
 				errorID = invalidIDForMainTableAction;
 				break;
 			}
@@ -830,10 +834,6 @@ void decodePacketAndRespond(){
 			unsigned short RPMIndex = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 			unsigned short RPMValue = *((unsigned short*)RXBufferCurrentPosition);
-
-			/* Look up the memory location details */
-			blockDetails details;
-			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
 			errorID = setPagedMainTableRPMValue(details.RAMPage, details.RAMAddress, RPMIndex, RPMValue);
@@ -850,8 +850,12 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 
+			/* Look up the memory location details */
+			blockDetails details;
+			lookupBlockDetails(locationID, &details);
+
 			/* Check the ID to ensure it is a main table */
-			if(locationID >= MainTableLocationUpper){
+			if(!(details.flags & block_is_main_table)){
 				errorID = invalidIDForMainTableAction;
 				break;
 			}
@@ -860,10 +864,6 @@ void decodePacketAndRespond(){
 			unsigned short LoadIndex = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 			unsigned short LoadValue = *((unsigned short*)RXBufferCurrentPosition);
-
-			/* Look up the memory location details */
-			blockDetails details;
-			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
 			errorID = setPagedMainTableLoadValue(details.RAMPage, details.RAMAddress, LoadIndex, LoadValue);
@@ -880,8 +880,12 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 
+			/* Look up the memory location details */
+			blockDetails details;
+			lookupBlockDetails(locationID, &details);
+
 			/* Check the ID to ensure it is a 2d table */
-			if((locationID < twoDTableUSLocationLower) || (locationID >= twoDTableUSLocationUpper)){
+			if(!(details.flags & block_is_2dus_table)){
 				errorID = invalidIDForTwoDTableAction;
 				break;
 			}
@@ -890,10 +894,6 @@ void decodePacketAndRespond(){
 			unsigned short axisIndex = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 			unsigned short axisValue = *((unsigned short*)RXBufferCurrentPosition);
-
-			/* Look up the memory location details */
-			blockDetails details;
-			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
 			errorID = setPagedTwoDTableAxisValue(details.RAMPage, details.RAMAddress, axisIndex, axisValue);
@@ -910,8 +910,12 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 
+			/* Look up the memory location details */
+			blockDetails details;
+			lookupBlockDetails(locationID, &details);
+
 			/* Check the ID to ensure it is a 2d table */
-			if((locationID < twoDTableUSLocationLower) || (locationID >= twoDTableUSLocationUpper)){
+			if(!(details.flags & block_is_2dus_table)){
 				errorID = invalidIDForTwoDTableAction;
 				break;
 			}
@@ -920,10 +924,6 @@ void decodePacketAndRespond(){
 			unsigned short cellIndex = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition -= 2;
 			unsigned short cellValue = *((unsigned short*)RXBufferCurrentPosition);
-
-			/* Look up the memory location details */
-			blockDetails details;
-			lookupBlockDetails(locationID, &details);
 
 			/* Attempt to set the value */
 			errorID = setPagedTwoDTableCellValue(details.RAMPage, details.RAMAddress, cellIndex, cellValue);

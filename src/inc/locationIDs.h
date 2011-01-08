@@ -35,59 +35,6 @@
 #define FILE_LOCATION_IDS_H_SEEN
 
 
-/* Memory block ID section
- *
- * The IDs are arranged into groups such that different actions can be
- * performed on them depending upon their type. The upper most division is one
- * of "verifiable" and "free form". Verifiable blocks contain data that can
- * have a function run over them to check that they are consistent and good
- * before being stored or used in the code. Verifiable blocks should not be
- * edited with arbitrary manipulation of memory, the firmware protects them or
- * their sub-blocks from incorrect alteration by providing specific accessor
- * functions with their own checks. Fields in non-verifiable blocks should
- * usually work with any value stored in them, just not necessarily in a way
- * that the user would like. Range markers are defined for purposes of
- * checking which area something is in.
- */
-
-
-/* | LOWER  -  UPPER | GETEST <= | < LTTEST | DESCRIPTION
- * | 0x0000 - 0x000F | 0x0000 <= | < 0x0010 | Big tables that need verification to write to
- * |        -        |           |          |
- * | 0x0100 - 0x010D | 0x0100 <= | < 0x0200 | twoDTableUS
- * |        -        |           |          |
- * | 0x3000 - 0x3007 | 0x3000 <= | < 0x4000 | Big blocks of small tables that should be written whole or individually with verification:
- * | 0x4000 - 0x4007 | 0x4000 <= | < 0x5000 | Small table block fillers - OK to access by offset/size but no point so prevented for now (RAM and Flash)
- * |        -        |           |          |
- * | 0x8000 - 0x8003 | 0x8000 <= | < 0x9000 | lookup tables that should only be written as a whole block
- * |        -        |           |          |
- * | UNIMPL - UNIMPL | 0x???? <= | < 0x???? | Small table block configurations - OK to access by offset/size (RAM and Flash)
- * | 0xC000 - 0xFFFF | 0xC000 <= |    N/A   | Big config blocks and sub sections with many small fields - OK to access by offset/size (Flash ONLY)
- */
-
-
-/* Memory block range limits */
-#define MainTableLocationLower                         0x0000
-#define MainTableLocationUpper                         0x0010
-// gap
-#define twoDTableUSLocationLower                       0x0100
-#define twoDTableUSLocationUpper                       0x0200
-// gap
-#define SmallTableBlocksLower                          0x3000
-#define SmallTableBlocksUpper                          0x4000
-#define SmallTableBlockFillersLower                    0x4000
-#define SmallTableBlockFillersUpper                    0x5000
-// gap
-#define FlashLookupTablesLower                         0x8000
-#define FlashLookupTablesUpper                         0x9000
-// gap
-#define SmallTableBlockConfigsLower                    0x????
-#define SmallTableBlockConfigsUpper                    0x????
-// gap
-#define BigConfigBlocksLower                           0xC000
-#define BigConfigBlocksUpper                           0xFFFF+1=? // unusable so ensure it breaks
-
-
 /* Big main tables */
 /* Fueling tables */
 #define VETableMainLocationID                          0x0000
@@ -108,6 +55,9 @@
 #define InjectionAdvanceTableSecondaryLocationID       0x000E
 #define InjectionAdvanceTableSecondary2LocationID      0x000F
 
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define MainTable_TwoDTableUS_Border                   0x0100
+#endif
 
 /* twoDTableUS tables (TablesA) */
 #define dwellDesiredVersusVoltageTableLocationID       0x0100
@@ -125,18 +75,14 @@
 #define dwellMaxVersusRPMTableLocationID               0x010C
 #define dwellMaxVersusRPMTable2LocationID              0x010D
 
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define TwoDTableUS_SmallTableFullBlocks_Border        0x3000
+#endif
 
+/// TODO @todo Claim some RAM back for XGATE use?
 /* TablesB */
-/// TODO @todo Claim some RAM back for XGATE use?
-
-
 /* TablesC */
-/// TODO @todo Claim some RAM back for XGATE use?
-
-
 /* TablesD */
-/// TODO @todo Claim some RAM back for XGATE use?
-
 
 /* Tunable blocks */
 #define SmallTablesALocationID                         0x3000
@@ -148,6 +94,9 @@
 #define SmallTablesDLocationID                         0x3006
 #define SmallTablesD2LocationID                        0x3007
 
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define SmallTableFullBlocks_SmallTableFillers_Border  0x4000
+#endif
 
 /* Table block fillers */
 #define fillerALocationID                              0x4000
@@ -159,6 +108,9 @@
 #define fillerDLocationID                              0x4006
 #define fillerD2LocationID                             0x4007
 
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define SmallTableFillers_FlashLookupTables_Border     0x8000
+#endif
 
 /* Flash ONLY lookup tables blocks */
 #define IATTransferTableLocationID                     0x8000 /* 2k */
@@ -166,24 +118,36 @@
 #define MAFTransferTableLocationID                     0x8002 /* 2k */
 #define TestTransferTableLocationID                    0x8003 /* 2k */
 
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define FlashLookupTables_SmallTableConfigs_Border     0x9000
+#endif
+
 #define liveTunableBlockNumeroUno                      0x9000 // rename when there is some reason to...
 
-/* Flash ONLY fixed config blocks */
-/* Fixed config 1 */
-#define FixedConfig1LocationID                         0xC000
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define SmallTableConfigs_FixedConfigBlocks_Border     0xA000
+#endif
+
+/* Fixed configs whole */
+#define FixedConfig1LocationID                         0xA000
+#define FixedConfig2LocationID                         0xA001
+
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define FixedConfigBlocks_FixedConfigSubBlocks_Border  0xC000
+#endif
+
 /* Fixed config 1 sub sections */
-#define engineSettingsLocationID                       0xC001
-#define serialSettingsLocationID                       0xC002
-#define tachoSettingsLocationID                        0xC003
-#define coreSettingsALocationID                        0xC004
-#define userTextFieldLocationID                        0xC005
-/* Fixed config 2 */
-#define FixedConfig2LocationID                         0xD000
+#define engineSettingsLocationID                       0xC000
+#define serialSettingsLocationID                       0xC001
+#define tachoSettingsLocationID                        0xC002
+#define coreSettingsALocationID                        0xC003
+#define userTextFieldLocationID                        0xC004
+
 /* Fixed config 2 sub sections */
-#define sensorRangesLocationID                         0xD001
-#define sensorPresetsLocationID                        0xD002
-#define sensorSettingsLocationID                       0xD003
-#define userTextField2LocationID                       0xD004
+#define sensorRangesLocationID                         0xC005
+#define sensorPresetsLocationID                        0xC006
+#define sensorSettingsLocationID                       0xC007
+#define userTextField2LocationID                       0xC008
 
 
 #else
