@@ -66,6 +66,7 @@ void populateBasicDatalog(){
 	/* Save the current position */
 	unsigned char* position = TXBufferCurrentPositionHandler;
 
+	DerivedVars->sp4 = coreStatusA;
 	DerivedVars->sp5++; // increment as basic log sequence generator
 
 	/* Get core vars */
@@ -1068,14 +1069,6 @@ void decodePacketAndRespond(){
 
 			// Zero the counter before we start, woops!
 			*listLength = 0;
-
-			/*if(flags & mask){
-				// All items that consist of at least one of the sent flags
-			}
-
-			if(!(~flags & mask)){
-				// All items that have all of the sent flags
-			}*/
 
 			unsigned long locationID;
 			blockDetails details;

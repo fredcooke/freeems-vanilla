@@ -515,8 +515,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		return locationIDNotFound;
 	}
 
-	// Setup all of the flags for various groups here rather than one by one above, MUCH less work...
-/*
+/* TEMPORARY FOR MY REFERENCE, if you're developing an external application against the FreeEMS interface you should NOT be reading this or any other non-header source file! You know who you are!!!
 #define block_has_parent           BIT0_16  -
 #define block_is_in_ram            BIT1_16  -
 #define block_is_in_flash          BIT2_16  -
@@ -526,35 +525,29 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 #define block_is_2dus_table        BIT12_16 -
 #define block_is_main_table        BIT13_16 -
 #define block_is_lookup_data       BIT14_16 -
-#define block_is_firmware_specific BIT15_16 = used in singular case above, move to range...
+#define block_is_configuration     BIT15_16 = used in singular case above, move to range...
 */
 
-	if(locationID >= FlashLookupTablesLower && locationID < FlashLookupTablesUpper){
+	// Setup all of the flags for various groups here rather than one by one above, MUCH less work...
+
+	if((locationID >= FlashLookupTablesLower) && (locationID < FlashLookupTablesUpper)){
 		details->flags |= block_is_lookup_data;
 		details->flags &= ~block_is_indexable;
 	}
-	if(locationID >= MainTableLocationLower && locationID < MainTableLocationUpper){
+	if((locationID >= MainTableLocationLower) && (locationID < MainTableLocationUpper)){
 		details->flags |= block_is_main_table | block_is_in_ram | block_gets_verified;
 	}
-	if(locationID >= twoDTableUSLocationLower && locationID < twoDTableUSLocationUpper){
+	if((locationID >= twoDTableUSLocationLower) && (locationID < twoDTableUSLocationUpper)){
 		details->flags |= block_is_2dus_table | block_is_in_ram | block_has_parent | block_gets_verified;
 	}
-	if(locationID >= SmallTableBlockFillersLower && locationID < SmallTableBlockFillersUpper){
+	if((locationID >= SmallTableBlockFillersLower) && (locationID < SmallTableBlockFillersUpper)){
 		details->flags |= block_has_parent | block_is_in_ram;
 		details->flags &= ~block_is_indexable;
 	}
-/*	if(locationID >= ? && locationID < ??){
-		details->flags |= ??;
-	}
-	if(locationID >= ? && locationID < ??){
-		details->flags |= ??;
-	}
-	if(locationID >= ? && locationID < ??){
-		details->flags |= ??;
-	}
-	if(locationID >= ? && locationID < ??){
-		details->flags |= ??;
-	}*/
+//	if((locationID >= ?) && (locationID < ?)){
+//		details->flags |= ?;
+//		details->flags &= ~?;
+//	}
 
 	/* Fall through to not return error */
 	return 0;
