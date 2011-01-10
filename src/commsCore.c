@@ -947,6 +947,7 @@ void decodePacketAndRespond(){
 			/* Set the length field up */
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
 			*(unsigned short*)TXBufferCurrentPositionHandler = configuredBasicDatalogLength;
+			TXBufferCurrentPositionHandler += 2;
 
 			/* Fill out the log and send */
 			populateBasicDatalog();
