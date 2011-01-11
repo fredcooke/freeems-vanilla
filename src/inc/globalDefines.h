@@ -171,19 +171,19 @@
 #define densityOfOctane				22496		/* 703 grams per litre */
 #define stoichiometricLambda		32768		/* Lambda = 1.0 */
 
-/* Generated with http://www.diyefi.org/calculators.htm#stoich */
-#define stoichiometricAFRMethane	17245		/* 17.245 AFR */
-#define stoichiometricAFRPropane	15685		/* 15.685 AFR */
-#define stoichiometricAFRLPG		15599		/* 15.599 AFR */
-#define stoichiometricAFRButane		15469		/* 15.469 AFR */
-#define stoichiometricAFROctane		15137		/* 15.137 AFR */
-#define stoichiometricAFRGasoline	14700		/* 14.700 AFR */
-#define stoichiometricAFRXylene		13681		/* 13.681 AFR */
-#define stoichiometricAFRToluene	13512		/* 13.512 AFR */
-#define stoichiometricAFRBenzene	13282		/* 13.282 AFR */
-#define stoichiometricAFRE85		 9862		/*  9.862 AFR */
-#define stoichiometricAFREthanol	 9008		/*  9.008 AFR */
-#define stoichiometricAFRMethanol	 6475		/*  6.475 AFR */
+/* Generated with http://www.diyefi.org/calculators.htm#stoich AFR x stoichiometricAFRDivisor (1024) = value */
+#define stoichiometricAFRMethane	17659		/* 17.245 AFR */
+#define stoichiometricAFRPropane	16061		/* 15.685 AFR */
+#define stoichiometricAFRLPG		15973		/* 15.599 AFR */
+#define stoichiometricAFRButane		15840		/* 15.469 AFR */
+#define stoichiometricAFROctane		15500		/* 15.137 AFR */
+#define stoichiometricAFRGasoline	15053		/* 14.700 AFR */
+#define stoichiometricAFRXylene		14009		/* 13.681 AFR */
+#define stoichiometricAFRToluene	13836		/* 13.512 AFR */
+#define stoichiometricAFRBenzene	13601		/* 13.282 AFR */
+#define stoichiometricAFRE85		10099		/*  9.862 AFR */
+#define stoichiometricAFREthanol	 9224		/*  9.008 AFR */
+#define stoichiometricAFRMethanol	 6630		/*  6.475 AFR */
 
 #define batteryVoltageMin			    0		/* Voltage read at lowest ADC reading */
 #define batteryVoltageRange			24500		/* Voltage difference between lowest and highest ADC reading */
