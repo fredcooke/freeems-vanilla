@@ -72,7 +72,8 @@
 
 
 /* Paged flash blocks for functions */
-#define FPPAGE_E0 FFAR(".ppageE0")
+#define FPPAGE_E0X FFAR(".ppageE0X")
+#define FPPAGE_E0S FFAR(".ppageE0S")
 #define FPPAGE_E1 FFAR(".ppageE1")
 #define FPPAGE_E2 FFAR(".ppageE2")
 #define FPPAGE_E3 FFAR(".ppageE3")
@@ -98,7 +99,8 @@
 #define FPPAGE_F7 FFAR(".ppageF7")
 
 /* Paged flash blocks for data */
-#define PPAGE_E0 DFAR(".ppageE0")
+#define PPAGE_E0S DFAR(".ppageE0S")
+#define PPAGE_E0X DFAR(".ppageE0X")
 #define PPAGE_E1 DFAR(".ppageE1")
 #define PPAGE_E2 DFAR(".ppageE2")
 #define PPAGE_E3 DFAR(".ppageE3")

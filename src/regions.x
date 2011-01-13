@@ -204,11 +204,15 @@ SECTIONS
   } > ppageFF */
 
 
-/* The rest from the other 3 128k flash modules - can't use yet */
-  .ppageE0  :
+  .ppageE0X  :
   {
-    *(.ppageE0)
-  }  > ppageE0
+    *(.ppageE0X)
+  }  > ppageE0X
+
+  .ppageE0S  :
+  {
+    *(.ppageE0S)
+  }  > ppageE0S
 
   .ppageE1  :
   {

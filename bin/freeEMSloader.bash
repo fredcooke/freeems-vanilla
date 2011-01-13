@@ -271,7 +271,14 @@ verify_load ()
 
 welcome
 check_args
-erase_flash
+echo "################################################################################"
+echo "################################################################################"
+echo "#### CAUTION, you MUST have used FreeEMS Loader to erase the entire device! ####"
+echo "#### If you have not erased the device with that tool, NOT hcs12mem, abort! ####"
+echo "################################################################################"
+echo "################################################################################"
+echo "Have you erased the device with FreeEMS Loader? [ yes | abort ]"
+continue "yes" "abort" "$ABORT_PRE_LOAD"
 load_s19
 # verify currently doesn't work. needs more finesse.
 #verify_load

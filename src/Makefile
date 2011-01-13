@@ -273,6 +273,11 @@ COPYOPTS =  --output-target=srec \
 		--only-section=.data \
 		--only-section=.vectors \
 		--only-section=.rodata \
+		--change-section-lma .ppageE0X=0xE08800 \
+		--change-section-lma .ppageE1=0xE18000 \
+		--only-section=.ppageE0X \
+		--only-section=.ppageE1 \
+		--set-section-flags .ppageE1=alloc,load \
 		--change-section-lma .ppageF8=0xF88000 \
 		--change-section-lma .fpageF9=0xF98000 \
 		--change-section-lma .dpageF9=0xF9A000 \
@@ -313,9 +318,8 @@ COPYOPTS =  --output-target=srec \
 #		--only-section=.ppageFF		This is left here for clarity only (equivalent to text but paged)
 # Changes to the above options should be reflected in memory.x and memory.h also!
 
-# The following flash areas can only be used once Sean has written his loader app :
-#		--only-section=.ppageE0 \
-#		--only-section=.ppageE1 \
+# The following flash areas should only be included if they are used.
+#		--only-section=.ppageE0S \
 #		--only-section=.ppageE2 \
 #		--only-section=.ppageE3 \
 #		--only-section=.ppageE4 \
@@ -338,8 +342,7 @@ COPYOPTS =  --output-target=srec \
 #		--only-section=.ppageF5 \
 #		--only-section=.ppageF6 \
 #		--only-section=.ppageF7 \
-#		--change-section-lma .ppageE0=0xE08000 \
-#		--change-section-lma .ppageE1=0xE18000 \
+#		--change-section-lma .ppageE0S=0xE08000 \
 #		--change-section-lma .ppageE2=0xE28000 \
 #		--change-section-lma .ppageE3=0xE38000 \
 #		--change-section-lma .ppageE4=0xE48000 \

@@ -44,7 +44,6 @@
 
 #define INIT_C
 #include "inc/freeEMS.h"
-#include "inc/flashWrite.h"
 #include "inc/interrupts.h"
 #include "inc/utils.h"
 #include "inc/commsISRs.h"
@@ -532,49 +531,12 @@ void initXgate(){
 	INT_CFDATA0 = 0x01; 		/* RQST = 1 */
 	INT_CFDATA1 = 0x81;		/* PRIO = 1 */
 
-	/* HCS12mem currently limits us to half of the available flash, hence this copy code. */
 	/* XGATE sees flash starting at paged address 0xE0, 0x8800 */
-
-	// Reuse variables across multiple blocks of unreachable code copying code
-	unsigned short * xgateDataDestination;
-	unsigned char destinationPage;
-	// Save old flash page value
-	unsigned char OldPPAGE = PPAGE;
-
-	// Copy the XGATE vector table into the visible region only if it differs from what is already there (save on flash burns for now)
-	xgateDataDestination = (unsigned short *)0x8800;
-	destinationPage = 0xE0;
-	// Copy to RAM first as only one paged flash block at a time is visible
-	memcpy((void*)&TXBuffer, (void*)&xgateIntVectorTable, sizeof(xgateIntVectorTable));
-	// Switch to destination page for comparison
-	PPAGE = destinationPage;
-	// Do the check, from the copy in RAM to the destination.
-	if(compare((unsigned char*)&TXBuffer, (unsigned char*)xgateDataDestination, sizeof(xgateIntVectorTable))){
-		eraseSector(destinationPage, xgateDataDestination);
-		writeSector(RPAGE, (unsigned short*)&TXBuffer, destinationPage, xgateDataDestination);
-	}
-
-	// Copy xgatethread0 code into the visible region only if it differs from what is already there (save on flash burns for now)
-	xgateDataDestination = (unsigned short *)0x9000;
-	destinationPage = 0xE1;
-	unsigned short xgateThread0Size = (void*)&xgateThread0End - (void*)&xgateThread0;
-	// Copy to RAM first as only one paged flash block at a time is visible
-	memcpy((void*)&TXBuffer, (void*)&xgateThread0, xgateThread0Size);
-	// Switch to destination page for comparison
-	PPAGE = destinationPage;
-	// Do the check, from the copy in RAM to the destination.
-	if(compare((unsigned char*)&TXBuffer, (unsigned char*)xgateDataDestination, xgateThread0Size)){
-		eraseSector(destinationPage, xgateDataDestination);
-		writeSector(RPAGE, (unsigned short*)&TXBuffer, destinationPage, xgateDataDestination);
-	}
-
-	// Switch the page back to how it was
-	PPAGE = OldPPAGE;
 
 	// XGATE threads execute from flash at the moment
 
 	// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)
-	XGVBR = (unsigned short )0x0800;
+	XGVBR = (unsigned short )0x0800; // EO region is divided to ensure vectors end up here visible to xgate
 
 	// Enable XGate and XGate interrupts
 	XGMCTL= (unsigned short)0x8181;

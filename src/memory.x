@@ -63,7 +63,8 @@
 	/* TODO split the above text and text1 regions into halves or similar to allow us to know how the linear space is being spent, eg perf/required/isr etc */
 
 	/* These are correct as of the 0.0.17 release */
-    ppageE0	(rx)	: ORIGIN = 0x390000, LENGTH = 0x4000
+    ppageE0S	(rx)	: ORIGIN = 0x390000, LENGTH = 0x0800
+    ppageE0X	(rx)	: ORIGIN = 0x390800, LENGTH = 0x3800
     ppageE1	(rx)	: ORIGIN = 0x394000, LENGTH = 0x4000
     ppageE2	(rx)	: ORIGIN = 0x398000, LENGTH = 0x4000
     ppageE3	(rx)	: ORIGIN = 0x39C000, LENGTH = 0x4000
