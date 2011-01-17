@@ -46,14 +46,6 @@ fi
 export SERIAL_DEVICE="$1"
 
 
-# This pulls down the entire devices flash contents including all erased regions
-#hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a banked-ppage -e --flash-read freeems.full.dump.ppage.`date +%s`.s19
-
 # This only pulls down what has been written.
 hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a banked-ppage --flash-read freeems.full.dump.ppage.`date +%s`.s19
-
-# non banked only outputs 48k which is too small.
-#hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a non-banked -e --flash-read zoutput/freeems.full.dump.48k.s19
-# banked linear outputs incorrect numbers on our system.
-#hcs12mem -b 115200 -i sm -p $SERIAL_DEVICE -t mc9s12xdp512 -a banked-linear -e --flash-read zoutput/freeems.full.dump.linear.s19
 
