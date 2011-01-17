@@ -55,6 +55,8 @@
 //efine replytoSoftSystemReset      0x0009 /* This is reserved */
 #define requestHardSystemReset      0x000A /* System comes up fresh, so no response */
 //efine replytoHardSystemReset      0x000B /* This is reserved */
+#define requestReInitOfSystem      0x000C /* EXPERIMENTAL, currently responds like normal */
+//efine replytoReInitOfSystem      0x000D /* This is reserved */
 
 
 //efine requestAsyncErrorCode       0x000C /* This is reserved */

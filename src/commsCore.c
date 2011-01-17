@@ -50,6 +50,7 @@
 #include "inc/locationIDs.h"
 #include "inc/blockDetailsLookup.h"
 #include "inc/commsCore.h"
+#include "inc/init.h"
 #include <string.h>
 
 
@@ -389,6 +390,16 @@ void decodePacketAndRespond(){
 			ARMCOP = 0xFF; /* Write bad value, should cause immediate reset */
 			/* Using _start() only resets the app ignoring the monitor switch. It does not work */
 			/* properly because the location of _start is not the master reset vector location. */
+		}
+		case requestReInitOfSystem:
+		{
+			if(RXCalculatedPayloadLength != 0){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
+			init();
+			break;
 		}
 		case updateBlockInRAM:
 		{
