@@ -1125,6 +1125,39 @@ void decodePacketAndRespond(){
 
 			break;
 		}
+		case requestUnitTestOverSerial:
+		{
+			/// perform function TODO @todo REWORK review this
+			errorID = unimplementedFunction;
+			break;
+			/*
+			 * The idea here is to call this function with arguments, and data
+			 * and have the result sent back for comparison with an expected
+			 * result that isn't divulged to the firmware.
+			 *
+			 * It is intended that all testable functions be callable through
+			 * this mechanism and that any number of test executions can be
+			 * performed by an external suite using different parameters and
+			 * data sets and matching expected results.
+			 *
+			 * The usual error mechanism shall be used to indicate some sort of
+			 * either internal or test failure and returned errors shall be
+			 * suitably descriptive to allow diagnosis and fixing of issues.
+			 */
+
+			// check for at least 2 bytes, fail if not
+
+			// grab unit test ID from payload
+
+			// switch statement on unit test ID
+
+			// each case:
+				// checks length, fails if wrong
+				// parses data into args
+				// calls function on data/args
+				// assembles response OR sets error
+				// breaks
+		}
 		default:
 		{
 			if((RXHeaderPayloadID % 2) == 1){

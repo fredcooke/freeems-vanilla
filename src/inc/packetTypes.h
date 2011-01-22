@@ -97,6 +97,9 @@
 /* Generic memory grabber for debugging */
 #define retrieveArbitraryMemory     0x0258
 
+/* Experimental unit testing interface */
+#define requestUnitTestOverSerial   0x6666
+
 // Data interrogation gold
 #define retrieveListOfLocationIDs   0xDA5E // Idea is Dave's, impl is Fred's
 #define retrieveLocationIDDetails   0xF8E0 // Idea is Fred's, impl is Fred's
