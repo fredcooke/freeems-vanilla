@@ -94,6 +94,14 @@ void PrimaryRPMISR(void) {
 			if (count == 0 || count == 70) {
 				if (thisHighLowTime.timeLong > (lastHighLowTime.timeLong + (lastHighLowTime.timeLong>>1)) &&
 						thisHighLowTime.timeLong < ((lastHighLowTime.timeLong<<1) + (lastHighLowTime.timeLong>>1))) {
+					// save temporary data from inputs
+					primaryLeadingEdgeTimeStamp = thisTimeStamp.timeLong;
+					timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;	//I'd name it timeBetweenSuccessiveReferencePulses
+					lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
+// = 60 * (1000000 / 0.8)
+#define ticksPerMinute   75000000 // this is correct.
+
+					*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
 					// We have sync
 					PORTP |= 0x80;
 					count = 1;
