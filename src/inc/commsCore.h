@@ -158,7 +158,9 @@ EXTERN unsigned short	RXHeaderPayloadLength;
 #define HEADER_RESERVED_A   BIT7
 
 
+// Stuff that should only be found in this file.
 #include "packetTypes.h"
+#include "unitTestIDs.h"
 
 
 #undef EXTERN

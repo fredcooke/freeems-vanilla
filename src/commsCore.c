@@ -427,7 +427,7 @@ void decodePacketAndRespond(){
 
 			// Subtract six to allow for the locationID, size, offset
 			if((RXCalculatedPayloadLength - 6) != size){
-				errorID = payloadShorterThanSpecifiedValue;
+				errorID = payloadNotEqualToSpecifiedValue;
 				break;
 			}
 
@@ -525,7 +525,7 @@ void decodePacketAndRespond(){
 
 			// Subtract six to allow for the locationID, size, offset
 			if((RXCalculatedPayloadLength - 6) != size){
-				errorID = payloadShorterThanSpecifiedValue;
+				errorID = payloadNotEqualToSpecifiedValue;
 				break;
 			}
 
@@ -1127,9 +1127,6 @@ void decodePacketAndRespond(){
 		}
 		case requestUnitTestOverSerial:
 		{
-			/// perform function TODO @todo REWORK review this
-			errorID = unimplementedFunction;
-			break;
 			/*
 			 * The idea here is to call this function with arguments, and data
 			 * and have the result sent back for comparison with an expected
@@ -1145,11 +1142,55 @@ void decodePacketAndRespond(){
 			 * suitably descriptive to allow diagnosis and fixing of issues.
 			 */
 
-			// check for at least 2 bytes, fail if not
+			// Must at least have test ID
+			if(RXCalculatedPayloadLength < 2){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
 
 			// grab unit test ID from payload
+			unsigned short unitTestID = *((unsigned short*)RXBufferCurrentPosition);
+			RXBufferCurrentPosition += 2;
 
-			// switch statement on unit test ID
+			switch(unitTestID){
+				case emptyTest:
+				{
+					// Must be only the ID
+					if(RXCalculatedPayloadLength != 2){
+						errorID = payloadShorterThanRequiredForTest;
+						break;
+					}
+
+					*((unsigned short*)TXBufferCurrentPositionHandler) = unitTestID;
+					TXBufferCurrentPositionHandler +=2;
+
+					break;
+				}
+				case twoDTableUSLookup:
+				{
+					// ID + Value + Table
+					if(RXCalculatedPayloadLength != (2 + 2 + sizeof(twoDTableUS))){
+						errorID = payloadShorterThanRequiredForTest;
+						break;
+					}
+
+					unsigned short Value = *((unsigned short*)RXBufferCurrentPosition);
+					RXBufferCurrentPosition += 2;
+
+					twoDTableUS* Table = ((twoDTableUS*)RXBufferCurrentPosition);
+					RXBufferCurrentPosition += sizeof(twoDTableUS);
+
+					unsigned short result = lookupTwoDTableUS(Table, Value);
+
+					*((unsigned short*)TXBufferCurrentPositionHandler) = result;
+					TXBufferCurrentPositionHandler +=2;
+
+					break;
+				}
+				default:
+				{
+					errorID = noSuchUnitTestID;
+				}
 
 			// each case:
 				// checks length, fails if wrong
@@ -1157,6 +1198,8 @@ void decodePacketAndRespond(){
 				// calls function on data/args
 				// assembles response OR sets error
 				// breaks
+			}
+			break;
 		}
 		default:
 		{
