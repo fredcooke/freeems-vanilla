@@ -1,0 +1,29 @@
+Small items:
+* Add testable functions to test interface
+* Refactor some functions to allow testing
+* Create autonomous decoder for bench testing of sched and injectors
+* Check configuration at boot time and send back async errors
+* Move decoders to their own directory
+* Move data initialisers to their own directory
+* Apply YAGNI principal to code base
+* Add decoder signature and serial call to identify which one is in use
+* After serial testing is in place by EssEss refactor comms receive to do checksum and length calcs in non-ISR time
+
+Big items:
+* create data definition file format, file itself, code generation tools and restructure code to allow use of this code
+* finish decoder interface - shared functions, init, ADC reading, map, RPM calcs - consider fake decoder and data injection (fake decoder can just not call the ADC sample routine and we can therefore just inject ADC values! Likewise we can read from the RPM var instead of writing to it.
+* create event scheduler - calculate which input event to schedule an output event from
+* create bit bang injection code, perhaps all output events? Consider usage with rotaries, staged injection, multispark
+
+Big low priority items:
+* create task scheduler - keep main loop time consistent and low
+* create hardware abstraction layer - registering port usage etc
+* get full testing setup in place:
+    * comms protocol itself, low level
+    * core comms protocol, shared packets
+    * freeems-vanilla packets and behaviour
+    * over-comms unit testing of testable functions - could be done with cross compilation also, but that's harder!
+    * scheduler testing via autonomous decoder type
+
+Longer term items:
+* Write decoders for most platforms

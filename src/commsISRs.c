@@ -83,9 +83,9 @@ extern inline void sendAndIncrement(unsigned char rawValue){
  */
 extern inline void receiveAndIncrement(const unsigned char value){
 	*RXBufferCurrentPosition = value;
-	RXCalculatedChecksum += value;
+	RXCalculatedChecksum += value; // Remove, do afterwards in non ISR time!
 	RXBufferCurrentPosition++;
-	RXPacketLengthReceived++;
+	RXPacketLengthReceived++; // Remove, do afterwards by subtracting the start point of the buffer!
 }
 
 

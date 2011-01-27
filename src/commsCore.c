@@ -1187,6 +1187,25 @@ void decodePacketAndRespond(){
 
 					break;
 				}
+				/// TODO @todo test all things listed below:
+				// lookupPagedMainTableCellValue - pass this RPAGE so that it remains unchanged
+				// validateMainTable
+				// validateTwoDTable
+				// set table values - leave this till last, currently unused by mtx, likely to be removed anyway
+				// generateDerivedVars - convert to pointers, remove headers, privatise a lot of data!
+				// calculateFuelAndIgnition - ditto
+				// safeAdd
+				// safeTrim
+				// safeScale
+				// sleep (milliseconds)
+				// sleepMicro (microseconds)
+				// checksum
+				// stringCopy
+				// compare
+				// utils that can't be checked: sampleLoopADC sampleBlockADC sampleEachADC - can check for how long each takes! adjustPWM (test only anyway), resetToNonRunningState and setupPagedRAM (would interfere with functioning of device)
+				// init code may be able to be partially checked
+				// most other code at this stage is ISR code, flash writing code, or could interfere with the running of the engine
+				// more testable code will appear with time, such as the HAL layer, and most accessory functions.
 				default:
 				{
 					errorID = noSuchUnitTestID;
