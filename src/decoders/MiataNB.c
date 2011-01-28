@@ -24,24 +24,24 @@
  */
 
 
-/**	@file Subaru-36-2-2-2.c
+/**	@file MiataNB.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief Subaru 36 minus 2 2 2
+ * @brief Miata from 9x to 0x
  *
  * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
  *
- * @todo TODO This file contains SFA but [anon] is going to fill it up with
+ * @todo TODO This file contains SFA but Abe Mara is going to fill it up with
  * @todo TODO wonderful goodness very soon ;-)
  *
  * @author Who Ever
  */
 
 
-#include "inc/freeEMS.h"
-#include "inc/interrupts.h"
-#include "inc/decoderInterface.h"
+#include "../inc/freeEMS.h"
+#include "../inc/interrupts.h"
+#include "../inc/decoderInterface.h"
 
 
 /** Primary RPM ISR

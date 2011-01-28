@@ -46,10 +46,10 @@
 
 
 #define LT1_360_8_C
-#include "inc/freeEMS.h"
-#include "inc/interrupts.h"
-#include "inc/decoderInterface.h"
-#include "inc/LT1-360-8.h"
+#include "../inc/freeEMS.h"
+#include "../inc/interrupts.h"
+#include "../inc/decoderInterface.h"
+#include "../inc/LT1-360-8.h"
 
 
 unsigned short VCAS = 0;  /* create our virtual Cam Angle Sensor */

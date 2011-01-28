@@ -80,6 +80,7 @@ DISTRIBUTIONDIR = ../../$(LABEL)
 DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
 INCDIR = inc
+DECDIR = decoders
 BUGDIR = debug
 OUTDIR = output
 OBJDIR = objects
@@ -174,7 +175,8 @@ DATA = $(FIXEDCLASSES) $(LOOKUPCLASSES1) $(LOOKUPCLASSES2) $(FUELCLASSES) $(TIME
 CLASSES = $(SOURCE) $(DATA)
 
 # Engine position/RPM here
-RPMCLASSES = Simple.c NipponDenso.c LT1-360-8.c Subaru-36-2-2-2.c MissingTeeth.c MiataNB.c
+RPMCLASSESRAW = Simple.c NipponDenso.c LT1-360-8.c Subaru-36-2-2-2.c MissingTeeth.c MiataNB.c
+RPMCLASSES = $(patsubst %.c,$(DECDIR)/%.c,$(RPMCLASSESRAW))
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
 XGASMSRCS = xgate.s
 
@@ -189,19 +191,19 @@ XGOBJECTS = $(patsubst %.s,$(XGOBJDIR)/%.o,$(XGASMSRCS))
 # Convert RPM extensions
 PREPROCESSEDRPM = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(RPMCLASSES))
 ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
-OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst %.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
-DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst %.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
+OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
+DUMPSRPM = $(patsubst $(DECDIR)/%.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
 # Convert to output files for source
-ALLELFSC = $(patsubst %.c,$(OUTDIR)/$(LABEL)-%.elf,$(RPMCLASSES))
+ALLELFSC = $(patsubst $(DECDIR)/%.c,$(OUTDIR)/$(LABEL)-%.elf,$(RPMCLASSES))
 ALLELFSASM = #$(patsubst %.s,$(OUTDIR)/$(LABEL)-%.elf,$(RPMHANDASMS))
-ALLDMPSC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.dmp,$(RPMCLASSES))
+ALLDMPSC = $(patsubst $(DECDIR)/%.c,$(BUGDIR)/$(LABEL)-%.dmp,$(RPMCLASSES))
 ALLDMPSASM = #$(patsubst %.s,$(BUGDIR)/$(LABEL)-%.dmp,$(RPMHANDASMS))
-ALLMAPSC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.map,$(RPMCLASSES))
+ALLMAPSC = $(patsubst $(DECDIR)/%.c,$(BUGDIR)/$(LABEL)-%.map,$(RPMCLASSES))
 ALLMAPSASM = #$(patsubst %.s,$(BUGDIR)/$(LABEL)-%.map,$(RPMHANDASMS))
-ALLREADC = $(patsubst %.c,$(BUGDIR)/$(LABEL)-%.ree,$(RPMCLASSES))
+ALLREADC = $(patsubst $(DECDIR)/%.c,$(BUGDIR)/$(LABEL)-%.ree,$(RPMCLASSES))
 ALLREADASM = #$(patsubst %.s,$(BUGDIR)/$(LABEL)-%.ree,$(RPMHANDASMS))
-ALLS19SC = $(patsubst %.c,$(S19DIR)/$(LABEL)-%.s19,$(RPMCLASSES))
+ALLS19SC = $(patsubst $(DECDIR)/%.c,$(S19DIR)/$(LABEL)-%.s19,$(RPMCLASSES))
 ALLS19SASM = #$(patsubst %.s,$(S19DIR)/$(LABEL)-%.s19,$(RPMHANDASMS))
 
 # Convert to output files for as-is variants
@@ -575,7 +577,7 @@ linkmsg:
 link: assemble $(OUTDIR) linkmsg $(ALLELFS)
 
 # link the object files into an elf executable
-$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/%.o $(OBJECTS) $(XGOBJECTS)
+$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XGOBJECTS)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
@@ -590,7 +592,7 @@ gclinkmsg:
 gclink: assemble $(OUTDIR) linkmsg $(GCDELFS)
 
 # link the object files into an elf executable with gc enabled
-$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/%.o $(OBJECTS) $(XGOBJECTS)
+$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XGOBJECTS)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
@@ -894,8 +896,8 @@ $(BUGDIR):
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                       Creating the debug directory....                       #$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(BUGDIR)$(PATHSEP)hack
-	rmdir $(BUGDIR)$(PATHSEP)hack
+	$(MKDIR) $(BUGDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	rmdir $(BUGDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
 
 $(S19DIR):
 	@echo $(Q)################################################################################$(Q)
@@ -908,8 +910,8 @@ $(PPCDIR):
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                   Creating the preprocessedc directory....                   #$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(PPCDIR)$(PATHSEP)hack
-	rmdir $(PPCDIR)$(PATHSEP)hack
+	$(MKDIR) $(PPCDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	rmdir $(PPCDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
 
 $(OUTDIR):
 	@echo $(Q)################################################################################$(Q)
@@ -922,8 +924,8 @@ $(OBJDIR):
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                       Creating the object directory...                       #$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(OBJDIR)$(PATHSEP)hack
-	rmdir $(OBJDIR)$(PATHSEP)hack
+	$(MKDIR) $(OBJDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	rmdir $(OBJDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
 
 $(XGOBJDIR):
 	@echo $(Q)################################################################################$(Q)
