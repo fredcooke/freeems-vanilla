@@ -81,6 +81,7 @@ DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
 INCDIR = inc
 DECDIR = decoders
+DATADIR = initialisers
 BUGDIR = debug
 OUTDIR = output
 OBJDIR = objects
@@ -162,22 +163,27 @@ LOOKUPCLASSES2 = MAFTransferTable.c TestTransferTable.c
 FUELCLASSES = FuelTables.c FuelTables2.c
 TIMECLASSES = TimingTables.c TimingTables2.c
 TUNECLASSES = TunableConfig.c TunableConfig2.c
+# Combined data files
+DATARAW = $(FIXEDCLASSES) $(LOOKUPCLASSES1) $(LOOKUPCLASSES2) $(FUELCLASSES) $(TIMECLASSES) $(TUNECLASSES)
+DATA = $(patsubst %.c,$(DATADIR)/%.c,$(DATARAW))
 
 # Source code files
 UTILCLASSES = tableLookup.c init.c utils.c globalConstants.c
 MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c
 COMCLASSES = flashWrite.c commsCore.c blockDetailsLookup.c
 ISRCLASSES = interrupts.c injectionISRs.c ignitionISRs.c commsISRs.c realtimeISRs.c miscISRs.c xgateVectors.c
+# Combined source code files
+SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSES) $(ISRCLASSES)
 
 # All but the engine position/RPM combined here
-SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSES) $(ISRCLASSES)
-DATA = $(FIXEDCLASSES) $(LOOKUPCLASSES1) $(LOOKUPCLASSES2) $(FUELCLASSES) $(TIMECLASSES) $(TUNECLASSES)
 CLASSES = $(SOURCE) $(DATA)
 
 # Engine position/RPM here
 RPMCLASSESRAW = Simple.c NipponDenso.c LT1-360-8.c Subaru-36-2-2-2.c MissingTeeth.c MiataNB.c
 RPMCLASSES = $(patsubst %.c,$(DECDIR)/%.c,$(RPMCLASSESRAW))
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
+
+# XGATE stuff here!
 XGASMSRCS = xgate.s
 
 
@@ -898,6 +904,8 @@ $(BUGDIR):
 	@echo $(Q)################################################################################$(Q)
 	$(MKDIR) $(BUGDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
 	rmdir $(BUGDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	$(MKDIR) $(BUGDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
+	rmdir $(BUGDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
 
 $(S19DIR):
 	@echo $(Q)################################################################################$(Q)
@@ -912,6 +920,8 @@ $(PPCDIR):
 	@echo $(Q)################################################################################$(Q)
 	$(MKDIR) $(PPCDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
 	rmdir $(PPCDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	$(MKDIR) $(PPCDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
+	rmdir $(PPCDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
 
 $(OUTDIR):
 	@echo $(Q)################################################################################$(Q)
@@ -926,6 +936,8 @@ $(OBJDIR):
 	@echo $(Q)################################################################################$(Q)
 	$(MKDIR) $(OBJDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
 	rmdir $(OBJDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	$(MKDIR) $(OBJDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
+	rmdir $(OBJDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
 
 $(XGOBJDIR):
 	@echo $(Q)################################################################################$(Q)

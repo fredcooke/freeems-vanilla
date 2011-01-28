@@ -1,1 +1,0 @@
-Move all data initialisers to this directory to un-clutter the main source directory and to group them together!

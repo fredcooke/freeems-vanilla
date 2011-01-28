@@ -38,7 +38,7 @@
  */
 
 
-#include "inc/freeEMS.h"
+#include "../inc/freeEMS.h"
 
 
 /// @todo TODO divide fixedConfig2 into useful chunks

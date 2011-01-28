@@ -4,7 +4,6 @@ Small items:
 * Do header hiding to avoid excess globals and make specific includes necessary for various things - remove core/derived vars from visibility inside calc functions, pass pointers as params. remove from general freeems header too. keep more stuff private
 * Create autonomous decoder for bench testing of sched and injectors
 * Check configuration at boot time and send back async errors
-* Move data initialisers to their own directory
 * Apply YAGNI principal to code base
 * Add decoder signature and serial call to identify which one is in use
 * After serial testing is in place by EssEss refactor comms receive to do checksum and length calcs in non-ISR time

@@ -36,7 +36,7 @@
  */
 
 
-#include "inc/freeEMS.h"
+#include "../inc/freeEMS.h"
 
 
 const volatile unsigned char TestTransferTable[2048] LOOKUPD = {

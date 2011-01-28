@@ -38,7 +38,7 @@
  */
 
 
-#include "inc/freeEMS.h"
+#include "../inc/freeEMS.h"
 
 
 /// @todo TODO for coreSettingsA masks See definitions in freeEMS.h OR is it in structs.h ???

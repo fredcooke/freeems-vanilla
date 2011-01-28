@@ -24,28 +24,28 @@
  */
 
 
-/**	@file CHTTransferTable.c
+/**	@file IATTransferTable.c
  * @ingroup dataInitialisers
  *
- * @brief Coolant/Head Temperature Transfer Table
+ * @brief Inlet Air Temperature Transfer Table
  *
- * This file exists solely to contain the Coolant/Head Temperature thermistor
+ * This file exists solely to contain the Inlet Air Temperature thermistor
  * transfer function lookup table.
  *
  * @author Fred Cooke
  */
 
 
-#include "inc/freeEMS.h"
+#include "../inc/freeEMS.h"
 
 
-/** @brief Coolant/Head Temperature Transfer Table
+/** @brief Inlet Air Temperature Transfer Table
  *
  * Using this table it is possible to accurately and quickly convert
  * a raw ADC reading to a scaled temperature value in degrees Kelvin.
  *
  * @author FreeTherm
  */
-const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
-#include "data/thermistors/Bosch.h"
+const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
+#include "../data/thermistors/Bosch.h"
 };

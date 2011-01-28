@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008, 2009 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -24,13 +24,13 @@
  */
 
 
-/**	@file TunableConfig.c
+/**	@file TunableConfig2.c
  * @ingroup dataInitialisers
  *
  * @brief Small tables and other live tunable data
  *
- * This file contains the definition of the primary set of tunable
- * configuration data. The declaration can be found in the global
+ * This file contains the definition of the secondary set of tunable
+ * configuration data.The declaration can be found in the global
  * constants header file.
  *
  * Please ensure that any items added to the struct type definition
@@ -43,17 +43,16 @@
  */
 
 
-#define TUNABLE_CONFIGS_C
-#include "inc/freeEMS.h"
+#include "../inc/freeEMS.h"
 
 
-const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
+const volatile SmallTables1 SmallTablesAFlash2 TUNETABLESD5 = {
 		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},   	/* dwellDesiredVersusVoltageTable */
 		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},	/* injectorDeadTimeTable */
 		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* postStartEnrichmentTable */
-		{ARRAY_OF_16_TEMPS, ARRAY_OF_16_ZEROS},       	/* engineTempEnrichmentTableFixed */
-		{ARRAY_OF_16_TEMPS, ARRAY_OF_16_ZEROS},       	/* primingVolumeTable */
-		{ARRAY_OF_16_TEMPS,  ARRAY_OF_16_PERCENTS},      	/* engineTempEnrichmentTablePercent */
+		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* engineTempEnrichmentTableFixed */
+		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* primingVolumeTable */
+		{ARRAY_OF_16_ZEROS,  ARRAY_OF_16_ZEROS},      	/* engineTempEnrichmentTablePercent */
 		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_RPMS},       	/* dwellMaxVersusRPMTable */
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -67,7 +66,7 @@ const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 };
 
 
-const volatile SmallTables2 SmallTablesBFlash TUNETABLESD2 = {
+const volatile SmallTables2 SmallTablesBFlash2 TUNETABLESD6 = {
 		asyncDatalogBasic,
 		ARRAY_OF_6_FUEL_TRIMS,	/* perCylinderFuelTrims[] */
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -89,7 +88,7 @@ const volatile SmallTables2 SmallTablesBFlash TUNETABLESD2 = {
 };
 
 
-const volatile SmallTables3 SmallTablesCFlash TUNETABLESD3 = {
+const volatile SmallTables3 SmallTablesCFlash2 TUNETABLESD7 = {
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -109,7 +108,7 @@ const volatile SmallTables3 SmallTablesCFlash TUNETABLESD3 = {
 };
 
 
-const volatile SmallTables4 SmallTablesDFlash TUNETABLESD4 = {
+const volatile SmallTables4 SmallTablesDFlash2 TUNETABLESD8 = {
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
