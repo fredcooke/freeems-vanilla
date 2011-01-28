@@ -9,4 +9,4 @@ src/objects/
 src/debug/
 src/assembly/*.s
 !src/assembly/flashBurn.s
-
+src/assembly/decoders/*.s
