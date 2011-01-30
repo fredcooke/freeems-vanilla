@@ -7,7 +7,6 @@
 	url = git@github.com:fredcooke/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 	push = refs/heads/master:refs/heads/master
-	push = refs/heads/release:refs/heads/release
 [remote "raptor"]
 	url = git:freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/raptor/*
@@ -16,22 +15,18 @@
 	url = git@gitorious.org:freeems-vanilla/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/alternate/*
 	push = refs/heads/master:refs/heads/master
-	push = refs/heads/release:refs/heads/release
 [remote "sourceforge"]
 	url = ssh://fredcooke@freeems.git.sourceforge.net/gitroot/freeems/freeems-vanilla
 	fetch = +refs/heads/*:refs/remotes/sourceforge/*
 	push = refs/heads/master:refs/heads/master
-	push = refs/heads/release:refs/heads/release
 [remote "repoorcz"]
 	url = ssh://repo.or.cz/srv/git/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/sourceforge/*
 	push = refs/heads/master:refs/heads/master
-	push = refs/heads/release:refs/heads/release
 [remote "unfuddle"]
 	url = git@freeems.unfuddle.com:freeems/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/unfudddle/*
 	push = refs/heads/master:refs/heads/master
-	push = refs/heads/release:refs/heads/release
 
 # Others forks
 [remote "seansrepo"]
@@ -46,15 +41,15 @@
 [remote "mtxman"]
 	url = git://github.com/djandruczyk/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/djandruczyk/*
+[remote "marcos"]
+	url = git://github.com/nitrousnrg/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/nitrousnrg/*
 [remote "jaredh"]
 	url = git://github.com/jharvey/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/jharvey/*
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
-[branch "release"]
-	remote = origin
-	merge = refs/heads/release
 [branch "daves"]
 	remote = mtxman
 	merge = refs/heads/master
