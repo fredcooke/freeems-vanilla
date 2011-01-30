@@ -1,0 +1,9 @@
+#!/bin/bash
+
+git push
+git push raptor
+git push alternate
+git push sourceforge
+git push repoorcz
+#git push unfuddle
+
