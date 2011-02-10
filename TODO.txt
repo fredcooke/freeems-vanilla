@@ -14,6 +14,14 @@ Big items:
 * create event scheduler - calculate which input event to schedule an output event from
 * create bit bang injection code, perhaps all output events? Consider usage with rotaries, staged injection, multispark
 
+First features to add, in order:
+* REV limiters - need to step table from load to zero with 1rpm spaced bins for now
+* Fuel pump control - need to hard code always on for now
+* Priming pulse - can live without this for now
+* Transient fuel correction - can live without this for now
+* Post start enrichment - can live without this for now
+* Boost cut - can live without this for now
+
 Big low priority items:
 * create task scheduler - keep main loop time consistent and low
 * create hardware abstraction layer - registering port usage etc
