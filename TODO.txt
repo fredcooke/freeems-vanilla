@@ -1,3 +1,14 @@
+Short term TODO:
+* timing table ( 0 - 50 btdc should be plenty for now)
+* position sensor offset (0 - 720degrees for cam full cycle sense adjustment)
+* SUPER simple timing code to handle degrees > delay, fixed pin to slot pairing (or rotating alignment, maybe)
+* noise detection/sync code for N+1 setups
+* MAYBE proper sched code to choose a tooth based on position and required position
+* dodgy shitty dwell where timing is scheduled at beginning of dwell and dwell is fixed (easier for now and good enough for now, even on my boosted engine)
+* check that fuel figures arent scaled for volvo
+* setup engine parameters for ute in code (auther gets his defaults for now :-p)
+* setup hw for 4+4out and pullups on in, etc
+
 Small items:
 * Add testable functions to test interface
 * Refactor some functions to allow testing
