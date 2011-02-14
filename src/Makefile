@@ -198,7 +198,7 @@ XGOBJECTS = $(patsubst %.s,$(XGOBJDIR)/%.o,$(XGASMSRCS))
 PREPROCESSEDRPM = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(RPMCLASSES))
 ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
 OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
-DUMPSRPM = $(patsubst $(DECDIR)/%.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
+DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
 # Convert to output files for source
 ALLELFSC = $(patsubst $(DECDIR)/%.c,$(OUTDIR)/$(LABEL)-%.elf,$(RPMCLASSES))
@@ -226,9 +226,9 @@ ALLS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(ALLS19S))
 ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(ALLS19S))
 
 # Convert to output files for GC variants
-GCDELFSC = $(patsubst %.c,$(OUTDIR)/$(LABEL)-%.gc.elf,$(RPMCLASSES))
+GCDELFSC = $(patsubst $(DECDIR)/%.c,$(OUTDIR)/$(LABEL)-%.gc.elf,$(RPMCLASSES))
 GCDELFSASM = #$(patsubst %.s,$(OUTDIR)/$(LABEL)-%.gc.elf,$(RPMHANDASMS))
-GCDS19SC = $(patsubst %.c,$(S19DIR)/$(LABEL)-%.gc.s19,$(RPMCLASSES))
+GCDS19SC = $(patsubst $(DECDIR)/%.c,$(S19DIR)/$(LABEL)-%.gc.s19,$(RPMCLASSES))
 GCDS19SASM = #$(patsubst %.s,$(S19DIR)/$(LABEL)-%.gc.s19,$(RPMHANDASMS))
 GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
