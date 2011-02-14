@@ -116,15 +116,19 @@
 	</Structures>
 	<Instances>
 		<Instance>
-			<!-- ve main -->
-			<!-- lambda -->
-			<!-- engineTempEnrichmentTableFixed -->
-			<!-- engineTempEnrichmentTablePercent -->
-			<!-- primingVolumeTable -->
-			<!-- injectorDeadTimeTable -->
-			<!-- postStartEnrichmentTable -->
-			<!-- dwellDesiredVersusVoltageTable -->
-			<!-- dwellMaxVersusRPMTable -->
+			<!-- mainTable : -->
+				<!-- VETableMain -->
+				<!-- LambdaTable )-->
+				<!-- IgnitionAdvanceTableMain -->
+
+			<!-- twoDTableUS : -->
+				<!-- engineTempEnrichmentTableFixed -->
+				<!-- engineTempEnrichmentTablePercent -->
+				<!-- primingVolumeTable -->
+				<!-- injectorDeadTimeTable -->
+				<!-- postStartEnrichmentTable -->
+				<!-- dwellDesiredVersusVoltageTable -->
+				<!-- dwellMaxVersusRPMTable -->
 		</Instance>
 	</Instances>
 </FreeEMS-DDD>
