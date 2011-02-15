@@ -116,19 +116,22 @@
 	</Structures>
 	<Instances>
 		<Instance>
-			<!-- mainTable : -->
-				<!-- VETableMain -->
-				<!-- LambdaTable )-->
-				<!-- IgnitionAdvanceTableMain -->
+			<!-- All main tables are Load vs RPM -->
+			<!-- RPM = raw / 2 - (ie, max is 32767.5)  -->
+			<!-- Load can be treated as kPa, kPa = raw / 100 -->
+			<!-- mainTable (high priority) : -->
+				<!-- 0x0000 VETableMain % VE = raw / 512 -->
+				<!-- 0x0006 LambdaTable Lambda = raw / 32768 -->
+				<!-- 0x0008 IgnitionAdvanceTableMain degrees BTDC = raw / 1024 -->
 
 			<!-- twoDTableUS : -->
-				<!-- engineTempEnrichmentTableFixed -->
-				<!-- engineTempEnrichmentTablePercent -->
-				<!-- primingVolumeTable -->
-				<!-- injectorDeadTimeTable -->
-				<!-- postStartEnrichmentTable -->
-				<!-- dwellDesiredVersusVoltageTable -->
-				<!-- dwellMaxVersusRPMTable -->
+				<!-- 0x010A engineTempEnrichmentTablePercent temp is same as other places, % = raw / 327.68 -->
+				<!-- 0x0102 injectorDeadTimeTable V is same as other places, ms = raw / 1250 -->
+				<!-- 0x0100 dwellDesiredVersusVoltageTable V is same as other places, ms = raw / 1250 -->
+				<!-- 0x010C dwellMaxVersusRPMTable RPM is same as described above, ms = raw / 1250 -->
+				<!-- 0x0106 engineTempEnrichmentTableFixed (low priority currently unused) -->
+				<!-- 0x0108 primingVolumeTable (low priority currently no code) -->
+				<!-- 0x0104 postStartEnrichmentTable (low priority currently no code) -->
 		</Instance>
 	</Instances>
 </FreeEMS-DDD>
