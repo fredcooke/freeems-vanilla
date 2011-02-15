@@ -1113,6 +1113,11 @@ void decodePacketAndRespond(){
 			unsigned short locationID = *((unsigned short*)RXBufferCurrentPosition);
 			RXBufferCurrentPosition += 2;
 
+			// This type must have a length field, set that up
+			*((unsigned short*)TXBufferCurrentPositionHandler) = sizeof(blockDetails);
+			*TXHeaderFlags |= HEADER_HAS_LENGTH;
+			TXBufferCurrentPositionHandler += 2;
+
 			// Write straight to output buffer to save time/code
 			errorID = lookupBlockDetails(locationID, (blockDetails*)TXBufferCurrentPositionHandler);
 
