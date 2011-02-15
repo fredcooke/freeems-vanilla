@@ -167,7 +167,7 @@ void calculateFuelAndIgnition(){
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& TEMPORARY (and old) &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 	/* "Calculate" the nominal total pulse width before per channel corrections */
-	masterPulseWidth = refPW;//(ADCArrays->EGO << 6) + (ADCArrays->MAP >> 4);
+	masterPulseWidth = refPW;
 
 	/* "Calculate" the individual fuel pulse widths */
 	for(channel = 0; channel < INJECTION_CHANNELS; channel++){
