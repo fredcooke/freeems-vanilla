@@ -197,6 +197,70 @@ for(pin 0 - 5){
 #error "Unexpected inner off angle value"
 #endif
 
+static unsigned short edgeTimeStamp;
+static LongTime timeStamp;
+
+
+void schedulePortTPin(unsigned char pin, unsigned short delayAfterEvent){
+	/* Determine if half the cycle is bigger than short-max */
+	unsigned short maxAngleAfter;
+	if((engineCyclePeriod >> 1) > 0xFFFF){
+		maxAngleAfter = 0xFFFF;
+	}else{
+		maxAngleAfter = (unsigned short)(engineCyclePeriod >> 1);
+	}
+
+	/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
+	unsigned short advance;
+	if(totalAngleAfterReferenceInjection > maxAngleAfter){ // if too big, make it max
+		advance = maxAngleAfter;
+	}else if(totalAngleAfterReferenceInjection < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
+		advance = trailingEdgeSecondaryRPMInputCodeTime;
+	}else{ // else use it as is
+		advance = totalAngleAfterReferenceInjection;
+	}
+
+	// determine the long and short start times
+	unsigned short startTime = edgeTimeStamp + advance;
+	unsigned long startTimeLong = timeStamp.timeLong + advance;
+
+	// determine whether or not to reschedule
+	unsigned char reschedule = 0;
+	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
+	if(diff > LONGHALF){
+		reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
+	}
+
+	// schedule the appropriate channel
+	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
+		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
+		*injectorMainTimeRegisters[pin] = startTime;
+		TIE |= injectorMainOnMasks[pin];
+		TFLG = injectorMainOnMasks[pin];
+	}else{
+		injectorMainStartTimesHolding[pin] = startTime;
+		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+	}
+}
+
+/*
+ * 		if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
+			unsigned char pin;
+			for(pin=0;pin<6;pin++){
+				if(pinEventNumbers[pin] == thisEvent){
+					schedulePortTPin(pin, delay);
+				}
+			}
+		}
+ */
+
+
+
+
+// set as synced for volvo always as loss of sync not actually possible
+//coreStatusA |= PRIMARY_SYNC;
+
+
 
 
 /** Primary RPM ISR
@@ -220,31 +284,26 @@ void PrimaryRPMISR(){
 
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
-	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
+	edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-
-	// set as synced for volvo always as loss of sync not actually possible
-	coreStatusA |= PRIMARY_SYNC;
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
+	Counters.primaryTeethSeen++;
+
+	/* Install the low word */
+	timeStamp.timeShorts[1] = edgeTimeStamp;
+	/* Find out what our timer value means and put it in the high word */
+	if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
+		timeStamp.timeShorts[0] = timerExtensionClock + 1;
+	}else{
+		timeStamp.timeShorts[0] = timerExtensionClock;
+	}
+
 	if(PTITCurrentState & 0x01){
 		/* Echo input condition on J7 */
 		PORTJ |= 0x80;
-
-		Counters.primaryTeethSeen++;
-
-		LongTime timeStamp;
-
-		/* Install the low word */
-		timeStamp.timeShorts[1] = edgeTimeStamp;
-		/* Find out what our timer value means and put it in the high word */
-		if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
-			timeStamp.timeShorts[0] = timerExtensionClock + 1;
-		}else{
-			timeStamp.timeShorts[0] = timerExtensionClock;
-		}
 
 		// temporary data from inputs
 		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
@@ -256,64 +315,17 @@ void PrimaryRPMISR(){
 
 		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
 
-		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
+		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
+		sampleEachADC(ADCArrays);
+		Counters.syncedADCreadings++;
+		*mathSampleTimeStampRecord = TCNT;
 
-		//if(0, 2, 4, 7){ no need to check for numbers, just always do on rising or always on falling and only in primary isr same for RPM above
-			sampleEachADC(ADCArrays);
-			Counters.syncedADCreadings++;
-			*mathSampleTimeStampRecord = TCNT;
+		/* Set flag to say calc required */
+		coreStatusA |= CALC_FUEL_IGN;
 
-			/* Set flag to say calc required */
-			coreStatusA |= CALC_FUEL_IGN;
+		/* Reset the clock for reading timeout */
+		Clocks.timeoutADCreadingClock = 0;
 
-			/* Reset the clock for reading timeout */
-			Clocks.timeoutADCreadingClock = 0;
-//		}
-
-		if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
-			/* Determine if half the cycle is bigger than short-max */
-			unsigned short maxAngleAfter;
-			if((engineCyclePeriod >> 1) > 0xFFFF){
-				maxAngleAfter = 0xFFFF;
-			}else{
-				maxAngleAfter = (unsigned short)(engineCyclePeriod >> 1);
-			}
-
-			/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
-			unsigned short advance;
-			if(totalAngleAfterReferenceInjection > maxAngleAfter){ // if too big, make it max
-				advance = maxAngleAfter;
-			}else if(totalAngleAfterReferenceInjection < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
-				advance = trailingEdgeSecondaryRPMInputCodeTime;
-			}else{ // else use it as is
-				advance = totalAngleAfterReferenceInjection;
-			}
-
-			// determine the long and short start times
-			unsigned short startTime = edgeTimeStamp + advance;
-			unsigned long startTimeLong = timeStamp.timeLong + advance;
-
-			/* Determine the channels to schedule */
-			unsigned char fuelChannel = 0;//(primaryPulsesPerSecondaryPulse / 2) - 1;
-
-			// determine whether or not to reschedule
-			unsigned char reschedule = 0;
-			unsigned long diff = startTimeLong - (injectorMainEndTimes[fuelChannel] + injectorSwitchOffCodeTime);
-			if(diff > LONGHALF){
-				reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
-			}
-
-			// schedule the appropriate channel
-			if(!(*injectorMainControlRegisters[fuelChannel] & injectorMainEnableMasks[fuelChannel]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
-				*injectorMainControlRegisters[fuelChannel] |= injectorMainEnableMasks[fuelChannel];
-				*injectorMainTimeRegisters[fuelChannel] = startTime;
-				TIE |= injectorMainOnMasks[fuelChannel];
-				TFLG = injectorMainOnMasks[fuelChannel];
-			}else{
-				injectorMainStartTimesHolding[fuelChannel] = startTime;
-				selfSetTimer |= injectorMainOnMasks[fuelChannel]; // setup a bit to let the timer interrupt know to set its own new start from a var
-			}
-		}
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		PORTJ &= 0x7F;
@@ -324,7 +336,7 @@ void PrimaryRPMISR(){
 
 /** Secondary RPM ISR
  *
- * Unused in this decoder.
+ * Reads the inner slot on the disk.
  */
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
@@ -332,20 +344,13 @@ void SecondaryRPMISR(){
 
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
-	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
+	edgeTimeStamp = TC1;				/* Save the timestamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-//	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
-	/** @todo TODO discard narrow ones! test for tooth width and tooth period
-	 * the width should be based on how the hardware is setup. IE the LM1815
-	 * is adjusted to have a pulse output of a particular width. This noise
-	 * filter should be matched to that width as should the hardware filter.
-	 */
-
-	LongTime timeStamp;
+	Counters.secondaryTeethSeen++;
 
 	/* Install the low word */
 	timeStamp.timeShorts[1] = edgeTimeStamp;
@@ -355,40 +360,21 @@ void SecondaryRPMISR(){
 	}else{
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
-
-	/* The LM1815 variable reluctance sensor amplifier allows the output to be
-	 * pulled high starting at the center of a tooth. So, what we see as the
-	 * start of a tooth is actually the centre of a physical tooth. Because
-	 * tooth shape, profile and spacing may vary this is the only reliable edge
-	 * for us to schedule from, hence the trailing edge code is very simple.
-	 */
-	if(PTITCurrentState & 0x02){
-		// echo input condition
-		PORTJ |= 0x40;
-
-		Counters.secondaryTeethSeen++;
-
-		/* leading code
-		 *
-		 * subtract lastTrailing from currentLeading
-		 * record currentLeading as lastLeading
-		 *
-		 * record pw as highDuration
-		 */
-		lengthOfSecondaryLowPulses = timeStamp.timeLong - lastSecondaryPulseTrailingTimeStamp;
+/*
+ * 		lengthOfSecondaryLowPulses = timeStamp.timeLong - lastSecondaryPulseTrailingTimeStamp;
 		lastSecondaryPulseLeadingTimeStamp = timeStamp.timeLong;
-	}else{
 
-		/* trailing code
-		 *
-		 * subtract lastLeading from currentTrailing
-		 * record currentTrailing as lastTrailing
-		 *
-		 * record pw as lowDuration
-		 */
 //		lengthOfSecondaryHighPulses = timeStamp.timeLong - lastSecondaryPulseLeadingTimeStamp;
 		lastSecondaryPulseTrailingTimeStamp = timeStamp.timeLong;
+ *
+ */
+	if(PTITCurrentState & 0x02){
+		PORTJ |= 0x40;
 
+		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+	}else{
 		PORTJ &= 0xBF;
+
+		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 }
