@@ -8,6 +8,8 @@ Short term TODO:
 * check that fuel figures arent scaled for volvo
 * setup engine parameters for ute in code (auther gets his defaults for now :-p)
 * setup hw for 4+4out and pullups on in, etc
+* Generate tables for 2.2k + ND CHT and 2.2k + GM IAT with freetherm
+* check output code vs 0.0.12 code and maybe make some changes to make it stable
 
 Small items:
 * Add testable functions to test interface
