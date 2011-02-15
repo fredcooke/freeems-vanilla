@@ -169,7 +169,7 @@ worst case is 428 degrees of rotation before sync/injection/ignition, average ca
 temporary pin sched code:
 
 for(pin 0 - 5){
-	if(pinEventNumbers[pin] == thisEvent){
+	if(pinEventNumbers[pin] == event){
 		firePin(pin, delayFromEventInTicks);
 	}
 }
@@ -197,11 +197,14 @@ for(pin 0 - 5){
 #error "Unexpected inner off angle value"
 #endif
 
+
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
+static unsigned char event;
+static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
+const unsigned short eventCrankAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652};
 
-
-void schedulePortTPin(unsigned char pin, unsigned short delayAfterEvent){
+void schedulePortTPin(unsigned char pin){
 	/* Determine if half the cycle is bigger than short-max */
 	unsigned short maxAngleAfter;
 	if((engineCyclePeriod >> 1) > 0xFFFF){
@@ -255,28 +258,16 @@ void schedulePortTPin(unsigned char pin, unsigned short delayAfterEvent){
  */
 
 
-
-
-// set as synced for volvo always as loss of sync not actually possible
-//coreStatusA |= PRIMARY_SYNC;
-
-
-
-
 /** Primary RPM ISR
  *
  * Schedule events :
- * Blindly start fuel pulses for each and every input pulse.
+ * Fire off port T events based on whatever is scheduled in the main loop.
  *
  * Sample ADCs :
  * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
  * Set flag stating that New pulse, advance, etc should be calculated.
  *
  * @author Fred Cooke
- *
- * @warning These are for testing and demonstration only, not suitable for driving with just yet.
- *
- * @todo TODO make this code more general and robust such that it can be used for real simple applications
  */
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
@@ -301,11 +292,13 @@ void PrimaryRPMISR(){
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
 
+	timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
+	lastPulseTimeStamp = timeStamp.timeLong;
+
 	if(PTITCurrentState & 0x01){
 		/* Echo input condition on J7 */
 		PORTJ |= 0x80;
 
-		// temporary data from inputs
 		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
 		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
@@ -330,6 +323,15 @@ void PrimaryRPMISR(){
 	}else{
 		PORTJ &= 0x7F;
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
+	}
+
+	if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
+		unsigned char pin;
+		for(pin=0;pin<6;pin++){
+			if(pinEventNumbers[pin] == event){
+				schedulePortTPin(pin);
+			}
+		}
 	}
 }
 
@@ -360,21 +362,59 @@ void SecondaryRPMISR(){
 	}else{
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
-/*
- * 		lengthOfSecondaryLowPulses = timeStamp.timeLong - lastSecondaryPulseTrailingTimeStamp;
-		lastSecondaryPulseLeadingTimeStamp = timeStamp.timeLong;
 
-//		lengthOfSecondaryHighPulses = timeStamp.timeLong - lastSecondaryPulseLeadingTimeStamp;
-		lastSecondaryPulseTrailingTimeStamp = timeStamp.timeLong;
- *
- */
+	event++;
+
+	unsigned char correctEvent;
+
 	if(PTITCurrentState & 0x02){
 		PORTJ |= 0x40;
 
-		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+		correctEvent = 6;
 	}else{
 		PORTJ &= 0xBF;
 
-		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
+		correctEvent = 9;
 	}
+
+	if(coreStatusA & PRIMARY_SYNC){
+		if(event != correctEvent){
+			coreStatusA &= CLEAR_PRIMARY_SYNC;
+			coreStatusA &= CLEAR_COREA12;
+			Counters.camSyncLosses++;
+		}
+
+		if(coreStatusA & COREA12){
+			// Do period checking here as if just picking up sync now, previous is unreliable
+			unsigned long minTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 5)/10;
+			unsigned long maxTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 15)/10;
+
+			timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
+			lastPulseTimeStamp = timeStamp.timeLong;
+
+			if(timeBetweenSuccessivePulses < minTimeSinceLastEvent || timeBetweenSuccessivePulses > maxTimeSinceLastEvent){
+				coreStatusA &= CLEAR_PRIMARY_SYNC;
+				coreStatusA &= CLEAR_COREA12;
+				Counters.camSyncLosses++;
+			}
+		}
+
+		// store rate for next guy and set flag
+		ticksPerCrankDegree = (unsigned short)(timeBetweenSuccessivePulses / (eventCrankAngles[event] - eventCrankAngles[event-1]));
+		coreStatusA |= COREA12;
+	}else{ // If not synced
+		coreStatusA |= PRIMARY_SYNC;
+		event = correctEvent;
+	}
+
+	if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
+		unsigned char pin;
+		for(pin=0;pin<6;pin++){
+			if(pinEventNumbers[pin] == event){
+				schedulePortTPin(pin);
+			}
+		}
+	}
+
+	RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 }

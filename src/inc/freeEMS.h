@@ -327,6 +327,7 @@ EXTERN unsigned short coreStatusA;	/* Each bit represents the state of some core
 #define STAGED_NOT_REQUIRED	NBIT9_16	/*  9 Do not fire the staged injectors */
 #define CLEAR_CALC_FUEL_IGN	NBIT10_16	/* 10 Fuel and ignition don't require calculation */
 #define CLEAR_FORCE_READING	NBIT11_16	/* 11 Clear flag to force ADC sampling at low rpm/stall */
+#define CLEAR_COREA12       NBIT12_16
 
 
 //TODO make this volatile?
@@ -350,6 +351,9 @@ EXTERN unsigned char selfSetTimer;			/* Set the start time of injection at the e
 EXTERN unsigned char rescheduleFuelFlags;	/* Pulse width is probably longer than engine cycle so schedule a restart at the next start time */
 
 
+EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on? 255/0xFF = not fired. populated by scheduler in main loop
+
+
 /* Engine Position and RPM reading variables */
 
 /* Engine runtime properties (inits???) TODO */
@@ -358,14 +362,14 @@ EXTERN unsigned short primaryPulsesPerSecondaryPulse; /* Type short because of n
 EXTERN unsigned long primaryLeadingEdgeTimeStamp; /* Store the timestamp of the leading edge during a pulse */
 EXTERN unsigned long primaryTrailingEdgeTimeStamp; /* Store the timestamp of the leading edge during a pulse */
 EXTERN unsigned long timeBetweenSuccessivePrimaryPulses; /* This number equates to the speed of the engine */
+EXTERN unsigned long timeBetweenSuccessivePulses; /* This number equates to the speed of the engine */
 //EXTERN unsigned short timeBetweenSuccessivePrimaryPulsesBuffer; /* This number equates to the speed of the engine */
 EXTERN unsigned long lastPrimaryPulseTimeStamp; /* Store the timer value of the each pulse here before exiting the ISR */
+EXTERN unsigned long lastPulseTimeStamp; /* Store the timer value of the each pulse here before exiting the ISR */
 //EXTERN unsigned short primaryPulsesPerSecondaryPulseBuffer; /* Type short because of nissan style cam wheels (char would do for other types) */
 //EXTERN LongTime primaryLeadingEdgeTimeStamp; /* Store the timestamp of the leading edge during a pulse */
 //EXTERN LongTime primaryTrailingEdgeTimeStamp; /* Store the timestamp of the trailing edge during a pulse */
 
-EXTERN unsigned long timeBetweenSuccessivePrimaryPulses; /* This number equates to the speed of the engine */
-//EXTERN unsigned long timeBetweenSuccessivePrimaryPulsesBuffer; /* This number equates to the speed of the engine */
 //EXTERN unsigned long lengthOfSecondaryHighPulses; /* This number equates to the speed of the engine */
 //EXTERN unsigned long lengthOfSecondaryHighPulsesBuffer; /* This number equates to the speed of the engine */
 EXTERN unsigned long lengthOfSecondaryLowPulses; /* This number equates to the speed of the engine */
