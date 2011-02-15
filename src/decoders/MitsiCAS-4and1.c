@@ -30,6 +30,114 @@
  *
  * @brief Reads Mitsi 4 and 1 CAS units
  *
+
+Outer           Inner
+30 signal    295
+60                65 signal
+30 signal
+60
+30 signal
+60
+30 signal
+60
+
+Outer:
+0
+on
+30
+off
+90
+on
+120
+off
+180
+on
+210
+off
+270
+on
+300
+off
+360/0
+
+Inner:
+0
+off
+295
+on
+360/0
+
+Inner:
+off
+261
+on
+326
+off
+
+Crank (double all cam angles):
+
+Outer:
+0
+on
+60
+off
+180
+on
+240
+off
+360
+on
+420
+off
+540
+on
+600
+off
+720/0
+
+Inner (disk):
+0
+off
+590
+on
+720/0
+
+Inner (actual):
+off
+522
+on
+652
+off
+
+figures for inner above are wrong due to offset LEDs in CAS body!!!! Find offset value and adjust these figures. Note this in docs re disk pattern and actual pattern.
+
+34 cam degrees or slightly less (inner degrees earlier than on disk.
+
+use #define and let the compiler take care of the math so that its easier to change.
+
+Logic:
+
+ten transitional events total per engine cycle:
+
+5 provide sync:
+
+if inner = off to on, position = 522 degrees
+if inner = on to off, position = 652 degrees
+if outer = off to on AND inner = on, then position = 540
+if outer = on to off AND inner = on, then position = 600
+if outer = off to on AND is third while inner = off, then position = 360
+
+information of no use:
+
+outer on to off and is third while inner = already synced by definition
+other four outer events are not identifiable as anything specific and therefore cant sync
+
+Summary:
+
+Sync obtainable for 292 degrees of crank rotation and not for remaining 428 degrees
+
+worst case is 428 degrees of rotation before sync/injection/ignition, average case is 214 degrees rotation, best case is instant sync.
+ *
  * @author Fred Cooke
  */
 
