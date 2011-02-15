@@ -30,6 +30,9 @@
  *
  * @brief Reads Mitsi 4 and 1 CAS units
  *
+ * Two interrupts share state and cross communicate to
+ * find and maintain sync and position information.
+ *
 
 Outer           Inner
 30 signal    295
@@ -117,6 +120,26 @@ use #define and let the compiler take care of the math so that its easier to cha
 
 Logic:
 
+const unsigned short eventCrankAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}
+the above needs verify on init to ensure order is sequential!
+unsigned char array pinEventNumbers[6] = {} // 6 pins, which even should they go on? 255/0xFF = not fired. populated by scheduler in main loop
+^ only good enough in short term, in longer term, could expect same pin to fire on multiple events in a cycle...
+
+event number, pin number
+
+if(synced){
+
+if inner fires, increment, then event should be  6th or 9th (zero index)
+if outer fires, increment, then event should be 0th - 5th, 7th, 8th. If 9th make equal 0th, not 10th
+
+only outer needs check for 9th > 0th, inner will catch based on not 6th/9th/rising/falling.
+
+for either:
+
+take last period, and last angle gap, calc ticks per degree or similar, generate limits, compare measured with limits, drop sync if wrong.
+
+else if(not synced){ look for logic as per below:
+
 ten transitional events total per engine cycle:
 
 5 provide sync:
@@ -127,16 +150,30 @@ if outer = off to on AND inner = on, then position = 540
 if outer = on to off AND inner = on, then position = 600
 if outer = off to on AND is third while inner = off, then position = 360
 
-information of no use:
+information of no use for obtaining sync:
 
 outer on to off and is third while inner = already synced by definition
 other four outer events are not identifiable as anything specific and therefore cant sync
+
+Loss of sync:
+
+Lose sync if time between one event and next is not within allowable range, or if ordering of inner/outer events is not correct.
+Possibility of ignoring narrow pulses in order to be noise tolerant, but this comes with risk.
 
 Summary:
 
 Sync obtainable for 292 degrees of crank rotation and not for remaining 428 degrees
 
 worst case is 428 degrees of rotation before sync/injection/ignition, average case is 214 degrees rotation, best case is instant sync.
+
+temporary pin sched code:
+
+for(pin 0 - 5){
+	if(pinEventNumbers[pin] == thisEvent){
+		firePin(pin, delayFromEventInTicks);
+	}
+}
+
  *
  * @author Fred Cooke
  */
@@ -146,6 +183,20 @@ worst case is 428 degrees of rotation before sync/injection/ignition, average ca
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
+
+#define sensorOffsetInCamDegrees 34
+#define sensorOffsetInCrankDegrees (sensorOffsetInCamDegrees * 2)
+#define innerAngleOfOnEvent (590 - sensorOffsetInCrankDegrees)
+#define innerAngleOfOffEvent (720 - sensorOffsetInCrankDegrees)
+
+#if (innerAngleOfOnEvent != 522)
+#error "Unexpected inner on angle value"
+#endif
+
+#if (innerAngleOfOffEvent != 652)
+#error "Unexpected inner off angle value"
+#endif
+
 
 
 /** Primary RPM ISR
@@ -206,15 +257,18 @@ void PrimaryRPMISR(){
 		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
 
 		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
-		sampleEachADC(ADCArrays);
-		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
 
-		/* Set flag to say calc required */
-		coreStatusA |= CALC_FUEL_IGN;
+		//if(0, 2, 4, 7){ no need to check for numbers, just always do on rising or always on falling and only in primary isr same for RPM above
+			sampleEachADC(ADCArrays);
+			Counters.syncedADCreadings++;
+			*mathSampleTimeStampRecord = TCNT;
 
-		/* Reset the clock for reading timeout */
-		Clocks.timeoutADCreadingClock = 0;
+			/* Set flag to say calc required */
+			coreStatusA |= CALC_FUEL_IGN;
+
+			/* Reset the clock for reading timeout */
+			Clocks.timeoutADCreadingClock = 0;
+//		}
 
 		if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
 			/* Determine if half the cycle is bigger than short-max */
