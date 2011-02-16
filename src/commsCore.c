@@ -667,6 +667,11 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			// This type must have a length field, set that up
+			*((unsigned short*)TXBufferCurrentPositionHandler) = sizeof(blockDetails);
+			*TXHeaderFlags |= HEADER_HAS_LENGTH;
+			TXBufferCurrentPositionHandler += 2;
+
 			/* Save page value for restore and set the visible page */
 			unsigned char oldRamPage = RPAGE;
 			RPAGE = details.RAMPage;
@@ -724,6 +729,11 @@ void decodePacketAndRespond(){
 				errorID = doesNotMakeSenseToRetrievePartially;
 				break;
 			}
+
+			// This type must have a length field, set that up
+			*((unsigned short*)TXBufferCurrentPositionHandler) = sizeof(blockDetails);
+			*TXHeaderFlags |= HEADER_HAS_LENGTH;
+			TXBufferCurrentPositionHandler += 2;
 
 			/* Save page value for restore and set the visible page */
 			unsigned char oldFlashPage = PPAGE;
