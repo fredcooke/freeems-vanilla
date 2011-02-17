@@ -48,15 +48,15 @@ const volatile mainTable VETableMainFlash FUELTABLESD = {
 	MAINTABLE_LOAD_LENGTH,		/* VETableMain.LoadLength */
 	/* VETableMain.RPM */
 	{
-		#include "../data/tables/axis/mainTable-RPM.h"
+		#include "../data/tables/axis/FredsTruck-RPM.h"
 	},
 	/* VETableMain.Load */
 	{
-		#include "../data/tables/axis/mainTable-Load.h"
+		#include "../data/tables/axis/FredsTruck-Load.h"
 	},
 	/* VETableMain.Table (Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size.) */
 	{
-		#include "../data/tables/ve/flat80Percent.h"
+		#include "../data/tables/ve/FredsTruckVE.h"
 	}
 };
 
@@ -102,11 +102,11 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 	MAINTABLE_LOAD_LENGTH,		/* LambdaTable.LoadLength */
 	/* LambdaTable.RPM */
 	{
-		#include "../data/tables/axis/mainTable-RPM.h"
+		#include "../data/tables/axis/FredsTruck-RPM.h"
 	},
 	/* LambdaTable.Load */
 	{
-		#include "../data/tables/axis/mainTable-Load.h"
+		#include "../data/tables/axis/FredsTruck-Load.h"
 	},
 	/* LambdaTable.Table */
 	{

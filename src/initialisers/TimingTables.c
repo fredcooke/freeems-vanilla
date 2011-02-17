@@ -49,11 +49,11 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 	MAINTABLE_LOAD_LENGTH,		/* AdvanceTableMain.LoadLength */
 	/* AdvanceTableMain.RPM */
 	{
-		#include "../data/tables/axis/mainTable-RPM.h"
+		#include "../data/tables/axis/FredsTruck-RPM.h"
 	},
 	/*AdvanceTableMain.Load */
 	{
-		#include "../data/tables/axis/mainTable-Load.h"
+		#include "../data/tables/axis/FredsTruck-Load.h"
 	},
 	/* AdvanceTableMain.Table */
 	{
