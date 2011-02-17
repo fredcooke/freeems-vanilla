@@ -140,6 +140,7 @@ EXTERN unsigned short	RXCalculatedPayloadLength; // why global??
 
 /* Header components */
 EXTERN unsigned char	RXHeaderFlags;
+EXTERN unsigned char*   TXHeaderFlags;
 EXTERN unsigned short	RXHeaderPayloadID; /// TODO @todo why global?
 EXTERN unsigned short	RXHeaderPayloadLength;
 

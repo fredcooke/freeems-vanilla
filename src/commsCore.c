@@ -154,7 +154,7 @@ void populateBasicDatalog(){
 void finaliseAndSend(unsigned short errorID){
 
 	if(errorID != 0){
-		RXHeaderFlags |= HEADER_IS_NACK;
+		*TXHeaderFlags |= HEADER_IS_NACK;
 		*((unsigned short*)TXBufferCurrentPositionHandler) = errorID;
 		TXBufferCurrentPositionHandler += 2;
 	}
@@ -256,7 +256,7 @@ void decodePacketAndRespond(){
 	// SCI0 only for now...
 
 	/* Load a blank header into the TX buffer ready for masking */
-	unsigned char* TXHeaderFlags = TXBufferCurrentPositionHandler;
+	TXHeaderFlags = TXBufferCurrentPositionHandler;
 	*TXHeaderFlags = 0;
 	TXBufferCurrentPositionHandler++;
 
