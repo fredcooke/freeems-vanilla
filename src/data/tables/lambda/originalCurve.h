@@ -36,6 +36,7 @@
  */
 
 
+/// TODO @todo this is all wrongly laid out now, due to Dave's whinging, so needs fixing...
 /* Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size. */
 /* 14.7,   14.7,  14.35,   14.0,   13.5,   13.0,   12.5,  12.25,   12.0,  11.75,   11.5,  11.25,   11.0,   11.0,   11.0,   11.0,   11.0,   11.0,   11.0, */
   32768,  32768,  31987,  31207,  30093,  28978,  27863,  27307,  26749,  26192,  25635,  25078,  24520,  24520,  24520,  24520,  24520,  24520,  24520,

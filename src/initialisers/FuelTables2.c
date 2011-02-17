@@ -54,7 +54,7 @@ const volatile mainTable VETableMainFlash2 FUELTABLESD = {
 	{
 		#include "../data/tables/axis/mainTable-Load.h"
 	},
-	/* VETableMain.Table (Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size.) */
+	/* VETableMain.Table */
 	{
 		#include "../data/tables/ve/flat80Percent.h"
 	}

@@ -94,7 +94,7 @@ const volatile mainTable InjectionAdvanceTableMainFlash2 TIMETABLESD = {
 		#include "../data/tables/axis/mainTable-Load.h"
 	},
 	/* VETableMain.Table */
-	{	/* Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size. */
+	{
 		#include "../data/tables/ign/flat15degrees.h"
 	}
 };

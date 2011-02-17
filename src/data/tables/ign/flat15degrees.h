@@ -39,6 +39,7 @@
 
 
 /* Based on divisor of 1024 giving approximately 64 degree range with absurd wasteful accuracy level to be corrected later */
+/// TODO @todo this is all wrongly laid out now, due to Dave's whinging, so needs fixing...
 /* Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size. */
 15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,
 15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,  15360,

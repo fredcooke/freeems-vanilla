@@ -166,10 +166,10 @@ unsigned short lookupPagedMainTableCellValue(mainTable* Table, unsigned short re
 	}
 
 	/* Obtain the four corners surrounding the spot of interest */
-	unsigned short lowRPMLowLoad = Table->Table[(Table->LoadLength * lowRPMIndex) + lowLoadIndex];
-	unsigned short lowRPMHighLoad = Table->Table[(Table->LoadLength * lowRPMIndex) + highLoadIndex];
-	unsigned short highRPMLowLoad = Table->Table[(Table->LoadLength * highRPMIndex) + lowLoadIndex];
-	unsigned short highRPMHighLoad = Table->Table[(Table->LoadLength * highRPMIndex) + highLoadIndex];
+	unsigned short lowRPMLowLoad = Table->Table[(Table->RPMLength * lowLoadIndex) + lowRPMIndex];
+	unsigned short lowRPMHighLoad = Table->Table[(Table->RPMLength * highLoadIndex) + lowRPMIndex];
+	unsigned short highRPMLowLoad = Table->Table[(Table->RPMLength * lowLoadIndex) + highRPMIndex];
+	unsigned short highRPMHighLoad = Table->Table[(Table->RPMLength * highLoadIndex) + highRPMIndex];
 
 	/* Restore the RAM page before doing the math */
 	RPAGE = oldRPage;
@@ -287,7 +287,7 @@ unsigned short setPagedMainTableCellValue(unsigned char RPageValue, mainTable* T
 	RPAGE = RPageValue;
 	if(RPMIndex < Table->RPMLength){
 		if(LoadIndex < Table->LoadLength){
-			Table->Table[(Table->LoadLength * RPMIndex) + LoadIndex] = cellValue;
+			Table->Table[(Table->RPMLength * LoadIndex) + RPMIndex] = cellValue;
 		}else{
 			errorID = invalidMainTableLoadIndex;
 		}
