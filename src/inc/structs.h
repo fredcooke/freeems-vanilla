@@ -108,9 +108,6 @@ typedef struct {
 } blockDetails;
 
 
-#define DERIVED_VARS_SIZE sizeof(DerivedVar)
-#define DERIVED_VARS_WIDTH IN_OUT_BANKS	/* How many elements per array currently 2 at 25/6/08 */
-#define DERIVED_VARS_UNIT 2				/* How large each element is in bytes (short = 2 bytes) */
 /* Use this block to make it easy to manage the derived variables */
 typedef struct {
 	/* Calculated from core vars */
@@ -142,9 +139,6 @@ typedef struct {
 } DerivedVar;
 
 
-#define RUNTIME_VARS_SIZE sizeof(RuntimeVar)
-#define RUNTIME_VARS_LENGTH 13		/* How many runtime vars */
-#define RUNTIME_VARS_UNIT 2				/* How large each element is in bytes (short = 2 bytes) */
 /* Use this block to manage the execution time of various functions loops and ISRs etc */
 typedef struct {
 	/* Engine position and RPM code runtimes */
@@ -169,9 +163,6 @@ typedef struct {
 } RuntimeVar;
 
 
-#define ISR_LATENCY_VARS_SIZE sizeof(ISRLatencyVar)
-#define ISR_LATENCY_VARS_LENGTH 2		/* How many latency vars */
-#define ISR_LATENCY_VARS_UNIT 2				/* How large each element is in bytes (short = 2 bytes) */
 /* Use this block to manage the execution time of various functions loops and ISRs etc */
 typedef struct {
 	/* Engine position and RPM code latencies */
@@ -196,9 +187,6 @@ typedef struct {
 } ISRLatencyVar;
 
 
-#define CORE_VARS_SIZE sizeof(CoreVar)
-#define CORE_VARS_LENGTH 16				/* How many arrays */
-#define CORE_VARS_UNIT 2				/* How large each element is in bytes (short = 2 bytes) */
 /* Use this block to make it easy to manage the core variables */
 typedef struct {
 	/* Calculated and averaged from ADC0 readings */
@@ -227,9 +215,6 @@ typedef struct {
 } CoreVar;
 
 
-#define ADC_ARRAY_SIZE sizeof(ADCArray)
-#define ADC_ARRAY_LENGTH 16				/* How many arrays */
-#define ADC_ARRAY_UNIT 2				/* How large each element is in bytes (short = 2 bytes) */
 /* Use this block to ensure that the components are contiguous and we can then reference them via offsets and pointers */
 typedef struct {
 	/* ADC0 raw readings */
@@ -254,7 +239,6 @@ typedef struct {
 } ADCArray;
 
 
-#define MAINTABLE_SIZE sizeof(mainTable)
 #define MAINTABLE_RPM_LENGTH 16 //24			/* How many cells on the X axis */
 #define MAINTABLE_LOAD_LENGTH 16 //19		/* How many cells on the Y axis */
 #define MAINTABLE_MAX_RPM_LENGTH 27		/* How many cells on the X axis max */
@@ -304,7 +288,6 @@ typedef struct {
 } mainTable;
 
 
-#define TWODTABLEUS_SIZE sizeof(twoDTableUS)
 #define TWODTABLEUS_LENGTH 16
 /* This block used for various curves */
 typedef struct {
@@ -313,7 +296,6 @@ typedef struct {
 } twoDTableUS;
 
 
-#define TWODTABLESS_SIZE sizeof(twoDTableSS)
 #define TWODTABLESS_LENGTH 16
 /* This block used for various curves */
 typedef struct {
@@ -322,7 +304,6 @@ typedef struct {
 } twoDTableSS;
 
 
-#define TWODTABLEMS_SIZE sizeof(twoDTableMS)
 #define TWODTABLEMS_LENGTH 16
 /* This block used for various curves */
 typedef struct {
@@ -331,7 +312,6 @@ typedef struct {
 } twoDTableMS;
 
 
-#define TWODTABLEUC_SIZE sizeof(twoDTableUC)
 #define TWODTABLEUC_LENGTH 8
 /* This block used for various curves */
 typedef struct {
@@ -340,9 +320,6 @@ typedef struct {
 } twoDTableUC;
 
 
-#define COUNTER_SIZE sizeof(Counter)
-#define COUNTER_LENGTH 21			/* How many counters */
-#define COUNTER_UNIT 2				/* How large each element is in bytes (short = 2 bytes) */
 /* Use this block to manage the execution count of various functions loops and ISRs etc */
 typedef struct {
 	/* Event Counters (all require init to zero) */
@@ -351,6 +328,7 @@ typedef struct {
 
 	unsigned short crankSyncLosses;						/* Counter for number of lost crank syncs								*/
 	unsigned short camSyncLosses;						/* Counter for number of lost cam syncs									*/
+	unsigned short camSyncCorrections;					/* Counter for number of lost cam syncs									*/
 	unsigned short RPMValidityLosses;					/* Counter for number of lost RPM validity events						*/
 	unsigned short primaryTeethDroppedFromLackOfSync;	/* Counter for number of primary teeth dropped due to no primary sync	*/
 // TODO remove the one above this line about teeth dropped???? probably...
@@ -381,9 +359,6 @@ typedef struct {
 } Counter;
 
 
-#define CLOCK_SIZE sizeof(Clock)
-#define CLOCK_LENGTH 9				/* How many clocks */
-#define CLOCK_UNIT 2				/* How large each element is in bytes (short = 2 bytes) */
 /* Use this block to manage the various clocks kept */
 typedef struct {
 	/* Real Time and other Clocks (all require init to zero) */

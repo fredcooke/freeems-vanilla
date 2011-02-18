@@ -257,15 +257,15 @@ void initFuelAddresses(){
 void initPagedRAMFuel(void){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_FUEL_ONE;
-	memcpy((void*)&TablesA,	VETableMainFlashLocation,		MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	VETableSecondaryFlashLocation,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	VETableTertiaryFlashLocation,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	LambdaTableFlashLocation,		MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	VETableMainFlashLocation,		sizeof(mainTable));
+	memcpy((void*)&TablesB,	VETableSecondaryFlashLocation,	sizeof(mainTable));
+	memcpy((void*)&TablesC,	VETableTertiaryFlashLocation,	sizeof(mainTable));
+	memcpy((void*)&TablesD,	LambdaTableFlashLocation,		sizeof(mainTable));
 	RPAGE = RPAGE_FUEL_TWO;
-	memcpy((void*)&TablesA,	VETableMainFlash2Location,		MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	VETableSecondaryFlash2Location,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	VETableTertiaryFlash2Location,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	LambdaTableFlash2Location,		MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	VETableMainFlash2Location,		sizeof(mainTable));
+	memcpy((void*)&TablesB,	VETableSecondaryFlash2Location,	sizeof(mainTable));
+	memcpy((void*)&TablesC,	VETableTertiaryFlash2Location,	sizeof(mainTable));
+	memcpy((void*)&TablesD,	LambdaTableFlash2Location,		sizeof(mainTable));
 }
 
 
@@ -299,15 +299,15 @@ void initTimingAddresses(){
 void initPagedRAMTime(){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TIME_ONE;
-	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlashLocation,			MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlashLocation,		MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	InjectionAdvanceTableMainFlashLocation,			MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	InjectionAdvanceTableSecondaryFlashLocation,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlashLocation,			sizeof(mainTable));
+	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlashLocation,		sizeof(mainTable));
+	memcpy((void*)&TablesC,	InjectionAdvanceTableMainFlashLocation,			sizeof(mainTable));
+	memcpy((void*)&TablesD,	InjectionAdvanceTableSecondaryFlashLocation,	sizeof(mainTable));
 	RPAGE = RPAGE_TIME_TWO;
-	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlash2Location,			MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlash2Location,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	InjectionAdvanceTableMainFlash2Location,		MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	InjectionAdvanceTableSecondaryFlash2Location,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlash2Location,			sizeof(mainTable));
+	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlash2Location,	sizeof(mainTable));
+	memcpy((void*)&TablesC,	InjectionAdvanceTableMainFlash2Location,		sizeof(mainTable));
+	memcpy((void*)&TablesD,	InjectionAdvanceTableSecondaryFlash2Location,	sizeof(mainTable));
 }
 
 
@@ -375,15 +375,15 @@ void initTunableAddresses(){
 void initPagedRAMTune(){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TUNE_ONE;
-	memcpy((void*)&TablesA,	SmallTablesAFlashLocation,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	SmallTablesBFlashLocation,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	SmallTablesCFlashLocation,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	SmallTablesDFlashLocation,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	SmallTablesAFlashLocation,	sizeof(mainTable));
+	memcpy((void*)&TablesB,	SmallTablesBFlashLocation,	sizeof(mainTable));
+	memcpy((void*)&TablesC,	SmallTablesCFlashLocation,	sizeof(mainTable));
+	memcpy((void*)&TablesD,	SmallTablesDFlashLocation,	sizeof(mainTable));
 	RPAGE = RPAGE_TUNE_TWO;
-	memcpy((void*)&TablesA,	SmallTablesAFlash2Location,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesB,	SmallTablesBFlash2Location,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesC,	SmallTablesCFlash2Location,	MAINTABLE_SIZE);
-	memcpy((void*)&TablesD,	SmallTablesDFlash2Location,	MAINTABLE_SIZE);
+	memcpy((void*)&TablesA,	SmallTablesAFlash2Location,	sizeof(mainTable));
+	memcpy((void*)&TablesB,	SmallTablesBFlash2Location,	sizeof(mainTable));
+	memcpy((void*)&TablesC,	SmallTablesCFlash2Location,	sizeof(mainTable));
+	memcpy((void*)&TablesD,	SmallTablesDFlash2Location,	sizeof(mainTable));
 }
 
 

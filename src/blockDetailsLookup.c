@@ -69,7 +69,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 	details->FlashAddress = 0;
 
 	/* Initialise the block size to 1024 to save code space and increase readability */
-	details->size = MAINTABLE_SIZE;
+	details->size = sizeof(mainTable);
 
 	// No need to set parent value to zero as ignored unless flag set, done for clarity in hex stream.
 	details->parent = 0;
@@ -260,7 +260,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 
 	/* TablesA small tables */
 	case dwellDesiredVersusVoltageTableLocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
@@ -268,7 +268,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesALocationID;
 		break;
 	case dwellDesiredVersusVoltageTable2LocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
@@ -276,7 +276,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesA2LocationID;
 		break;
 	case injectorDeadTimeTableLocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.injectorDeadTimeTable;
@@ -284,7 +284,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesALocationID;
 		break;
 	case injectorDeadTimeTable2LocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.injectorDeadTimeTable;
@@ -292,7 +292,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesA2LocationID;
 		break;
 	case postStartEnrichmentTableLocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
@@ -300,7 +300,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesALocationID;
 		break;
 	case postStartEnrichmentTable2LocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
@@ -308,7 +308,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesA2LocationID;
 		break;
 	case engineTempEnrichmentTableFixedLocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
@@ -316,7 +316,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesALocationID;
 		break;
 	case engineTempEnrichmentTableFixed2LocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
@@ -324,7 +324,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesA2LocationID;
 		break;
 	case primingVolumeTableLocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
@@ -332,7 +332,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesALocationID;
 		break;
 	case primingVolumeTable2LocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
@@ -340,7 +340,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesA2LocationID;
 		break;
 	case engineTempEnrichmentTablePercentLocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
@@ -348,7 +348,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesALocationID;
 		break;
 	case engineTempEnrichmentTablePercent2LocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
@@ -356,7 +356,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesA2LocationID;
 		break;
 	case dwellMaxVersusRPMTableLocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellMaxVersusRPMTable;
@@ -364,7 +364,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->parent = SmallTablesALocationID;
 		break;
 	case dwellMaxVersusRPMTable2LocationID:
-		details->size = TWODTABLEUS_SIZE;
+		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellMaxVersusRPMTable;

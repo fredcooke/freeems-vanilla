@@ -314,7 +314,7 @@ void generateCoreVars(){
 
 	// later...
 	unsigned short i;
-	for(i=0;i<CORE_VARS_LENGTH;i++){ // TODO
+	for(i=0;i<sizeof(CoreVar);i++){ // TODO
 		/* Perform averaging on all primary variables as per the configuration array */
 		// get old value(s)
 		// process new and old to produce result based on config array value */
