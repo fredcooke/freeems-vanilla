@@ -137,6 +137,15 @@ void calculateFuelAndIgnition(){
 
 
 
+
+/// TODO @todo FXIME part of to schedule or not to schedule should be : (masterPulseWidth > injectorMinimumPulseWidth)
+
+// IE, NOT in the decoders... KISS in the decoders. This is a hangover from (very) early decoder dev
+
+
+
+
+
 	/*&&&&&&&&&&&&&&&&& Based on IDT schedule PW start such that Fuel is correctly timed &&&&&&&&&&&&&&&&&&&*/
 
 	for(channel = 0;channel < INJECTION_CHANNELS;channel++){ /// @todo TODO make injector channels come from config, not defines.

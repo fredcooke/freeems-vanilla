@@ -146,8 +146,9 @@ ten transitional events total per engine cycle:
 
 if inner = off to on, position = 522 degrees
 if inner = on to off, position = 652 degrees
-if outer = off to on AND inner = on, then position = 540
+
 if outer = on to off AND inner = on, then position = 600
+if outer = off to on AND inner = on, then position = 540
 if outer = off to on AND is third while inner = off, then position = 360
 
 information of no use for obtaining sync:
@@ -201,9 +202,22 @@ for(pin 0 - 5){
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
 static unsigned char event;
-static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
-const unsigned short eventCrankAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652};
+//static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
+const unsigned short eventCrankAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
+// The 6th and 9th events are from the inner wheel, the rest from the outer, their order is dependent in the sensor offset
+static unsigned char unknownEdges = 0;
 
+/// clear all sync state and reset all vars
+void clearSyncState(void){
+	/// @todo TODO coreStatusA === clear all appropriate bits; // maybe change from corestatusA to decoderStatus and OtherStatus etc?
+	unknownEdges = 0;
+}
+
+
+/// @todo TODO migrate ALL decoder vars, arrays, fields, whatever to the decoder header out of the global header...
+
+
+// Need to make this available to all decoders and cut out code from those that have it built in.
 void schedulePortTPin(unsigned char pin){
 	/* Determine if half the cycle is bigger than short-max */
 	unsigned short maxAngleAfter;
@@ -246,16 +260,56 @@ void schedulePortTPin(unsigned char pin){
 	}
 }
 
-/*
- * 		if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
-			unsigned char pin;
-			for(pin=0;pin<6;pin++){
-				if(pinEventNumbers[pin] == thisEvent){
-					schedulePortTPin(pin, delay);
-				}
-			}
-		}
+
+/* block 1
+ * 		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
+		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
+
+// = 60 * (1000000 / 0.8)
+#define ticksPerMinute   75000000 // this is correct.
+
+		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
+
+		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
+		sampleEachADC(ADCArrays);
+		Counters.syncedADCreadings++;
+		*mathSampleTimeStampRecord = TCNT;
+
+		// Set flag to say calc required
+		coreStatusA |= CALC_FUEL_IGN;
+
+		// Reset the clock for reading timeout
+		Clocks.timeoutADCreadingClock = 0;
+ *
  */
+
+/* block 2
+ * 	timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
+	lastPulseTimeStamp = timeStamp.timeLong;
+ *
+ */
+
+
+/* block 3 no location yet.
+if(coreStatusA & PERIOD_VALID){
+	// Do period checking here as if just picking up sync now, previous is unreliable
+	unsigned long minTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 5)/10;
+	unsigned long maxTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 15)/10;
+
+	timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
+	lastPulseTimeStamp = timeStamp.timeLong;
+
+	if(timeBetweenSuccessivePulses < minTimeSinceLastEvent || timeBetweenSuccessivePulses > maxTimeSinceLastEvent){
+		coreStatusA &= CLEAR_PRIMARY_SYNC;
+		coreStatusA &= CLEAR_PERIOD_VALID;
+		Counters.camSyncLosses++;
+	}
+}
+
+// store rate for next guy and set flag
+ticksPerCrankDegree = (unsigned short)(timeBetweenSuccessivePulses / (eventCrankAngles[event] - eventCrankAngles[event-1]));
+coreStatusA |= PERIOD_VALID;*/
 
 
 /** Primary RPM ISR
@@ -276,7 +330,8 @@ void PrimaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = ~PTIT;			/* Save the values on port T regardless of the state of DDRT */
+/// @todo TODO remove dodgy hack from above line NOTting the port state, ONLY a hack to bypass max chips temporarily...
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -292,40 +347,74 @@ void PrimaryRPMISR(){
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
 
-	timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
-	lastPulseTimeStamp = timeStamp.timeLong;
 
+	// commented out code block 2
+
+	// increment the event
+	event++;
+
+	// Determine the correct event based on post transition state (and toggle debug pins)
+	unsigned char correctEvent = 0;
 	if(PTITCurrentState & 0x01){
-		/* Echo input condition on J7 */
 		PORTJ |= 0x80;
-
-		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
-		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
-		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
-
-// = 60 * (1000000 / 0.8)
-#define ticksPerMinute   75000000 // this is correct.
-
-		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
 
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
 		*mathSampleTimeStampRecord = TCNT;
 
-		/* Set flag to say calc required */
+		// Set flag to say calc required
 		coreStatusA |= CALC_FUEL_IGN;
 
-		/* Reset the clock for reading timeout */
+		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
 
-		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+		if(PTITCurrentState & 0x02){
+			correctEvent = 7;
+			unknownEdges = 0;
+		}else{
+			unknownEdges++;
+			if(unknownEdges == 3){
+				correctEvent = 4;
+			}
+		}
 	}else{
 		PORTJ &= 0x7F;
-		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
+
+		if(PTITCurrentState & 0x02){
+			correctEvent = 8;
+		}
 	}
 
-	if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
+	if(coreStatusA & PRIMARY_SYNC){
+		// increment the event
+		event++;
+
+		// ...and check that it's correct
+		if((correctEvent != 0) && (event != correctEvent)){
+			event = correctEvent;
+			// Record that we had to reset position...
+			Counters.camSyncCorrections++;
+			// Should never happen, or should be caught by timing checks below
+		}
+	}else if(correctEvent != 0){
+		coreStatusA |= PRIMARY_SYNC;
+		event = correctEvent;
+		*RPMRecord = correctEvent * 1000;
+		*RPM = correctEvent * 1000;
+	}
+
+	// Check that sync is good by timing
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// clearSyncState();
+
+	if(coreStatusA & PRIMARY_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == event){
@@ -333,6 +422,8 @@ void PrimaryRPMISR(){
 			}
 		}
 	}
+
+	RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 }
 
 
@@ -347,12 +438,14 @@ void SecondaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = ~PTIT;			/* Save the values on port T regardless of the state of DDRT */
+/// @todo TODO remove dodgy hack from above line NOTting the port state, ONLY a hack to bypass max chips temporarily...
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
 	Counters.secondaryTeethSeen++;
+	// remember that this is both edges, though... 8 per cycle, 4 per rev for the outter wheel, 2/1 for this wheel.
 
 	/* Install the low word */
 	timeStamp.timeShorts[1] = edgeTimeStamp;
@@ -363,51 +456,49 @@ void SecondaryRPMISR(){
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
 
-	event++;
-
+	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent;
-
 	if(PTITCurrentState & 0x02){
+		PORTB = ONES; // bang port B and hope for led action
 		PORTJ |= 0x40;
-
 		correctEvent = 6;
 	}else{
+		PORTB = ZEROS; // match above
 		PORTJ &= 0xBF;
-
 		correctEvent = 9;
 	}
 
+	// Check and set position and sync by state
 	if(coreStatusA & PRIMARY_SYNC){
+		// increment the event
+		event++;
+
+		// ...and check that it's correct
 		if(event != correctEvent){
-			coreStatusA &= CLEAR_PRIMARY_SYNC;
-			coreStatusA &= CLEAR_COREA12;
-			Counters.camSyncLosses++;
+			event = correctEvent;
+			// Record that we had to reset position...
+			Counters.camSyncCorrections++;
+			// Should never happen, or should be caught by timing checks below
 		}
-
-		if(coreStatusA & COREA12){
-			// Do period checking here as if just picking up sync now, previous is unreliable
-			unsigned long minTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 5)/10;
-			unsigned long maxTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 15)/10;
-
-			timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
-			lastPulseTimeStamp = timeStamp.timeLong;
-
-			if(timeBetweenSuccessivePulses < minTimeSinceLastEvent || timeBetweenSuccessivePulses > maxTimeSinceLastEvent){
-				coreStatusA &= CLEAR_PRIMARY_SYNC;
-				coreStatusA &= CLEAR_COREA12;
-				Counters.camSyncLosses++;
-			}
-		}
-
-		// store rate for next guy and set flag
-		ticksPerCrankDegree = (unsigned short)(timeBetweenSuccessivePulses / (eventCrankAngles[event] - eventCrankAngles[event-1]));
-		coreStatusA |= COREA12;
-	}else{ // If not synced
+	}else{	// If not synced, sync, as in this ISR we always know where we are.
 		coreStatusA |= PRIMARY_SYNC;
 		event = correctEvent;
+		*RPMRecord = correctEvent * 1000;
+		*RPM = correctEvent * 1000;
 	}
 
-	if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
+	// Check that sync is good by timing
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// timing stuff here!!
+	// clearSyncState();
+
+	// If still synced after all checking, fire events!
+	if(coreStatusA & PRIMARY_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == event){

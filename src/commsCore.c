@@ -67,6 +67,8 @@ void populateBasicDatalog(){
 	/* Save the current position */
 	unsigned char* position = TXBufferCurrentPositionHandler;
 
+	DerivedVars->sp1 = Counters.primaryTeethSeen;
+	DerivedVars->sp2 = Counters.secondaryTeethSeen;
 	DerivedVars->sp3 = Clocks.realTimeClockSeconds;
 	DerivedVars->sp4 = coreStatusA;
 	DerivedVars->sp5++; // increment as basic log sequence generator
