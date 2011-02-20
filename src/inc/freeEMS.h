@@ -306,7 +306,7 @@ EXTERN unsigned short bootTimeAAP; /* TODO populate this at switch on time depen
 /* State variables : 0 = false (don't forget to change the init mask to suit!) */
 EXTERN unsigned short coreStatusA;	/* Each bit represents the state of some core parameter, masks below */
 /* Bit masks for coreStatusA */ // TODO needs a rename as does coresetingsA
-#define COREA00			BIT0_16		/*  0 */
+#define FUEL_PUMP_PRIME	BIT0_16		/*  0 */
 #define COREA01			BIT1_16		/*  1 this was RPM_VALID Whether we are sure rpm is what the variable says (used to inject fuel without ignition below the threshold rpm) */
 #define PRIMARY_SYNC	BIT2_16		/*  2 Wasted spark/Semi sequential */
 #define SECONDARY_SYNC	BIT3_16		/*  3 COP/Full sequential */
@@ -323,6 +323,7 @@ EXTERN unsigned short coreStatusA;	/* Each bit represents the state of some core
 #define COREA14			BIT14_16	/* 14 */
 #define COREA15			BIT15_16	/* 15 */
 
+#define CLEAR_FUEL_PUMP_PRIME NBIT0_16	/* */
 #define CLEAR_PRIMARY_SYNC	NBIT2_16	/* */
 #define STAGED_NOT_REQUIRED	NBIT9_16	/*  9 Do not fire the staged injectors */
 #define CLEAR_CALC_FUEL_IGN	NBIT10_16	/* 10 Fuel and ignition don't require calculation */

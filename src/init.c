@@ -177,7 +177,7 @@ void initIO(){
 
 	/* Initialise the state of pins configured as output */
 	/* Initialise to low such that transistor grounded things are all turned off by default. */
-	PORTA = ZEROS; /* The serial monitor pin is on 0x40, and could cause problems if capacitance at the output is large when a reset occurs. */
+	PORTA = BIT7; /* Set fuel pump on at boot time. The serial monitor pin is on 0x40, and could cause problems if capacitance at the output is large when a reset occurs. */
 	PORTB = ZEROS; /* Init the rest of the spark outputs as off */
 	PORTE = 0x1F; /* 0b_0001_1111 : when not in use 0b_1001_1111 PE7 should be high PE5 and PE6 should be low, the rest high */
 	PORTK = ZEROS;
@@ -474,6 +474,8 @@ void initVariables(){
 	injectorMainControlRegisters[5] = TCTL1_ADDR;
 
 	configuredBasicDatalogLength = maxBasicDatalogLength;
+
+	coreStatusA |= FUEL_PUMP_PRIME;
 
 	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
 }

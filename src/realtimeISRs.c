@@ -41,6 +41,7 @@
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
 #include "inc/commsISRs.h"
+#include "inc/decoderInterface.h"
 
 
 /** @brief Real Time Interrupt Handler
@@ -78,6 +79,8 @@ void RTIISR(){
 			/* Set force read adc flag */
 			coreStatusA |= FORCE_READING;
 			Clocks.timeoutADCreadingClock = 0;
+		}else if (*RPM > 0){ // turn on very quickly if rpm appears non zero, temp impl...
+			PORTA |= BIT7;
 		}
 
 		/* Every 100 millis is one tenth */
@@ -112,10 +115,18 @@ void RTIISR(){
 				Clocks.tenthsToSeconds = 0;
 				/* Perform all tasks that are once per second here or preferably main */
 
+				// temp fuel pump prime and safety off impl
+				if(coreStatusA & FUEL_PUMP_PRIME){
+					if(Clocks.secondsToMinutes > 5){
+						coreStatusA &= CLEAR_FUEL_PUMP_PRIME;
+						PORTA &= NBIT7;
+					}
+				}else if(*RPM == 0){
+					PORTA &= NBIT7;
+				}
+
 				// temp throttling for log due to tuner performance issues (in the bedroom)
 				ShouldSendLog = TRUE;
-				/* Flash the user LED as a "heartbeat" to let new users know it's alive */
-				//PORTP ^= 0x80;
 
 				/* Every 60 seconds is one minute, 65535 minutes is enough for us :-) */
 				if(Clocks.secondsToMinutes % 60 == 0){

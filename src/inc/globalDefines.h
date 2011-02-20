@@ -167,7 +167,8 @@
 #define idlePulseWidth               2000       /* ~1.5ms */
 #define idleAirFlow                  1500       /* guessed */
 
-#define typicalCylinderSize         16384       /* 500cc per cylinder */
+//#define typicalCylinderSize         16384       /* 500cc per cylinder */
+#define typicalCylinderSize         14746       /* 450cc per cylinder for my F8-DOHC */
 #define typicalInjectorSize          9387       /* 550cc per minute */
 
 #define densityOfOctane             22496       /* 703 grams per litre */

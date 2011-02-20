@@ -54,16 +54,16 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 
 		{
 		typicalCylinderSize,    	/* perCylinderVolume */
-		stoichiometricAFROctane,	/* stoichiometricAFR */
+		stoichiometricAFRGasoline,	/* stoichiometricAFR */
 		typicalInjectorSize,    	/* injectorFlow */
 		densityOfOctane,        	/* densityOfFuelAtSTP */
 		/* new and old.... */
-		575,                  	/* capacityOfAirPerCombustionEvent */
-		192,                  	/* perPrimaryInjectorChannelFlowRate */
-		192,                  	/* perSecondaryInjectorChannelFlowRate */
-		6,                    	/* ports */
-		6,                    	/* coils */
-		6,                    	/* combustionEventsPerEngineCycle */
+		500,                  	/* capacityOfAirPerCombustionEvent */
+		550,                  	/* perPrimaryInjectorChannelFlowRate */
+		550,                  	/* perSecondaryInjectorChannelFlowRate */
+		4,                    	/* ports */
+		4,                    	/* coils */
+		4,                    	/* combustionEventsPerEngineCycle */
 		2,                    	/* revolutionsPerEngineCycle */
 		24,                   	/* primaryTeeth */
 		0                    	/* missingTeeth */
