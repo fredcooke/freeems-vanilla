@@ -117,7 +117,7 @@ void RTIISR(){
 
 				// temp fuel pump prime and safety off impl
 				if(coreStatusA & FUEL_PUMP_PRIME){
-					if(Clocks.secondsToMinutes > 5){
+					if(Clocks.secondsToMinutes == 4){
 						coreStatusA &= CLEAR_FUEL_PUMP_PRIME;
 						PORTA &= NBIT7;
 					}
