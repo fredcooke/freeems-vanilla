@@ -113,7 +113,7 @@ EXTERN unsigned long engineCyclePeriod;
 #define CAM_SYNC             BIT2 // COP/CNP/Sequential
 #define LAST_TIMESTAMP_VALID BIT3
 #define LAST_PERIOD_VALID    BIT4
-#define CLEAR_COMBUSTION_SYNC        NBIT0
+#define CLEAR_COMBUSTION_SYNC      NBIT0
 #define CLEAR_CRANK_SYNC           NBIT1
 #define CLEAR_CAM_SYNC             NBIT2
 #define CLEAR_LAST_TIMESTAMP_VALID NBIT3

@@ -55,9 +55,7 @@ void resetToNonRunningState(){
 	engineCyclePeriod = ticksPerCycleAtOneRPM;
 
 	/* Clear all sync flags to lost state */
-	//coreStatusA &= CLEAR_RPM_VALID;
-	decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC);
-	//coreStatusA &= CLEAR_SECONDARY_SYNC;
+	decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC & CLEAR_LAST_PERIOD_VALID & CLEAR_LAST_TIMESTAMP_VALID);
 
 	// TODO more stuff needs resetting here, but only critical things.
 }
