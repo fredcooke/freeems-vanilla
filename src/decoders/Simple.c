@@ -82,7 +82,7 @@ void PrimaryRPMISR(){
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
 
 	// set as synced for volvo always as loss of sync not actually possible
-	coreStatusA |= PRIMARY_SYNC;
+	decoderFlags |= COMBUSTION_SYNC;
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;

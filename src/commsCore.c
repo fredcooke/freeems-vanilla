@@ -49,6 +49,7 @@
 #include "inc/tableLookup.h"
 #include "inc/locationIDs.h"
 #include "inc/blockDetailsLookup.h"
+#include "inc/decoderInterface.h"
 #include "inc/commsCore.h"
 #include "inc/init.h"
 #include <string.h>
@@ -70,7 +71,7 @@ void populateBasicDatalog(){
 	DerivedVars->sp1 = Counters.primaryTeethSeen;
 	DerivedVars->sp2 = Counters.secondaryTeethSeen;
 	DerivedVars->sp3 = Clocks.realTimeClockSeconds;
-	DerivedVars->sp4 = coreStatusA;
+	DerivedVars->sp4 = (coreStatusA << 8) + decoderFlags;
 	DerivedVars->sp5++; // increment as basic log sequence generator
 
 	/* Get core vars */

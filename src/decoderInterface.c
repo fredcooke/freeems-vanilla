@@ -56,7 +56,7 @@ void resetToNonRunningState(){
 
 	/* Clear all sync flags to lost state */
 	//coreStatusA &= CLEAR_RPM_VALID;
-	coreStatusA &= CLEAR_PRIMARY_SYNC;
+	decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC);
 	//coreStatusA &= CLEAR_SECONDARY_SYNC;
 
 	// TODO more stuff needs resetting here, but only critical things.

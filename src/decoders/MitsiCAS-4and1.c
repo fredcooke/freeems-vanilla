@@ -403,7 +403,7 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	if(coreStatusA & PRIMARY_SYNC){
+	if(decoderFlags & CAM_SYNC){
 		// increment the event
 		currentEvent++;
 
@@ -415,7 +415,7 @@ void PrimaryRPMISR(){
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else if(correctEvent != 0){
-		coreStatusA |= PRIMARY_SYNC;
+		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
 		*RPMRecord = correctEvent * 1000;
 		*RPM = correctEvent * 1000;
@@ -431,7 +431,7 @@ void PrimaryRPMISR(){
 	// timing stuff here!!
 	// clearSyncState();
 
-	if(coreStatusA & PRIMARY_SYNC){
+	if(decoderFlags & CAM_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == currentEvent){
@@ -486,7 +486,7 @@ void SecondaryRPMISR(){
 	}
 
 	// Check and set position and sync by state
-	if(coreStatusA & PRIMARY_SYNC){
+	if(decoderFlags & CAM_SYNC){
 		// increment the event
 		currentEvent++;
 
@@ -498,7 +498,7 @@ void SecondaryRPMISR(){
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
-		coreStatusA |= PRIMARY_SYNC;
+		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
 		*RPMRecord = correctEvent * 1000;
 		*RPM = correctEvent * 1000;
@@ -515,7 +515,7 @@ void SecondaryRPMISR(){
 	// clearSyncState();
 
 	// If still synced after all checking, fire events!
-	if(coreStatusA & PRIMARY_SYNC){
+	if(decoderFlags & CAM_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == currentEvent){

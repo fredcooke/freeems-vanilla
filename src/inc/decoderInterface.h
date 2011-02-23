@@ -108,12 +108,12 @@ EXTERN unsigned long lastInterEventPeriod;
 EXTERN unsigned char currentEvent;
 EXTERN unsigned char decoderFlags;
 EXTERN unsigned long engineCyclePeriod;
-#define CYLINDER_SYNC        BIT0
-#define CRANK_SYNC           BIT1
-#define CAM_SYNC             BIT2
+#define COMBUSTION_SYNC      BIT0 // Dizzy/Batch Injection
+#define CRANK_SYNC           BIT1 // Wasted Spark/Semi-Sequential
+#define CAM_SYNC             BIT2 // COP/CNP/Sequential
 #define LAST_TIMESTAMP_VALID BIT3
 #define LAST_PERIOD_VALID    BIT4
-#define CLEAR_CYLINDER_SYNC        NBIT0
+#define CLEAR_COMBUSTION_SYNC        NBIT0
 #define CLEAR_CRANK_SYNC           NBIT1
 #define CLEAR_CAM_SYNC             NBIT2
 #define CLEAR_LAST_TIMESTAMP_VALID NBIT3

@@ -125,7 +125,7 @@ void PrimaryRPMISR(){
 		*RPMRecord = ticksPerCycleAtOneRPMx2 / engineCyclePeriod; /* 0.8us ticks, 150mil = 2 x 60 seconds, times rpm scale factor of 2 */
 
 		// don't run until the second trigger has come in and the period is correct (VERY temporary)
-		if(!(coreStatusA & PRIMARY_SYNC)){
+		if(!(decoderFlags & CRANK_SYNC)){
 			primaryTeethDroppedFromLackOfSync++;
 			return;
 		}
@@ -155,7 +155,7 @@ void PrimaryRPMISR(){
 			Counters.crankSyncLosses++;
 
 			/* Clear synced status */
-			coreStatusA &= CLEAR_PRIMARY_SYNC;
+			decoderFlags &= CLEAR_CRANK_SYNC;
 
 			/* Reset the count of teeth */
 			primaryPulsesPerSecondaryPulse = 0;
@@ -422,8 +422,8 @@ void SecondaryRPMISR(){
 		primaryPulsesPerSecondaryPulse = 0;
 
 		// if we didn't get the right number of pulses drop sync and start over
-		if((primaryPulsesPerSecondaryPulse != 12) && (coreStatusA & PRIMARY_SYNC)){
-			coreStatusA &= CLEAR_PRIMARY_SYNC;
+		if((primaryPulsesPerSecondaryPulse != 12) && (decoderFlags & CRANK_SYNC)){
+			decoderFlags &= CLEAR_CRANK_SYNC;
 			Counters.crankSyncLosses++;
 		}
 
@@ -443,7 +443,7 @@ void SecondaryRPMISR(){
 		lastSecondaryOddTimeStamp = timeStamp.timeLong; // save this stamp for next time round
 
 		// Because this is our only reference, each time we get this pulse, we know where we are at (simple mode so far)
-		coreStatusA |= PRIMARY_SYNC;
+		decoderFlags |= CRANK_SYNC;
 		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		PORTJ &= 0xBF;

@@ -302,31 +302,21 @@ EXTERN unsigned short bootTimeAAP; /* TODO populate this at switch on time depen
 
 // TODO these flags are used for coreSettingsA and it is not clear that they are dual purpose, fix this...
 /* State variables : 0 = false (don't forget to change the init mask to suit!) */
-EXTERN unsigned short coreStatusA;	/* Each bit represents the state of some core parameter, masks below */
+EXTERN unsigned char coreStatusA;	/* Each bit represents the state of some core parameter, masks below */
 /* Bit masks for coreStatusA */ // TODO needs a rename as does coresetingsA
 #define FUEL_PUMP_PRIME	BIT0_16		/*  0 */
-#define COREA01			BIT1_16		/*  1 this was RPM_VALID Whether we are sure rpm is what the variable says (used to inject fuel without ignition below the threshold rpm) */
-#define PRIMARY_SYNC	BIT2_16		/*  2 Wasted spark/Semi sequential */
-#define SECONDARY_SYNC	BIT3_16		/*  3 COP/Full sequential */
-#define ENGINE_PHASE	BIT4_16		/*  4 For COP/Sequential, which revolution we are in, first or second */
-#define FUEL_CUT		BIT5_16		/*  5 Remove injection completely */
-#define HARD_SPARK_CUT	BIT6_16		/*  6 Remove ignition completely */
-#define SOFT_SPARK_CUT	BIT7_16		/*  7 Remove ignition events round robin style */
-#define SPARK_RETARD	BIT8_16		/*  8 Retard ignition in RPM dependent way */
-#define STAGED_REQUIRED	BIT9_16		/*  9 Fire the staged injectors */
-#define CALC_FUEL_IGN	BIT10_16	/* 10 Fuel and ignition require calculation (i.e. variables have been updated) */
-#define FORCE_READING	BIT11_16	/* 11 Flag to force ADC sampling at low rpm/stall */
-#define PERIOD_VALID    BIT12_16	/* 12 */
-#define STAMP_VALID		BIT13_16	/* 13 */
-#define COREA14			BIT14_16	/* 14 */
-#define COREA15			BIT15_16	/* 15 */
+#define STAGED_REQUIRED	BIT1_16		/*  1 Fire the staged injectors */
+#define CALC_FUEL_IGN	BIT2_16		/*  2 Fuel and ignition require calculation (i.e. variables have been updated) */
+#define FORCE_READING	BIT3_16		/*  3 Flag to force ADC sampling at low rpm/stall */
+#define COREA04         BIT4_16		/*  4 */
+#define COREA05         BIT5_16		/*  5 */
+#define COREA06         BIT6_16		/*  6 */
+#define COREA07         BIT7_16		/*  7 */
 
 #define CLEAR_FUEL_PUMP_PRIME NBIT0_16	/* */
-#define CLEAR_PRIMARY_SYNC	NBIT2_16	/* */
-#define STAGED_NOT_REQUIRED	NBIT9_16	/*  9 Do not fire the staged injectors */
-#define CLEAR_CALC_FUEL_IGN	NBIT10_16	/* 10 Fuel and ignition don't require calculation */
-#define CLEAR_FORCE_READING	NBIT11_16	/* 11 Clear flag to force ADC sampling at low rpm/stall */
-#define CLEAR_PERIOD_VALID  NBIT12_16
+#define STAGED_NOT_REQUIRED	NBIT1_16	/*  9 Do not fire the staged injectors */
+#define CLEAR_CALC_FUEL_IGN	NBIT2_16	/* 10 Fuel and ignition don't require calculation */
+#define CLEAR_FORCE_READING	NBIT3_16	/* 11 Clear flag to force ADC sampling at low rpm/stall */
 
 
 //TODO make this volatile?
