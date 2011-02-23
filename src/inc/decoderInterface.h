@@ -103,6 +103,7 @@ from the above we can check one gap+angle with the next gap+angle and ensure smo
 
 // unsigned long thisEventTimeStamp; recommended variable naming, may be enforced for/with macro use
 // unsigned long thisInterEventPeriod; ditto
+EXTERN unsigned char syncCaughtOnThisEvent;
 EXTERN unsigned long lastEventTimeStamp;
 EXTERN unsigned long lastInterEventPeriod;
 EXTERN unsigned char currentEvent;

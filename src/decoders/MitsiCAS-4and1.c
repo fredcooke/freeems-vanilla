@@ -302,33 +302,6 @@ void schedulePortTPin(unsigned char pin){
  *
  */
 
-/* block 2
- * 	timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
-	lastPulseTimeStamp = timeStamp.timeLong;
- *
- */
-
-
-/* block 3 no location yet.
-if(coreStatusA & PERIOD_VALID){
-	// Do period checking here as if just picking up sync now, previous is unreliable
-	unsigned long minTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[currentEvent] * 5)/10;
-	unsigned long maxTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[currentEvent] * 15)/10;
-
-	timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
-	lastPulseTimeStamp = timeStamp.timeLong;
-
-	if(timeBetweenSuccessivePulses < minTimeSinceLastEvent || timeBetweenSuccessivePulses > maxTimeSinceLastEvent){
-		coreStatusA &= CLEAR_PRIMARY_SYNC;
-		coreStatusA &= CLEAR_PERIOD_VALID;
-		Counters.camSyncLosses++;
-	}
-}
-
-// store rate for next guy and set flag
-ticksPerCrankDegree = (unsigned short)(timeBetweenSuccessivePulses / (eventCrankAngles[currentEvent] - eventCrankAngles[currentEvent-1]));
-coreStatusA |= PERIOD_VALID;*/
-
 
 /** Primary RPM ISR
  *
@@ -423,41 +396,44 @@ void PrimaryRPMISR(){
 	}else if(correctEvent != 0){
 		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
-		*RPMRecord = correctEvent * 1000;
-		*RPM = correctEvent * 1000;
+		syncCaughtOnThisEvent = correctEvent;
 	}
 
 	if(decoderFlags & CAM_SYNC){
+		unsigned short thisAngle = 0;
+		if(currentEvent == 0){
+			thisAngle = eventAngles[currentEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+		}else{
+			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+		}
+
+		/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
+		unsigned short thisTicksPerDegree = (unsigned short)((20 * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short lastAngle = 0;
-			unsigned short thisAngle = 0;
-			if(currentEvent == 0){
-				unsigned short lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
-				unsigned short thisAngle = eventAngles[currentEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
-			}else if(lastEvent == 0){
-				unsigned short lastAngle = eventAngles[lastEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[eventBeforeLastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
-				unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+			if(lastEvent == 0){
+				lastAngle = eventAngles[lastEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[eventBeforeLastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
 			}else{
-				unsigned short lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
-				unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+				lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
 			}
 
-			/// @todo TODO add scaling to these to get better accuracy. x 20 will yield 64rpm minimum functional level.
-			unsigned short lastTicksPerDegree = (unsigned short)(lastInterEventPeriod / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
-			unsigned short thisTicksPerDegree = (unsigned short)(thisInterEventPeriod / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
+			unsigned short lastTicksPerDegree = (unsigned short)((20 * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
-			unsigned short ratioBetweenThisAndLast = (lastTicksPerDegree * 1000) / thisTicksPerDegree;
+			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 				clearSyncState();
 			}else{
 				if(PTITCurrentState & 0x01){
-					// Calculate RPM from last primaryLeadingEdgeTimeStamp
+					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
 				}else{
-					// Calculate RPM from last primaryTrailingEdgeTimeStamp
+					/// @todo TODO Calculate RPM from last primaryTrailingEdgeTimeStamp
 				}
 			}
-		}else if(decoderFlags & LAST_TIMESTAMP_VALID){
-			// if we cant get proper RPM, get a prelim RPM from the last event anyway, better than nothing as a first value.
+		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
+			#define degreeTicksPerMinute 4166667
+			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
 		}
 	}
 
@@ -509,6 +485,12 @@ void SecondaryRPMISR(){
 	}else{
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
+	unsigned long thisEventTimeStamp = timeStamp.timeLong;
+
+	unsigned long thisInterEventPeriod = 0;
+	if(decoderFlags & LAST_TIMESTAMP_VALID){
+		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
+	}
 
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent;
@@ -522,10 +504,15 @@ void SecondaryRPMISR(){
 		correctEvent = 9;
 	}
 
-	// Check and set position and sync by state
+	unsigned char lastEvent = 0;
+	unsigned char eventBeforeLastEvent = 0;
 	if(decoderFlags & CAM_SYNC){
-		// increment the event
+		eventBeforeLastEvent = lastEvent;
+		lastEvent = currentEvent;
 		currentEvent++;
+		if(currentEvent == NUMBER_OF_EVENTS){
+			currentEvent = 0;
+		}
 
 		// ...and check that it's correct
 		if(currentEvent != correctEvent){
@@ -537,21 +524,41 @@ void SecondaryRPMISR(){
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
 		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
-		*RPMRecord = correctEvent * 1000;
-		*RPM = correctEvent * 1000;
+		syncCaughtOnThisEvent = correctEvent;
 	}
 
-	// Check that sync is good by timing
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// clearSyncState();
+	if(decoderFlags & CAM_SYNC){
+		unsigned short thisAngle = 0;
+		if(currentEvent == 0){
+			thisAngle = eventAngles[currentEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+		}else{
+			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+		}
 
-	// If still synced after all checking, fire events!
+		/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
+		unsigned short thisTicksPerDegree = (unsigned short)((20 * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+
+		if(decoderFlags & LAST_PERIOD_VALID){
+			unsigned short lastAngle = 0;
+			if(lastEvent == 0){
+				lastAngle = eventAngles[lastEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[eventBeforeLastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+			}else{
+				lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
+			}
+
+			/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
+			unsigned short lastTicksPerDegree = (unsigned short)((20 * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+
+			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				clearSyncState();
+			}
+		}else if(decoderFlags & LAST_TIMESTAMP_VALID){
+			#define degreeTicksPerMinute 4166667
+			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
+		}
+	}
+
 	if(decoderFlags & CAM_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
@@ -560,6 +567,14 @@ void SecondaryRPMISR(){
 			}
 		}
 	}
+
+	if(decoderFlags & LAST_TIMESTAMP_VALID){
+		lastInterEventPeriod = thisInterEventPeriod;
+		decoderFlags |= LAST_PERIOD_VALID;
+	}
+	// Always
+	lastEventTimeStamp = thisEventTimeStamp;
+	decoderFlags |= LAST_TIMESTAMP_VALID;
 
 	RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 }

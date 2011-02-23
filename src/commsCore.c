@@ -73,6 +73,7 @@ void populateBasicDatalog(){
 	DerivedVars->sp3 = Clocks.realTimeClockSeconds;
 	DerivedVars->sp4 = (coreStatusA << 8) + decoderFlags;
 	DerivedVars->sp5++; // increment as basic log sequence generator
+	CoreVars->DTPS = syncCaughtOnThisEvent;
 
 	/* Get core vars */
 	memcpy(TXBufferCurrentPositionHandler, CoreVars, sizeof(CoreVar));
