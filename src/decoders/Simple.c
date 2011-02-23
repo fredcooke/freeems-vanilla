@@ -45,10 +45,16 @@
  */
 
 
+#define DECODER_IMPLEMENTATION_C
+
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
+
+
+const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out... maybe unused for this decoder? In sched "if(compare(decoderName, "Simple.c")){just always sched 1 fuel and 1 ign delayed after the tooth by some amount.}
+const unsigned char decoderName[] = "Simple.c";
 
 
 /** Primary RPM ISR
@@ -99,9 +105,9 @@ void PrimaryRPMISR(){
 		}
 
 		// temporary data from inputs
-		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
-		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
-		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
+		unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+		unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastEventTimeStamp;
+		lastEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
 // = 60 * (1000000 / 0.8)
 #define ticksPerMinute   75000000 // this is correct.
@@ -205,39 +211,10 @@ void SecondaryRPMISR(){
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
 
-	/* The LM1815 variable reluctance sensor amplifier allows the output to be
-	 * pulled high starting at the center of a tooth. So, what we see as the
-	 * start of a tooth is actually the centre of a physical tooth. Because
-	 * tooth shape, profile and spacing may vary this is the only reliable edge
-	 * for us to schedule from, hence the trailing edge code is very simple.
-	 */
 	if(PTITCurrentState & 0x02){
 		// echo input condition
 		PORTJ |= 0x40;
-
-		Counters.secondaryTeethSeen++;
-
-		/* leading code
-		 *
-		 * subtract lastTrailing from currentLeading
-		 * record currentLeading as lastLeading
-		 *
-		 * record pw as highDuration
-		 */
-		lengthOfSecondaryLowPulses = timeStamp.timeLong - lastSecondaryPulseTrailingTimeStamp;
-		lastSecondaryPulseLeadingTimeStamp = timeStamp.timeLong;
 	}else{
-
-		/* trailing code
-		 *
-		 * subtract lastLeading from currentTrailing
-		 * record currentTrailing as lastTrailing
-		 *
-		 * record pw as lowDuration
-		 */
-//		lengthOfSecondaryHighPulses = timeStamp.timeLong - lastSecondaryPulseLeadingTimeStamp;
-		lastSecondaryPulseTrailingTimeStamp = timeStamp.timeLong;
-
 		PORTJ &= 0xBF;
 	}
 }

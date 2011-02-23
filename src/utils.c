@@ -140,31 +140,6 @@ void setupPagedRAM(unsigned char bool){
 }
 
 
-/** @brief Reset key state
- *
- * Reset all important variables to their non-running state.
- *
- * @todo TODO bring this up to date and/or find a better way to do it.
- *
- * @author Fred Cooke
- */
-void resetToNonRunningState(){
-	/* Reset RPM to zero */
-	RPM0 = 0;
-	RPM1 = 0;
-
-	/* Ensure tacho reads lowest possible value */
-	engineCyclePeriod = ticksPerCycleAtOneRPM;
-
-	/* Clear all sync flags to lost state */
-	//coreStatusA &= CLEAR_RPM_VALID;
-	coreStatusA &= CLEAR_PRIMARY_SYNC;
-	//coreStatusA &= CLEAR_SECONDARY_SYNC;
-
-	// TODO more stuff needs resetting here, but only critical things.
-}
-
-
 /** @brief Demonstrate PWM
  *
  * Demonstrate basic PWM module usage by setting duty to scaled ADC inputs.

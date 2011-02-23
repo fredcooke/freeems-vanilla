@@ -45,11 +45,17 @@
  */
 
 
+#define DECODER_IMPLEMENTATION_C
 #define LT1_360_8_C
+
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/LT1-360-8.h"
+
+
+const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
+const unsigned char decoderName[] = "LT1-360-8.c";
 
 
 unsigned short VCAS = 0;  /* create our virtual Cam Angle Sensor */

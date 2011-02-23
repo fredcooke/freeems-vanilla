@@ -175,15 +175,31 @@ for(pin 0 - 5){
 	}
 }
 
+Checking tooth timing! :
+
+record time stamps from all events outside of IF conditions, and before sync,
+and set flag saying that stamp is valid such that when the first sync point is
+found we MIGHT be able to get an RPM instantly and verify the second event
+timing when it arrives, rather than one later. This concept could be extended
+to record the previous two, but not yet...
+
+record time stamps, set stamp valid flags
+record periods, set period valid flags
+once synced, compare recorded data with expected history, drop sync if not, so will never get sync if noisy, great!
+
+
  *
  * @author Fred Cooke
  */
 
 
+#define DECODER_IMPLEMENTATION_C
+
 #include "../inc/freeEMS.h"
+#include "../inc/utils.h"
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
-#include "../inc/utils.h"
+//#include "../inc/MitsiCAS-4and1.h"
 
 #define sensorOffsetInCamDegrees 34
 #define sensorOffsetInCrankDegrees (sensorOffsetInCamDegrees * 2)
@@ -201,16 +217,17 @@ for(pin 0 - 5){
 
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
-static unsigned char event;
 //static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
-const unsigned short eventCrankAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
+const unsigned short eventAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 // The 6th and 9th events are from the inner wheel, the rest from the outer, their order is dependent in the sensor offset
+const unsigned char decoderName[] = "MitsiCAS-4and1.c";
 static unsigned char unknownEdges = 0;
 
 /// clear all sync state and reset all vars
 void clearSyncState(void){
 	/// @todo TODO coreStatusA === clear all appropriate bits; // maybe change from corestatusA to decoderStatus and OtherStatus etc?
 	unknownEdges = 0;
+	// resetToNonRunningState exists, merge
 }
 
 
@@ -294,8 +311,8 @@ void schedulePortTPin(unsigned char pin){
 /* block 3 no location yet.
 if(coreStatusA & PERIOD_VALID){
 	// Do period checking here as if just picking up sync now, previous is unreliable
-	unsigned long minTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 5)/10;
-	unsigned long maxTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[event] * 15)/10;
+	unsigned long minTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[currentEvent] * 5)/10;
+	unsigned long maxTimeSinceLastEvent = (ticksPerCrankDegree * eventCrankAngles[currentEvent] * 15)/10;
 
 	timeBetweenSuccessivePulses = timeStamp.timeLong - lastPulseTimeStamp;
 	lastPulseTimeStamp = timeStamp.timeLong;
@@ -308,7 +325,7 @@ if(coreStatusA & PERIOD_VALID){
 }
 
 // store rate for next guy and set flag
-ticksPerCrankDegree = (unsigned short)(timeBetweenSuccessivePulses / (eventCrankAngles[event] - eventCrankAngles[event-1]));
+ticksPerCrankDegree = (unsigned short)(timeBetweenSuccessivePulses / (eventCrankAngles[currentEvent] - eventCrankAngles[currentEvent-1]));
 coreStatusA |= PERIOD_VALID;*/
 
 
@@ -351,7 +368,7 @@ void PrimaryRPMISR(){
 	// commented out code block 2
 
 	// increment the event
-	event++;
+	currentEvent++;
 
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent = 0;
@@ -388,18 +405,18 @@ void PrimaryRPMISR(){
 
 	if(coreStatusA & PRIMARY_SYNC){
 		// increment the event
-		event++;
+		currentEvent++;
 
 		// ...and check that it's correct
-		if((correctEvent != 0) && (event != correctEvent)){
-			event = correctEvent;
+		if((correctEvent != 0) && (currentEvent != correctEvent)){
+			currentEvent = correctEvent;
 			// Record that we had to reset position...
 			Counters.camSyncCorrections++;
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else if(correctEvent != 0){
 		coreStatusA |= PRIMARY_SYNC;
-		event = correctEvent;
+		currentEvent = correctEvent;
 		*RPMRecord = correctEvent * 1000;
 		*RPM = correctEvent * 1000;
 	}
@@ -417,7 +434,7 @@ void PrimaryRPMISR(){
 	if(coreStatusA & PRIMARY_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
-			if(pinEventNumbers[pin] == event){
+			if(pinEventNumbers[pin] == currentEvent){
 				schedulePortTPin(pin);
 			}
 		}
@@ -471,18 +488,18 @@ void SecondaryRPMISR(){
 	// Check and set position and sync by state
 	if(coreStatusA & PRIMARY_SYNC){
 		// increment the event
-		event++;
+		currentEvent++;
 
 		// ...and check that it's correct
-		if(event != correctEvent){
-			event = correctEvent;
+		if(currentEvent != correctEvent){
+			currentEvent = correctEvent;
 			// Record that we had to reset position...
 			Counters.camSyncCorrections++;
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
 		coreStatusA |= PRIMARY_SYNC;
-		event = correctEvent;
+		currentEvent = correctEvent;
 		*RPMRecord = correctEvent * 1000;
 		*RPM = correctEvent * 1000;
 	}
@@ -501,7 +518,7 @@ void SecondaryRPMISR(){
 	if(coreStatusA & PRIMARY_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
-			if(pinEventNumbers[pin] == event){
+			if(pinEventNumbers[pin] == currentEvent){
 				schedulePortTPin(pin);
 			}
 		}

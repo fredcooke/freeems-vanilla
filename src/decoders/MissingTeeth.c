@@ -35,9 +35,15 @@
  */
 
 
+#define DECODER_IMPLEMENTATION_C
+
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
+
+
+const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
+const unsigned char decoderName[] = "MissingTeeth.c";
 
 
 /** Primary RPM ISR
@@ -95,9 +101,9 @@ void PrimaryRPMISR(void) {
 				if (thisHighLowTime.timeLong > (lastHighLowTime.timeLong + (lastHighLowTime.timeLong>>1)) &&
 						thisHighLowTime.timeLong < ((lastHighLowTime.timeLong<<1) + (lastHighLowTime.timeLong>>1))) {
 					// save temporary data from inputs
-					primaryLeadingEdgeTimeStamp = thisTimeStamp.timeLong;
-					timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;	//I'd name it timeBetweenSuccessiveReferencePulses
-					lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
+					unsigned long primaryLeadingEdgeTimeStamp = thisTimeStamp.timeLong;
+					unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastEventTimeStamp;	//I'd name it timeBetweenSuccessiveReferencePulses
+					lastEventTimeStamp = primaryLeadingEdgeTimeStamp;
 // = 60 * (1000000 / 0.8)
 #define ticksPerMinute   75000000 // this is correct.
 
@@ -124,7 +130,7 @@ void PrimaryRPMISR(void) {
 			PORTJ |= 0x80;
 			// increment crank pulses TODO this needs to be wrapped in tooth period and width checking
 			lastHighLowTime.timeLong = thisHighLowTime.timeLong;
-			primaryPulsesPerSecondaryPulse++;
+//			primaryPulsesPerSecondaryPulse++; unused elsewhere in this file, thus unused, alltogether!
 			RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 		} else {
 			if (count%2 == 1) {

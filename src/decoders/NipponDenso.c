@@ -52,10 +52,17 @@
  */
 
 
+#define DECODER_IMPLEMENTATION_C
+
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
+#include "../inc/NipponDenso.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
+
+
+const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
+const unsigned char decoderName[] = "NipponDenso.c";
 
 
 /** Primary RPM ISR
@@ -135,9 +142,9 @@ void PrimaryRPMISR(){
 		}
 
 		// temporary data from inputs
-		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
-		timeBetweenSuccessivePrimaryPulses = lastPrimaryPulseTimeStamp - primaryLeadingEdgeTimeStamp;
-		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
+		unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+//		unsigned long timeBetweenSuccessivePrimaryPulses = lastPrimaryPulseTimeStamp - primaryLeadingEdgeTimeStamp;
+//		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
 //		timeBetweenSuccessivePrimaryPulsesBuffer = (timeBetweenSuccessivePrimaryPulses >> 1) + (timeBetweenSuccessivePrimaryPulsesBuffer >> 1);
 
 		// TODO make scheduling either fixed from boot with a limited range, OR preferrably if its practical scheduled on the fly to allow arbitrary advance and retard of both fuel and ignition.

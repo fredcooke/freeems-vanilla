@@ -56,7 +56,6 @@ EXTERN void sleepMicro(unsigned short) FPAGE_FE;
 
 EXTERN void adjustPWM(void) FPAGE_FE;
 EXTERN void setupPagedRAM(unsigned char) FPAGE_F8;
-EXTERN void resetToNonRunningState(void) FPAGE_F8;
 
 EXTERN void sampleEachADC(ADCArray*) FPAGE_F8;
 EXTERN void sampleLoopADC(ADCArray*) FPAGE_F8;
