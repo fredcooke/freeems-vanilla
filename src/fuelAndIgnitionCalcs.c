@@ -142,8 +142,8 @@ void calculateFuelAndIgnition(){
 
 // IE, NOT in the decoders... KISS in the decoders. This is a hangover from (very) early decoder dev
 
-
-
+	// schedule even when RPM = zero and not synced, as sync could start any time and we want it to start injection/igniting then, up to decoder to not allow scheduling if not synced...
+	// do not schedule, or schedule specially if rpm > max or hysteresis not met etc.
 
 
 	/*&&&&&&&&&&&&&&&&& Based on IDT schedule PW start such that Fuel is correctly timed &&&&&&&&&&&&&&&&&&&*/

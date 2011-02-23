@@ -218,6 +218,7 @@ once synced, compare recorded data with expected history, drop sync if not, so w
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
 //static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
+#define NUMBER_OF_EVENTS 10
 const unsigned short eventAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 // The 6th and 9th events are from the inner wheel, the rest from the outer, their order is dependent in the sensor offset
 const unsigned char decoderName[] = "MitsiCAS-4and1.c";
@@ -348,7 +349,6 @@ void PrimaryRPMISR(){
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-/// @todo TODO remove dodgy hack from above line NOTting the port state, ONLY a hack to bypass max chips temporarily...
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -363,12 +363,12 @@ void PrimaryRPMISR(){
 	}else{
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
+	unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
-
-	// commented out code block 2
-
-	// increment the event
-	currentEvent++;
+	unsigned long thisInterEventPeriod = 0;
+	if(decoderFlags & LAST_TIMESTAMP_VALID){
+		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
+	}
 
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent = 0;
@@ -406,6 +406,9 @@ void PrimaryRPMISR(){
 	if(decoderFlags & CAM_SYNC){
 		// increment the event
 		currentEvent++;
+		if(currentEvent == NUMBER_OF_EVENTS){
+			currentEvent = 0;
+		}
 
 		// ...and check that it's correct
 		if((correctEvent != 0) && (currentEvent != correctEvent)){
@@ -421,15 +424,18 @@ void PrimaryRPMISR(){
 		*RPM = correctEvent * 1000;
 	}
 
-	// Check that sync is good by timing
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// timing stuff here!!
-	// clearSyncState();
+	if(decoderFlags & CAM_SYNC){
+		if(decoderFlags & LAST_PERIOD_VALID){
+			// compare thisPeriod and thisAngle with lastPeriod and lastAngle, reset sync if bad. need tolerance for this!
+			if(PTITCurrentState & 0x01){
+				// Calculate rpm from last primaryLeadingEdgeTimeStamp
+			}else{
+				// Calculate RPM from last primaryTrailingEdgeTimeStamp
+			}
+		}else if(decoderFlags & LAST_TIMESTAMP_VALID){
+			// if we cant get proper RPM, get a prelim RPM from the last event anyway, better than nothing as a first.
+		}
+	}
 
 	if(decoderFlags & CAM_SYNC){
 		unsigned char pin;
@@ -439,6 +445,14 @@ void PrimaryRPMISR(){
 			}
 		}
 	}
+
+	if(decoderFlags & LAST_TIMESTAMP_VALID){
+		lastInterEventPeriod = thisInterEventPeriod;
+		decoderFlags |= LAST_PERIOD_VALID;
+	}
+	// Always
+	lastEventTimeStamp = thisEventTimeStamp;
+	decoderFlags |= LAST_TIMESTAMP_VALID;
 
 	RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 }
@@ -456,7 +470,6 @@ void SecondaryRPMISR(){
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-/// @todo TODO remove dodgy hack from above line NOTting the port state, ONLY a hack to bypass max chips temporarily...
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
