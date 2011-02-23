@@ -219,6 +219,7 @@ static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
 //static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
 #define NUMBER_OF_EVENTS 10
+#define MAX_POSSIBLE_EVENT_ANGLE 720
 const unsigned short eventAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 // The 6th and 9th events are from the inner wheel, the rest from the outer, their order is dependent in the sensor offset
 const unsigned char decoderName[] = "MitsiCAS-4and1.c";
@@ -226,9 +227,8 @@ static unsigned char unknownEdges = 0;
 
 /// clear all sync state and reset all vars
 void clearSyncState(void){
-	/// @todo TODO coreStatusA === clear all appropriate bits; // maybe change from corestatusA to decoderStatus and OtherStatus etc?
 	unknownEdges = 0;
-	// resetToNonRunningState exists, merge
+	resetToNonRunningState();
 }
 
 
@@ -403,8 +403,11 @@ void PrimaryRPMISR(){
 		}
 	}
 
+	unsigned char lastEvent = 0;
+	unsigned char eventBeforeLastEvent = 0;
 	if(decoderFlags & CAM_SYNC){
-		// increment the event
+		eventBeforeLastEvent = lastEvent;
+		lastEvent = currentEvent;
 		currentEvent++;
 		if(currentEvent == NUMBER_OF_EVENTS){
 			currentEvent = 0;
@@ -426,14 +429,35 @@ void PrimaryRPMISR(){
 
 	if(decoderFlags & CAM_SYNC){
 		if(decoderFlags & LAST_PERIOD_VALID){
-			// compare thisPeriod and thisAngle with lastPeriod and lastAngle, reset sync if bad. need tolerance for this!
-			if(PTITCurrentState & 0x01){
-				// Calculate rpm from last primaryLeadingEdgeTimeStamp
+			unsigned short lastAngle = 0;
+			unsigned short thisAngle = 0;
+			if(currentEvent == 0){
+				unsigned short lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
+				unsigned short thisAngle = eventAngles[currentEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+			}else if(lastEvent == 0){
+				unsigned short lastAngle = eventAngles[lastEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[eventBeforeLastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+				unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 			}else{
-				// Calculate RPM from last primaryTrailingEdgeTimeStamp
+				unsigned short lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
+				unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+			}
+
+			/// @todo TODO add scaling to these to get better accuracy. x 20 will yield 64rpm minimum functional level.
+			unsigned short lastTicksPerDegree = (unsigned short)(lastInterEventPeriod / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			unsigned short thisTicksPerDegree = (unsigned short)(thisInterEventPeriod / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+
+			unsigned short ratioBetweenThisAndLast = (lastTicksPerDegree * 1000) / thisTicksPerDegree;
+			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				clearSyncState();
+			}else{
+				if(PTITCurrentState & 0x01){
+					// Calculate RPM from last primaryLeadingEdgeTimeStamp
+				}else{
+					// Calculate RPM from last primaryTrailingEdgeTimeStamp
+				}
 			}
 		}else if(decoderFlags & LAST_TIMESTAMP_VALID){
-			// if we cant get proper RPM, get a prelim RPM from the last event anyway, better than nothing as a first.
+			// if we cant get proper RPM, get a prelim RPM from the last event anyway, better than nothing as a first value.
 		}
 	}
 
