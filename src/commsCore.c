@@ -68,13 +68,6 @@ void populateBasicDatalog(){
 	/* Save the current position */
 	unsigned char* position = TXBufferCurrentPositionHandler;
 
-	DerivedVars->sp1 = Counters.primaryTeethSeen;
-	DerivedVars->sp2 = Counters.secondaryTeethSeen;
-	DerivedVars->sp3 = Clocks.realTimeClockSeconds;
-	DerivedVars->sp4 = (coreStatusA << 8) + decoderFlags;
-	DerivedVars->sp5++; // increment as basic log sequence generator
-	CoreVars->DTPS = syncCaughtOnThisEvent;
-
 	/* Get core vars */
 	memcpy(TXBufferCurrentPositionHandler, CoreVars, sizeof(CoreVar));
 	TXBufferCurrentPositionHandler += sizeof(CoreVar);

@@ -309,8 +309,9 @@ void generateCoreVars(){
 	CoreVars->EGO2 = localEGO2;
 	CoreVars->IAP = localIAP;
 	CoreVars->MAF = localMAF;
-	CoreVars->DRPM = localDRPM;
-	CoreVars->DDRPM = localDDRPM;
+//	CoreVars->DRPM = localDRPM;
+//	CoreVars->DDRPM = localDDRPM;
+//	CoreVars->DTPS = localDTPS;
 
 	// later...
 	unsigned short i;
