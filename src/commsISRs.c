@@ -311,7 +311,7 @@ void SCI0ISR(){
 				TXBufferInUseFlags &= COM_CLEAR_SCI0_INTERFACE_ID;
 				coreStatusA &= NBIT7;
 			}else{
-				coreStatus |= BIT7;
+				coreStatusA |= BIT7;
 				/* Send the stop byte */
 				SCI0DRL = STOP_BYTE;
 			}
