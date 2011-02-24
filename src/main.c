@@ -264,6 +264,34 @@ int  main(){ // TODO maybe move this to paged flash ?
 						/// TODO @todo
 						break;
 					}
+					case asyncDatalogByteLA:
+					{
+						/* Flag that we are transmitting! */
+						TXBufferInUseFlags |= COM_SET_SCI0_INTERFACE_ID;
+						// SCI0 only for now...
+
+						// headers including length...						*length = configuredBasicDatalogLength;
+						TXBufferCurrentPositionHandler = (unsigned char*)&TXBuffer;
+
+						/* Initialised here such that override is possible */
+						TXBufferCurrentPositionSCI0 = (unsigned char*)&TXBuffer;
+						TXBufferCurrentPositionCAN0 = (unsigned char*)&TXBuffer;
+
+						/* Set the flags all zeros */
+						*TXBufferCurrentPositionHandler = 0;
+						TXBufferCurrentPositionHandler++;
+
+						/* Set the payload ID */
+						*((unsigned short*)TXBufferCurrentPositionHandler) = responseByteLADatalog;
+						TXBufferCurrentPositionHandler += 2;
+
+						/** Store PTIT for now, later make address of byte configurable TODO @todo */
+						*((unsigned char*)TXBufferCurrentPositionHandler) = PTIT;
+						TXBufferCurrentPositionHandler++;
+
+						finaliseAndSend(0);
+						break;
+					}
 				}
 				// mechanism to ensure we only send something if the data has been updated
 				lastCalcCount = Counters.calculationsPerformed;

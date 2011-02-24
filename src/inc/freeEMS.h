@@ -116,6 +116,7 @@ EXTERN unsigned char portHDebounce;
 #define asyncDatalogCircBuf		0x05
 #define asyncDatalogCircCAS		0x06
 #define asyncDatalogTrigger		0x07 // what is this
+#define asyncDatalogByteLA      0x08 // ^ probably this...
 EXTERN unsigned short configuredBasicDatalogLength;
 
 
