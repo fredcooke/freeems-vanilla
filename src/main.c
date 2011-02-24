@@ -196,7 +196,7 @@ int  main(){ // TODO maybe move this to paged flash ?
 
 				/* Handle the incoming packet */
 				decodePacketAndRespond();
-			}else if(lastCalcCount != Counters.calculationsPerformed){ // substitute true for full speed continuous stream test...
+			}else{// if(lastCalcCount != Counters.calculationsPerformed){ // substitute true for full speed continuous stream test...
 
 				/* send asynchronous data log if required */
 				switch (TablesB.SmallTablesB.datalogStreamType) {
