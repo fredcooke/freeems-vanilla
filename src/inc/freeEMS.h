@@ -305,14 +305,14 @@ EXTERN unsigned short bootTimeAAP; /* TODO populate this at switch on time depen
 /* State variables : 0 = false (don't forget to change the init mask to suit!) */
 EXTERN unsigned char coreStatusA;	/* Each bit represents the state of some core parameter, masks below */
 /* Bit masks for coreStatusA */ // TODO needs a rename as does coresetingsA
-#define FUEL_PUMP_PRIME	BIT0_16		/*  0 */
-#define STAGED_REQUIRED	BIT1_16		/*  1 Fire the staged injectors */
-#define CALC_FUEL_IGN	BIT2_16		/*  2 Fuel and ignition require calculation (i.e. variables have been updated) */
-#define FORCE_READING	BIT3_16		/*  3 Flag to force ADC sampling at low rpm/stall */
-#define COREA04         BIT4_16		/*  4 */
-#define COREA05         BIT5_16		/*  5 */
-#define COREA06         BIT6_16		/*  6 */
-#define COREA07         BIT7_16		/*  7 */
+#define FUEL_PUMP_PRIME	BIT0		/*  0 */
+#define STAGED_REQUIRED	BIT1		/*  1 Fire the staged injectors */
+#define CALC_FUEL_IGN	BIT2		/*  2 Fuel and ignition require calculation (i.e. variables have been updated) */
+#define FORCE_READING	BIT3		/*  3 Flag to force ADC sampling at low rpm/stall */
+#define COREA04         BIT4		/*  4 */
+#define COREA05         BIT5		/*  5 */
+#define COREA06         BIT6		/*  6 */
+#define COREA07         BIT7		/*  7 */
 
 #define CLEAR_FUEL_PUMP_PRIME NBIT0_16	/* */
 #define STAGED_NOT_REQUIRED	NBIT1_16	/*  9 Do not fire the staged injectors */
