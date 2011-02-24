@@ -163,11 +163,6 @@ void finaliseAndSend(unsigned short errorID){
 	*TXBufferCurrentPositionHandler = checksum((unsigned char*)&TXBuffer, TXPacketLengthToSend);
 	TXPacketLengthToSend++;
 
-	/// @todo TODO remove this hack later, this is better than current hack, though....
-	*TXBufferCurrentPositionHandler = STOP_BYTE;
-	TXBufferCurrentPositionHandler++;
-	TXPacketLengthToSend++;
-
 	/* Send it out on all the channels required. */
 
 	/* SCI0 - Main serial interface */
