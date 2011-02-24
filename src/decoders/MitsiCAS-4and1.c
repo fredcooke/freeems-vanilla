@@ -371,6 +371,19 @@ void PrimaryRPMISR(){
 	}else{
 		PORTJ &= 0x7F;
 
+
+		//temp
+		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
+		sampleEachADC(ADCArrays);
+		Counters.syncedADCreadings++;
+		*mathSampleTimeStampRecord = TCNT;
+
+		// Set flag to say calc required
+		coreStatusA |= CALC_FUEL_IGN;
+
+		// Reset the clock for reading timeout
+		Clocks.timeoutADCreadingClock = 0;
+
 		if(PTITCurrentState & 0x02){
 			correctEvent = 8;
 		}
@@ -497,10 +510,36 @@ void SecondaryRPMISR(){
 	if(PTITCurrentState & 0x02){
 		PORTB = ONES; // bang port B and hope for led action
 		PORTJ |= 0x40;
+
+		//temp
+		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
+		sampleEachADC(ADCArrays);
+		Counters.syncedADCreadings++;
+		*mathSampleTimeStampRecord = TCNT;
+
+		// Set flag to say calc required
+		coreStatusA |= CALC_FUEL_IGN;
+
+		// Reset the clock for reading timeout
+		Clocks.timeoutADCreadingClock = 0;
+
 		correctEvent = 6;
 	}else{
 		PORTB = ZEROS; // match above
 		PORTJ &= 0xBF;
+
+		//temp
+		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
+		sampleEachADC(ADCArrays);
+		Counters.syncedADCreadings++;
+		*mathSampleTimeStampRecord = TCNT;
+
+		// Set flag to say calc required
+		coreStatusA |= CALC_FUEL_IGN;
+
+		// Reset the clock for reading timeout
+		Clocks.timeoutADCreadingClock = 0;
+
 		correctEvent = 9;
 	}
 
