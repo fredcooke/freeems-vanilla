@@ -306,8 +306,6 @@ void SCI0ISR(){
 			SCI0CR2 &= SCICR2_TX_ISR_DISABLE;
 			/* Send the stop byte */
 			SCI0DRL = STOP_BYTE;
-			while(!(SCI0SR1 & 0x80)){/* Wait for ever until able to send then move on */}
-			SCI0DRL = STOP_BYTE; // nasty hack that works... means at least one and most 2 stops are sent so stuff works, but is messy... there must be a better way.
 			/* Clear the TX in progress flag */
 			TXBufferInUseFlags &= COM_CLEAR_SCI0_INTERFACE_ID;
 		}

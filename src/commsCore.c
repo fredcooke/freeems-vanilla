@@ -156,12 +156,17 @@ void finaliseAndSend(unsigned short errorID){
 		TXBufferCurrentPositionHandler += 2;
 	}
 
-	/* Get the length from the pointer */
-	unsigned short TXPacketLengthToSend = (unsigned short)TXBufferCurrentPositionHandler - (unsigned short)&TXBuffer;
 
 	/* Tag the checksum on the end */
 	*TXBufferCurrentPositionHandler = checksum((unsigned char*)&TXBuffer, TXPacketLengthToSend);
-	TXPacketLengthToSend++;
+	TXBufferCurrentPositionHandler++;
+
+	/// @todo TODO remove this hack later, this is better than current hack, though....
+	*TXBufferCurrentPositionHandler = STOP_BYTE;
+	TXBufferCurrentPositionHandler++;
+
+	/* Get the length from the pointer */
+	unsigned short TXPacketLengthToSend = (unsigned short)TXBufferCurrentPositionHandler - (unsigned short)&TXBuffer;
 
 	/* Send it out on all the channels required. */
 
