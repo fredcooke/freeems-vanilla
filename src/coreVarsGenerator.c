@@ -269,8 +269,8 @@ void generateCoreVars(){
 
 	// Calculate RPM and delta RPM and delta delta RPM from data recorded
 	CoreVars->RPM = *RPM; // temporary!!
-	unsigned short localDRPM = 0;
-	unsigned short localDDRPM = 0;
+//	unsigned short localDRPM = 0;
+//	unsigned short localDDRPM = 0;
 
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
