@@ -525,7 +525,7 @@ void PrimaryRPMISR(){
 				}
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
-			#define degreeTicksPerMinute 4166667
+			#define degreeTicksPerMinute 8333333
 			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
 		}
 	}
@@ -666,7 +666,7 @@ void SecondaryRPMISR(){
 				Counters.camSyncLosses++;
 			}
 		}else if(decoderFlags & LAST_TIMESTAMP_VALID){
-			#define degreeTicksPerMinute 4166667
+			#define degreeTicksPerMinute 8333333
 			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
 		}
 	}
