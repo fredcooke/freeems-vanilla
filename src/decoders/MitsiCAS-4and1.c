@@ -486,6 +486,8 @@ void PrimaryRPMISR(){
 	}else if(correctEvent != 0){
 		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
+		lastEvent = currentEvent - 1;
+		eventBeforeLastEvent = currentEvent - 2;
 		syncCaughtOnThisEvent = correctEvent;
 	}
 
@@ -640,6 +642,8 @@ void SecondaryRPMISR(){
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
 		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
+		lastEvent = currentEvent - 1;
+		eventBeforeLastEvent = currentEvent - 2;
 		syncCaughtOnThisEvent = correctEvent;
 	}
 
