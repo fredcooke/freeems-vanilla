@@ -121,6 +121,8 @@ use #define and let the compiler take care of the math so that its easier to cha
 Logic:
 
 const unsigned short eventCrankAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}
+measured values with compression effect = {0, 73, 184, 257, 367, 436, 530, 545, 612, 671}
+                            differences = {0, 13,  14,  17,   7,  16,   8,   5,  12,  19}
 the above needs verify on init to ensure order is sequential!
 unsigned char array pinEventNumbers[6] = {} // 6 pins, which even should they go on? 255/0xFF = not fired. populated by scheduler in main loop
 ^ only good enough in short term, in longer term, could expect same pin to fire on multiple events in a cycle...
