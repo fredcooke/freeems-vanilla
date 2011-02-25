@@ -312,7 +312,7 @@ EXTERN unsigned char coreStatusA;	/* Each bit represents the state of some core 
 #define COREA04         BIT4		/*  4 */
 #define COREA05         BIT5		/*  5 */
 #define COREA06         BIT6		/*  6 */
-#define COREA07         BIT7		/*  7 */
+//#define COREA07         BIT7		/*  7 Currently used for dual stop byte hack... */
 
 #define CLEAR_FUEL_PUMP_PRIME NBIT0_16	/* */
 #define STAGED_NOT_REQUIRED	NBIT1_16	/*  9 Do not fire the staged injectors */
