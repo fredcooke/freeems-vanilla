@@ -68,7 +68,7 @@ const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 
 
 const volatile SmallTables2 SmallTablesBFlash TUNETABLESD2 = {
-		asyncDatalogByteLA,
+		asyncDatalogBasic,
 		ARRAY_OF_6_FUEL_TRIMS,	/* perCylinderFuelTrims[] */
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
