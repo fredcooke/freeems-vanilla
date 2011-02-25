@@ -114,22 +114,6 @@ int  main(){ // TODO maybe move this to paged flash ?
 			/* Clear the calc required flag */
 			coreStatusA &= CLEAR_CALC_FUEL_IGN;
 
-			// temp debug, done here to ensure it matches the other data.
-			CoreVars->DRPM = Counters.primaryTeethSeen;
-			CoreVars->DDRPM = Counters.secondaryTeethSeen;
-			CoreVars->DTPS = Counters.camSyncCorrections;
-			CoreVars->DMAP = Counters.camSyncLosses;
-
-			/* UART/serial specific counters */
-			DerivedVars->sp1 = Counters.serialEscapePairMismatches + Counters.serialStartsInsideAPacket + Counters.serialPacketsOverLength + Counters.serialNoiseErrors + Counters.serialOverrunErrors + Counters.serialFramingErrors + Counters.serialParityErrors;
-			/* Generic com counters */
-//			DerivedVars->sp2 = Counters.commsChecksumMismatches + Counters.commsPacketsUnderMinLength + Counters.commsDebugMessagesNotSent + Counters.commsErrorMessagesNotSent;
-			DerivedVars->sp2 = syncCaughtOnThisEvent;
-			DerivedVars->sp3++;
-			DerivedVars->sp4 = (decoderFlags << 8) + coreStatusA;
-			DerivedVars->sp5 = currentEvent;
-
-
 			ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 			/* Store the latency from sample time to runtime */

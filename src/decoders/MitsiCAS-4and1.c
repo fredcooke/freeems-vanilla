@@ -515,7 +515,8 @@ void PrimaryRPMISR(){
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				resetToNonRunningState();
+			//	resetToNonRunningState();
+				Counters.crankSyncLosses++;
 			}else{
 				if(PTITCurrentState & 0x01){
 					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
@@ -661,7 +662,8 @@ void SecondaryRPMISR(){
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				resetToNonRunningState();
+			//	resetToNonRunningState();
+				Counters.camSyncLosses++;
 			}
 		}else if(decoderFlags & LAST_TIMESTAMP_VALID){
 			#define degreeTicksPerMinute 4166667
