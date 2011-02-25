@@ -125,6 +125,11 @@ EXTERN const unsigned short eventAngles[256]; // From 0 - 720 degrees, scale: no
 EXTERN const unsigned char decoderName[32];
 
 
+// specific to one decoder, generalise this later! Or put a call to an inline function in the main reset sync function and the definition in every decoder
+EXTERN unsigned char unknownEdges;
+
+
+
 // Scheduling
 
 // prelim, will change...

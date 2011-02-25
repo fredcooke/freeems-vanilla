@@ -476,6 +476,7 @@ void initVariables(){
 	configuredBasicDatalogLength = maxBasicDatalogLength;
 
 	coreStatusA |= FUEL_PUMP_PRIME;
+	unknownEdges = 0;
 
 	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
 }

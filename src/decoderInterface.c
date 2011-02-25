@@ -51,6 +51,9 @@ void resetToNonRunningState(){
 	RPM0 = 0;
 	RPM1 = 0;
 
+	// Temporary from 4and1 :
+	unknownEdges = 0;
+
 	/* Ensure tacho reads lowest possible value */
 	engineCyclePeriod = ticksPerCycleAtOneRPM;
 

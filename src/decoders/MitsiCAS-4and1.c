@@ -315,13 +315,6 @@ static LongTime timeStamp;
 const unsigned short eventAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 // The 6th and 9th events are from the inner wheel, the rest from the outer, their order is dependent in the sensor offset
 const unsigned char decoderName[] = "MitsiCAS-4and1.c";
-static unsigned char unknownEdges = 0;
-
-/// clear all sync state and reset all vars
-void clearSyncState(void){
-	unknownEdges = 0;
-	resetToNonRunningState();
-}
 
 
 /// @todo TODO migrate ALL decoder vars, arrays, fields, whatever to the decoder header out of the global header...
@@ -371,8 +364,9 @@ void schedulePortTPin(unsigned char pin){
 }
 
 
-/* block 1
- * 		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+/* block 1 RPM code from simple/volvo, similar style of RPM calc to what is required in primary ISR
+
+ 		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
 		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
 
@@ -380,18 +374,6 @@ void schedulePortTPin(unsigned char pin){
 #define ticksPerMinute   75000000 // this is correct.
 
 		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
-
-		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
-		sampleEachADC(ADCArrays);
-		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
-
-		// Set flag to say calc required
-		coreStatusA |= CALC_FUEL_IGN;
-
-		// Reset the clock for reading timeout
-		Clocks.timeoutADCreadingClock = 0;
- *
  */
 
 
@@ -528,7 +510,7 @@ void PrimaryRPMISR(){
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				clearSyncState();
+				resetToNonRunningState();
 			}else{
 				if(PTITCurrentState & 0x01){
 					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
@@ -682,7 +664,7 @@ void SecondaryRPMISR(){
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				clearSyncState();
+				resetToNonRunningState();
 			}
 		}else if(decoderFlags & LAST_TIMESTAMP_VALID){
 			#define degreeTicksPerMinute 4166667
