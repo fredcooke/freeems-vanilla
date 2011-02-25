@@ -188,6 +188,96 @@ record periods, set period valid flags
 once synced, compare recorded data with expected history, drop sync if not, so will never get sync if noisy, great!
 
 
+WARNING: THESE CONTAIN COMPRESSION EFFECTS!!!
+
+
+Visual version courtesy of hacked OLV:
+
+http://stuff.fredcooke.com/high.res.4and1.cas.la.trace.png
+
+Binary log of format (Start, flags, payloadID(2), PTIT, checksum, Stop, Stop) :
+
+http://stuff.fredcooke.com/portT.min.1.la
+
+
+Real readings from truck cranking test:
+
+14213 - start of first outer slot (goes low at CPU, goes high outside)
+14262 - end of first outer slot (goes high at CPU, goes low outside)
+14337 - start of second outer slot (goes low at CPU, goes high outside)
+14386 - end of second outer slot (goes high at CPU, goes low outside)
+14460 - start of third outer slot (goes low at CPU, goes high outside)
+14507 - end of third outer slot (goes high at CPU, goes low outside)
+14570 - start of inner slot (goes low at CPU, goes high outside)
+14580 - start of fourth outer slot (goes low at CPU, goes high outside)
+14625 - end of fourth outer slot (goes high at CPU, goes low outside)
+14665 - end of inner slot (goes high at CPU, goes low outside)
+14698 - start of first outer on next cycle….
+
+remove 14k from each:
+
+213 - start of first outer slot (goes low at CPU, goes high outside)
+262 - end of first outer slot (goes high at CPU, goes low outside)
+337 - start of second outer slot (goes low at CPU, goes high outside)
+386 - end of second outer slot (goes high at CPU, goes low outside)
+460 - start of third outer slot (goes low at CPU, goes high outside)
+507 - end of third outer slot (goes high at CPU, goes low outside)
+570 - start of inner slot (goes low at CPU, goes high outside)
+580 - start of fourth outer slot (goes low at CPU, goes high outside)
+625 - end of fourth outer slot (goes high at CPU, goes low outside)
+665 - end of inner slot (goes high at CPU, goes low outside)
+698 - start of first outer on next cycle….
+
+remove 213 from each:
+
+0 - start of first outer slot (goes low at CPU, goes high outside)
+49 end of first outer slot (goes high at CPU, goes low outside)
+124 start of second outer slot (goes low at CPU, goes high outside)
+173 end of second outer slot (goes high at CPU, goes low outside)
+247 start of third outer slot (goes low at CPU, goes high outside)
+294 end of third outer slot (goes high at CPU, goes low outside)
+357 start of inner slot (goes low at CPU, goes high outside)
+367 start of fourth outer slot (goes low at CPU, goes high outside)
+412 end of fourth outer slot (goes high at CPU, goes low outside)
+452 end of inner slot (goes high at CPU, goes low outside)
+485 start of first outer on next cycle….
+
+scale for degrees: (720/485) * num = degrees
+
+0 - start of first outer slot (goes low at CPU, goes high outside)
+72.742268 end of first outer slot (goes high at CPU, goes low outside)
+184.082474 start of second outer slot (goes low at CPU, goes high outside)
+256.824742 end of second outer slot (goes high at CPU, goes low outside)
+366.680412 start of third outer slot (goes low at CPU, goes high outside)
+436.453608 end of third outer slot (goes high at CPU, goes low outside)
+529.979381 start of inner slot (goes low at CPU, goes high outside)
+544.824742 start of fourth outer slot (goes low at CPU, goes high outside)
+611.628866 end of fourth outer slot (goes high at CPU, goes low outside)
+671.010309 end of inner slot (goes high at CPU, goes low outside)
+720/0 start of first outer on next cycle….
+
+Broken into widths:
+
+Outer:
+72.742268 first outer slot (low at CPU, high outside)
+111.340206 solid between first and second outer slots (high at CPU, low outside)
+72.742268 second outer slot (low at CPU, high outside)
+109.85567 solid between second and third outer slots (high at CPU, low outside)
+69.773196 third outer slot (low at CPU, high outside)
+108.371134 solid between third and fourth outer slots (high at CPU, low outside)
+66.804124 fourth outer slot (low at CPU, high outside)
+108.371134 solid between fourth and first outer slots (high at CPU, low outside)
+
+Inner:
+141.030928 inner slot (low at CPU, high outside)
+578.969072 solid that isn't the inner slot (high at CPU, low outside)
+
+Offsets:
+93.525773 end of third outer slot to start of inner slot (no state)
+14.845361 start of inner slot to start of fourth outer slot (no state)
+59.381443 end of fourth outer slot to end of inner slot (no state)
+48.989691 end of inner slot to start of first outer slot (no state)
+
  *
  * @author Fred Cooke
  */
