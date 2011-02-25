@@ -476,6 +476,9 @@ void PrimaryRPMISR(){
 		// ...and check that it's correct
 		if((correctEvent != 0) && (currentEvent != correctEvent)){
 			currentEvent = correctEvent;
+			lastEvent = currentEvent - 1;
+			eventBeforeLastEvent = currentEvent - 2;
+
 			// Record that we had to reset position...
 			Counters.camSyncCorrections++;
 			// Should never happen, or should be caught by timing checks below
@@ -623,13 +626,13 @@ void SecondaryRPMISR(){
 		eventBeforeLastEvent = lastEvent;
 		lastEvent = currentEvent;
 		currentEvent++;
-		if(currentEvent == NUMBER_OF_EVENTS){
-			currentEvent = 0;
-		}
 
 		// ...and check that it's correct
 		if(currentEvent != correctEvent){
 			currentEvent = correctEvent;
+			lastEvent = currentEvent - 1;
+			eventBeforeLastEvent = currentEvent - 2;
+
 			// Record that we had to reset position...
 			Counters.camSyncCorrections++;
 			// Should never happen, or should be caught by timing checks below
@@ -641,23 +644,13 @@ void SecondaryRPMISR(){
 	}
 
 	if(decoderFlags & CAM_SYNC){
-		unsigned short thisAngle = 0;
-		if(currentEvent == 0){
-			thisAngle = eventAngles[currentEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
-		}else{
-			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
-		}
+		unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 
 		/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
 		unsigned short thisTicksPerDegree = (unsigned short)((20 * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 		if(decoderFlags & LAST_PERIOD_VALID){
-			unsigned short lastAngle = 0;
-			if(lastEvent == 0){
-				lastAngle = eventAngles[lastEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[eventBeforeLastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
-			}else{
-				lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
-			}
+			unsigned short lastAngle = lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
 
 			/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
 			unsigned short lastTicksPerDegree = (unsigned short)((20 * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
