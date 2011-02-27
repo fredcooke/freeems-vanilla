@@ -360,7 +360,7 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
 
 // Change these together...
 #define degreeTicksPerMinute 4166667
-#define ticks_per_degree_multiplier
+#define ticks_per_degree_multiplier 10
 
 
 static unsigned short edgeTimeStamp;
@@ -604,7 +604,7 @@ void PrimaryRPMISR(){
 			DerivedVars->sp4 = ratioBetweenThisAndLast;
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 				//resetToNonRunningState();
-				Counters.camSyncCorrections;
+				Counters.camSyncCorrections++;
 			}else{
 				if(PTITCurrentState & 0x01){
 					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
