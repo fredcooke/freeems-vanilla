@@ -370,7 +370,7 @@ static LongTime timeStamp;
 #define E4 360
 #define E7 540
 
-#define OuterSlotAngle   69 //  70? 69 is averaged from variable figures on my engine with plugs out and low cranking RPM (for more resolution)
+#define OuterSlotAngle   69 // BUT 69 is too high, and 68 is even more too low = need to refactor to specify these angles accurately enough for perfect RPM/scheduling
 
 // These are offset from the fixed ones by the angle of the slot
 #define E1 (E0 + OuterSlotAngle)
@@ -378,7 +378,7 @@ static LongTime timeStamp;
 #define E5 (E4 + OuterSlotAngle)
 #define E8 (E7 + OuterSlotAngle)
 
-#define InnerSlotAngle  137 // 140? Close to it... ignore my affection for round numbers... :-)
+#define InnerSlotAngle  139 // WAS 137 // Speculation: 140? Close to it... ignore my affection for round numbers... :-) HA! I was close to right this time, the other was right first guess and wants to be a little lower.
 
 #define E6 526  // Start position measured, just like outer on/off duty.
 #define E9 (E6 + InnerSlotAngle)
