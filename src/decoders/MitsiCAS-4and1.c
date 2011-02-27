@@ -595,8 +595,7 @@ void PrimaryRPMISR(){
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-			//	resetToNonRunningState();
-				Counters.crankSyncLosses++;
+				resetToNonRunningState();
 			}else{
 				if(PTITCurrentState & 0x01){
 					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
@@ -741,9 +740,14 @@ void SecondaryRPMISR(){
 			unsigned short lastTicksPerDegree = (unsigned short)((20 * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-			//	resetToNonRunningState();
+//			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				//	resetToNonRunningState();
+//			}
+			if((ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 				Counters.camSyncLosses++;
+			}
+			if((ratioBetweenThisAndLast > 1500)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				Counters.crankSyncLosses++;
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
 			#define degreeTicksPerMinute 8333333
