@@ -735,7 +735,7 @@ void SecondaryRPMISR(){
 		unsigned short thisTicksPerDegree = (unsigned short)((20 * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 		if(decoderFlags & LAST_PERIOD_VALID){
-			unsigned short lastAngle = lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
+			unsigned short lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
 
 			/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
 			unsigned short lastTicksPerDegree = (unsigned short)((20 * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
