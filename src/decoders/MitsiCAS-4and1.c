@@ -358,6 +358,11 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
 //#include "../inc/MitsiCAS-4and1.h"
 
 
+// Change these together...
+#define degreeTicksPerMinute 4166667
+#define ticks_per_degree_multiplier
+
+
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
 //static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
@@ -580,7 +585,7 @@ void PrimaryRPMISR(){
 		}
 
 		/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
-		unsigned short thisTicksPerDegree = (unsigned short)((20 * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+		unsigned short thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short lastAngle = 0;
@@ -591,11 +596,15 @@ void PrimaryRPMISR(){
 			}
 
 			/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
-			unsigned short lastTicksPerDegree = (unsigned short)((20 * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			unsigned short lastTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			DerivedVars->sp1 = lastTicksPerDegree;
+			DerivedVars->sp2 = thisTicksPerDegree;
+			DerivedVars->sp4 = ratioBetweenThisAndLast;
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				resetToNonRunningState();
+				//resetToNonRunningState();
+				Counters.camSyncCorrections;
 			}else{
 				if(PTITCurrentState & 0x01){
 					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
@@ -604,7 +613,6 @@ void PrimaryRPMISR(){
 				}
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
-			#define degreeTicksPerMinute 8333333
 			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
 		}
 	}
@@ -730,16 +738,20 @@ void SecondaryRPMISR(){
 	if(decoderFlags & CAM_SYNC){
 		unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 
-		/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
-		unsigned short thisTicksPerDegree = (unsigned short)((20 * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+		/// @todo TODO make this scaling better x10 yields 64rpm minimum functional engine speed.
+		unsigned short thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short lastAngle = eventAngles[lastEvent] - eventAngles[eventBeforeLastEvent];
 
-			/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
-			unsigned short lastTicksPerDegree = (unsigned short)((20 * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			/// @todo TODO make this scaling better x10 yields 64rpm minimum functional engine speed.
+			unsigned short lastTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
+			// this var is less than 667, why? because ticks/degree is BIG or lastTicks is SMALL
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			DerivedVars->sp1 = lastTicksPerDegree;
+			DerivedVars->sp2 = thisTicksPerDegree;
+			DerivedVars->sp4 = ratioBetweenThisAndLast;
 //			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 				//	resetToNonRunningState();
 //			}
@@ -750,7 +762,6 @@ void SecondaryRPMISR(){
 				Counters.crankSyncLosses++;
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
-			#define degreeTicksPerMinute 8333333
 			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
 		}
 	}
