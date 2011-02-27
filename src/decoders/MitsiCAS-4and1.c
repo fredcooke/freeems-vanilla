@@ -378,9 +378,9 @@ static LongTime timeStamp;
 #define E5 (E4 + OuterSlotAngle)
 #define E8 (E7 + OuterSlotAngle)
 
-#define InnerSlotAngle 138 // WAS 139 // WAS 137 // Speculation: 140? Close to it... ignore my affection for round numbers... :-) HA! I was close to right this time, the other was right first guess and wants to be a little lower.
+#define InnerSlotAngle 140 // WAS 138 // WAS 139 // WAS 137 // Speculation: 140? Close to it... ignore my affection for round numbers... :-) HA! I was close to right this time, the other was right first guess and wants to be a little lower.
 
-#define E6 527 // WAS 526 // Start position measured, just like outer on/off duty.
+#define E6 525 // WAS 527 // WAS 526 // Start position measured, just like outer on/off duty.
 #define E9 (E6 + InnerSlotAngle)
 
 // 529 from E0 for E6 measured                      so (529 + 137 = 666)
