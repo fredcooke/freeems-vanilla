@@ -280,6 +280,70 @@ Offsets:
 59.381443 end of fourth outer slot to end of inner slot (no state)
 48.989691 end of inner slot to start of first outer slot (no state)
 
+Latest WITHOUT compression effects, but still with variations from engine friction etc etc...
+
+logic.test.flat.battery.5.log.la
+
+17363 = 0
+17463 = 1
+17633 = 2
+17739 = 3
+17900 = 4
+18001 = 5
+18144 = 6
+18166 = 7
+18266 = 8
+18346 = 9
+18425 = 0
+
+100 - 0 - 1 slot
+170 - 1 - 2 solid
+106 - 2 - 3 slot
+161 - 3 - 4 solid
+101 - 4 - 5 slot
+165 - 5 - 7 solid
+100 - 7 - 8 slot
+159 - 8 - 0 solid
+
+rolling with 101.75 and 163.75
+
+101.75/1062 = 0.0958097928
+ * 720 = 68.9830508
+
+163.75/1062 = 0.154190207
+ * 720 = 111.016949
+
+rounds to 69 / 111
+close to 70/110
+
+
+143 - 5 - 6 end outer start inner
+  22 - 6 - 7 start inner start outer
+  80 - 8 - 9 end outer end inner
+  79 - 9 - 0 end inner start outer
+
+202 - 6 - 9 - inner slot
+860 - 9 - 6 = inner solid
+
+202/1062 = 136.949153
+860/1062 = 583.050847
+137/583
+140/580?
+
+total period = 1062
+
+0
+100
+270
+376
+537
+638
+803
+903
+1062
+
+From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
+
  *
  * @author Fred Cooke
  */
@@ -293,27 +357,43 @@ Offsets:
 #include "../inc/decoderInterface.h"
 //#include "../inc/MitsiCAS-4and1.h"
 
-#define sensorOffsetInCamDegrees 34
-#define sensorOffsetInCrankDegrees (sensorOffsetInCamDegrees * 2)
-#define innerAngleOfOnEvent (590 - sensorOffsetInCrankDegrees)
-#define innerAngleOfOffEvent (720 - sensorOffsetInCrankDegrees)
-
-#if (innerAngleOfOnEvent != 522)
-#error "Unexpected inner on angle value"
-#endif
-
-#if (innerAngleOfOffEvent != 652)
-#error "Unexpected inner off angle value"
-#endif
-
 
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
 //static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
 #define NUMBER_OF_EVENTS 10
 #define MAX_POSSIBLE_EVENT_ANGLE 720
-const unsigned short eventAngles[] = {0, 60, 180, 240, 360, 420, 522, 540, 600, 652}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
-// The 6th and 9th events are from the inner wheel, the rest from the outer, their order is dependent in the sensor offset
+
+// These are fixed and by definition correct
+#define E0   0
+#define E2 180
+#define E4 360
+#define E7 540
+
+#define OuterSlotAngle   69 //  70? 69 is averaged from variable figures on my engine with plugs out and low cranking RPM (for more resolution)
+
+// These are offset from the fixed ones by the angle of the slot
+#define E1 (E0 + OuterSlotAngle)
+#define E3 (E2 + OuterSlotAngle)
+#define E5 (E4 + OuterSlotAngle)
+#define E8 (E7 + OuterSlotAngle)
+
+#define InnerSlotAngle  137 // 140? Close to it... ignore my affection for round numbers... :-)
+
+#define E6 526  // Start position measured, just like outer on/off duty.
+#define E9 (E6 + InnerSlotAngle)
+
+// 529 from E0 for E6 measured                      so (529 + 137 = 666)
+
+// 526 from E5 for E6 measured from (360 + 69 + 97) so (526 + 137 = 663)
+// 525 from E7 for E6 measured from (540 - 15)      so (525 + 137 = 662)
+
+// 666 from E0 for E9 measured
+
+// 663 from E8 for E9 measured from (540 + 69 + 54) so (663 - 137 = 526)
+// 666 from 10 for E9 measured from (720 - 54)      so (666 - 137 = 529)
+
+const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 const unsigned char decoderName[] = "MitsiCAS-4and1.c";
 
 
