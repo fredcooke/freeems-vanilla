@@ -599,9 +599,10 @@ void PrimaryRPMISR(){
 			unsigned short lastTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * lastInterEventPeriod) / lastAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			DerivedVars->sp1 = lastTicksPerDegree;
-			DerivedVars->sp2 = thisTicksPerDegree;
-			DerivedVars->sp4 = ratioBetweenThisAndLast;
+			DerivedVars->sp1 = lastAngle;
+			DerivedVars->sp2 = thisAngle;
+			DerivedVars->sp3 = lastTicksPerDegree;
+			DerivedVars->sp4 = lastInterEventPeriod;
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 				//resetToNonRunningState();
 				Counters.camSyncCorrections++;

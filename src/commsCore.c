@@ -80,7 +80,7 @@ void populateBasicDatalog(){
 	/* Generic com counters */
 //			DerivedVars->sp2 = Counters.commsChecksumMismatches + Counters.commsPacketsUnderMinLength + Counters.commsDebugMessagesNotSent + Counters.commsErrorMessagesNotSent;
 //	DerivedVars->sp2 = syncCaughtOnThisEvent;
-	DerivedVars->sp3++;
+//	DerivedVars->sp3++;
 //	DerivedVars->sp4 = (decoderFlags << 8) + coreStatusA;
 	DerivedVars->sp5 = currentEvent;
 
