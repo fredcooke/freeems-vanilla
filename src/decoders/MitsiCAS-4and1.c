@@ -587,13 +587,8 @@ void PrimaryRPMISR(){
 
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			DerivedVars->sp1 = lastTicksPerDegree;
-			DerivedVars->sp2 = thisTicksPerDegree;
-			DerivedVars->sp3 = thisAngle;
-			DerivedVars->sp4 = ratioBetweenThisAndLast;
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				//resetToNonRunningState();
-				Counters.camSyncCorrections++;
+				resetToNonRunningState();
 			}else{
 				if(PTITCurrentState & 0x01){
 					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
@@ -725,24 +720,12 @@ void SecondaryRPMISR(){
 		unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 
 		/// @todo TODO make this scaling better x10 yields 64rpm minimum functional engine speed.
-		unsigned short thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 		if(decoderFlags & LAST_PERIOD_VALID){
-
-			// this var is less than 667, why? because ticks/degree is BIG or lastTicks is SMALL
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			DerivedVars->sp1 = lastTicksPerDegree;
-			DerivedVars->sp2 = thisTicksPerDegree;
-			DerivedVars->sp3 = thisAngle;
-			DerivedVars->sp4 = ratioBetweenThisAndLast;
-//			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				//	resetToNonRunningState();
-//			}
-			if((ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				Counters.camSyncLosses++;
-			}
-			if((ratioBetweenThisAndLast > 1500)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				Counters.crankSyncLosses++;
+			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				resetToNonRunningState();
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
 			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
