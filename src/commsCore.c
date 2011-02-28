@@ -76,12 +76,12 @@ void populateBasicDatalog(){
 
 	/* UART/serial specific counters */
 //	DerivedVars->sp1 = Counters.serialEscapePairMismatches + Counters.serialStartsInsideAPacket + Counters.serialPacketsOverLength + Counters.serialNoiseErrors + Counters.serialOverrunErrors + Counters.serialFramingErrors + Counters.serialParityErrors;
-//	DerivedVars->sp1 = Counters.crankSyncLosses;
+	DerivedVars->sp1 = Counters.crankSyncLosses;
 	/* Generic com counters */
 //			DerivedVars->sp2 = Counters.commsChecksumMismatches + Counters.commsPacketsUnderMinLength + Counters.commsDebugMessagesNotSent + Counters.commsErrorMessagesNotSent;
-//	DerivedVars->sp2 = syncCaughtOnThisEvent;
-//	DerivedVars->sp3++;
-//	DerivedVars->sp4 = (decoderFlags << 8) + coreStatusA;
+	DerivedVars->sp2 = syncCaughtOnThisEvent;
+	DerivedVars->sp3++;
+	DerivedVars->sp4 = (decoderFlags << 8) + coreStatusA;
 	DerivedVars->sp5 = currentEvent;
 
 	/* Get core vars */
