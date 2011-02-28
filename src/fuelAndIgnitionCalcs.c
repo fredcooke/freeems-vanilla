@@ -145,12 +145,21 @@ void calculateFuelAndIgnition(){
 	// schedule even when RPM = zero and not synced, as sync could start any time and we want it to start injection/igniting then, up to decoder to not allow scheduling if not synced...
 	// do not schedule, or schedule specially if rpm > max or hysteresis not met etc.
 
+	// from leading edge of slots
+	pinEventNumbers[0] = 0;
+	pinEventNumbers[1] = 2;
+	pinEventNumbers[2] = 4;
+	pinEventNumbers[3] = 7;
+
+	// from alternate teeth so as to keep code simple for now.
+	pinEventNumbers[4] = 1;
+	pinEventNumbers[5] = 5;
 
 	/*&&&&&&&&&&&&&&&&& Based on IDT schedule PW start such that Fuel is correctly timed &&&&&&&&&&&&&&&&&&&*/
 
-	for(channel = 0;channel < INJECTION_CHANNELS;channel++){ /// @todo TODO make injector channels come from config, not defines.
+//	for(channel = 0;channel < INJECTION_CHANNELS;channel++){ /// @todo TODO make injector channels come from config, not defines.
 		//injectorMainAdvances[channel] = IDT blah blah.
-	}
+//	}
 
 	/* This will involve using RPM, injector firing angle and IDT to schedule the events correctly */
 
@@ -178,10 +187,16 @@ void calculateFuelAndIgnition(){
 	/* "Calculate" the nominal total pulse width before per channel corrections */
 	masterPulseWidth = refPW;
 
+#define fixedDwellForTesting 6250 // ticks: 5ms
+
 	/* "Calculate" the individual fuel pulse widths */
-	for(channel = 0; channel < INJECTION_CHANNELS; channel++){
-		injectorMainPulseWidthsMath[channel] = masterPulseWidth;
-	}
+	injectorMainPulseWidthsMath[0] = fixedDwellForTesting;
+	injectorMainPulseWidthsMath[1] = fixedDwellForTesting;
+	injectorMainPulseWidthsMath[2] = fixedDwellForTesting;
+	injectorMainPulseWidthsMath[3] = fixedDwellForTesting;
+
+	injectorMainPulseWidthsMath[4] = masterPulseWidth;
+	injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 	/// @todo TODO x 6 main pulsewidths, x 6 staged pulsewidths, x 6 flags for staged channels if(coreSettingsA & STAGED_ON){}
 
@@ -218,7 +233,7 @@ void calculateFuelAndIgnition(){
 
 	/** @todo TODO Calculate the fuel advances (six of) */
 	// just use one for all for now...
-	totalAngleAfterReferenceInjection = (ADCArrays->TPS << 6);
+	totalAngleAfterReferenceInjection = (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
 
 	/** @todo TODO Calculate the dwell period (one of) */
 

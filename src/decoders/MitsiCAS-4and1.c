@@ -361,6 +361,7 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
 // Change these together...
 #define degreeTicksPerMinute 4166667
 #define ticks_per_degree_multiplier 10
+/// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
 
 
 static unsigned short edgeTimeStamp;
@@ -582,7 +583,6 @@ void PrimaryRPMISR(){
 			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 		}
 
-		/// @todo TODO make this scaling better x20 yields 64rpm minimum functional engine speed.
 		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 		if(decoderFlags & LAST_PERIOD_VALID){
@@ -598,6 +598,14 @@ void PrimaryRPMISR(){
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
 			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
+
+			// migrate to safe mult util
+			unsigned short prelimCyclePeriod = thisTicksPerDegree * 4;
+			if((prelimCyclePeriod / 4) != thisTicksPerDegree){
+				engineCyclePeriod = SHORTMAX;
+			}else{
+				engineCyclePeriod = prelimCyclePeriod;
+			}
 		}
 	}
 
@@ -719,7 +727,6 @@ void SecondaryRPMISR(){
 	if(decoderFlags & CAM_SYNC){
 		unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 
-		/// @todo TODO make this scaling better x10 yields 64rpm minimum functional engine speed.
 		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
 		if(decoderFlags & LAST_PERIOD_VALID){
@@ -729,6 +736,13 @@ void SecondaryRPMISR(){
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
 			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
+
+			unsigned short prelimCyclePeriod = thisTicksPerDegree * 4;
+			if((prelimCyclePeriod / 4) != thisTicksPerDegree){
+				engineCyclePeriod = SHORTMAX;
+			}else{
+				engineCyclePeriod = prelimCyclePeriod;
+			}
 		}
 	}
 
