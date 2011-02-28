@@ -146,10 +146,10 @@ void calculateFuelAndIgnition(){
 	// do not schedule, or schedule specially if rpm > max or hysteresis not met etc.
 
 	// from leading edge of slots
-	pinEventNumbers[0] = 0;
-	pinEventNumbers[1] = 2;
-	pinEventNumbers[2] = 4;
-	pinEventNumbers[3] = 7;
+	pinEventNumbers[0] = 7; // 1
+	pinEventNumbers[1] = 0; // 3
+	pinEventNumbers[2] = 2; // 4
+	pinEventNumbers[3] = 4; // 2
 
 	// from alternate teeth so as to keep code simple for now.
 	pinEventNumbers[4] = 1;
@@ -187,13 +187,13 @@ void calculateFuelAndIgnition(){
 	/* "Calculate" the nominal total pulse width before per channel corrections */
 	masterPulseWidth = refPW;
 
-#define fixedDwellForTesting 6250 // ticks: 5ms
+#define fixedDwellForTesting 36250 // ticks: 5ms
 
 	/* "Calculate" the individual fuel pulse widths */
-	injectorMainPulseWidthsMath[0] = fixedDwellForTesting;
-	injectorMainPulseWidthsMath[1] = fixedDwellForTesting;
-	injectorMainPulseWidthsMath[2] = fixedDwellForTesting;
-	injectorMainPulseWidthsMath[3] = fixedDwellForTesting;
+	injectorMainPulseWidthsMath[0] = fixedDwellForTesting; // 1
+	injectorMainPulseWidthsMath[1] = fixedDwellForTesting; // 3
+	injectorMainPulseWidthsMath[2] = fixedDwellForTesting; // 4
+	injectorMainPulseWidthsMath[3] = fixedDwellForTesting; // 2
 
 	injectorMainPulseWidthsMath[4] = masterPulseWidth;
 	injectorMainPulseWidthsMath[5] = masterPulseWidth;
@@ -233,7 +233,7 @@ void calculateFuelAndIgnition(){
 
 	/** @todo TODO Calculate the fuel advances (six of) */
 	// just use one for all for now...
-	totalAngleAfterReferenceInjection = (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	totalAngleAfterReferenceInjection = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
 
 	/** @todo TODO Calculate the dwell period (one of) */
 
