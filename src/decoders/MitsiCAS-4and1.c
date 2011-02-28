@@ -365,7 +365,6 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
 
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
-static unsigned short lastTicksPerDegree;
 
 //static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
 #define NUMBER_OF_EVENTS 10
@@ -622,7 +621,6 @@ void PrimaryRPMISR(){
 	}
 	// Always
 	lastEventTimeStamp = thisEventTimeStamp;
-//	lastAngle = thisAngle;
 	decoderFlags |= LAST_TIMESTAMP_VALID;
 
 	RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;

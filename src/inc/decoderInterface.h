@@ -105,7 +105,7 @@ from the above we can check one gap+angle with the next gap+angle and ensure smo
 // unsigned long thisInterEventPeriod; ditto
 EXTERN unsigned char syncCaughtOnThisEvent;
 EXTERN unsigned long lastEventTimeStamp;
-//EXTERN unsigned long lastInterEventPeriod;
+EXTERN unsigned short lastTicksPerDegree;
 EXTERN unsigned char currentEvent;
 EXTERN unsigned char decoderFlags;
 EXTERN unsigned long engineCyclePeriod;
