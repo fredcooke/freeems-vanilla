@@ -231,9 +231,13 @@ void calculateFuelAndIgnition(){
 //	}
 //	PITLD0 = dwellPeriod;
 
-	/** @todo TODO Calculate the fuel advances (six of) */
-	// just use one for all for now...
-	totalAngleAfterReferenceInjection = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	/** @todo TODO Calculate the advances (six of) */
+	postReferenceEventDelays[0] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[1] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[2] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[3] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[4] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[5] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
 
 	/** @todo TODO Calculate the dwell period (one of) */
 

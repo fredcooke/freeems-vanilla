@@ -46,8 +46,6 @@ unsigned short tachoPeriod = 65535;	/* Lowest RPM at start up time. */
 
 // Values for testing
 unsigned short masterPulseWidth = 10;
-unsigned short totalAngleAfterReferenceIgnition = 540;
-unsigned short totalAngleAfterReferenceInjection = 180;
 
 	/* Setup the pointers to the registers for fueling use, this does NOT work if done in global.c, I still don't know why. */
 //	injectorMainTimeRegisters[0] = TC2_ADDR;

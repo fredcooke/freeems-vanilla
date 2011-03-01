@@ -132,22 +132,22 @@ void PrimaryRPMISR(){
 				maxAngleAfter = (unsigned short)(engineCyclePeriod >> 1);
 			}
 
+			/* Determine the channels to schedule */
+			unsigned char fuelChannel = 0;//(primaryPulsesPerSecondaryPulse / 2) - 1;
+
 			/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
 			unsigned short advance;
-			if(totalAngleAfterReferenceInjection > maxAngleAfter){ // if too big, make it max
+			if(postReferenceEventDelays[fuelChannel] > maxAngleAfter){ // if too big, make it max
 				advance = maxAngleAfter;
-			}else if(totalAngleAfterReferenceInjection < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
+			}else if(postReferenceEventDelays[fuelChannel] < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
 				advance = trailingEdgeSecondaryRPMInputCodeTime;
 			}else{ // else use it as is
-				advance = totalAngleAfterReferenceInjection;
+				advance = postReferenceEventDelays[fuelChannel];
 			}
 
 			// determine the long and short start times
 			unsigned short startTime = edgeTimeStamp + advance;
 			unsigned long startTimeLong = timeStamp.timeLong + advance;
-
-			/* Determine the channels to schedule */
-			unsigned char fuelChannel = 0;//(primaryPulsesPerSecondaryPulse / 2) - 1;
 
 			// determine whether or not to reschedule
 			unsigned char reschedule = 0;

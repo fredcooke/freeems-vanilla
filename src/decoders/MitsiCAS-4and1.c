@@ -413,12 +413,12 @@ void schedulePortTPin(unsigned char pin){
 
 	/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
 	unsigned short advance;
-	if(totalAngleAfterReferenceInjection > maxAngleAfter){ // if too big, make it max
+	if(postReferenceEventDelays[pin] > maxAngleAfter){ // if too big, make it max
 		advance = maxAngleAfter;
-	}else if(totalAngleAfterReferenceInjection < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
+	}else if(postReferenceEventDelays[pin] < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
 		advance = trailingEdgeSecondaryRPMInputCodeTime;
 	}else{ // else use it as is
-		advance = totalAngleAfterReferenceInjection;
+		advance = postReferenceEventDelays[pin];
 	}
 
 	// determine the long and short start times

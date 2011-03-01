@@ -289,8 +289,7 @@ EXTERN unsigned char currentTimeRPage;
 /* Output variables (init not required) TODO ditch this in favour of the real vars in the calcs function and struct */
 extern unsigned short masterPulseWidth;
 EXTERN unsigned short totalDwell;
-extern unsigned short totalAngleAfterReferenceInjection;
-extern unsigned short totalAngleAfterReferenceIgnition;
+EXTERN unsigned short postReferenceEventDelays[6];
 
 EXTERN unsigned long bootFuelConst;	/* constant derived from configurable constants */
 EXTERN unsigned short TPSMAPRange;	/* The MAP range used to convert fake TPS from MAP and vice versa */
