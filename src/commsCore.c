@@ -69,7 +69,7 @@ void populateBasicDatalog(){
 	unsigned char* position = TXBufferCurrentPositionHandler;
 
 	// temp debug, done here to ensure it matches the other data.
-	CoreVars->DRPM = Counters.primaryTeethSeen;
+//	CoreVars->DRPM = Counters.primaryTeethSeen;
 	CoreVars->DDRPM = Counters.secondaryTeethSeen;
 	CoreVars->DTPS = Counters.camSyncCorrections;
 	CoreVars->DMAP = Counters.camSyncLosses;

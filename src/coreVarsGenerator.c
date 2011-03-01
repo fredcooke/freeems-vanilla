@@ -273,6 +273,8 @@ void generateCoreVars(){
 	}else{
 		CoreVars->RPM = 0;
 	}
+
+	CoreVars->DRPM = *ticksPerDegree;
 //	unsigned short localDRPM = 0;
 //	unsigned short localDDRPM = 0;
 

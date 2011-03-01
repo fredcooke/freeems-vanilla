@@ -232,12 +232,12 @@ void calculateFuelAndIgnition(){
 //	PITLD0 = dwellPeriod;
 
 	/** @todo TODO Calculate the advances (six of) */
-	postReferenceEventDelays[0] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[1] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[2] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[3] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[4] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[5] = 26000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[0] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[1] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[2] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[3] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[4] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
+	postReferenceEventDelays[5] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
 
 	/** @todo TODO Calculate the dwell period (one of) */
 
