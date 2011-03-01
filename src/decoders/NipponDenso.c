@@ -121,8 +121,8 @@ void PrimaryRPMISR(){
 		// increment crank pulses TODO this needs to be wrapped in tooth period and width checking
 		primaryPulsesPerSecondaryPulse++;
 
-		// calculate rough rpm (this will be wrong when the var is used correctly)
-		*RPMRecord = ticksPerCycleAtOneRPMx2 / engineCyclePeriod; /* 0.8us ticks, 150mil = 2 x 60 seconds, times rpm scale factor of 2 */
+		// calculate rough rpm (this will be wrong when the var is used correctly) THIS is horrible now... fix up with rest of decoder.
+		*ticksPerDegreeRecord = engineCyclePeriod / 720; /* 0.8us ticks, 150mil = 2 x 60 seconds, times rpm scale factor of 2 */
 
 		// don't run until the second trigger has come in and the period is correct (VERY temporary)
 		if(!(decoderFlags & CRANK_SYNC)){

@@ -56,13 +56,19 @@
 #endif
 
 
+// Change these together...
+#define degreeTicksPerMinute 4166667
+#define ticks_per_degree_multiplier 10
+/// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
+
+
 // ADC
 
 // RPM
-EXTERN unsigned short RPM0; // to be replaced with logging scheme for teeth.
-EXTERN unsigned short RPM1; // to be replaced with logging scheme for teeth.
-EXTERN unsigned short* RPM; // final output variable, probably move into inputVars struct?
-EXTERN unsigned short* RPMRecord; // intermediate storage variable, do something with this?
+EXTERN unsigned short ticksPerDegree0; // to be replaced with logging scheme for teeth.
+EXTERN unsigned short ticksPerDegree1; // to be replaced with logging scheme for teeth.
+EXTERN unsigned short* ticksPerDegree; // final output variable, probably move into inputVars struct?
+EXTERN unsigned short* ticksPerDegreeRecord; // intermediate storage variable, do something with this?
 
 // Time/Sync
 

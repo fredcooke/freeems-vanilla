@@ -268,7 +268,11 @@ void generateCoreVars(){
 	//atomic end
 
 	// Calculate RPM and delta RPM and delta delta RPM from data recorded
-	CoreVars->RPM = *RPM; // temporary!!
+	if(*ticksPerDegree != 0){
+		CoreVars->RPM = (unsigned short)(degreeTicksPerMinute / *ticksPerDegree);
+	}else{
+		CoreVars->RPM = 0;
+	}
 //	unsigned short localDRPM = 0;
 //	unsigned short localDDRPM = 0;
 

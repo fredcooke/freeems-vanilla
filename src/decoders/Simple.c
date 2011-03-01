@@ -109,10 +109,8 @@ void PrimaryRPMISR(){
 		unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastEventTimeStamp;
 		lastEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
-// = 60 * (1000000 / 0.8)
-#define ticksPerMinute   75000000 // this is correct.
 
-		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
+		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessivePrimaryPulses / 4);
 
 		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
 		sampleEachADC(ADCArrays);

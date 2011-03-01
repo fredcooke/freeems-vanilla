@@ -456,8 +456,8 @@ void initVariables(){
 
 	mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp0; // TODO temp, remove
 	mathSampleTimeStampRecord = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove
-	RPM = &RPM0; // TODO temp, remove
-	RPMRecord = &RPM1; // TODO temp, remove
+	ticksPerDegree = &ticksPerDegree0; // TODO temp, remove, maybe
+	ticksPerDegreeRecord = &ticksPerDegree1; // TODO temp, remove, maybe
 
 	/* Setup the pointers to the registers for fueling use, this does NOT work if done in global.c, I still don't know why. */
 	injectorMainTimeRegisters[0] = TC2_ADDR;

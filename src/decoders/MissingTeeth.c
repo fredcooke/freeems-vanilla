@@ -104,10 +104,9 @@ void PrimaryRPMISR(void) {
 					unsigned long primaryLeadingEdgeTimeStamp = thisTimeStamp.timeLong;
 					unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastEventTimeStamp;	//I'd name it timeBetweenSuccessiveReferencePulses
 					lastEventTimeStamp = primaryLeadingEdgeTimeStamp;
-// = 60 * (1000000 / 0.8)
-#define ticksPerMinute   75000000 // this is correct.
 
-					*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
+					// this is totally broken, fix at some point in some way...
+					*ticksPerDegreeRecord = (unsigned short)timeBetweenSuccessivePrimaryPulses;
 					// We have sync
 					PORTP |= 0x80;
 					count = 1;

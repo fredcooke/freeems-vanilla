@@ -358,12 +358,6 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
 //#include "../inc/MitsiCAS-4and1.h"
 
 
-// Change these together...
-#define degreeTicksPerMinute 4166667
-#define ticks_per_degree_multiplier 10
-/// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
-
-
 static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
 
@@ -597,15 +591,8 @@ void PrimaryRPMISR(){
 				}
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
-			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
-
-			// migrate to safe mult util
-			unsigned short prelimCyclePeriod = thisTicksPerDegree * 4;
-			if((prelimCyclePeriod / 4) != thisTicksPerDegree){
-				engineCyclePeriod = SHORTMAX;
-			}else{
-				engineCyclePeriod = prelimCyclePeriod;
-			}
+			*ticksPerDegreeRecord = thisTicksPerDegree;
+			engineCyclePeriod = thisTicksPerDegree * 720;
 		}
 	}
 
@@ -735,14 +722,8 @@ void SecondaryRPMISR(){
 				resetToNonRunningState();
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
-			*RPMRecord = (unsigned short)(degreeTicksPerMinute / thisTicksPerDegree);
-
-			unsigned short prelimCyclePeriod = thisTicksPerDegree * 4;
-			if((prelimCyclePeriod / 4) != thisTicksPerDegree){
-				engineCyclePeriod = SHORTMAX;
-			}else{
-				engineCyclePeriod = prelimCyclePeriod;
-			}
+			*ticksPerDegreeRecord = thisTicksPerDegree;
+			engineCyclePeriod = thisTicksPerDegree * 720;
 		}
 	}
 

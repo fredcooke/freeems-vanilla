@@ -96,15 +96,15 @@ int  main(){ // TODO maybe move this to paged flash ?
 
 			/* Switch input bank so that we have a stable set of the latest data */
 			if(ADCArrays == &ADCArrays1){
-				RPM = &RPM0; // TODO temp, remove
-				RPMRecord = &RPM1; // TODO temp, remove
+				ticksPerDegree = &ticksPerDegree0; // TODO temp, remove, maybe
+				ticksPerDegreeRecord = &ticksPerDegree1; // TODO temp, remove, maybe
 				ADCArrays = &ADCArrays0;
 				ADCArraysRecord = &ADCArrays1;
 				mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp0; // TODO temp, remove
 				mathSampleTimeStampRecord = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove
 			}else{
-				RPM = &RPM1; // TODO temp, remove
-				RPMRecord = &RPM0; // TODO temp, remove
+				ticksPerDegree = &ticksPerDegree1; // TODO temp, remove, maybe
+				ticksPerDegreeRecord = &ticksPerDegree0; // TODO temp, remove, maybe
 				ADCArrays = &ADCArrays1;
 				ADCArraysRecord = &ADCArrays0;
 				mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove

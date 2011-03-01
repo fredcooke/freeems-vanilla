@@ -48,8 +48,8 @@
  */
 void resetToNonRunningState(){
 	/* Reset RPM to zero */
-	RPM0 = 0;
-	RPM1 = 0;
+	ticksPerDegree0 = 0;
+	ticksPerDegree1 = 0;
 
 	// Temporary from 4and1 :
 	unknownEdges = 0;

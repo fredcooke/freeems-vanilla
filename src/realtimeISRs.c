@@ -79,7 +79,7 @@ void RTIISR(){
 			/* Set force read adc flag */
 			coreStatusA |= FORCE_READING;
 			Clocks.timeoutADCreadingClock = 0;
-		}else if (*RPM > 0){ // turn on very quickly if rpm appears non zero, temp impl...
+		}else if (CoreVars->RPM > 0){ // turn on very quickly if rpm appears non zero, temp impl...
 			PORTA |= BIT7;
 		}
 
@@ -121,7 +121,7 @@ void RTIISR(){
 						coreStatusA &= CLEAR_FUEL_PUMP_PRIME;
 						PORTA &= NBIT7;
 					}
-				}else if(*RPM == 0){
+				}else if(CoreVars->RPM == 0){
 					PORTA &= NBIT7;
 				}
 
