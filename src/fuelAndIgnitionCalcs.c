@@ -145,16 +145,6 @@ void calculateFuelAndIgnition(){
 	// schedule even when RPM = zero and not synced, as sync could start any time and we want it to start injection/igniting then, up to decoder to not allow scheduling if not synced...
 	// do not schedule, or schedule specially if rpm > max or hysteresis not met etc.
 
-	// from leading edge of slots
-	pinEventNumbers[0] = 7; // 1
-	pinEventNumbers[1] = 0; // 3
-	pinEventNumbers[2] = 2; // 4
-	pinEventNumbers[3] = 4; // 2
-
-	// from alternate teeth so as to keep code simple for now.
-	pinEventNumbers[4] = 1;
-	pinEventNumbers[5] = 5;
-
 	/*&&&&&&&&&&&&&&&&& Based on IDT schedule PW start such that Fuel is correctly timed &&&&&&&&&&&&&&&&&&&*/
 
 //	for(channel = 0;channel < INJECTION_CHANNELS;channel++){ /// @todo TODO make injector channels come from config, not defines.
@@ -187,13 +177,119 @@ void calculateFuelAndIgnition(){
 	/* "Calculate" the nominal total pulse width before per channel corrections */
 	masterPulseWidth = refPW;
 
-#define fixedDwellForTesting 36250 // ticks: 5ms
+
+
+
+
+
+
+
+#define Mitsi4and1OffsetOnTruck 90 // add this to code degrees to find 0/TDC for cyl/output 1
+
+//	unsigned short decoderEngineOffset = Mitsi4and1OffsetOnTruck;
+
+// TDC output 1 and cylinder 1 is 0
+// TDC output 2 and cylinder 3 is therefore 180
+// TDC output 3 and cylinder 4 is therefore 360
+// TDC output 4 and cylinder 2 is therefore 540
+
+#define numberOfIgnitionEvents 4
+
+	unsigned short anglesOfTDC[numberOfIgnitionEvents]; // no timing for fuel channels yet KISS for now.
+
+	anglesOfTDC[0] = 0;
+	anglesOfTDC[1] = 180;
+	anglesOfTDC[2] = 360;
+	anglesOfTDC[3] = 540;
+
+	unsigned char ignitionEvent;
+	for(ignitionEvent = 0;ignitionEvent < numberOfIgnitionEvents;ignitionEvent++){
+
+		/* pseudo code
+		 *
+		 * we have:
+		 *
+		 * - offset between engine and code
+		 * - offset for each output event TDC
+		 * - desired timing value in degrees BTDC
+		 * - a minimum post tooth delay
+		 * - angle to ticks conversion number
+		 *
+		 * we want:
+		 *
+		 * - which event to fire from
+		 * - how much to wait after that event before firing
+		 *
+		 * we need to:
+		 *
+		 * - to find the code angle that the spark must jump at
+		 * - find nearest event
+		 * - find time after nearest event to spark needing to jump
+		 * - check that dwell + min delay < time after nearest
+		 * - if so, set event number in output as nearest
+		 * - and, set after delay to (distance between - dwell)
+		 * - if not, set event number in output to one before nearest
+		 * - and, set after delay to same + expected delay between nearest and next
+		 *
+		 * repeat per pin (this is in a loop)
+		 */
+
+		// eventAngles[?] ?
+
+		// set the post event delay
+		postReferenceEventDelays[ignitionEvent] = 0; // right after tooth till code complete
+
+		// set the event to sched from
+		pinEventNumbers[ignitionEvent] = 0xFF; // all off till code complete
+
+	}
+
+
+
+
+
+
+
+
+
+	// OLD shit :
+
+//	postReferenceEventDelays[0] = 13000;
+//	postReferenceEventDelays[1] = 13000;
+//	postReferenceEventDelays[2] = 13000;
+//	postReferenceEventDelays[3] = 13000;
+
+	// from leading edge of slots, this produced TDC timing with 13000 post event delay and huge 36250 dwell
+//	pinEventNumbers[0] = 7; // 1
+//	pinEventNumbers[1] = 0; // 3
+//	pinEventNumbers[2] = 2; // 4
+//	pinEventNumbers[3] = 4; // 2
+
+	// fuel shit:
+
+	// just fire the fuel off whenever... doesn't matter much.
+	postReferenceEventDelays[4] = 0;
+	postReferenceEventDelays[5] = 0;
+
+	// from alternate teeth so as to keep code simple for now.
+	pinEventNumbers[4] = 1;
+	pinEventNumbers[5] = 5;
+
+	// nothing much, L&P:
+
+
+
+
+
+
+
+
 
 	/* "Calculate" the individual fuel pulse widths */
-	injectorMainPulseWidthsMath[0] = fixedDwellForTesting; // 1
-	injectorMainPulseWidthsMath[1] = fixedDwellForTesting; // 3
-	injectorMainPulseWidthsMath[2] = fixedDwellForTesting; // 4
-	injectorMainPulseWidthsMath[3] = fixedDwellForTesting; // 2
+	injectorMainPulseWidthsMath[0] = DesiredDwell;
+	injectorMainPulseWidthsMath[1] = DesiredDwell;
+	injectorMainPulseWidthsMath[2] = DesiredDwell;
+	injectorMainPulseWidthsMath[3] = DesiredDwell;
 
 	injectorMainPulseWidthsMath[4] = masterPulseWidth;
 	injectorMainPulseWidthsMath[5] = masterPulseWidth;
@@ -230,14 +326,6 @@ void calculateFuelAndIgnition(){
 //		dwellPeriod = intendedPeriod;
 //	}
 //	PITLD0 = dwellPeriod;
-
-	/** @todo TODO Calculate the advances (six of) */
-	postReferenceEventDelays[0] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[1] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[2] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[3] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[4] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
-	postReferenceEventDelays[5] = 13000; // Thanks Dan! :-) (ADCArrays->TPS << 6); /// @todo TODO fix this before engine explodes!
 
 	/** @todo TODO Calculate the dwell period (one of) */
 

@@ -79,6 +79,8 @@ void generateDerivedVars(){
 	/* Look up injector dead time with battery voltage */
 	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
+	// temp dwell var...
+	DesiredDwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
 	/* Look up the engine temperature enrichment percentage with temperature */
 	DerivedVars->ETE = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent, CoreVars->CHT);
