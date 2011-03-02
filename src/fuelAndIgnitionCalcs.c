@@ -301,16 +301,27 @@ void calculateFuelAndIgnition(){
 			postReferenceEventDelays[ignitionEvent] = (unsigned short)(ticksBetweenEventAndSpark - DesiredDwell);
 		}else{
 			/// @todo TODO this needs to loop to find the correct tooth, currently assumes that the next tooth is good enough, and that easily could be untrue: move to next tooth instead
-			unsigned short ticksBetweenClosestEventAndPreviousEvent = SHORTMAX;
+			unsigned long ticksBetweenClosestEventAndPreviousEvent = LONGMAX;
 			if(lastGoodEvent > 0){
 				pinEventNumbers[ignitionEvent] = lastGoodEvent - 1;
-				ticksBetweenClosestEventAndPreviousEvent = (unsigned short)(((unsigned long)*ticksPerDegree * (eventAngles[lastGoodEvent - 1] - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier);
+				ticksBetweenClosestEventAndPreviousEvent = ((unsigned long)*ticksPerDegree * (eventAngles[lastGoodEvent - 1] - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
 			}else{
 				pinEventNumbers[ignitionEvent] = numberOfEventAngles - 1;
-				ticksBetweenClosestEventAndPreviousEvent = (unsigned short)(((unsigned long)*ticksPerDegree * (720 - eventAngles[numberOfEventAngles - 1])) / ticks_per_degree_multiplier);
+				ticksBetweenClosestEventAndPreviousEvent = ((unsigned long)*ticksPerDegree * (720 - eventAngles[numberOfEventAngles - 1])) / ticks_per_degree_multiplier;
 			}
 
-			postReferenceEventDelays[ignitionEvent] = safeAdd(ticksBetweenClosestEventAndPreviousEvent, (ticksBetweenEventAndSpark - DesiredDwell));
+			if(ticksBetweenClosestEventAndPreviousEvent > (SHORTMAX - (ticksBetweenEventAndSpark - DesiredDwell))){
+				postReferenceEventDelays[ignitionEvent] = SHORTMAX;
+				unsigned long dwellToAdd = ticksBetweenClosestEventAndPreviousEvent - SHORTMAX;
+				if(dwellToAdd > SHORTMAX){
+					injectorMainPulseWidthsMath[ignitionEvent] = SHORTMAX;
+				}else{
+					injectorMainPulseWidthsMath[ignitionEvent] = safeAdd(DesiredDwell, (unsigned short)dwellToAdd);
+				}
+			}else{
+				postReferenceEventDelays[ignitionEvent] = ticksBetweenClosestEventAndPreviousEvent + (ticksBetweenEventAndSpark - DesiredDwell);
+				injectorMainPulseWidthsMath[ignitionEvent] = DesiredDwell;
+			}
 		}
 	}
 
@@ -355,11 +366,11 @@ void calculateFuelAndIgnition(){
 
 
 
-	/* "Calculate" the individual fuel pulse widths */
-	injectorMainPulseWidthsMath[0] = DesiredDwell;
-	injectorMainPulseWidthsMath[1] = DesiredDwell;
-	injectorMainPulseWidthsMath[2] = DesiredDwell;
-	injectorMainPulseWidthsMath[3] = DesiredDwell;
+//	/* "Calculate" the individual fuel pulse widths */
+//	injectorMainPulseWidthsMath[0] = DesiredDwell;
+//	injectorMainPulseWidthsMath[1] = DesiredDwell;
+//	injectorMainPulseWidthsMath[2] = DesiredDwell;
+//	injectorMainPulseWidthsMath[3] = DesiredDwell;
 
 	injectorMainPulseWidthsMath[4] = masterPulseWidth;
 	injectorMainPulseWidthsMath[5] = masterPulseWidth;
