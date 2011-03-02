@@ -232,6 +232,12 @@ void calculateFuelAndIgnition(){
 		 * - and, set after delay to same + expected delay between nearest and next
 		 *
 		 * repeat per pin (this is in a loop)
+		 *
+		 * NOTE this is sub-optimal, the spark firing should be scheduled close to the closest tooth
+		 *      and dwell start should be = or greater than requested dwell and equal or less than max dwell
+		 *      ie, dwell can be MUCH more than requested in order to get the closest to event spark possible
+		 *      the output code was designed for fuel use, hence this current behaviour. It will be adjusted
+		 *      once xgate bit banging works sweetly.
 		 */
 
 		// eventAngles[?] ?
