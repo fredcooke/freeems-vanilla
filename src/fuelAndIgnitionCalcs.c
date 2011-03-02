@@ -242,6 +242,15 @@ void calculateFuelAndIgnition(){
 		 *      once xgate bit banging works sweetly.
 		 */
 
+		//		anglesOfTDC[0] = 0;
+		//		anglesOfTDC[1] = 180;
+		//		anglesOfTDC[2] = 360;
+		//		anglesOfTDC[3] = 540;
+
+		// desired timing is 15
+
+		// and offset of 90
+
 		// refactor this partly into init.c
 		unsigned short codeAngleOfIgnition = 0;
 		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + desiredTimingBTDC)){
@@ -249,6 +258,14 @@ void calculateFuelAndIgnition(){
 		}else{
 			codeAngleOfIgnition = (720 + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + desiredTimingBTDC);
 		}
+
+		// codeAngleOfIgnition
+		// 0 = 720 - 105 = 615
+		// 1 = 180 - 105 =  75
+		// 2 = 360 - 105 = 255
+		// 3 = 540 - 105 = 435
+
+		// eventAngles = {0, 69, 180, 249, 360, 429, 525, 540, 609, 665}
 
 		// needs to be tested...
 		unsigned char lastGoodEvent = ONES;
@@ -259,23 +276,41 @@ void calculateFuelAndIgnition(){
 			}
 		}
 
-		unsigned short ticksBetweenEventAndSpark = *ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent]);
+		// lastGoodEvent
+		// 0 = 8
+		// 1 = 1
+		// 2 = 3
+		// 3 = 5
+
+		/// @todo TODO this needs to be an unsigned long, maybe.
+		unsigned long ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
+
+		// 0 = ? * (615 - 609) = ? * 6
+		// 1 = ? * ( 75 -  69) = ? * 6
+		// 2 = ? * (255 - 249) = ? * 6
+		// 3 = ? * (435 - 429) = ? * 6
+
+//		ticks = 4500 ish at crank
+//				1000 ish at idle
+//				125 ish at redline
+//				this is from logs, real values, 125 is calced... but div 10 now.
+
 		if(ticksBetweenEventAndSpark > (DesiredDwell + trailingEdgeSecondaryRPMInputCodeTime)){
 			// set the event to sched from and delay after that event
 			pinEventNumbers[ignitionEvent] = lastGoodEvent;
-			postReferenceEventDelays[ignitionEvent] = ticksBetweenEventAndSpark - DesiredDwell;
+			postReferenceEventDelays[ignitionEvent] = (unsigned short)(ticksBetweenEventAndSpark - DesiredDwell);
 		}else{
-			// move to next tooth instead
+			/// @todo TODO this needs to loop to find the correct tooth, currently assumes that the next tooth is good enough, and that easily could be untrue: move to next tooth instead
 			unsigned short ticksBetweenClosestEventAndPreviousEvent = SHORTMAX;
 			if(lastGoodEvent > 0){
 				pinEventNumbers[ignitionEvent] = lastGoodEvent - 1;
-				ticksBetweenClosestEventAndPreviousEvent = *ticksPerDegree * (eventAngles[lastGoodEvent - 1] - eventAngles[lastGoodEvent]);
+				ticksBetweenClosestEventAndPreviousEvent = (unsigned short)(((unsigned long)*ticksPerDegree * (eventAngles[lastGoodEvent - 1] - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier);
 			}else{
 				pinEventNumbers[ignitionEvent] = numberOfEventAngles - 1;
-				ticksBetweenClosestEventAndPreviousEvent = *ticksPerDegree * (720 - eventAngles[numberOfEventAngles - 1]);
+				ticksBetweenClosestEventAndPreviousEvent = (unsigned short)(((unsigned long)*ticksPerDegree * (720 - eventAngles[numberOfEventAngles - 1])) / ticks_per_degree_multiplier);
 			}
 
-			postReferenceEventDelays[ignitionEvent] = ticksBetweenClosestEventAndPreviousEvent + (ticksBetweenEventAndSpark - DesiredDwell);
+			postReferenceEventDelays[ignitionEvent] = safeAdd(ticksBetweenClosestEventAndPreviousEvent, (ticksBetweenEventAndSpark - DesiredDwell));
 		}
 	}
 
