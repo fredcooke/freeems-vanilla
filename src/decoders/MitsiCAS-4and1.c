@@ -433,15 +433,16 @@ void schedulePortTPin(unsigned char pin){
 	}
 
 	// schedule the appropriate channel
-	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
+	// Removed conditions for now, known fix to intermittent random output bug found by someone else. Needs more work on a scope to get really good.
+//	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
 		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
 		TFLG = injectorMainOnMasks[pin];
-	}else{
-		injectorMainStartTimesHolding[pin] = startTime;
-		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
-	}
+//	}else{
+//		injectorMainStartTimesHolding[pin] = startTime;
+//		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+//	}
 }
 
 
