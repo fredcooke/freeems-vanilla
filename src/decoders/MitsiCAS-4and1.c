@@ -396,6 +396,7 @@ static LongTime timeStamp;
 
 const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 const unsigned char decoderName[] = "MitsiCAS-4and1.c";
+const unsigned char numberOfEventAngles = 10;
 
 
 /// @todo TODO migrate ALL decoder vars, arrays, fields, whatever to the decoder header out of the global header...

@@ -129,6 +129,7 @@ EXTERN unsigned long engineCyclePeriod;
 // These are defined per decoder and used elsewhere!
 EXTERN const unsigned short eventAngles[256]; // From 0 - 720 degrees, scale: not at all, x10 x60 or x90?
 EXTERN const unsigned char decoderName[32];
+EXTERN const unsigned char numberOfEventAngles;
 
 
 // specific to one decoder, generalise this later! Or put a call to an inline function in the main reset sync function and the definition in every decoder

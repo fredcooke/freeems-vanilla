@@ -79,8 +79,9 @@ void generateDerivedVars(){
 	/* Look up injector dead time with battery voltage */
 	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
-	// temp dwell var...
+	// temp dwell and advance vars...
 	DesiredDwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
+	desiredTimingBTDC = lookupPagedMainTableCellValue((mainTable*)&TablesA.IgnitionAdvanceTableMain, CoreVars->RPM, DerivedVars->LoadMain, currentFuelRPage) / 1024; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
 	/* Look up the engine temperature enrichment percentage with temperature */
 	DerivedVars->ETE = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent, CoreVars->CHT);

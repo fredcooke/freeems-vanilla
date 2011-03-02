@@ -185,8 +185,9 @@ void calculateFuelAndIgnition(){
 
 
 #define Mitsi4and1OffsetOnTruck 90 // add this to code degrees to find 0/TDC for cyl/output 1
+	// or subtract from real degrees to get code degrees
 
-//	unsigned short decoderEngineOffset = Mitsi4and1OffsetOnTruck;
+	unsigned short decoderEngineOffset = Mitsi4and1OffsetOnTruck;
 
 // TDC output 1 and cylinder 1 is 0
 // TDC output 2 and cylinder 3 is therefore 180
@@ -197,6 +198,7 @@ void calculateFuelAndIgnition(){
 
 	unsigned short anglesOfTDC[numberOfIgnitionEvents]; // no timing for fuel channels yet KISS for now.
 
+	/// @todo TODO, do this at init time
 	anglesOfTDC[0] = 0;
 	anglesOfTDC[1] = 180;
 	anglesOfTDC[2] = 360;
@@ -240,14 +242,41 @@ void calculateFuelAndIgnition(){
 		 *      once xgate bit banging works sweetly.
 		 */
 
-		// eventAngles[?] ?
+		// refactor this partly into init.c
+		unsigned short codeAngleOfIgnition = 0;
+		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + desiredTimingBTDC)){
+			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + desiredTimingBTDC);
+		}else{
+			codeAngleOfIgnition = (720 + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + desiredTimingBTDC);
+		}
 
-		// set the post event delay
-		postReferenceEventDelays[ignitionEvent] = 0; // right after tooth till code complete
+		// needs to be tested...
+		unsigned char lastGoodEvent = ONES;
+		unsigned char possibleEvent;
+		for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
+			if(eventAngles[possibleEvent] < codeAngleOfIgnition){
+				lastGoodEvent = possibleEvent;
+			}
+		}
 
-		// set the event to sched from
-		pinEventNumbers[ignitionEvent] = 0xFF; // all off till code complete
+		unsigned short ticksBetweenEventAndSpark = *ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent]);
+		if(ticksBetweenEventAndSpark > (DesiredDwell + trailingEdgeSecondaryRPMInputCodeTime)){
+			// set the event to sched from and delay after that event
+			pinEventNumbers[ignitionEvent] = lastGoodEvent;
+			postReferenceEventDelays[ignitionEvent] = ticksBetweenEventAndSpark - DesiredDwell;
+		}else{
+			// move to next tooth instead
+			unsigned short ticksBetweenClosestEventAndPreviousEvent = SHORTMAX;
+			if(lastGoodEvent > 0){
+				pinEventNumbers[ignitionEvent] = lastGoodEvent - 1;
+				ticksBetweenClosestEventAndPreviousEvent = *ticksPerDegree * (eventAngles[lastGoodEvent - 1] - eventAngles[lastGoodEvent]);
+			}else{
+				pinEventNumbers[ignitionEvent] = numberOfEventAngles - 1;
+				ticksBetweenClosestEventAndPreviousEvent = *ticksPerDegree * (720 - eventAngles[numberOfEventAngles - 1]);
+			}
 
+			postReferenceEventDelays[ignitionEvent] = ticksBetweenClosestEventAndPreviousEvent + (ticksBetweenEventAndSpark - DesiredDwell);
+		}
 	}
 
 
