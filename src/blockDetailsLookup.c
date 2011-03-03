@@ -457,19 +457,19 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 
 	/* Fixed conf 1 small chunks */
 	case engineSettingsLocationID:
-		details->size = ENGINE_SETTINGS_SIZE;
+		details->size = sizeof(engineSetting);
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.engineSettings);
 		details->parent = FixedConfig1LocationID;
 		break;
 	case serialSettingsLocationID:
-		details->size = SERIAL_SETTINGS_SIZE;
+		details->size = sizeof(serialSetting);
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.serialSettings);
 		details->parent = FixedConfig1LocationID;
 		break;
 	case tachoSettingsLocationID:
-		details->size = TACHO_SETTINGS_SIZE;
+		details->size = sizeof(tachoSetting);
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs1.tachoSettings);
 		details->parent = FixedConfig1LocationID;
@@ -489,19 +489,19 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 
 	/* Fixed conf 2 small chunks */
 	case sensorRangesLocationID:
-		details->size = SENSOR_RANGES_SIZE;
+		details->size = sizeof(sensorRange);
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorRanges);
 		details->parent = FixedConfig2LocationID;
 		break;
 	case sensorPresetsLocationID:
-		details->size = SENSOR_PRESETS_SIZE;
+		details->size = sizeof(sensorPreset);
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorPresets);
 		details->parent = FixedConfig2LocationID;
 		break;
 	case sensorSettingsLocationID:
-		details->size = SENSOR_SETTINGS_SIZE;
+		details->size = sizeof(sensorSetting);
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorSettings);
 		details->parent = FixedConfig2LocationID;

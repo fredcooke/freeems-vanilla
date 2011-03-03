@@ -48,15 +48,15 @@
 
 
 const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
-		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},   	/* dwellDesiredVersusVoltageTable */
-		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},	/* injectorDeadTimeTable */
-		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* postStartEnrichmentTable */
-		{ARRAY_OF_16_TEMPS, ARRAY_OF_16_ZEROS},       	/* engineTempEnrichmentTableFixed */
-		{ARRAY_OF_16_TEMPS, ARRAY_OF_16_ZEROS},       	/* primingVolumeTable */
-		{ARRAY_OF_16_TEMPS,  ARRAY_OF_16_PERCENTS},     /* engineTempEnrichmentTablePercent */
-		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_RPMS},       	/* dwellMaxVersusRPMTable */
+		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},        // dwellDesiredVersusVoltageTable
+		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},     // injectorDeadTimeTable
+		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_BASE_PERCENTS}, // postStartEnrichmentTable
+		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_TIMES},         // postStartTaperTimeTable
+		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_ZEROS},         // engineTempEnrichmentTableFixed - currently unused
+		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_VOLUMES},       // primingVolumeTable
+		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_PERCENTS},      // engineTempEnrichmentTablePercent
+		{ARRAY_OF_16_RPMS,     ARRAY_OF_16_MAX_DWELLS},    // dwellMaxVersusRPMTable
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

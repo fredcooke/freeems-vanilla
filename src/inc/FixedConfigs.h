@@ -74,44 +74,40 @@ typedef struct {
 	unsigned short presetAF; /* Air Flow */
 } sensorPreset;
 
-#define SENSOR_PRESETS_SIZE sizeof(sensorPreset)
-
 
 typedef struct {
-/* Sensor related settings */
-unsigned short TPSClosedMAP;
-unsigned short TPSOpenMAP;
+	/* Sensor related settings */
+	unsigned short TPSClosedMAP;
+	unsigned short TPSOpenMAP;
 
-/* Sensor input conditioning settings */
-/* These are used to calculate MAP, EGO and TPS from ADC readings. */
+	/* Sensor input conditioning settings */
+	/* These are used to calculate MAP, EGO and TPS from ADC readings. */
 
-/* For MAP, default to MPX4250A 260kPa - 8kPa = 252kPa See the link for the transfer function*/
-unsigned short MAPMinimum;							/* 0 kPa usually. */
-unsigned short MAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
+	/* For MAP, default to MPX4250A 260kPa - 8kPa = 252kPa See the link for the transfer function*/
+	unsigned short MAPMinimum;							/* 0 kPa usually. */
+	unsigned short MAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
 
-/* For AAP, default to MPX4100A 107.5kPa - 14kPa = 93.5kPa See the link for the transfer function */
-unsigned short AAPMinimum;							/* 0 kPa usually. */
-unsigned short AAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
+	/* For AAP, default to MPX4100A 107.5kPa - 14kPa = 93.5kPa See the link for the transfer function */
+	unsigned short AAPMinimum;							/* 0 kPa usually. */
+	unsigned short AAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
 
-/* Default to Innovate LC-1 on lambda 0.5 - 1.5 for 0-5V range (lambda range = 1.0) */
-unsigned short EGOMinimum;							/* 0.5 lambda ? (0.5 x 32768 = 16384) */
-unsigned short EGORange;							/* 1.5 lambda ? ((1.5 - 0.5) x 32768 = 32768 (max 49152)) */
+	/* Default to Innovate LC-1 on lambda 0.5 - 1.5 for 0-5V range (lambda range = 1.0) */
+	unsigned short EGOMinimum;							/* 0.5 lambda ? (0.5 x 32768 = 16384) */
+	unsigned short EGORange;							/* 1.5 lambda ? ((1.5 - 0.5) x 32768 = 32768 (max 49152)) */
 
-/* 0 - 24.5 Volt measurement with 10k and 39k resistors */
-/* http://www.google.com/search?hl=en&safe=off&q=5+*+(39000+%2B+10000)+%2F+10000&btnG=Search */
-unsigned short BRVMinimum;							/* 0 Volts usually. */
-unsigned short BRVRange;							/* 24.5 Volts for 10k and 39k resistors on a 12v vehicle */
+	/* 0 - 24.5 Volt measurement with 10k and 39k resistors */
+	/* http://www.google.com/search?hl=en&safe=off&q=5+*+(39000+%2B+10000)+%2F+10000&btnG=Search */
+	unsigned short BRVMinimum;							/* 0 Volts usually. */
+	unsigned short BRVRange;							/* 24.5 Volts for 10k and 39k resistors on a 12v vehicle */
 
-/* Default to 25% of voltage = closed (0%) */
-/* 75% of voltage = open (100%) */
-unsigned short TPSMinimumADC;						/* *should* be zero, but often isn't, this value corresponds to 0% TPS */
-unsigned short TPSMaximumADC;						/*  */
-// unsigned short TPSADCRange;						// ?? 100% = how many ADCs ?
+	/* Default to 25% of voltage = closed (0%) */
+	/* 75% of voltage = open (100%) */
+	unsigned short TPSMinimumADC;						/* *should* be zero, but often isn't, this value corresponds to 0% TPS */
+	unsigned short TPSMaximumADC;						/*  */
+	// unsigned short TPSADCRange;						// ?? 100% = how many ADCs ?
 /*efine TPS_MINIMUM 0								** = 0.00%		For clarity ONLY, always zero.	*/
 #define TPS_RANGE_MAX 64000							/* = 100.00%									*/
 } sensorRange;
-
-#define SENSOR_RANGES_SIZE sizeof(sensorRange)
 
 
 typedef struct {
@@ -132,16 +128,12 @@ typedef struct {
 	unsigned char missingTeeth;							/* Number sequentially removed from primary teeth (eg. 36-1 missing = 1) */
 } engineSetting;
 
-#define ENGINE_SETTINGS_SIZE sizeof(engineSetting)
-
 
 typedef struct {
 	/* Serial settings */
 	unsigned short baudDivisor;							/* 22 = (40MHz / (16*115.2kHz)) = 21.7013889 */
 	unsigned char networkAddress;						/* Default = 1, Default for PC = 10 */
 } serialSetting;
-
-#define SERIAL_SETTINGS_SIZE sizeof(serialSetting)
 
 
 typedef struct {
@@ -150,18 +142,13 @@ typedef struct {
 	unsigned short tachoTotalFactor;
 } tachoSetting;
 
-#define TACHO_SETTINGS_SIZE sizeof(tachoSetting)
-
 
 typedef struct {
 	unsigned short readingTimeout;						/* How often an ADC reading MUST occur					*/
 } sensorSetting;
 
-#define SENSOR_SETTINGS_SIZE sizeof(sensorSetting)
 
-
-#define userTextFieldArrayLength1 1024 - (ENGINE_SETTINGS_SIZE + SERIAL_SETTINGS_SIZE + TACHO_SETTINGS_SIZE + 2)
-
+#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(tachoSetting) + 2))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  * If you add something here, please ensure you update all of the following :
@@ -201,12 +188,10 @@ typedef struct {
 
 	unsigned char userTextField[userTextFieldArrayLength1]; /* "Place your personal notes here!!" */
 } fixedConfig1;
+CASSERT((sizeof(fixedConfig1) == flashSectorSize), fixedConfig1)
 
-#define FIXED_CONFIG1_SIZE sizeof(fixedConfig1)
 
-
-#define userTextFieldArrayLength2 1024 - (SENSOR_RANGES_SIZE + SENSOR_PRESETS_SIZE + SENSOR_SETTINGS_SIZE)
-
+#define userTextFieldArrayLength2 (flashSectorSize - (sizeof(sensorPreset) + sizeof(sensorRange) + sizeof(sensorSetting)))
 /** @copydoc fixedConfig1 */
 typedef struct {
 
@@ -219,8 +204,7 @@ typedef struct {
 	/* User text field for noting which installation the unit is from etc. */
 	unsigned char userTextField2[userTextFieldArrayLength2]; /* "Place your personal notes here!!" */
 } fixedConfig2;
-
-#define FIXED_CONFIG2_SIZE sizeof(fixedConfig2)
+CASSERT((sizeof(fixedConfig2) == flashSectorSize), fixedConfig2)
 
 
 #else

@@ -239,6 +239,34 @@ typedef struct {
 } ADCArray;
 
 
+/** A compile time assertion check.
+ *
+ *  Validate at compile time that the predicate is true without
+ *  generating code. This can be used at any point in a source file
+ *  where typedef is legal.
+ *
+ *  On success, compilation proceeds normally.
+ *
+ *  On failure, attempts to typedef an array type of negative size. The
+ *  offending line will look like
+ *      typedef assertion_failed_file_h_42[-1]
+ *  where file is the content of the second parameter which should
+ *  typically be related in some obvious way to the containing file
+ *  name, 42 is the line number in the file on which the assertion
+ *  appears, and -1 is the result of a calculation based on the
+ *  predicate failing.
+ *
+ *  @param predicate The predicate to test. It must evaluate to
+ *  something that can be coerced to a normal C boolean.
+ *
+ *  @param file A sequence of legal identifier characters that should
+ *  uniquely identify the source file in which this condition appears.
+ */
+#define CASSERT(predicate, file) _impl_CASSERT_LINE(predicate,__LINE__,file)
+#define _impl_PASTE(a,b) a##b
+#define _impl_CASSERT_LINE(predicate, line, file) typedef char _impl_PASTE(assertion_failed_##file##_,line)[2*!!(predicate)-1];
+
+
 #define MAINTABLE_RPM_LENGTH 16 //24			/* How many cells on the X axis */
 #define MAINTABLE_LOAD_LENGTH 16 //19		/* How many cells on the Y axis */
 #define MAINTABLE_MAX_RPM_LENGTH 27		/* How many cells on the X axis max */
@@ -286,6 +314,7 @@ typedef struct {
 	unsigned short Load[MAINTABLE_MAX_LOAD_LENGTH];		/* The array of Load (Y) axis values */
 	unsigned short Table[MAINTABLE_MAX_MAIN_LENGTH];	/* The table as an array of values */
 } mainTable;
+CASSERT(sizeof(mainTable) == flashSectorSize, mainTable)
 
 
 #define TWODTABLEUS_LENGTH 16
