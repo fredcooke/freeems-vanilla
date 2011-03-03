@@ -110,6 +110,6 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 	},
 	/* LambdaTable.Table */
 	{
-		#include "../data/tables/lambda/flatStoichiometric.h"
+		#include "../data/tables/lambda/FredsTruckLambda.h"
 	}
 };
