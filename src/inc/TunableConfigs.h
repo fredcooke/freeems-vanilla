@@ -59,7 +59,7 @@
 /** An array of 16 temperatures in Kelvin. */
 #define ARRAY_OF_16_TEMPS		{24315, 25315, 26315, 27315, 28315, 29315, 30315, 31315, 32315, 33315, 34315, 35315, 36315, 37315, 38315, 39315}
 /** An array of 16 percentages for temperature based enrichment. */
-#define ARRAY_OF_16_PERCENTS	{49152, 47513, 45875, 44237, 42598, 40960, 39321, 37683, 36045, 34406, 33587, 32768, 32768, 34406, 36045, 39321}
+#define ARRAY_OF_16_PERCENTS	{65535, 65535, 65535, 65535, 62259, 57344, 52429, 47514, 42598, 37683, 35226, 32768, 32768, 36045, 39322, 42598}
 /** Any array of 16 RPM values forAxis values for use as axes. TODO fill out values */
 #define ARRAY_OF_16_RPMS     	{    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
 /** An array of 6 percentage fuel trims, the value is 100%. */

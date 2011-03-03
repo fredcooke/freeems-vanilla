@@ -53,7 +53,7 @@ const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_ZEROS},       	/* postStartEnrichmentTable */
 		{ARRAY_OF_16_TEMPS, ARRAY_OF_16_ZEROS},       	/* engineTempEnrichmentTableFixed */
 		{ARRAY_OF_16_TEMPS, ARRAY_OF_16_ZEROS},       	/* primingVolumeTable */
-		{ARRAY_OF_16_TEMPS,  ARRAY_OF_16_PERCENTS},      	/* engineTempEnrichmentTablePercent */
+		{ARRAY_OF_16_TEMPS,  ARRAY_OF_16_PERCENTS},     /* engineTempEnrichmentTablePercent */
 		{ARRAY_OF_16_ZEROS, ARRAY_OF_16_RPMS},       	/* dwellMaxVersusRPMTable */
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
