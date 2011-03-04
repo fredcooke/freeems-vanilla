@@ -282,71 +282,53 @@ void calculateFuelAndIgnition(){
 		// 2 = 3
 		// 3 = 5
 
-		/// @todo TODO this needs to be an unsigned long, maybe.
-		unsigned long ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
+		// Don't actually use this var, just need that many iterations
+		for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
+			unsigned long ticksBetweenEventAndSpark = LONGMAX;
+			if(codeAngleOfIgnition > eventAngles[lastGoodEvent]){
+				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
+			}else{
+				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition + (720 - eventAngles[lastGoodEvent]))) / ticks_per_degree_multiplier;
+			}
 
-		// 0 = ? * (615 - 609) = ? * 6
-		// 1 = ? * ( 75 -  69) = ? * 6
-		// 2 = ? * (255 - 249) = ? * 6
-		// 3 = ? * (435 - 429) = ? * 6
+			// 0 = ? * (615 - 609) = ? * 6
+			// 1 = ? * ( 75 -  69) = ? * 6
+			// 2 = ? * (255 - 249) = ? * 6
+			// 3 = ? * (435 - 429) = ? * 6
 
 //		ticks = 4500 ish at crank
 //				1000 ish at idle
 //				125 ish at redline
 //				this is from logs, real values, 125 is calced... but div 10 now.
 
-		if(ticksBetweenEventAndSpark > (DesiredDwell + trailingEdgeSecondaryRPMInputCodeTime)){
-			// set the event to sched from and delay after that event
-			pinEventNumbers[ignitionEvent] = lastGoodEvent;
-			postReferenceEventDelays[ignitionEvent] = (unsigned short)(ticksBetweenEventAndSpark - DesiredDwell);
-		}else{
-			/// @todo TODO this needs to loop to find the correct tooth, currently assumes that the next tooth is good enough, and that easily could be untrue: move to next tooth instead
-			unsigned long ticksBetweenClosestEventAndPreviousEvent = LONGMAX;
-			if(lastGoodEvent > 0){
-				pinEventNumbers[ignitionEvent] = lastGoodEvent - 1;
-				ticksBetweenClosestEventAndPreviousEvent = ((unsigned long)*ticksPerDegree * (eventAngles[lastGoodEvent - 1] - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
-			}else{
-				pinEventNumbers[ignitionEvent] = numberOfEventAngles - 1;
-				ticksBetweenClosestEventAndPreviousEvent = ((unsigned long)*ticksPerDegree * (720 - eventAngles[numberOfEventAngles - 1])) / ticks_per_degree_multiplier;
-			}
+			if(ticksBetweenEventAndSpark > safeAdd(DesiredDwell, trailingEdgeSecondaryRPMInputCodeTime)){
+				// set the event to sched from and delay after that event
+				pinEventNumbers[ignitionEvent] = lastGoodEvent;
 
-			if(ticksBetweenClosestEventAndPreviousEvent > (SHORTMAX - (ticksBetweenEventAndSpark - DesiredDwell))){
-				postReferenceEventDelays[ignitionEvent] = SHORTMAX;
-				unsigned long dwellToAdd = ticksBetweenClosestEventAndPreviousEvent - SHORTMAX;
-				if(dwellToAdd > SHORTMAX){
-					injectorMainPulseWidthsMath[ignitionEvent] = SHORTMAX;
-				}else{
-					injectorMainPulseWidthsMath[ignitionEvent] = safeAdd(DesiredDwell, (unsigned short)dwellToAdd);
+				unsigned long potentialDelay = ticksBetweenEventAndSpark - DesiredDwell;
+				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
+					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
+					injectorMainPulseWidthsMath[ignitionEvent] = DesiredDwell;
+				}else if(((DesiredDwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
+					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
+					injectorMainPulseWidthsMath[ignitionEvent] = (unsigned short)((DesiredDwell + potentialDelay) - SHORTMAX);
 				}
+				// ELSE leave unscheduled rather than advance too much
+				// This indicates that the output event is too far from the input event
+				// This will only occur on input patterns with two few teeth, or bad alignment
+				break;
 			}else{
-				postReferenceEventDelays[ignitionEvent] = ticksBetweenClosestEventAndPreviousEvent + (ticksBetweenEventAndSpark - DesiredDwell);
-				injectorMainPulseWidthsMath[ignitionEvent] = DesiredDwell;
+				if(lastGoodEvent > 0){
+					lastGoodEvent--;
+				}else{
+					lastGoodEvent = numberOfEventAngles - 1;
+				}
 			}
 		}
 	}
 
 
-
-
-
-
-
-
-
-	// OLD shit :
-
-//	postReferenceEventDelays[0] = 13000;
-//	postReferenceEventDelays[1] = 13000;
-//	postReferenceEventDelays[2] = 13000;
-//	postReferenceEventDelays[3] = 13000;
-
-	// from leading edge of slots, this produced TDC timing with 13000 post event delay and huge 36250 dwell
-//	pinEventNumbers[0] = 7; // 1
-//	pinEventNumbers[1] = 0; // 3
-//	pinEventNumbers[2] = 2; // 4
-//	pinEventNumbers[3] = 4; // 2
-
-	// fuel shit:
+	// fuel shit: could sched the same way.
 
 	// just fire the fuel off whenever... doesn't matter much.
 	postReferenceEventDelays[4] = 0;
@@ -367,11 +349,6 @@ void calculateFuelAndIgnition(){
 
 
 //	/* "Calculate" the individual fuel pulse widths */
-//	injectorMainPulseWidthsMath[0] = DesiredDwell;
-//	injectorMainPulseWidthsMath[1] = DesiredDwell;
-//	injectorMainPulseWidthsMath[2] = DesiredDwell;
-//	injectorMainPulseWidthsMath[3] = DesiredDwell;
-
 	injectorMainPulseWidthsMath[4] = masterPulseWidth;
 	injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
