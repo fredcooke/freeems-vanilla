@@ -113,22 +113,22 @@
 #define payloadShorterThanRequiredForTest       0x4016
 #define noSuchUnitTestID                        0x4017
 
-#define invalidAxisOrder				0 /* prevent parsing */
-#define invalidAxisIndex				1 /* prevent parsing */
+#define invalidAxisOrder				1 /* prevent parsing */
+#define invalidAxisIndex				2 /* prevent parsing */
 
 #define errorBaseMainTableRPM			0x6000
-#define invalidMainTableRPMOrder		0x6000
-#define invalidMainTableRPMIndex		0x6001
-#define invalidMainTableRPMLength		0x6002
-#define errorBaseMainTableLoad			0x6003
-#define invalidMainTableLoadOrder		0x6003
-#define invalidMainTableLoadIndex		0x6004
-#define invalidMainTableLoadLength		0x6005
-#define invalidMainTableMainLength		0x6006
+#define invalidMainTableRPMOrder		0x6001
+#define invalidMainTableRPMIndex		0x6002
+#define invalidMainTableRPMLength		0x6003
+#define errorBaseMainTableLoad			0x6004
+#define invalidMainTableLoadOrder		0x6005
+#define invalidMainTableLoadIndex		0x6006
+#define invalidMainTableLoadLength		0x6007
+#define invalidMainTableMainLength		0x6008
 
 #define errorBaseTwoDTableAxis			0x6010
-#define invalidTwoDTableAxisOrder		0x6010
-#define invalidTwoDTableIndex			0x6011
+#define invalidTwoDTableAxisOrder		0x6011
+#define invalidTwoDTableIndex			0x6012
 
 
 #else
