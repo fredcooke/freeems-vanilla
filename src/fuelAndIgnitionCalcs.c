@@ -310,6 +310,7 @@ void calculateFuelAndIgnition(){
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DesiredDwell;
 				}else if(((DesiredDwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
+					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
 					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
 					injectorMainPulseWidthsMath[ignitionEvent] = (unsigned short)((DesiredDwell + potentialDelay) - SHORTMAX);
 				}
