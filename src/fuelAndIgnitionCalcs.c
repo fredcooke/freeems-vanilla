@@ -310,12 +310,16 @@ void calculateFuelAndIgnition(){
 
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DesiredDwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
+					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DesiredDwell;
+					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
 				}else if(((DesiredDwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
+					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
 					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
 					injectorMainPulseWidthsMath[ignitionEvent] = (unsigned short)((DesiredDwell + potentialDelay) - SHORTMAX);
+					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
 				}
 				// ELSE leave unscheduled rather than advance too much
 				// This indicates that the output event is too far from the input event
