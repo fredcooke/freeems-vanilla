@@ -267,6 +267,9 @@ void calculateFuelAndIgnition(){
 
 		// eventAngles = {0, 69, 180, 249, 360, 429, 525, 540, 609, 665}
 
+		/// @todo TODO rather than look for the nearest tooth and  then step through till you find the right one that can work, instead figure out the dwell in angle and subtract that too, and find the correct tooth first time, will save cpu cycles, and get same answer and be less complex...
+
+
 		// needs to be tested...
 		unsigned char lastGoodEvent = ONES;
 		unsigned char possibleEvent;
