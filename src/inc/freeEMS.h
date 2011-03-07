@@ -298,9 +298,7 @@ EXTERN unsigned short boundedTPSADC; // temp to view to debug
 
 EXTERN unsigned short bootTimeAAP; /* TODO populate this at switch on time depending on a few things. */
 
-// temp...
-EXTERN unsigned short DesiredDwell;
-EXTERN unsigned short desiredTimingBTDC;
+
 /* ALL STATUS STUFF HERE */
 
 // TODO these flags are used for coreSettingsA and it is not clear that they are dual purpose, fix this...

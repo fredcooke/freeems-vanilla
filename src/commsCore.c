@@ -68,6 +68,8 @@ void populateBasicDatalog(){
 	/* Save the current position */
 	unsigned char* position = TXBufferCurrentPositionHandler;
 
+	/// @todo TODO setup proper sequence and clock with some sort of differential measurement log to log. insert in front of actual data because these are part of the log itself.
+
 	// temp debug, done here to ensure it matches the other data.
 //	CoreVars->DRPM = Counters.primaryTeethSeen;
 	CoreVars->DDRPM = Counters.secondaryTeethSeen;
@@ -84,6 +86,23 @@ void populateBasicDatalog(){
 	DerivedVars->sp4 = (decoderFlags << 8) + coreStatusA;
 	DerivedVars->sp5 = currentEvent;
 
+
+	// Use these any way you like:
+//	DerivedVars->sp7= 0;
+//	DerivedVars->sp8= 0;
+//	DerivedVars->sp9= 0;
+//	DerivedVars->sp10= 0;
+//	DerivedVars->sp11= 0;
+//	DerivedVars->sp12= 0;
+//	DerivedVars->sp13= 0;
+//	DerivedVars->sp14= 0;
+//	DerivedVars->sp15= 0;
+//	DerivedVars->sp16= 0;
+//	DerivedVars->sp17= 0;
+//	DerivedVars->sp18= 0;
+//	DerivedVars->sp19= 0;
+
+
 	/* Get core vars */
 	memcpy(TXBufferCurrentPositionHandler, CoreVars, sizeof(CoreVar));
 	TXBufferCurrentPositionHandler += sizeof(CoreVar);
@@ -91,8 +110,8 @@ void populateBasicDatalog(){
 	memcpy(TXBufferCurrentPositionHandler, DerivedVars, sizeof(DerivedVar));
 	TXBufferCurrentPositionHandler += sizeof(DerivedVar);
 	/* Get raw adc counts */
-	memcpy(TXBufferCurrentPositionHandler, ADCArrays, sizeof(ADCArray));
-	TXBufferCurrentPositionHandler += sizeof(ADCArray);
+//	memcpy(TXBufferCurrentPositionHandler, ADCArrays, sizeof(ADCArray));
+//	TXBufferCurrentPositionHandler += sizeof(ADCArray);
 
 	/* Set/Truncate the log to the specified length */
 	TXBufferCurrentPositionHandler = position + configuredBasicDatalogLength;
@@ -1222,6 +1241,7 @@ void decodePacketAndRespond(){
 				// set table values - leave this till last, currently unused by mtx, likely to be removed anyway
 				// generateDerivedVars - convert to pointers, remove headers, privatise a lot of data!
 				// calculateFuelAndIgnition - ditto
+				// scheduling algorithm - ditto
 				// safeAdd
 				// safeTrim
 				// safeScale

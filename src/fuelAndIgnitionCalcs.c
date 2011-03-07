@@ -178,7 +178,11 @@ void calculateFuelAndIgnition(){
 	masterPulseWidth = refPW;
 
 
-
+/**
+ * @todo TODO split this stuff into fueling calc/logic/stuff and ignition calc/stuff/logic
+ * and finally, after those, scheduling inc limiting and othe weirdness and logic etc. If
+ * not doing this, this file and function will end up HUGE...
+ */
 
 
 
@@ -266,10 +270,10 @@ void calculateFuelAndIgnition(){
 
 		/// @todo TODO refactor this partly into init.c as per more detailed TD above
 		unsigned short codeAngleOfIgnition = 0;
-		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + desiredTimingBTDC)){
-			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + desiredTimingBTDC);
+		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + DerivedVars->Advance)){
+			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + DerivedVars->Advance);
 		}else{
-			codeAngleOfIgnition = (720 + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + desiredTimingBTDC);
+			codeAngleOfIgnition = (720 + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + DerivedVars->Advance);
 		}
 
 		// codeAngleOfIgnition
@@ -317,22 +321,25 @@ void calculateFuelAndIgnition(){
 //				125 ish at redline
 //				this is from logs, real values, 125 is calced... but div 10 now.
 
-			if(ticksBetweenEventAndSpark > safeAdd(DesiredDwell, trailingEdgeSecondaryRPMInputCodeTime)){
+			if(ticksBetweenEventAndSpark > safeAdd(DerivedVars->Dwell, trailingEdgeSecondaryRPMInputCodeTime)){
 				// set the event to sched from and delay after that event
 				pinEventNumbers[ignitionEvent] = lastGoodEvent;
 
-				unsigned long potentialDelay = ticksBetweenEventAndSpark - DesiredDwell;
+				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
-					injectorMainPulseWidthsMath[ignitionEvent] = DesiredDwell;
+					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
-				}else if(((DesiredDwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
+				}else if(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
 					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
 					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
-					injectorMainPulseWidthsMath[ignitionEvent] = (unsigned short)((DesiredDwell + potentialDelay) - SHORTMAX);
+					injectorMainPulseWidthsMath[ignitionEvent] = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
 					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
+					Counters.DwellStretchedToSchedule++;
+				}else{
+					Counters.TooFarToSchedule++;
 				}
 				// ELSE leave unscheduled rather than advance too much
 				// This indicates that the output event is too far from the input event

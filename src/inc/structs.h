@@ -129,13 +129,29 @@ typedef struct {
 	unsigned short IDT;				/* Minimum PW before fuel flow begins */
 	unsigned short RefPW;			/* Reference electrical PW */
 
-	unsigned short sp1;		/*  */
-	unsigned short sp2;		/*  */
-	unsigned short sp3;		/*  */
-	unsigned short sp4;		/*  */
-	unsigned short sp5;		/*  */
+	unsigned short Advance;  /*  */
+	unsigned short Dwell;  /*  */
 
-//	unsigned short ;		/*  */
+	// replace highest first to avoid hassles for offset based dave/mtx...
+	unsigned short sp19; /*  */
+	unsigned short sp18; /*  */
+	unsigned short sp17; /*  */
+	unsigned short sp16; /*  */
+	unsigned short sp15; /*  */
+	unsigned short sp14; /*  */
+	unsigned short sp13; /*  */
+	unsigned short sp12; /*  */
+	unsigned short sp11; /*  */
+	unsigned short sp10; /*  */
+	unsigned short sp9;  /*  */
+	unsigned short sp8;  /*  */
+	unsigned short sp7;  /*  */
+	unsigned short sp6;  /*  */
+	unsigned short sp5;  /*  */
+	unsigned short sp4;  /*  */
+	unsigned short sp3;  /*  */
+	unsigned short sp2;  /*  */
+	unsigned short sp1;  /*  */
 } DerivedVar;
 
 
@@ -360,6 +376,8 @@ typedef struct {
 	unsigned short camSyncCorrections;					/* Counter for number of lost cam syncs									*/
 	unsigned short RPMValidityLosses;					/* Counter for number of lost RPM validity events						*/
 	unsigned short primaryTeethDroppedFromLackOfSync;	/* Counter for number of primary teeth dropped due to no primary sync	*/
+	unsigned short TooFarToSchedule;					/* times sched wasnt done to prevent excess advance */
+	unsigned short DwellStretchedToSchedule;			/* times sched needed to extend dwell to prevent excess advance */
 // TODO remove the one above this line about teeth dropped???? probably...
 
 	unsigned short primaryTeethSeen;					/* Free running counters for number of teeth seen such that...			*/
