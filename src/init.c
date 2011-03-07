@@ -547,6 +547,19 @@ void initXgate(){
 
 /* Set up the timer module and its various interrupts */
 void initECTTimer(){
+	/** @todo TODO Take the configuration from the decoder (as is) and mask it such that it does not affect the 6 other channels.
+	 * Take the the number of output channels required from configuration and configure that many as outputs
+	 * Configure the balance in whatever way is specified in the GPIO configuration - allow second input to be reused as GPI only.
+	 *
+	 * This stuff affects:
+	 * - TIE = 0x01 or 0x03, only. OC channels enabled as required and IC only for RPM/position.
+	 * - TIOS = nope, always 0xFC for 2 IC and 6 OC
+	 * - TCTL (1,2,3,4) 4 = 0x0? mask off high 4 bits and allow low 4 to come from decoder config/init
+	 * - PORTT = zeros, with balance from config
+	 * - DDRT = 0,1 inputs, or if unused by decoder, from config
+	 */
+
+
 
 	// TODO rearrange the order of this stuff and pull enable and interrupt enable out to the last function call of init.
 
