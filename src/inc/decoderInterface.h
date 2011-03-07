@@ -128,7 +128,7 @@ EXTERN unsigned long engineCyclePeriod;
 
 // These are defined per decoder and used elsewhere!
 EXTERN const unsigned short eventAngles[256]; // From 0 - 720 degrees, scale: not at all, x10 x60 or x90?
-EXTERN const unsigned char decoderName[32];
+EXTERN const unsigned char decoderName[32]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
 EXTERN const unsigned char numberOfEventAngles;
 
 

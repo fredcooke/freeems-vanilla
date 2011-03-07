@@ -198,12 +198,20 @@ void calculateFuelAndIgnition(){
 
 	unsigned short anglesOfTDC[numberOfIgnitionEvents]; // no timing for fuel channels yet KISS for now.
 
-	/// @todo TODO, do this at init time
+	/** @todo TODO, do this at init time from fixed config as an array of
+	 * angles and a single engine offset combined into this runtime array.
+	 */
 	anglesOfTDC[0] = 0;
 	anglesOfTDC[1] = 180;
 	anglesOfTDC[2] = 360;
 	anglesOfTDC[3] = 540;
 
+	/** @todo TODO move this loop variable to fixedConfig and make a subset of
+	 * the remainder of channels configured for fuel with a start time/tooth
+	 * directly set for now, ie, make the 6 channels usable as fuel or ignition
+	 * from reasonable configuration and write a guide on how to set it up for
+	 * any engine.
+	 */
 	unsigned char ignitionEvent;
 	for(ignitionEvent = 0;ignitionEvent < numberOfIgnitionEvents;ignitionEvent++){
 
@@ -251,7 +259,12 @@ void calculateFuelAndIgnition(){
 
 		// and offset of 90
 
-		// refactor this partly into init.c
+		/** @todo TODO move sched code to a function or functions (inline?)
+		 * that can be unit tested such that we KNOW it performs as anticipated
+		 * rather than just trying it out on a 400hp turbo truck engine.
+		 */
+
+		/// @todo TODO refactor this partly into init.c as per more detailed TD above
 		unsigned short codeAngleOfIgnition = 0;
 		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + desiredTimingBTDC)){
 			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + desiredTimingBTDC);
