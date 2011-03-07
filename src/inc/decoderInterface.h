@@ -160,6 +160,8 @@ EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on
 
 // Helpers - force all these to be inlined!
 EXTERN void resetToNonRunningState(void);
+EXTERN void schedulePortTPin(unsigned char pin, unsigned short edgeTimeStamp);
+
 
 
 #undef EXTERN

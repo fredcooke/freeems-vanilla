@@ -142,12 +142,12 @@ void PrimaryRPMISR(){
 		}
 
 		// temporary data from inputs
-		unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+//		unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 //		unsigned long timeBetweenSuccessivePrimaryPulses = lastPrimaryPulseTimeStamp - primaryLeadingEdgeTimeStamp;
 //		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
 //		timeBetweenSuccessivePrimaryPulsesBuffer = (timeBetweenSuccessivePrimaryPulses >> 1) + (timeBetweenSuccessivePrimaryPulsesBuffer >> 1);
 
-		// TODO make scheduling either fixed from boot with a limited range, OR preferrably if its practical scheduled on the fly to allow arbitrary advance and retard of both fuel and ignition.
+		// TODO make scheduling either fixed from boot with a limited range, OR preferably if its practical scheduled on the fly to allow arbitrary advance and retard of both fuel and ignition.
 
 		/* Check for loss of sync by too high a count */
 		if(primaryPulsesPerSecondaryPulse > 12){
@@ -191,59 +191,20 @@ void PrimaryRPMISR(){
 
 			/* Reset the clock for reading timeout */
 			Clocks.timeoutADCreadingClock = 0;
+		}
 
-			if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
-				/* Determine if half the cycle is bigger than short-max */
-				unsigned short maxAngleAfter;
-				if((engineCyclePeriod >> 1) > 0xFFFF){
-					maxAngleAfter = 0xFFFF;
-				}else{
-					maxAngleAfter = (unsigned short)(engineCyclePeriod >> 1);
+		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
+		if(decoderFlags & CRANK_SYNC){
+			unsigned char pin;
+			/// @todo TODO Loop limit from config checked at init?
+			for(pin=0;pin<6;pin++){
+				if(pinEventNumbers[pin] == primaryPulsesPerSecondaryPulse){
+					schedulePortTPin(primaryPulsesPerSecondaryPulse, edgeTimeStamp);
 				}
+			}
+		}
 
-				/* Determine the channels to schedule */
-				unsigned char fuelChannel = (primaryPulsesPerSecondaryPulse / 2) - 1;
-				unsigned char ignitionChannel = (primaryPulsesPerSecondaryPulse / 2) - 1;
 
-				/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
-				unsigned short advance;
-				if(postReferenceEventDelays[fuelChannel] > maxAngleAfter){ // if too big, make it max
-					advance = maxAngleAfter;
-				}else if(postReferenceEventDelays[fuelChannel] < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
-					advance = trailingEdgeSecondaryRPMInputCodeTime;
-				}else{ // else use it as is
-					advance = postReferenceEventDelays[fuelChannel];
-				}
-
-				// determine the long and short start times
-				unsigned short startTime = primaryLeadingEdgeTimeStamp + advance;
-				unsigned long startTimeLong = timeStamp.timeLong + advance;
-
-				if(fuelChannel > 5 || ignitionChannel > 5){
-//					send("bad fuel : ");
-	//				sendUC(fuelChannel);
-		//			send("bad  ign : ");
-			//		sendUC(ignitionChannel);
-					return;
-				}
-
-				// determine whether or not to reschedule
-				unsigned char reschedule = 0;
-				unsigned long diff = startTimeLong - (injectorMainEndTimes[fuelChannel] + injectorSwitchOffCodeTime);
-				if(diff > LONGHALF){
-					reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
-				}
-
-				// schedule the appropriate channel
-				if(!(*injectorMainControlRegisters[fuelChannel] & injectorMainEnableMasks[fuelChannel]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
-					*injectorMainControlRegisters[fuelChannel] |= injectorMainEnableMasks[fuelChannel];
-					*injectorMainTimeRegisters[fuelChannel] = startTime;
-					TIE |= injectorMainOnMasks[fuelChannel];
-					TFLG = injectorMainOnMasks[fuelChannel];
-				}else{
-					injectorMainStartTimesHolding[fuelChannel] = startTime;
-					selfSetTimer |= injectorMainOnMasks[fuelChannel]; // setup a bit to let the timer interrupt know to set its own new start from a var
-				}
 
 				// TODO advance/retard/dwell numbers all need range checking etc done. some of this should be done in the calculator section, and some here. currently none is done at all and for that reason, this will not work in a real system yet, if it works at all.
 				// as do array indexs here and in the ISRs...
@@ -362,8 +323,8 @@ void PrimaryRPMISR(){
 					// increment from 1 or more
 					ignitionQueueLength++;
 				}*/
-			}
-		}
+
+
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		PORTJ &= 0x7F;

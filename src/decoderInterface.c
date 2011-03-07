@@ -62,3 +62,51 @@ void resetToNonRunningState(){
 
 	// TODO more stuff needs resetting here, but only critical things.
 }
+
+
+// Need to make this available to all decoders and cut out code from those that have it built in.
+void schedulePortTPin(unsigned char pin, unsigned short edgeTimeStamp){
+	/// @todo TODO if the other stuff isn't needed then neither is this!
+	/* Determine if half the cycle is bigger than short-max */
+	unsigned short maxAngleAfter;
+	if((engineCyclePeriod >> 1) > 0xFFFF){
+		maxAngleAfter = 0xFFFF;
+	}else{
+		maxAngleAfter = (unsigned short)(engineCyclePeriod >> 1);
+	}
+
+	/// @todo TODO rename advance to something more honest, do we really need to do these checks here? Why not do them in the scheduler instead? Maybe we can just trust the delay and add it to the stamp?
+	/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
+	unsigned short advance;
+	if(postReferenceEventDelays[pin] > maxAngleAfter){ // if too big, make it max
+		advance = maxAngleAfter;
+	}else if(postReferenceEventDelays[pin] < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
+		advance = trailingEdgeSecondaryRPMInputCodeTime;
+	}else{ // else use it as is
+		advance = postReferenceEventDelays[pin];
+	}
+
+	// determine the long and short start times
+	unsigned short startTime = edgeTimeStamp + advance;
+	// remove this temporarily too, no need for it without the later conditional code
+//	unsigned long startTimeLong = timeStamp.timeLong + advance;
+//
+//	// determine whether or not to reschedule
+//	unsigned char reschedule = 0;
+//	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
+//	if(diff > LONGHALF){
+//		reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
+//	}
+
+	// schedule the appropriate channel
+	// Removed conditions for now, known fix to intermittent random output bug found by someone else. Needs more work on a scope to get really good.
+//	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
+		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
+		*injectorMainTimeRegisters[pin] = startTime;
+		TIE |= injectorMainOnMasks[pin];
+		TFLG = injectorMainOnMasks[pin];
+//	}else{
+//		injectorMainStartTimesHolding[pin] = startTime;
+//		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+//	}
+}

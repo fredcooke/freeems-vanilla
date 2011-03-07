@@ -402,64 +402,6 @@ const unsigned char numberOfEventAngles = 10;
 /// @todo TODO migrate ALL decoder vars, arrays, fields, whatever to the decoder header out of the global header...
 
 
-// Need to make this available to all decoders and cut out code from those that have it built in.
-void schedulePortTPin(unsigned char pin){
-	/* Determine if half the cycle is bigger than short-max */
-	unsigned short maxAngleAfter;
-	if((engineCyclePeriod >> 1) > 0xFFFF){
-		maxAngleAfter = 0xFFFF;
-	}else{
-		maxAngleAfter = (unsigned short)(engineCyclePeriod >> 1);
-	}
-
-	/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
-	unsigned short advance;
-	if(postReferenceEventDelays[pin] > maxAngleAfter){ // if too big, make it max
-		advance = maxAngleAfter;
-	}else if(postReferenceEventDelays[pin] < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
-		advance = trailingEdgeSecondaryRPMInputCodeTime;
-	}else{ // else use it as is
-		advance = postReferenceEventDelays[pin];
-	}
-
-	// determine the long and short start times
-	unsigned short startTime = edgeTimeStamp + advance;
-	unsigned long startTimeLong = timeStamp.timeLong + advance;
-
-	// determine whether or not to reschedule
-	unsigned char reschedule = 0;
-	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
-	if(diff > LONGHALF){
-		reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
-	}
-
-	// schedule the appropriate channel
-	// Removed conditions for now, known fix to intermittent random output bug found by someone else. Needs more work on a scope to get really good.
-//	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
-		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
-		*injectorMainTimeRegisters[pin] = startTime;
-		TIE |= injectorMainOnMasks[pin];
-		TFLG = injectorMainOnMasks[pin];
-//	}else{
-//		injectorMainStartTimesHolding[pin] = startTime;
-//		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
-//	}
-}
-
-
-/* block 1 RPM code from simple/volvo, similar style of RPM calc to what is required in primary ISR
-
- 		primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
-		timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryPulseTimeStamp;
-		lastPrimaryPulseTimeStamp = primaryLeadingEdgeTimeStamp;
-
-// = 60 * (1000000 / 0.8)
-#define ticksPerMinute   75000000 // this is correct.
-
-		*RPMRecord = (unsigned short) (ticksPerMinute / timeBetweenSuccessivePrimaryPulses);
- */
-
-
 /** Primary RPM ISR
  *
  * Schedule events :
@@ -598,11 +540,12 @@ void PrimaryRPMISR(){
 		}
 	}
 
+	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
 	if(decoderFlags & CAM_SYNC){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == currentEvent){
-				schedulePortTPin(pin);
+				schedulePortTPin(pin, edgeTimeStamp);
 			}
 		}
 	}
@@ -733,7 +676,7 @@ void SecondaryRPMISR(){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == currentEvent){
-				schedulePortTPin(pin);
+				schedulePortTPin(pin, edgeTimeStamp);
 			}
 		}
 	}

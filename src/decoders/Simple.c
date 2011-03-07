@@ -123,50 +123,16 @@ void PrimaryRPMISR(){
 		/* Reset the clock for reading timeout */
 		Clocks.timeoutADCreadingClock = 0;
 
-		if(masterPulseWidth > injectorMinimumPulseWidth){ // use reference PW to decide. spark needs moving outside this area though TODO
-			/* Determine if half the cycle is bigger than short-max */
-			unsigned short maxAngleAfter;
-			if((engineCyclePeriod >> 1) > 0xFFFF){
-				maxAngleAfter = 0xFFFF;
-			}else{
-				maxAngleAfter = (unsigned short)(engineCyclePeriod >> 1);
-			}
-
-			/* Determine the channels to schedule */
-			unsigned char fuelChannel = 0;//(primaryPulsesPerSecondaryPulse / 2) - 1;
-
-			/* Check advance to ensure it is less than 1/2 of the previous engine cycle and more than codetime away */
-			unsigned short advance;
-			if(postReferenceEventDelays[fuelChannel] > maxAngleAfter){ // if too big, make it max
-				advance = maxAngleAfter;
-			}else if(postReferenceEventDelays[fuelChannel] < trailingEdgeSecondaryRPMInputCodeTime){ // if too small, make it min
-				advance = trailingEdgeSecondaryRPMInputCodeTime;
-			}else{ // else use it as is
-				advance = postReferenceEventDelays[fuelChannel];
-			}
-
-			// determine the long and short start times
-			unsigned short startTime = edgeTimeStamp + advance;
-			unsigned long startTimeLong = timeStamp.timeLong + advance;
-
-			// determine whether or not to reschedule
-			unsigned char reschedule = 0;
-			unsigned long diff = startTimeLong - (injectorMainEndTimes[fuelChannel] + injectorSwitchOffCodeTime);
-			if(diff > LONGHALF){
-				reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
-			}
-
-			// schedule the appropriate channel
-			if(!(*injectorMainControlRegisters[fuelChannel] & injectorMainEnableMasks[fuelChannel]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
-				*injectorMainControlRegisters[fuelChannel] |= injectorMainEnableMasks[fuelChannel];
-				*injectorMainTimeRegisters[fuelChannel] = startTime;
-				TIE |= injectorMainOnMasks[fuelChannel];
-				TFLG = injectorMainOnMasks[fuelChannel];
-			}else{
-				injectorMainStartTimesHolding[fuelChannel] = startTime;
-				selfSetTimer |= injectorMainOnMasks[fuelChannel]; // setup a bit to let the timer interrupt know to set its own new start from a var
+		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
+		if(decoderFlags & COMBUSTION_SYNC){
+			unsigned char pin;
+			for(pin=0;pin<6;pin++){
+				if(pinEventNumbers[pin] == 0){
+					schedulePortTPin(pin, edgeTimeStamp);
+				}
 			}
 		}
+
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		PORTJ &= 0x7F;
