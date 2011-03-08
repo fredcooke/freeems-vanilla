@@ -51,9 +51,13 @@
 // hash defines here
 
 // declarations here
+#define SKIPWINDOWS 1
+#define LOWRESWINDOWS	16
+#define HIGH	1
+#define LOW		0
 EXTERN unsigned char PrimaryTeethDuringHigh;
 EXTERN unsigned char PrimaryTeethDuringLow;
-EXTERN unsigned char isSynced; // make it compile... need a shared var/bit for this
+EXTERN unsigned char isSynced; //need a shared var/bit for this
 EXTERN void changeSyncStatus(unsigned char);
 
 
