@@ -133,25 +133,25 @@ typedef struct {
 	unsigned short Dwell;  /*  */
 
 	// replace highest first to avoid hassles for offset based dave/mtx...
-	unsigned short sp19; /*  */
-	unsigned short sp18; /*  */
-	unsigned short sp17; /*  */
-	unsigned short sp16; /*  */
-	unsigned short sp15; /*  */
-	unsigned short sp14; /*  */
-	unsigned short sp13; /*  */
-	unsigned short sp12; /*  */
-	unsigned short sp11; /*  */
-	unsigned short sp10; /*  */
-	unsigned short sp9;  /*  */
-	unsigned short sp8;  /*  */
-	unsigned short sp7;  /*  */
-	unsigned short sp6;  /*  */
-	unsigned short sp5;  /*  */
-	unsigned short sp4;  /*  */
-	unsigned short sp3;  /*  */
-	unsigned short sp2;  /*  */
-	unsigned short sp1;  /*  */
+	unsigned short zsp19; /*  */
+	unsigned short zsp18; /*  */
+	unsigned short zsp17; /*  */
+	unsigned short zsp16; /*  */
+	unsigned short zsp15; /*  */
+	unsigned short zsp14; /*  */
+	unsigned short zsp13; /*  */
+	unsigned short zsp12; /*  */
+	unsigned short zsp11; /*  */
+	unsigned short zsp10; /*  */
+	unsigned short zsp9;  /*  */
+	unsigned short zsp8;  /*  */
+	unsigned short zsp7;  /*  */
+	unsigned short zsp6;  /*  */
+	unsigned short zsp5;  /*  */
+	unsigned short zsp4;  /*  */
+	unsigned short zsp3;  /*  */
+	unsigned short zsp2;  /*  */
+	unsigned short zsp1;  /*  */
 } DerivedVar;
 
 

@@ -77,30 +77,30 @@ void populateBasicDatalog(){
 	CoreVars->DMAP = Counters.camSyncLosses;
 
 	/* UART/serial specific counters */
-//	DerivedVars->sp1 = Counters.serialEscapePairMismatches + Counters.serialStartsInsideAPacket + Counters.serialPacketsOverLength + Counters.serialNoiseErrors + Counters.serialOverrunErrors + Counters.serialFramingErrors + Counters.serialParityErrors;
-	DerivedVars->sp1 = Counters.crankSyncLosses;
+//	DerivedVars->zsp1 = Counters.serialEscapePairMismatches + Counters.serialStartsInsideAPacket + Counters.serialPacketsOverLength + Counters.serialNoiseErrors + Counters.serialOverrunErrors + Counters.serialFramingErrors + Counters.serialParityErrors;
+	DerivedVars->zsp1 = Counters.crankSyncLosses;
 	/* Generic com counters */
-//			DerivedVars->sp2 = Counters.commsChecksumMismatches + Counters.commsPacketsUnderMinLength + Counters.commsDebugMessagesNotSent + Counters.commsErrorMessagesNotSent;
-	DerivedVars->sp2 = syncCaughtOnThisEvent;
-	DerivedVars->sp3++;
-	DerivedVars->sp4 = (decoderFlags << 8) + coreStatusA;
-	DerivedVars->sp5 = currentEvent;
+//			DerivedVars->zsp2 = Counters.commsChecksumMismatches + Counters.commsPacketsUnderMinLength + Counters.commsDebugMessagesNotSent + Counters.commsErrorMessagesNotSent;
+	DerivedVars->zsp2 = syncCaughtOnThisEvent;
+	DerivedVars->zsp3++;
+	DerivedVars->zsp4 = (decoderFlags << 8) + coreStatusA;
+	DerivedVars->zsp5 = currentEvent;
 
 
 	// Use these any way you like:
-//	DerivedVars->sp7= 0;
-//	DerivedVars->sp8= 0;
-//	DerivedVars->sp9= 0;
-//	DerivedVars->sp10= 0;
-//	DerivedVars->sp11= 0;
-//	DerivedVars->sp12= 0;
-//	DerivedVars->sp13= 0;
-//	DerivedVars->sp14= 0;
-//	DerivedVars->sp15= 0;
-//	DerivedVars->sp16= 0;
-//	DerivedVars->sp17= 0;
-//	DerivedVars->sp18= 0;
-//	DerivedVars->sp19= 0;
+//	DerivedVars->zsp7= 0;
+//	DerivedVars->zsp8= 0;
+//	DerivedVars->zsp9= 0;
+//	DerivedVars->zsp10= 0;
+//	DerivedVars->zsp11= 0;
+//	DerivedVars->zsp12= 0;
+//	DerivedVars->zsp13= 0;
+//	DerivedVars->zsp14= 0;
+//	DerivedVars->zsp15= 0;
+//	DerivedVars->zsp16= 0;
+//	DerivedVars->zsp17= 0;
+//	DerivedVars->zsp18= 0;
+//	DerivedVars->zsp19= 0;
 
 
 	/* Get core vars */
