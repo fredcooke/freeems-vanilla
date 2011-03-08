@@ -77,26 +77,26 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{XGATE_ERROR_HANDLER, 0x1B},  // RESERVED
 		{XGATE_ERROR_HANDLER, 0x1C},  // RESERVED
 		{XGATE_ERROR_HANDLER, 0x1D},  // RESERVED
-		{XGATE_ERROR_HANDLER, 0x1E},  // Channel 1E - ATD1 compare
-		{XGATE_ERROR_HANDLER, 0x1F},  // Channel 1F - ATD0 compare
-		{XGATE_ERROR_HANDLER, 0x20},  // Channel 20 - TIM Pulse accumulator input edge
-		{XGATE_ERROR_HANDLER, 0x21},  // Channel 21 - TIM Pulse accumulator A overflow
-		{XGATE_ERROR_HANDLER, 0x22},  // Channel 22 - TIM overflow
-		{XGATE_ERROR_HANDLER, 0x23},  // Channel 23 - TIM channel 7
-		{XGATE_ERROR_HANDLER, 0x24},  // Channel 24 - TIM channel 6
-		{XGATE_ERROR_HANDLER, 0x25},  // Channel 25 - TIM channel 5
-		{XGATE_ERROR_HANDLER, 0x26},  // Channel 26 - TIM channel 4
-		{XGATE_ERROR_HANDLER, 0x27},  // Channel 27 - TIM channel 3
-		{XGATE_ERROR_HANDLER, 0x28},  // Channel 28 - TIM channel 2
-		{XGATE_ERROR_HANDLER, 0x29},  // Channel 29 - TIM channel 1
-		{XGATE_ERROR_HANDLER, 0x2A},  // Channel 2A - TIM channel 0
-		{XGATE_ERROR_HANDLER, 0x2B},  // Channel 2B - SCI7
-		{XGATE_ERROR_HANDLER, 0x2C},  // Channel 2C - Periodic Interrupt Timer 7
-		{XGATE_ERROR_HANDLER, 0x2D},  // Channel 2D - Periodic Interrupt Timer 6
-		{XGATE_ERROR_HANDLER, 0x2E},  // Channel 2E - Periodic Interrupt Timer 5
-		{XGATE_ERROR_HANDLER, 0x2F},  // Channel 2F - Periodic Interrupt Timer 4
-		{XGATE_ERROR_HANDLER, 0x30},  // Channel 30 - Reserved
-		{XGATE_ERROR_HANDLER, 0x31},  // Channel 31 - Reserved
+		{XGATE_ERROR_HANDLER, 0x1E},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x1F},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x20},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x21},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x22},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x23},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x24},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x25},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x26},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x27},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x28},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x29},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x2A},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x2B},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x2C},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x2D},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x2E},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x2F},  // RESERVED
+		{XGATE_ERROR_HANDLER, 0x30},  // special    - Reserved S12XCPU RAM access violation
+		{XGATE_ERROR_HANDLER, 0x31},  // special    - Reserved XGATE software error interrupt
 		{XGATE_ERROR_HANDLER, 0x32},  // Channel 32 - XGATE Software Trigger 7
 		{XGATE_ERROR_HANDLER, 0x33},  // Channel 33 - XGATE Software Trigger 6
 		{XGATE_ERROR_HANDLER, 0x34},  // Channel 34 - XGATE Software Trigger 5
@@ -108,8 +108,8 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{XGATE_ERROR_HANDLER, 0x3A},  // Channel 3A - Periodic Interrupt Timer 3
 		{XGATE_ERROR_HANDLER, 0x3B},  // Channel 3B - Periodic Interrupt Timer 2
 		{XGATE_ERROR_HANDLER, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1
-		{XGATE_ERROR_HANDLER, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0
-		{XGATE_ERROR_HANDLER, 0x3E},  // Channel 3E - Reserved
+		{XGATE_ERROR_HANDLER, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0 //TODO trigger PIT scheduler
+		{XGATE_ERROR_HANDLER, 0x3E},  // Reserved
 		{XGATE_ERROR_HANDLER, 0x3F},  // Channel 3F - Autonomous Periodical interrupt API
 		{XGATE_ERROR_HANDLER, 0x40},  // Channel 40 - Low Voltage interrupt LVI
 		{XGATE_ERROR_HANDLER, 0x41},  // Channel 41 - IIC1 Bus
@@ -140,11 +140,11 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{XGATE_ERROR_HANDLER, 0x5A},  // Channel 5A - CAN0 errors
 		{XGATE_ERROR_HANDLER, 0x5B},  // Channel 5B - CAN0 wake-up
 		{XGATE_ERROR_HANDLER, 0x5C},  // Channel 5C - FLASH
-		{XGATE_ERROR_HANDLER, 0x5D},  // Channel 5D - FLASH fault detect
+		{XGATE_ERROR_HANDLER, 0x5D},  // Channel 5D - EEPROM
 		{XGATE_ERROR_HANDLER, 0x5E},  // Channel 5E - SPI2
 		{XGATE_ERROR_HANDLER, 0x5F},  // Channel 5F - SPI1
 		{XGATE_ERROR_HANDLER, 0x60},  // Channel 60 - IIC0 Bus
-		{XGATE_ERROR_HANDLER, 0x61},  // Channel 61 - SCI6
+		{XGATE_ERROR_HANDLER, 0x61},  // RESERVED
 		{XGATE_ERROR_HANDLER, 0x62},  // Channel 62 - CRG Self Clock Mode
 		{XGATE_ERROR_HANDLER, 0x63},  // Channel 63 - CRG PLL lock
 		{XGATE_ERROR_HANDLER, 0x64},  // Channel 64 - Pulse Accumulator B Overflow
