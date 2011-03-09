@@ -54,7 +54,7 @@
  */
 
 
-const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar) + sizeof(ADCArray);
+const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar);
 
 
 /* Constants */
