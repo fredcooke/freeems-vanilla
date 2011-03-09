@@ -21,7 +21,7 @@
 	push = refs/heads/master:refs/heads/master
 [remote "repoorcz"]
 	url = ssh://repo.or.cz/srv/git/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/sourceforge/*
+	fetch = +refs/heads/*:refs/remotes/repoorcz/*
 	push = refs/heads/master:refs/heads/master
 [remote "unfuddle"]
 	url = git@freeems.unfuddle.com:freeems/freeems-vanilla.git
