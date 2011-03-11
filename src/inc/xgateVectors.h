@@ -23,6 +23,14 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
+/** @file xgateVectors.h
+ * @ingroup xgateHeaders
+ *
+ * @brief C header for assembly xgate functions
+ *
+ * Because we need to call the assembly flash burning function from C code an
+ * extern function declaration is required to allow successful compilation.
+ */
 #ifndef FILE_XGATEVECTORS_H_SEEN
 #define FILE_XGATEVECTORS_H_SEEN
 
@@ -45,6 +53,9 @@ typedef struct {
 	unsigned short initialVariable; /* This data is forced into the XGATE R1 register */
 } xgateIntVector;
 
+/* Because we need the address of the xgate ISR function(s) from C code an
+   extern function declaration is required to allow successful compilation/linking.*/
+EXTERN void xgateSchedule();
 
 EXTERN const xgateIntVector xgateIntVectorTable[121];
 

@@ -42,7 +42,7 @@
 #include "inc/freeEMS.h"
 #include "inc/xgateVectors.h"
 
-
+extern void xgateSchedule();
 /* Currently this gets copied from wherever it ends up into the XGATE flash pages */
 const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		/* Channel # = Vector address / 2 */
@@ -104,7 +104,7 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{XGATE_ERROR_HANDLER, 0x36},  // Channel 36 - XGATE Software Trigger 3
 		{XGATE_ERROR_HANDLER, 0x37},  // Channel 37 - XGATE Software Trigger 2
 		{XGATE_ERROR_HANDLER, 0x38},  // Channel 38 - XGATE Software Trigger 1
-		{(unsigned short)0x4000, (unsigned short)&PORTP}, // Channel 39 - XGATE Software Trigger 0 address in first field is from xgate linear 64k point of view. 0x4000 is start of E1
+		{(unsigned short)xgateSchedule, (unsigned short)&PORTP}, // Channel 39 - XGATE Software Trigger 0 address in first field is from xgate linear 64k point of view. 0x4000 is start of E1
 		{XGATE_ERROR_HANDLER, 0x3A},  // Channel 3A - Periodic Interrupt Timer 3
 		{XGATE_ERROR_HANDLER, 0x3B},  // Channel 3B - Periodic Interrupt Timer 2
 		{XGATE_ERROR_HANDLER, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1

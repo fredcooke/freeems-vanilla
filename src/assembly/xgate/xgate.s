@@ -23,23 +23,21 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-
+include "assembly/xgate/xgate.inc"
 ; ****************************************************************************
 ;
 ; Thanks to Edward Karpicz for help with getting all the xgate registers sorted.
 ;
 ; ***************************************************************************
 
-
 ; ****************************************************************************
 ;
-;	EQUIVILANTS/DEFs
+;	EQUIVILANTS/DEFs(Just like c hash define)
 ;
 ; ***************************************************************************
 
 .equ    SOMEVALUE, 0x01
 .equ    AVALUE, 0x05
-
 
 ; ****************************************************************************
 ;
@@ -48,11 +46,20 @@
 ; when defining 8-bit vars/constants
 ; ****************************************************************************
 
-	.sect .data
-
+;	.sect .data
+    .sect .ppageE1
 ;.ascii "FreeEMS > MS"
 ;.word 0x1010
 ;.skip 40 ; block of 40 bytes uninitialized
+variables:
+;.word 0; nextEventTime holds the next(soonest) event time
+
+; our event structure[8]
+eventStruct:
+.word 0xAAAA; "cylinderMask" the mask to apply to our bit bang port
+.word 0; "scheduledTime" the time when you want an event to happen
+.word 0; "stateToSet" 0 to turn somting off, 1 to turn something on
+.word 0xDDDD; "isReady"  a var to test if the event is enabled
 
 ; ****************************************************************************
 ;
@@ -67,9 +74,6 @@
 ;	CODE
 ;
 ; ****************************************************************************
-
-        .sect .ppageE1
-
 ; ----------------------------------------------------------------------------
 ;	Interrupts
 ; ----------------------------------------------------------------------------
@@ -78,32 +82,48 @@
 def:
 ;        rts
 
+.global xgateSchedule
+.global xgateScheduleEnd
+.global xgatePITTurnOn
+.global xgatePITTurnOnEnd
+.global xgatePITTurnOff
+.global xgatePITTurnOffEnd
 
 ; ----------------------------------------------------------------------------
-;	Main subroutine
+;	Main subroutine TODO move to RAM at RPAGE_TIME_TWO
 ; ----------------------------------------------------------------------------
-.global xgateThread0
-.global xgateThread0End
-
-
-xgateThread0: ; SoftWare Trigger 0
-	LDL R3, #0x98
-	LDH R3, #0x03
-	LDL R4, #0x00
-	LDH R4, #0x01
-	STW R4, R3, #0x00 ; clear interrupt flag
+xgateSchedule: ; SoftWare Trigger 0, call this from the main core when you want to add/update an xgate scheduled event
+    ;CIF
+	LDD R3, SWISRFLAGREG
+	LDD R4, SWISRZEROCLEARMASK
+	STW R4, R3, ZEROOFFSET ; clear interrupt flag
 	NOP
 	NOP
+	LDD R5, eventStruct
 	LDB R2, R1, #0x00 ; get data at port-p, the value of R1 is passed by the vector table
-	COM R2, R2  ; flip the bits
-	STB R2, R1, #0x00  ; write the bits to port-p
-	RTS
-xgateThread0End:
+	COM R2, R2 ; flip the bits
+	STB R2, R1, #0x00 ; write the bits to port-p
+    ;update the proper que array member's data, lets say R4=cyl#, R5=eventTime, R6=bang on or off
+    ;check to see if this event is scheduled to happen before the pit fires next(nextEventTime) if so update PIT count down
+    RTS
+xgateScheduleEnd:
 
+xgatePITTurnOn: ; PIT 0 ISR, called by PIT0 interrupt. Loop though our que and see if we need to bang any registers
+	;CIF
+	;Loop though the que to see if there are any events that need to be fired if so band the proper bits
+	;Update PIT count down with the nearest nextEventTime
+	RTS
+xgatePITTurnOnEnd:
+
+xgatePITTurnOff: ; PIT 1 ISR, called by PIT0 interrupt. Loop though our que and see if we need to bang any registers
+	;CIF
+	;Loop though the que to see if there are any events that need to be fired if so band the proper bits
+	;Update PIT count down with the nearest nextEventTime
+	RTS
+xgatePITTurnOffEnd:
 
 xgateErrorThread:
-	; R1 will have the xgate channel number that was executed
-	; TODO build some defualt code to flag an LED or error in software
-
+	;R1 will have the xgate channel number that was executed
+	;TODO build some defualt code to flag an LED or error in software
 
 end
