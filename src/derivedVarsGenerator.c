@@ -40,6 +40,7 @@
 #include "inc/commsCore.h"
 #include "inc/tableLookup.h"
 #include "inc/derivedVarsGenerator.h"
+#include "inc/locationIDs.h"
 
 
 /** @brief Generate the derived variables.
@@ -69,11 +70,11 @@ void generateDerivedVars(){
 
 
 	/* Look up VE with RPM and Load */
-	DerivedVars->VEMain = lookupPagedMainTableCellValue((mainTable*)&TablesA.VETableMain, CoreVars->RPM, DerivedVars->LoadMain, currentFuelRPage);
+	DerivedVars->VEMain = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, VETableMainLocationID);
 
 
 	/* Look up target Lambda with RPM and Load */
-	DerivedVars->Lambda = lookupPagedMainTableCellValue((mainTable*)&TablesD.LambdaTable, CoreVars->RPM, DerivedVars->LoadMain, currentFuelRPage);
+	DerivedVars->Lambda = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, LambdaTableLocationID);
 
 
 	/* Look up injector dead time with battery voltage */
@@ -81,7 +82,7 @@ void generateDerivedVars(){
 
 	// temp dwell and advance vars...
 	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
-	DerivedVars->Advance = lookupPagedMainTableCellValue((mainTable*)&TablesA.IgnitionAdvanceTableMain, CoreVars->RPM, DerivedVars->LoadMain, currentFuelRPage) / 1024; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
+	DerivedVars->Advance = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID) / 1024; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
 	/* Look up the engine temperature enrichment percentage with temperature */
 	DerivedVars->ETE = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent, CoreVars->CHT);

@@ -38,6 +38,7 @@
 #include "inc/freeEMS.h"
 #include "inc/commsISRs.h"
 #include "inc/tableLookup.h"
+#include "inc/blockDetailsLookup.h"
 
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -109,11 +110,19 @@ signed char lookup8Bit3D( */
  *
  * @return The interpolated value for the location specified.
  */
-unsigned short lookupPagedMainTableCellValue(mainTable* Table, unsigned short realRPM, unsigned short realLoad, unsigned char RAMPage){
+unsigned short lookupMainTable(unsigned short realRPM, unsigned short realLoad, unsigned short locationID){
+	blockDetails mainTableDetails;
+	lookupBlockDetails(locationID, &mainTableDetails);
+	if(!(mainTableDetails.flags & block_is_main_table)){
+		return 0; // Safe value, always means no fuel or TDC timing.
+	}
+
+	// Leave the rest of the code untouched and keep it more concise
+	mainTable* Table = (mainTable*)mainTableDetails.RAMAddress;
 
 	/* Save the RPAGE value for restoration and switch pages. */
 	unsigned char oldRPage = RPAGE;
-	RPAGE = RAMPage;
+	RPAGE = mainTableDetails.RAMPage;
 
 	/* Find the bounding axis values and indices for RPM */
 	unsigned char lowRPMIndex = 0;
@@ -224,174 +233,6 @@ unsigned short lookupTwoDTableUS(twoDTableUS * Table, unsigned short Value){
 
 	/* Interpolate and return the value */
 	return lowLookupValue + (((signed long)((signed long)highLookupValue - lowLookupValue) * (Value - lowAxisValue))/ (highAxisValue - lowAxisValue));
-}
-
-
-/** @brief Set an axis value
- *
- * Sets the value of an axis cell in a table. This is used when configuring
- * a table via a communication interface.
- *
- * @author Fred Cooke
- *
- * @param index The position of the axis cell to adjust.
- * @param value The value to set the axis cell to.
- * @param axis A pointer to the axis array to adjust.
- * @param length The length of the axis array.
- * @param errorBase The base value to add error code offsets to.
- *
- * @return An error code. Zero means success, anything else is a failure.
- */
-unsigned short setAxisValue(unsigned short index, unsigned short value, unsigned short axis[], unsigned short length, unsigned short errorBase){
-	if(index >= length){
-		return errorBase + invalidAxisIndex;
-	}else{
-		if(index > 0){
-			/* Ensure value isn't lower than the one below */
-			if(axis[index - 1] > value){
-				return errorBase + invalidAxisOrder;
-			}
-		}
-		if(index < (length -1)){
-			/* Ensure value isn't higher than the one above */
-			if(value > axis[index + 1]){
-				return errorBase + invalidAxisOrder;
-			}
-		}
-	}
-
-	/* If we got this far all is well, set the value */
-	axis[index] = value;
-	return 0;
-}
-
-
-/** @brief Set a main table cell value
- *
- * Sets the value of a cell in a main table. This is used when configuring a
- * table via a communication interface.
- *
- * @author Fred Cooke
- *
- * @param RPageValue The page of RAM that the table is in.
- * @param Table A pointer to the table to adjust.
- * @param RPMIndex The RPM position of the cell to adjust.
- * @param LoadIndex The load position of the cell to adjust.
- * @param cellValue The value to set the cell to.
- *
- * @return An error code. Zero means success, anything else is a failure.
- */
-unsigned short setPagedMainTableCellValue(unsigned char RPageValue, mainTable* Table, unsigned short RPMIndex, unsigned short LoadIndex, unsigned short cellValue){
-	unsigned char oldRPage = RPAGE;
-	unsigned short errorID = 0;
-	RPAGE = RPageValue;
-	if(RPMIndex < Table->RPMLength){
-		if(LoadIndex < Table->LoadLength){
-			Table->Table[(Table->RPMLength * LoadIndex) + RPMIndex] = cellValue;
-		}else{
-			errorID = invalidMainTableLoadIndex;
-		}
-	}else{
-		errorID = invalidMainTableRPMIndex;
-	}
-	RPAGE = oldRPage;
-	return errorID;
-}
-
-
-/** @brief Set an RPM axis value
- *
- * Sets the value of an RPM axis cell in a table. This is used when configuring
- * the table via a comms interface.
- *
- * @author Fred Cooke
- *
- * @param RPageValue The page of RAM that the table is in.
- * @param Table is a pointer to the table to adjust.
- * @param RPMIndex The RPM position of the cell to adjust.
- * @param RPMValue The value to set the RPM axis cell to.
- *
- * @return An error code. Zero means success, anything else is a failure.
- */
-unsigned short setPagedMainTableRPMValue(unsigned char RPageValue, mainTable* Table, unsigned short RPMIndex, unsigned short RPMValue){
-	unsigned char oldRPage = RPAGE;
-	RPAGE = RPageValue;
-	unsigned short errorID = setAxisValue(RPMIndex, RPMValue, Table->RPM, Table->RPMLength, errorBaseMainTableRPM);
-	RPAGE = oldRPage;
-	return errorID;
-}
-
-
-/** @brief Set a load axis value
- *
- * Sets the value of a load axis cell in a table. This is used when configuring
- * the table via a comms interface.
- *
- * @author Fred Cooke
- *
- * @param RPageValue The page of RAM that the table is in.
- * @param Table is a pointer to the table to adjust.
- * @param LoadIndex The load position of the cell to adjust.
- * @param LoadValue The value to set the load axis cell to.
- *
- * @return An error code. Zero means success, anything else is a failure.
- */
-unsigned short setPagedMainTableLoadValue(unsigned char RPageValue, mainTable* Table, unsigned short LoadIndex, unsigned short LoadValue){
-	unsigned char oldRPage = RPAGE;
-	RPAGE = RPageValue;
-	unsigned short errorID = setAxisValue(LoadIndex, LoadValue, Table->Load, Table->LoadLength, errorBaseMainTableLoad);
-	RPAGE = oldRPage;
-	return errorID;
-}
-
-
-/** @brief Set a two D table cell value
- *
- * Sets the value of a cell in a two D table. This is used when configuring the
- * table via a comms interface.
- *
- * @author Fred Cooke
- *
- * @param RPageValue The page of RAM that the table is in.
- * @param Table is a pointer to the table to adjust.
- * @param cellIndex The position of the cell to adjust.
- * @param cellValue The value to set the cell to.
- *
- * @return An error code. Zero means success, anything else is a failure.
- */
-unsigned short setPagedTwoDTableCellValue(unsigned char RPageValue, twoDTableUS* Table, unsigned short cellIndex, unsigned short cellValue){
-	if(cellIndex > 15){
-		return invalidTwoDTableIndex;
-	}else{
-		unsigned char oldRPage = RPAGE;
-		RPAGE = RPageValue;
-		Table->Values[cellIndex] = cellValue;
-		RPAGE = oldRPage;
-		return 0;
-	}
-}
-
-
-/** @brief Set a two D axis value
- *
- * Sets the value of an axis cell in a table. This is used when configuring
- * the table via a comms interface.
- *
- * @author Fred Cooke
- *
- * @param RPageValue The page of RAM that the table is in.
- * @param Table is a pointer to the table to adjust.
- * @param axisIndex The position of the axis cell to adjust.
- * @param axisValue The value to set the axis cell to.
- *
- * @return An error code. Zero means success, anything else is a failure.
- */
-unsigned short setPagedTwoDTableAxisValue(unsigned char RPageValue, twoDTableUS* Table, unsigned short axisIndex, unsigned short axisValue){
-	unsigned char oldRPage = RPAGE;
-	RPAGE = RPageValue;
-	unsigned short errorID = setAxisValue(axisIndex, axisValue, Table->Axis, 16, errorBaseTwoDTableAxis);
-	RPAGE = oldRPage;
-	return errorID;
 }
 
 

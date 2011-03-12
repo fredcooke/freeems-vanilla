@@ -49,18 +49,11 @@
 
 
 EXTERN unsigned short lookupTwoDTableUS(twoDTableUS *, unsigned short) TEXT;
-EXTERN unsigned short lookupPagedMainTableCellValue(mainTable *, unsigned short, unsigned short, unsigned char) TEXT;
-
-EXTERN unsigned short setPagedMainTableCellValue(unsigned char, mainTable*, unsigned short, unsigned short, unsigned short) TEXT;
-EXTERN unsigned short setPagedMainTableRPMValue(unsigned char, mainTable*, unsigned short, unsigned short) TEXT;
-EXTERN unsigned short setPagedMainTableLoadValue(unsigned char, mainTable*, unsigned short, unsigned short) TEXT;
-
-EXTERN unsigned short setPagedTwoDTableCellValue(unsigned char, twoDTableUS*, unsigned short, unsigned short) TEXT;
-EXTERN unsigned short setPagedTwoDTableAxisValue(unsigned char, twoDTableUS*, unsigned short, unsigned short) TEXT;
+EXTERN unsigned short lookupMainTable(unsigned short, unsigned short, unsigned short) TEXT;
 
 
-EXTERN unsigned short validateMainTable(mainTable*) TEXT;
 EXTERN unsigned short validateTwoDTable(twoDTableUS*) TEXT;
+EXTERN unsigned short validateMainTable(mainTable*) TEXT;
 
 
 /* These might change or might stay the same, so keeping for now */
