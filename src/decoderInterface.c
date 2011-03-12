@@ -89,24 +89,24 @@ void schedulePortTPin(unsigned char pin, unsigned short edgeTimeStamp){
 	// determine the long and short start times
 	unsigned short startTime = edgeTimeStamp + advance;
 	// remove this temporarily too, no need for it without the later conditional code
-//	unsigned long startTimeLong = timeStamp.timeLong + advance;
-//
-//	// determine whether or not to reschedule
-//	unsigned char reschedule = 0;
-//	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
-//	if(diff > LONGHALF){
-//		reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
-//	}
+	unsigned long startTimeLong = timeStamp.timeLong + advance;
+
+	// determine whether or not to reschedule
+	unsigned char reschedule = 0;
+	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
+	if(diff > LONGHALF){
+		reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
+	}
 
 	// schedule the appropriate channel
 	// Removed conditions for now, known fix to intermittent random output bug found by someone else. Needs more work on a scope to get really good.
-//	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
+	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
 		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
 		TFLG = injectorMainOnMasks[pin];
-//	}else{
-//		injectorMainStartTimesHolding[pin] = startTime;
-//		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
-//	}
+	}else{
+		injectorMainStartTimesHolding[pin] = startTime;
+		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+	}
 }
