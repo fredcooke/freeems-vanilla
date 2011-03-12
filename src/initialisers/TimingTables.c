@@ -57,7 +57,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 	},
 	/* AdvanceTableMain.Table */
 	{
-		#include "../data/tables/ign/FredsTruckIgnitionTiming.h"
+		#include "../data/tables/ign/flat0degrees.h"
 	}
 };
 

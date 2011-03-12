@@ -362,8 +362,6 @@ static unsigned short edgeTimeStamp;
 static LongTime timeStamp;
 
 //static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
-#define NUMBER_OF_EVENTS 10
-#define MAX_POSSIBLE_EVENT_ANGLE 720
 
 // These are fixed and by definition correct
 #define E0   0
@@ -397,6 +395,7 @@ static LongTime timeStamp;
 const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 const unsigned char decoderName[] = "MitsiCAS-4and1.c";
 const unsigned char numberOfEventAngles = 10;
+const unsigned short totalEventAngleRange = 720;
 
 
 /// @todo TODO migrate ALL decoder vars, arrays, fields, whatever to the decoder header out of the global header...
@@ -492,7 +491,7 @@ void PrimaryRPMISR(){
 	if(decoderFlags & CAM_SYNC){
 		lastEvent = currentEvent;
 		currentEvent++;
-		if(currentEvent == NUMBER_OF_EVENTS){
+		if(currentEvent == numberOfEventAngles){
 			currentEvent = 0;
 		}
 
@@ -516,7 +515,7 @@ void PrimaryRPMISR(){
 	if(decoderFlags & CAM_SYNC){
 		unsigned short thisAngle = 0;
 		if(currentEvent == 0){
-			thisAngle = eventAngles[currentEvent] + MAX_POSSIBLE_EVENT_ANGLE - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+			thisAngle = eventAngles[currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
 		}else{
 			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 		}
@@ -536,7 +535,7 @@ void PrimaryRPMISR(){
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
 			*ticksPerDegreeRecord = thisTicksPerDegree;
-			engineCyclePeriod = thisTicksPerDegree * 720;
+			engineCyclePeriod = thisTicksPerDegree * 720; /// @todo TODO this needs refactoring too, for the same reason, and also RPM calcs are crap at the moment.
 		}
 	}
 
@@ -668,7 +667,7 @@ void SecondaryRPMISR(){
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
 			*ticksPerDegreeRecord = thisTicksPerDegree;
-			engineCyclePeriod = thisTicksPerDegree * 720;
+			engineCyclePeriod = thisTicksPerDegree * 720; /// @todo TODO this needs refactoring, engine cycle period is being used as event period, which depends upon wasted/semi/seq/cop/dizzy/etc
 		}
 	}
 

@@ -111,7 +111,11 @@ from the above we can check one gap+angle with the next gap+angle and ensure smo
 // unsigned long thisInterEventPeriod; ditto
 EXTERN unsigned char syncCaughtOnThisEvent;
 EXTERN unsigned long lastEventTimeStamp;
+EXTERN unsigned long lastPrimaryEventTimeStamp;
+EXTERN unsigned long lastSecondaryEventTimeStamp;
 EXTERN unsigned short lastTicksPerDegree;
+EXTERN unsigned short lastPrimaryTicksPerDegree;
+EXTERN unsigned short lastSecondaryTicksPerDegree;
 EXTERN unsigned char currentEvent;
 EXTERN unsigned char decoderFlags;
 EXTERN unsigned long engineCyclePeriod;
@@ -130,10 +134,11 @@ EXTERN unsigned long engineCyclePeriod;
 EXTERN const unsigned short eventAngles[256]; // From 0 - 720 degrees, scale: not at all, x10 x60 or x90?
 EXTERN const unsigned char decoderName[32]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
 EXTERN const unsigned char numberOfEventAngles;
+EXTERN const unsigned short totalEventAngleRange;
 
 
 // specific to one decoder, generalise this later! Or put a call to an inline function in the main reset sync function and the definition in every decoder
-EXTERN unsigned char unknownEdges;
+EXTERN unsigned char unknownEdges; // here so can be reset with sync loss generic function
 
 
 

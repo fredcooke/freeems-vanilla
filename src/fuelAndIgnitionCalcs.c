@@ -187,18 +187,21 @@ void calculateFuelAndIgnition(){
 
 
 
+// add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
+#define Mitsi4and1OffsetOnTruck 90
+#define HyundaiHackOffset 0
 
-#define Mitsi4and1OffsetOnTruck 90 // add this to code degrees to find 0/TDC for cyl/output 1
-	// or subtract from real degrees to get code degrees
-
-	unsigned short decoderEngineOffset = Mitsi4and1OffsetOnTruck;
+	unsigned short decoderEngineOffset = HyundaiHackOffset;
+	if(decoderEngineOffset >= totalEventAngleRange){
+		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
+	}
 
 // TDC output 1 and cylinder 1 is 0
 // TDC output 2 and cylinder 3 is therefore 180
 // TDC output 3 and cylinder 4 is therefore 360
 // TDC output 4 and cylinder 2 is therefore 540
 
-#define numberOfIgnitionEvents 4
+#define numberOfIgnitionEvents 1
 
 	unsigned short anglesOfTDC[numberOfIgnitionEvents]; // no timing for fuel channels yet KISS for now.
 
@@ -206,9 +209,9 @@ void calculateFuelAndIgnition(){
 	 * angles and a single engine offset combined into this runtime array.
 	 */
 	anglesOfTDC[0] = 0;
-	anglesOfTDC[1] = 180;
-	anglesOfTDC[2] = 360;
-	anglesOfTDC[3] = 540;
+//	anglesOfTDC[1] = 180;
+//	anglesOfTDC[2] = 360;
+//	anglesOfTDC[3] = 540;
 
 	/** @todo TODO move this loop variable to fixedConfig and make a subset of
 	 * the remainder of channels configured for fuel with a start time/tooth
@@ -273,7 +276,7 @@ void calculateFuelAndIgnition(){
 		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + DerivedVars->Advance)){
 			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + DerivedVars->Advance);
 		}else{
-			codeAngleOfIgnition = (720 + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + DerivedVars->Advance);
+			codeAngleOfIgnition = (totalEventAngleRange + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + DerivedVars->Advance);
 		}
 
 		// codeAngleOfIgnition
@@ -308,7 +311,7 @@ void calculateFuelAndIgnition(){
 			if(codeAngleOfIgnition > eventAngles[lastGoodEvent]){
 				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
 			}else{
-				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition + (720 - eventAngles[lastGoodEvent]))) / ticks_per_degree_multiplier;
+				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition + (totalEventAngleRange - eventAngles[lastGoodEvent]))) / ticks_per_degree_multiplier;
 			}
 
 			// 0 = ? * (615 - 609) = ? * 6
@@ -358,13 +361,13 @@ void calculateFuelAndIgnition(){
 
 	// fuel shit: could sched the same way.
 
-	// just fire the fuel off whenever... doesn't matter much.
-	postReferenceEventDelays[4] = 0;
-	postReferenceEventDelays[5] = 0;
-
-	// from alternate teeth so as to keep code simple for now.
-	pinEventNumbers[4] = 1;
-	pinEventNumbers[5] = 5;
+//	// just fire the fuel off whenever... doesn't matter much.
+//	postReferenceEventDelays[4] = 0;
+//	postReferenceEventDelays[5] = 0;
+//
+//	// from alternate teeth so as to keep code simple for now.
+//	pinEventNumbers[4] = 1;
+//	pinEventNumbers[5] = 5;
 
 	// nothing much, L&P:
 

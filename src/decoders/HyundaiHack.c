@@ -35,6 +35,57 @@
  * to set the timing, the ECU just logs RPM and MAP and any other senors and/or
  * solenoids you hook up and configure.
  *
+ * No plugs cranking LA test results:
+ *
+
+17302
+17346
+17451
+17498
+17600
+17646
+17751
+17795
+17900
+
+0
+44
+149
+196
+298
+344
+449
+493
+598
+
+0
+52.98
+179.4
+235.99
+358.8
+414.18
+540.6
+593.58
+720
+
+52.98
+126.42
+56.59
+122.81
+55.38
+126.42
+52.98
+126.42
+
+54.48
+125.52
+
+54,126
+
+ *
+ * Approximately 1000 samples per second
+ *
+ *
  * @author Fred Cooke
  */
 
@@ -47,8 +98,10 @@
 #include "../inc/utils.h"
 
 
-const unsigned short eventAngles[] = {0}; // no events really...
-const unsigned char decoderName[] = "Listener.c";
+const unsigned short eventAngles[] = {0, 54}; // 1/4 cycle events.
+const unsigned char decoderName[] = "HyundaiHack.c";
+const unsigned char numberOfEventAngles = 2;
+const unsigned short totalEventAngleRange = 180;
 
 
 /** Primary RPM ISR
@@ -72,27 +125,31 @@ void PrimaryRPMISR(){
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
+	Counters.primaryTeethSeen++;
+
+	LongTime timeStamp;
+
+	/* Install the low word */
+	timeStamp.timeShorts[1] = edgeTimeStamp;
+	/* Find out what our timer value means and put it in the high word */
+	if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
+		timeStamp.timeShorts[0] = timerExtensionClock + 1;
+	}else{
+		timeStamp.timeShorts[0] = timerExtensionClock;
+	}
+
 	if(PTITCurrentState & 0x01){
 		/* Invert input condition on ign 1 */
 		PORTT |= BIT2;
 
-		Counters.primaryTeethSeen++;
+//		currentEvent = ?;TODO
 
-		LongTime timeStamp;
-
-		/* Install the low word */
-		timeStamp.timeShorts[1] = edgeTimeStamp;
-		/* Find out what our timer value means and put it in the high word */
-		if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
-			timeStamp.timeShorts[0] = timerExtensionClock + 1;
-		}else{
-			timeStamp.timeShorts[0] = timerExtensionClock;
-		}
+		// sched event?
 
 		// temporary data from inputs
 		unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
-		unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastEventTimeStamp;
-		lastEventTimeStamp = primaryLeadingEdgeTimeStamp;
+		unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
+		lastPrimaryEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
 
 		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessivePrimaryPulses / 4);
@@ -108,10 +165,43 @@ void PrimaryRPMISR(){
 		/* Reset the clock for reading timeout */
 		Clocks.timeoutADCreadingClock = 0;
 
+//		if(decoderFlags & COMBUSTION_SYNC){
+			if(pinEventNumbers[0] == 1){
+				schedulePortTPin(0, edgeTimeStamp);
+			}
+//		}
+
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		/* Invert input condition on ign 1 */
 		PORTT &= NBIT2;
+
+		// temporary data from inputs
+		unsigned long secondaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+		unsigned long timeBetweenSuccessiveSecondaryPulses = secondaryLeadingEdgeTimeStamp - lastSecondaryEventTimeStamp;
+		lastSecondaryEventTimeStamp = secondaryLeadingEdgeTimeStamp;
+
+
+		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessiveSecondaryPulses / 4);
+
+		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
+		sampleEachADC(ADCArrays);
+		Counters.syncedADCreadings++;
+		*mathSampleTimeStampRecord = TCNT;
+
+		/* Set flag to say calc required */
+		coreStatusA |= CALC_FUEL_IGN;
+
+		/* Reset the clock for reading timeout */
+		Clocks.timeoutADCreadingClock = 0;
+
+		/// @todo TODO gain and lose combustion sync based on timing between teeth, and save state and use flags to only check if good, etc
+//		if(decoderFlags & COMBUSTION_SYNC){
+			if(pinEventNumbers[0] == 0){
+				schedulePortTPin(0, edgeTimeStamp);
+			}
+//		}
+
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 }
