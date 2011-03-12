@@ -199,7 +199,7 @@ void PrimaryRPMISR(){
 			/// @todo TODO Loop limit from config checked at init?
 			for(pin=0;pin<6;pin++){
 				if(pinEventNumbers[pin] == primaryPulsesPerSecondaryPulse){
-					schedulePortTPin(primaryPulsesPerSecondaryPulse, edgeTimeStamp);
+					schedulePortTPin(primaryPulsesPerSecondaryPulse, timeStamp);
 				}
 			}
 		}

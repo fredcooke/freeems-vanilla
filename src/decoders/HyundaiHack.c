@@ -165,11 +165,7 @@ void PrimaryRPMISR(){
 		/* Reset the clock for reading timeout */
 		Clocks.timeoutADCreadingClock = 0;
 
-//		if(decoderFlags & COMBUSTION_SYNC){
-			if(pinEventNumbers[0] == 1){
-				schedulePortTPin(0, edgeTimeStamp);
-			}
-//		}
+		currentEvent = 1;
 
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
@@ -195,15 +191,17 @@ void PrimaryRPMISR(){
 		/* Reset the clock for reading timeout */
 		Clocks.timeoutADCreadingClock = 0;
 
-		/// @todo TODO gain and lose combustion sync based on timing between teeth, and save state and use flags to only check if good, etc
-//		if(decoderFlags & COMBUSTION_SYNC){
-			if(pinEventNumbers[0] == 0){
-				schedulePortTPin(0, edgeTimeStamp);
-			}
-//		}
+		currentEvent = 0;
 
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
+
+		/// @todo TODO gain and lose combustion sync based on timing between teeth, and save state and use flags to only check if good, etc
+//		if(decoderFlags & COMBUSTION_SYNC){
+			if(pinEventNumbers[0] == currentEvent){
+				schedulePortTPin(0, timeStamp);
+			}
+//		}
 }
 
 

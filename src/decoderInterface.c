@@ -65,7 +65,7 @@ void resetToNonRunningState(){
 
 
 // Need to make this available to all decoders and cut out code from those that have it built in.
-void schedulePortTPin(unsigned char pin, unsigned short edgeTimeStamp){
+void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	/// @todo TODO if the other stuff isn't needed then neither is this!
 	/* Determine if half the cycle is bigger than short-max */
 	unsigned short maxAngleAfter;
@@ -87,7 +87,7 @@ void schedulePortTPin(unsigned char pin, unsigned short edgeTimeStamp){
 	}
 
 	// determine the long and short start times
-	unsigned short startTime = edgeTimeStamp + advance;
+	unsigned short startTime = timeStamp.timeShorts[1] + advance;
 	// remove this temporarily too, no need for it without the later conditional code
 	unsigned long startTimeLong = timeStamp.timeLong + advance;
 

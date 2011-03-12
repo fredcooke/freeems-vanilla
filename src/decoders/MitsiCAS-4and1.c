@@ -544,7 +544,7 @@ void PrimaryRPMISR(){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == currentEvent){
-				schedulePortTPin(pin, edgeTimeStamp);
+				schedulePortTPin(pin, timeStamp);
 			}
 		}
 	}
@@ -675,7 +675,7 @@ void SecondaryRPMISR(){
 		unsigned char pin;
 		for(pin=0;pin<6;pin++){
 			if(pinEventNumbers[pin] == currentEvent){
-				schedulePortTPin(pin, edgeTimeStamp);
+				schedulePortTPin(pin, timeStamp);
 			}
 		}
 	}

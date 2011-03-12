@@ -128,7 +128,7 @@ void PrimaryRPMISR(){
 			unsigned char pin;
 			for(pin=0;pin<6;pin++){
 				if(pinEventNumbers[pin] == 0){
-					schedulePortTPin(pin, edgeTimeStamp);
+					schedulePortTPin(pin, timeStamp);
 				}
 			}
 		}
