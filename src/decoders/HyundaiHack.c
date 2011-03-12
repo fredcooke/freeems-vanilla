@@ -74,7 +74,7 @@ void PrimaryRPMISR(){
 
 	if(PTITCurrentState & 0x01){
 		/* Invert input condition on ign 1 */
-		PORTT &= NBIT2;
+		PORTT |= BIT2;
 
 		Counters.primaryTeethSeen++;
 
@@ -111,7 +111,7 @@ void PrimaryRPMISR(){
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		/* Invert input condition on ign 1 */
-		PORTT |= BIT2;
+		PORTT &= NBIT2;
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 }
