@@ -172,6 +172,14 @@ EXTERN void schedulePortTPin(unsigned char pin, LongTime timeStamp);
 #undef EXTERN
 
 
+/** @todo TODO IDEA: use a two stage mapping scheme for sched. Such that you
+ * have event number to joiner number in an unsigned char array such that event
+ * 4 and event 7 both are assigned join number 2, then pin X is scheduled to
+ * run on join number 2 which could be on any number of real events!! GREAT!
+ */
+
+
+
 /**
  * RPM Calculations:
  *
