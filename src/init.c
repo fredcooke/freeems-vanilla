@@ -380,10 +380,18 @@ void initPagedRAMTune(){
 	memcpy((void*)&TablesC,	SmallTablesCFlashLocation,	sizeof(mainTable));
 	memcpy((void*)&TablesD,	SmallTablesDFlashLocation,	sizeof(mainTable));
 	RPAGE = RPAGE_TUNE_TWO;
-	memcpy((void*)&TablesA,	SmallTablesAFlash2Location,	sizeof(mainTable));
-	memcpy((void*)&TablesB,	SmallTablesBFlash2Location,	sizeof(mainTable));
-	memcpy((void*)&TablesC,	SmallTablesCFlash2Location,	sizeof(mainTable));
-	memcpy((void*)&TablesD,	SmallTablesDFlash2Location,	sizeof(mainTable));
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& WARNING &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& //
+	//    You will get garbage if you use table switching at this time!!!    //
+	//         XGATE code being run from this region temporarily!!!          //
+	//   Writing to these tables WILL corrupt XGATE code/kill your engine!   //
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& WARNING &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& //
+	//memcpy(xgateSchedRAMAddress, xgateSchedFlashAddress, (xgateSchedEnd - xgateSched));
+	//memcpy(xgateInjectorsOnRAMAddress, xgateInjectorsOnFlashAddress, (xgateInjectorsOnEnd - xgateInjectorsOn));
+	//memcpy(xgateInjectorsOffRAMAddress, xgateInjectorsOffFlashAddress, (xgateInjectorsOffEnd - xgateInjectorsOff));
+//	memcpy((void*)&TablesA,	SmallTablesAFlash2Location,	sizeof(mainTable));
+//	memcpy((void*)&TablesB,	SmallTablesBFlash2Location,	sizeof(mainTable));
+//	memcpy((void*)&TablesC,	SmallTablesCFlash2Location,	sizeof(mainTable));
+//	memcpy((void*)&TablesD,	SmallTablesDFlash2Location,	sizeof(mainTable));
 }
 
 
