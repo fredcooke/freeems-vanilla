@@ -53,9 +53,8 @@ typedef struct {
 	unsigned short initialVariable; /* This data is forced into the XGATE R1 register */
 } xgateIntVector;
 
-/* Because we need the address of the xgate ISR function(s) from C code an
-   extern function declaration is required to allow successful compilation/linking.*/
-EXTERN void xgateSchedule();
+// This statement imports the symbol from the xgate ASM for use in the vector table
+extern void xgateSchedule(); // extern not EXTERN because it is defined outside of C
 
 EXTERN const xgateIntVector xgateIntVectorTable[121];
 
