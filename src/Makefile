@@ -138,6 +138,12 @@ GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h decoderIn
 GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
 RPMH = Simple.h NipponDenso.h LT1-360-8.h Subaru-36-2-2-2.h MissingTeeth.h MiataNB.h
+DATACONF = defaultUteConfig.h
+DATATABLESAXIS = FredsTruck-Load.h FredsTruck-RPM.h mainTable-Load.h mainTable-RPM.h
+DATATABLESIGN = FE-DOHC.h flat15degrees.h flat0degrees.h FredsTruckIgnitionTiming.h
+DATATABLESLAMBDA = flatStoichiometric.h FredsTruckLambda.h originalCurve.h
+DATATABLESVE = flat80Percent.h FredsTruckVE.h
+DATATHERMISTORS = Bosch.h Denso.h GM.h
 
 # Let's keep this to a bare minimum! If you write ASM code
 # please provide an matching alternate C implementation too.
@@ -147,11 +153,18 @@ HANDASMS = flashBurn.s
 # .c files from inc/ should be included here as deps for the parts they are relied on by!!
 ALLHEADERS1 = $(GLOBALH1) $(COMMSH) $(ISRSH) $(UTILH) $(RPMH) $(FLASHH)
 ALLHEADERS2 = $(GLOBALH2) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(LOOKUPH)
+DATAH1 = $(patsubst %.h,data/configuration/%.h,$(DATACONF))
+DATAH2 = $(patsubst %.h,data/tables/axis/%.h,$(DATATABLESAXIS))
+DATAH3 = $(patsubst %.h,data/tables/ign/%.h,$(DATATABLESIGN))
+DATAH4 = $(patsubst %.h,data/tables/lambda/%.h,$(DATATABLESLAMBDA))
+DATAH5 = $(patsubst %.h,data/tables/ve/%.h,$(DATATABLESVE))
+DATAH6 = $(patsubst %.h,data/thermistors/%.h,$(DATATHERMISTORS))
 ALLH1 = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS1))
 ALLH2 = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS2))
 ALLH3 = $(patsubst %.c,$(INCDIR)/%.c,$(CINCS))
 ALLH4 = $(LINKER) $(MFILE) $(INCDIR)/$(ASMH)
-ALLH = $(ALLH1) $(ALLH2) $(ALLH3) $(ALLH4)
+ALLH5 = $(DATAH1) $(DATAH2) $(DATAH3) $(DATAH4) $(DATAH5) $(DATAH6) 
+ALLH = $(ALLH1) $(ALLH2) $(ALLH3) $(ALLH4) $(ALLH5)
 
 # Warning : do not include .c files from inc/ as they are
 # included into the other C files and automatically compiled.
