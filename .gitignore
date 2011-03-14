@@ -11,4 +11,4 @@ src/assembly/*.s
 !src/assembly/flashBurn.s
 src/assembly/decoders/*.s
 src/assembly/initialisers/*.s
-
+*.swp
