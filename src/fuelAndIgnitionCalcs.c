@@ -342,11 +342,13 @@ void calculateFuelAndIgnition(){
 					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
 					Counters.DwellStretchedToSchedule++;
 				}else{
+					/* ELSE leave unscheduled rather than advance too much
+					 * This indicates that the output event is too far from the input event
+					 * This will only occur on input patterns with two few teeth, or bad alignment
+					 */
 					Counters.TooFarToSchedule++;
+					pinEventNumbers[ignitionEvent] = ONES; // unschedule this pin...
 				}
-				// ELSE leave unscheduled rather than advance too much
-				// This indicates that the output event is too far from the input event
-				// This will only occur on input patterns with two few teeth, or bad alignment
 				break;
 			}else{
 				if(lastGoodEvent > 0){
