@@ -72,36 +72,35 @@ void populateBasicDatalog(){
 
 	// temp debug, done here to ensure it matches the other data.
 //	CoreVars->DRPM = Counters.primaryTeethSeen;
-	CoreVars->DDRPM = Counters.secondaryTeethSeen;
-	CoreVars->DTPS = Counters.camSyncCorrections;
-	CoreVars->DMAP = Counters.camSyncLosses;
-
-	/* UART/serial specific counters */
-//	DerivedVars->zsp1 = Counters.serialEscapePairMismatches + Counters.serialStartsInsideAPacket + Counters.serialPacketsOverLength + Counters.serialNoiseErrors + Counters.serialOverrunErrors + Counters.serialFramingErrors + Counters.serialParityErrors;
-	DerivedVars->zsp1 = Counters.crankSyncLosses;
-	/* Generic com counters */
-//			DerivedVars->zsp2 = Counters.commsChecksumMismatches + Counters.commsPacketsUnderMinLength + Counters.commsDebugMessagesNotSent + Counters.commsErrorMessagesNotSent;
-	DerivedVars->zsp2 = syncCaughtOnThisEvent;
-	DerivedVars->zsp3++;
-	DerivedVars->zsp4 = (decoderFlags << 8) + coreStatusA;
-	DerivedVars->zsp5 = currentEvent;
-
+//	CoreVars->DDRPM = Counters.secondaryTeethSeen;
+//	CoreVars->DTPS = Counters.camSyncCorrections;
+//	CoreVars->DMAP = Counters.camSyncLosses;
 
 	// Use these any way you like:
-//	DerivedVars->zsp7= 0;
-//	DerivedVars->zsp8= 0;
-//	DerivedVars->zsp9= 0;
-//	DerivedVars->zsp10= 0;
-//	DerivedVars->zsp11= 0;
-//	DerivedVars->zsp12= 0;
-//	DerivedVars->zsp13= 0;
-//	DerivedVars->zsp14= 0;
-//	DerivedVars->zsp15= 0;
-//	DerivedVars->zsp16= 0;
-//	DerivedVars->zsp17= 0;
-//	DerivedVars->zsp18= 0;
-//	DerivedVars->zsp19= 0;
+	DerivedVars->zsp1 = Clocks.realTimeClockMain;
+	DerivedVars->zsp2 = Clocks.realTimeClockMillis;
+	DerivedVars->zsp3++;
+	DerivedVars->zsp4 = (decoderFlags << 8) + coreStatusA;
+	DerivedVars->zsp5 = Counters.calculationsPerformed;
+	DerivedVars->zsp6 = injectorMainPulseWidthsMath[0];
+	DerivedVars->zsp7 = postReferenceEventDelays[0];
+	DerivedVars->zsp8 = pinEventNumbers[0];
+	DerivedVars->zsp9 = engineCyclePeriod;
+	DerivedVars->zsp10 = currentEvent;
+	DerivedVars->zsp11 = syncCaughtOnThisEvent;
+	DerivedVars->zsp12 = Counters.primaryTeethSeen;
+	DerivedVars->zsp13 = Counters.secondaryTeethSeen;
+	DerivedVars->zsp14 = *ticksPerDegree;
+	DerivedVars->zsp15 = Counters.camSyncLosses;
+	DerivedVars->zsp16 = Counters.crankSyncLosses;
+	DerivedVars->zsp17 = Counters.combustionSyncLosses;
+//	DerivedVars->zsp18 = 0;
+//	DerivedVars->zsp19 = 0;
 
+	/* UART/serial specific counters */
+//	DerivedVars->zsp? = Counters.serialEscapePairMismatches + Counters.serialStartsInsideAPacket + Counters.serialPacketsOverLength + Counters.serialNoiseErrors + Counters.serialOverrunErrors + Counters.serialFramingErrors + Counters.serialParityErrors;
+	/* Generic com counters */
+//	DerivedVars->zsp? = Counters.commsChecksumMismatches + Counters.commsPacketsUnderMinLength + Counters.commsDebugMessagesNotSent + Counters.commsErrorMessagesNotSent;
 
 	/* Get core vars */
 	memcpy(TXBufferCurrentPositionHandler, CoreVars, sizeof(CoreVar));
