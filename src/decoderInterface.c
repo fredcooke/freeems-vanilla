@@ -57,6 +57,17 @@ void resetToNonRunningState(){
 	/* Ensure tacho reads lowest possible value */
 	engineCyclePeriod = ticksPerCycleAtOneRPM;
 
+	// Keep track of lost sync in counters
+	if(decoderFlags & CAM_SYNC){
+		Counters.camSyncLosses++;
+	}
+	if(decoderFlags & CRANK_SYNC){
+		Counters.crankSyncLosses++;
+	}
+	if(decoderFlags & COMBUSTION_SYNC){
+		Counters.combustionSyncLosses++;
+	}
+
 	/* Clear all sync flags to lost state */
 	decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC & CLEAR_LAST_PERIOD_VALID & CLEAR_LAST_TIMESTAMP_VALID);
 
