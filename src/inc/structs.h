@@ -365,44 +365,44 @@ typedef struct {
 } twoDTableUC;
 
 
-/* Use this block to manage the execution count of various functions loops and ISRs etc */
+// Use this block to manage the execution count of various functions loops and ISRs etc
 typedef struct {
-	/* Event Counters (all require init to zero) */
-	unsigned short callsToUISRs;						/* Counter to ensure we aren't accidentally triggering unused ISRs		*/
-	unsigned short lowVoltageConditions;				/* Counter for low voltage conditions									*/
+	unsigned short callsToUISRs;                        // to ensure we aren't accidentally triggering unused ISRs
+	unsigned short lowVoltageConditions;                // low voltage conditions
 
-	unsigned short crankSyncLosses;						/* Counter for number of lost crank syncs								*/
-	unsigned short camSyncLosses;						/* Counter for number of lost cam syncs									*/
-	unsigned short camSyncCorrections;					/* Counter for number of lost cam syncs									*/
-	unsigned short RPMValidityLosses;					/* Counter for number of lost RPM validity events						*/
-	unsigned short primaryTeethDroppedFromLackOfSync;	/* Counter for number of primary teeth dropped due to no primary sync	*/
-	unsigned short TooFarToSchedule;					/* times sched wasnt done to prevent excess advance */
-	unsigned short DwellStretchedToSchedule;			/* times sched needed to extend dwell to prevent excess advance */
-// TODO remove the one above this line about teeth dropped???? probably...
+	unsigned short camSyncLosses;                       // lost cam syncs
+	unsigned short crankSyncLosses;                     // lost crank syncs
+	unsigned short combustionSyncLosses;                // lost comubustion syncs
+	unsigned short camSyncCorrections;                  // definite cam syncs found while already synced in a different position
+//	unsigned short RPMValidityLosses;                   // lost RPM validity events
+//	unsigned short primaryTeethDroppedFromLackOfSync;   // number of primary teeth dropped due to no primary sync
+	unsigned short TooFarToSchedule;                    // times sched wasnt done to prevent excess advance
+	unsigned short DwellStretchedToSchedule;            // times sched needed to extend dwell to prevent excess advance
+// TODO remove the two commented out lines above this
 
-	unsigned short primaryTeethSeen;					/* Free running counters for number of teeth seen such that...			*/
-	unsigned short secondaryTeethSeen;					/* ...tooth timing can be used to reconstruct the signal at lower rpm	*/
+	unsigned short primaryTeethSeen;                    // Free running counters for number of teeth seen such that...
+	unsigned short secondaryTeethSeen;                  // ...tooth timing can be used to reconstruct the signal at lower rpm
 
-	unsigned short syncedADCreadings;					/* Incremented each time a synchronous ADC reading is taken				*/
-	unsigned short timeoutADCreadings;					/* Incremented for each ADC reading in RTC because of timeout			*/
+	unsigned short syncedADCreadings;                   // Incremented each time a synchronous ADC reading is taken
+	unsigned short timeoutADCreadings;                  // Incremented for each ADC reading in RTC because of timeout
 
-	unsigned short calculationsPerformed;				/* Incremented for each time the fuel and ign calcs are done			*/
-	unsigned short datalogsSent;						/* Incremented for each time we send out a log entry					*/
+	unsigned short calculationsPerformed;               // Incremented for each time the fuel and ign calcs are done
+	unsigned short datalogsSent;                        // Incremented for each time we send out a log entry
 
-	/* UART/serial specific counters */
-	unsigned short serialStartsInsideAPacket;			/* Incremented when a start byte is found inside a packet				*/
-	unsigned short serialEscapePairMismatches;			/* Incremented when an escape is found but not followed by an escapee	*/
-	unsigned short serialPacketsOverLength;				/* Incremented when the buffer fills up before the end					*/
-	unsigned short serialNoiseErrors;					/* Incremented when noise is detected									*/
-	unsigned short serialOverrunErrors;					/* Incremented when an overrun occurs									*/
-	unsigned short serialFramingErrors;					/* Incremented when a framing error occurs								*/
-	unsigned short serialParityErrors;					/* Incremented when a parity error occurs								*/
+	// UART/serial specific counters
+	unsigned short serialStartsInsideAPacket;           // Incremented when a start byte is found inside a packet
+	unsigned short serialEscapePairMismatches;          // Incremented when an escape is found but not followed by an escapee
+	unsigned short serialPacketsOverLength;             // Incremented when the buffer fills up before the end
+	unsigned short serialNoiseErrors;                   // Incremented when noise is detected
+	unsigned short serialOverrunErrors;                 // Incremented when an overrun occurs
+	unsigned short serialFramingErrors;                 // Incremented when a framing error occurs
+	unsigned short serialParityErrors;                  // Incremented when a parity error occurs
 
-	/* Generic com counters */
-	unsigned short commsChecksumMismatches;				/* Incremented when calculated checksum did not match the received one	*/
-	unsigned short commsPacketsUnderMinLength;			/* Incremented when a packet is found that is too short					*/
-	unsigned short commsDebugMessagesNotSent;			/* Incremented when a debug message can't be sent due to the TX buffer  */
-	unsigned short commsErrorMessagesNotSent;			/* Incremented when an error message can't be sent due to the TX buffer */
+	// Generic com counters
+	unsigned short commsChecksumMismatches;             // Incremented when calculated checksum did not match the received one
+	unsigned short commsPacketsUnderMinLength;          // Incremented when a packet is found that is too short
+	unsigned short commsDebugMessagesNotSent;           // Incremented when a debug message can't be sent due to the TX buffer
+	unsigned short commsErrorMessagesNotSent;           // Incremented when an error message can't be sent due to the TX buffer
 } Counter;
 
 
