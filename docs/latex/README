@@ -1,0 +1,5 @@
+To build the .pdf documents you need to execute
+ $ pdflatex file.tex
+where pdflatex is provided by texlive. This needs to be run twice to build
+the table of contents.
+
