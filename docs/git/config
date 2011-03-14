@@ -47,6 +47,9 @@
 [remote "jaredh"]
 	url = git://github.com/jharvey/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/jharvey/*
+[remote "johnhowe"]
+	url = git://github.com/johnhowe/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/johnhowe/*
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
