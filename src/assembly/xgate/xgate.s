@@ -89,7 +89,8 @@ xgateSchedule: ; SoftWare Trigger 0, call this from the main core when you want 
 
 	LDD R2, eventStruct
 	LDD R4, 0x4321
-	STW R4, R2, ZEROOFFSET
+	STW R4, R2, ZEROOFFSET ; writing to FLASH will freeze the CPU and the LED will stop cycling
+						   ; this little check makes sure wer are running from ram
 	; pseudo code:
 	;update the proper que array member's data, lets say R4=cyl#, R5=eventTime, R6=bang on or off
 	;check to see if this event is scheduled to happen before the pit fires next(nextEventTime) if so update PIT count down
