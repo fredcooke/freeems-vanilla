@@ -49,7 +49,7 @@
 
 #define START_OF_FLASH_WINDOW	(unsigned short*)0x8000 /* 16KB long */
 #define START_OF_RAM_WINDOW		(unsigned short*)0x1000 /* 4KB long */
-
+#define XGATE_RAM_ALLOCATION_SIZE	0x0200 /* 512Bytes */
 
 typedef struct {
 	unsigned short programCounterValue; /* This data is forced into the XGATE PC register */
