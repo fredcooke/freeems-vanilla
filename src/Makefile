@@ -300,7 +300,6 @@ COPYOPTS =  --output-target=srec \
 		--only-section=.ppageE0X \
 		--only-section=.ppageE1 \
 		--set-section-flags .ppageE1=alloc,load \
-		--change-section-vma .ppageE1=0xE19000 \
 		--change-section-lma .ppageF8=0xF88000 \
 		--change-section-lma .fpageF9=0xF98000 \
 		--change-section-lma .dpageF9=0xF9A000 \

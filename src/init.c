@@ -548,8 +548,8 @@ void initXgate(){
 	// XGATE threads execute from RAM
 	RPAGE = RPAGE_TUNE_TWO;
 	PPAGE = 0xE1;
-	// we cant use the symbols for the memcpy part because the symbols need to contain xgate relevant values
-	memcpy((unsigned short *)0x1000, (unsigned short *)0x8000, (endXGATECode - startXGATECode));
+	// we cant use the symbols for the memcpy part because the symbols need to contain xgate relevant values we can however use the values for size
+	memcpy(START_OF_RAM_WINDOW, START_OF_FLASH_WINDOW, (endXGATECode - startXGATECode));
 	RPAGE = savedRPAGE;
 	PPAGE = savedPPAGE;
 	// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)

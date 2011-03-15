@@ -47,6 +47,10 @@
 #define EXTERN extern
 #endif
 
+#define START_OF_FLASH_WINDOW	(unsigned short*)0x8000 /* 16KB long */
+#define START_OF_RAM_WINDOW		(unsigned short*)0x1000 /* 4KB long */
+
+
 typedef struct {
 	unsigned short programCounterValue; /* This data is forced into the XGATE PC register */
 	unsigned short initialVariable; /* This data is forced into the XGATE R1 register */

@@ -88,7 +88,6 @@ xgateSchedule: ; SoftWare Trigger 0, call this from the main core when you want 
 	STB R2, R1, #0x00 ; write the bits to port-p
 
 	LDD R2, eventStruct
-	LDD R2, 0x9040
 	LDD R4, 0x4321
 	STW R4, R2, ZEROOFFSET
 	; pseudo code:
