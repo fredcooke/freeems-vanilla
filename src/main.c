@@ -149,15 +149,11 @@ int  main(){ // TODO maybe move this to paged flash ?
 
 			/* Switch banks to the latest data */
 			if(injectorMainPulseWidthsMath == injectorMainPulseWidths1){
-				currentDwellMath = &currentDwell0;
-				currentDwellRealtime = &currentDwell1;
 				injectorMainPulseWidthsMath = injectorMainPulseWidths0;
 				injectorMainPulseWidthsRealtime = injectorMainPulseWidths1;
 				injectorStagedPulseWidthsMath = injectorStagedPulseWidths0;
 				injectorStagedPulseWidthsRealtime = injectorStagedPulseWidths1;
 			}else{
-				currentDwellMath = &currentDwell1;
-				currentDwellRealtime = &currentDwell0;
 				injectorMainPulseWidthsMath = injectorMainPulseWidths1;
 				injectorMainPulseWidthsRealtime = injectorMainPulseWidths0;
 				injectorStagedPulseWidthsMath = injectorStagedPulseWidths1;

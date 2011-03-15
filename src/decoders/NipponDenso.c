@@ -225,7 +225,7 @@ void PrimaryRPMISR(){
 
 					// set the time
 					PITLD0 = advance;
-					//				PITLD0 = ignitionAdvances[ignitionChannel] - *currentDwellRealtime; BAD for various reasons!
+					//				PITLD0 = ignitionAdvances[ignitionChannel] - *currentDwellRealtime; this var removed too... and: BAD for various reasons!
 
 					// clear the flags first as they apparently become set any old time whether enabled or not.
 					PITTF |= DWELL_ENABLE;

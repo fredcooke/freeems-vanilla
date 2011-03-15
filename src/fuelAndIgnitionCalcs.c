@@ -395,32 +395,5 @@ void calculateFuelAndIgnition(){
 		coreStatusA &= STAGED_NOT_REQUIRED;
 	}
 
-	// temporary ign tests
-	unsigned short intendedAdvance = ADCArrays->MAT << 6;
-	unsigned short intendedDwell = intendedAdvance >> 1;
-
-	short c;
-	for(c=0;c<IGNITION_CHANNELS;c++){
-		ignitionAdvances[IGNITION_CHANNELS] = intendedAdvance;
-	}
-	*currentDwellMath = intendedDwell;
-
-//	unsigned short minPeriod = ignitionMinimumDwell << 1;
-	//	if(intendedDwell < ignitionMinimumDwell){
-//		dwellLength = ignitionMinimumDwell;
-//	}else{
-//		dwellLength = intendedDwell;
-//	}
-//	if(intendedPeriod < minPeriod){
-//		dwellPeriod = minPeriod;
-//	}else{
-//		dwellPeriod = intendedPeriod;
-//	}
-//	PITLD0 = dwellPeriod;
-
-	/** @todo TODO Calculate the dwell period (one of) */
-
-	/** @todo TODO Calculate the ignition advances (twelve of) */
-
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& TEMPORARY END &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 }

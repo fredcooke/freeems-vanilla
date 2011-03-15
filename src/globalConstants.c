@@ -108,44 +108,30 @@ const unsigned long MAFFuelConstant = 0;
 
 /* Injection limits */
 /* The number of timer units it takes for the switch on scheduling code to run */
-const unsigned short injectorSwitchOnCodeTime = 100; /* Measured 4 timer cycles, going on the safe side by a lot, and limiting minimum pulse to 0.02ms which is well below any dead time I've heard of */
+const unsigned short injectorSwitchOnCodeTime = 300; /* Measured 4 timer cycles, going on the safe side by a lot, and limiting minimum pulse to 0.02ms which is well below any dead time I've heard of */
 
 /* The number of timer units it takes for the switch off scheduling code to run */
-const unsigned short injectorSwitchOffCodeTime = 100; /* This is actually shorter than the switch on time above as measured between 0.0.8 and 0.0.9 */
+const unsigned short injectorSwitchOffCodeTime = 300; /* This is actually shorter than the switch on time above as measured between 0.0.8 and 0.0.9 */
 
 /* The maximum a requested pulsewidth can be before it is truncated to this amount */
 const unsigned short injectorMaximumPulseWidth = 0xF424; /* 62500 clock cycles, = exactly 50ms, which is an arbitrary limit but I like round numbers :-) */
 
 /* The minimum a requested pulsewidth can be before it is not switched on at all */
-const unsigned short injectorMinimumPulseWidth = 100;
-
-
-/* Ignition limits */
-/* Ignition maximum dwell in timer units */
-const unsigned short ignitionMaximumDwell = 50000; /* meaningless us value for now, currently unused */
-
-/* Ignition minimum dwell in timer units */
-const unsigned short ignitionMinimumDwell = 500; /* meaningless us value for now, currently unused */
-
-/* Ignition maximum delay post schedule tooth in timer units */
-const unsigned short ignitionMaximumDelayToDwellStartAfterTooth = 50000; /* (max retard) meaningless us value for now, currently unused */
-
-/* Ignition maximum delay post schedule tooth in timer units */
-const unsigned short ignitionMinimumDelayToDwellStartAfterTooth = 500; /* (max advance) meaningless us value for now, currently unused */
+const unsigned short injectorMinimumPulseWidth = 300;
 
 
 /* Engine position/RPM decoder limits */
 /*  */
-const unsigned short leadingEdgePrimaryRPMInputCodeTime = 100; /* random large safe value */
+const unsigned short leadingEdgePrimaryRPMInputCodeTime = 300; /* random large safe value */
 
 /*  */
-const unsigned short trailingEdgePrimaryRPMInputCodeTime = 100; /* random large safe value */
+const unsigned short trailingEdgePrimaryRPMInputCodeTime = 300; /* random large safe value */
 
 /*  */
-const unsigned short leadingEdgeSecondaryRPMInputCodeTime = 100; /* random large safe value */
+const unsigned short leadingEdgeSecondaryRPMInputCodeTime = 300; /* random large safe value */
 
 /*  */
-const unsigned short trailingEdgeSecondaryRPMInputCodeTime = 100; /* random large safe value */
+const unsigned short trailingEdgeSecondaryRPMInputCodeTime = 300; /* random large safe value */
 
 // TODO put these where they belong, just dumped from other file for now...
 /* Main injector channel bit masks and registers for use in both injection_isrs.c and engine_position_isrs.c */

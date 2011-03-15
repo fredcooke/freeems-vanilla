@@ -183,8 +183,6 @@ EXTERN ADCArray asyncADCArrays1;		/** secondary adc storage area for asynchronou
 
 EXTERN unsigned short* mathSampleTimeStamp; // TODO temp, remove
 EXTERN unsigned short* mathSampleTimeStampRecord; // TODO temp, remove
-EXTERN unsigned short* currentDwellMath; // TODO temp, remove
-EXTERN unsigned short* currentDwellRealtime; // TODO temp, remove
 EXTERN unsigned short currentDwell0; // TODO temp, remove
 EXTERN unsigned short currentDwell1; // TODO temp, remove
 

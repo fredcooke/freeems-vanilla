@@ -454,8 +454,6 @@ void initVariables(){
 	ADCArraysRecord = &ADCArrays1;
 	asyncADCArrays = &asyncADCArrays0;
 	asyncADCArraysRecord = &asyncADCArrays1;
-	currentDwellMath = &currentDwell0;
-	currentDwellRealtime = &currentDwell1;
 
 	injectorMainPulseWidthsMath = injectorMainPulseWidths0;
 	injectorMainPulseWidthsRealtime = injectorMainPulseWidths1;

@@ -159,7 +159,6 @@ EXTERN const unsigned long MAFFuelConstant;
 EXTERN const unsigned short maxBasicDatalogLength;
 
 
-
 /* These need to be changed if the timer period is changed at all */
 /* The number of timer units it takes for the switch on scheduling code to run */
 EXTERN const unsigned short injectorSwitchOnCodeTime;
@@ -169,17 +168,6 @@ EXTERN const unsigned short injectorSwitchOffCodeTime;
 EXTERN const unsigned short injectorMaximumPulseWidth;
 /* The minimum a requested pulsewidth can be before it is not switched on at all */
 EXTERN const unsigned short injectorMinimumPulseWidth;
-
-
-/* Ignition limits */
-/* Ignition maximum dwell in timer units */
-EXTERN const unsigned short ignitionMaximumDwell;
-
-/* Ignition minimum dwell in timer units */
-EXTERN const unsigned short ignitionMinimumDwell;
-
-/* Ignition maximum delay post schedule tooth in timer units */
-EXTERN const unsigned short ignitionMaximumDelayToDwellStartAfterTooth;
 
 
 /* Time in ticks taken to run */
