@@ -164,8 +164,6 @@ EXTERN const unsigned short maxBasicDatalogLength;
 EXTERN const unsigned short injectorSwitchOnCodeTime;
 /* The number of timer units it takes for the switch off scheduling code to run */
 EXTERN const unsigned short injectorSwitchOffCodeTime;
-/* The maximum a requested pulsewidth can be before it is truncated to this amount */
-EXTERN const unsigned short injectorMaximumPulseWidth;
 /* The minimum a requested pulsewidth can be before it is not switched on at all */
 EXTERN const unsigned short injectorMinimumPulseWidth;
 

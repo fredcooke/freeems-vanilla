@@ -113,9 +113,6 @@ const unsigned short injectorSwitchOnCodeTime = 300; /* Measured 4 timer cycles,
 /* The number of timer units it takes for the switch off scheduling code to run */
 const unsigned short injectorSwitchOffCodeTime = 300; /* This is actually shorter than the switch on time above as measured between 0.0.8 and 0.0.9 */
 
-/* The maximum a requested pulsewidth can be before it is truncated to this amount */
-const unsigned short injectorMaximumPulseWidth = 0xF424; /* 62500 clock cycles, = exactly 50ms, which is an arbitrary limit but I like round numbers :-) */
-
 /* The minimum a requested pulsewidth can be before it is not switched on at all */
 const unsigned short injectorMinimumPulseWidth = 300;
 
