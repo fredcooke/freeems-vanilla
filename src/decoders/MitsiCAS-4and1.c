@@ -535,7 +535,6 @@ void PrimaryRPMISR(){
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
 			*ticksPerDegreeRecord = thisTicksPerDegree;
-			engineCyclePeriod = thisTicksPerDegree * 720; /// @todo TODO this needs refactoring too, for the same reason, and also RPM calcs are crap at the moment.
 		}
 	}
 
@@ -667,7 +666,6 @@ void SecondaryRPMISR(){
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
 			*ticksPerDegreeRecord = thisTicksPerDegree;
-			engineCyclePeriod = thisTicksPerDegree * 720; /// @todo TODO this needs refactoring, engine cycle period is being used as event period, which depends upon wasted/semi/seq/cop/dizzy/etc
 		}
 	}
 
