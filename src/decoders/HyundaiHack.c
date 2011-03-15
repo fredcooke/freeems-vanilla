@@ -139,20 +139,13 @@ void PrimaryRPMISR(){
 	}
 
 	if(PTITCurrentState & 0x01){
-		/* Invert input condition on ign 1 */
-		PORTT |= BIT2;
-
-//		currentEvent = ?;TODO
-
-		// sched event?
-
 		// temporary data from inputs
 		unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 		unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
 		lastPrimaryEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
 
-		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessivePrimaryPulses / 4);
+		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessivePrimaryPulses / 16);
 
 		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
 		sampleEachADC(ADCArrays);
@@ -169,16 +162,13 @@ void PrimaryRPMISR(){
 
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
-		/* Invert input condition on ign 1 */
-		PORTT &= NBIT2;
-
 		// temporary data from inputs
 		unsigned long secondaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 		unsigned long timeBetweenSuccessiveSecondaryPulses = secondaryLeadingEdgeTimeStamp - lastSecondaryEventTimeStamp;
 		lastSecondaryEventTimeStamp = secondaryLeadingEdgeTimeStamp;
 
 
-		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessiveSecondaryPulses / 4);
+		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessiveSecondaryPulses / 16);
 
 		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
 		sampleEachADC(ADCArrays);
