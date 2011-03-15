@@ -43,7 +43,6 @@
 #define INJECTIONISRS_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
-#include "inc/injectionISRs.h"
 
 
 /* Staged control algorithms for PIT2 and PIT3 */
@@ -90,67 +89,43 @@ void StagedOffISR(void){
 /* Channel 1 */
 #define INJECTOR_CHANNEL_NUMBER 0
 #define InjectorXISR Injector1ISR
-#define STAGEDXOFF STAGED1OFF
-#define STAGEDXON STAGED1ON
 #include "inc/injectorISR.c"
 #undef InjectorXISR
-#undef STAGEDXOFF
-#undef STAGEDXON
 #undef INJECTOR_CHANNEL_NUMBER
 
 /* Channel 2 */
 #define INJECTOR_CHANNEL_NUMBER 1
 #define InjectorXISR Injector2ISR
-#define STAGEDXOFF STAGED2OFF
-#define STAGEDXON STAGED2ON
 #include "inc/injectorISR.c"
 #undef InjectorXISR
-#undef STAGEDXOFF
-#undef STAGEDXON
 #undef INJECTOR_CHANNEL_NUMBER
 
 /* Channel 3 */
 #define INJECTOR_CHANNEL_NUMBER 2
 #define InjectorXISR Injector3ISR
-#define STAGEDXOFF STAGED3OFF
-#define STAGEDXON STAGED3ON
 #include "inc/injectorISR.c"
 #undef InjectorXISR
-#undef STAGEDXOFF
-#undef STAGEDXON
 #undef INJECTOR_CHANNEL_NUMBER
 
 /* Channel 4 */
 #define INJECTOR_CHANNEL_NUMBER 3
 #define InjectorXISR Injector4ISR
-#define STAGEDXOFF STAGED4OFF
-#define STAGEDXON STAGED4ON
 #include "inc/injectorISR.c"
 #undef InjectorXISR
-#undef STAGEDXOFF
-#undef STAGEDXON
 #undef INJECTOR_CHANNEL_NUMBER
 
 /* Channel 5 */
 #define INJECTOR_CHANNEL_NUMBER 4
 #define InjectorXISR Injector5ISR
-#define STAGEDXOFF STAGED5OFF
-#define STAGEDXON STAGED5ON
 #include "inc/injectorISR.c"
 #undef InjectorXISR
-#undef STAGEDXOFF
-#undef STAGEDXON
 #undef INJECTOR_CHANNEL_NUMBER
 
 /* Channel 6 */
 #define INJECTOR_CHANNEL_NUMBER 5
 #define InjectorXISR Injector6ISR
-#define STAGEDXOFF STAGED6OFF
-#define STAGEDXON STAGED6ON
 #include "inc/injectorISR.c"
 #undef InjectorXISR
-#undef STAGEDXOFF
-#undef STAGEDXON
 #undef INJECTOR_CHANNEL_NUMBER
 
 /* If switching to 8 OC channels with non-IC engine input, place two more sets of defines here :-) (along with all the other mods needed of course) */

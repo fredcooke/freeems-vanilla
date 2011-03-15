@@ -105,26 +105,9 @@ void InjectorXISR(){
 
 		/* This is the point we actually want the time to, but because the code is so simple, it can't help but be a nice short time */
 
-		/* If staged injection is required, switch on or schedule corresponding staged injector and remember that we did. */
-		if(coreStatusA & STAGED_REQUIRED){
-			if(fixedConfigs1.coreSettingsA & STAGED_START){
-				/* Switch that channel on NOW */
-				STAGEDPORT |= STAGEDXON;
-				stagedOn |= STAGEDXON;
-			}else{
-				/* Schedule the start at a later time */
-				/// @todo TODO PIT scheduling of staged start
-			}
-		}
 		/* Calculate and store code run time */
 		injectorCodeOpenRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
 	}else{ // Stuff for switch off time
-		/* If we switched the staged injector on and it's still on, turn it off now. */
-		if(stagedOn & STAGEDXON){
-			STAGEDPORT &= STAGEDXOFF;
-			stagedOn &= STAGEDXOFF;
-		}
-
 		/* Set the action for compare to switch on and the time to next start time, clear the self timer flag */
 		if(selfSetTimer & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){
 			*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] = injectorMainStartTimesHolding[INJECTOR_CHANNEL_NUMBER];
