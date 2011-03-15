@@ -40,6 +40,7 @@
 #include "inc/freeEMS.h"
 #include "inc/utils.h"
 #include "inc/commsCore.h"
+#include "inc/interrupts.h"
 #include "inc/tableLookup.h"
 #include "inc/decoderInterface.h"
 #include "inc/fuelAndIgnitionCalcs.h"
@@ -325,29 +326,29 @@ void calculateFuelAndIgnition(){
 //				this is from logs, real values, 125 is calced... but div 10 now.
 
 			if(ticksBetweenEventAndSpark > safeAdd(DerivedVars->Dwell, trailingEdgeSecondaryRPMInputCodeTime)){
-				// set the event to sched from and delay after that event
-				pinEventNumbers[ignitionEvent] = lastGoodEvent;
-
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
-					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
+					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+					pinEventNumbers[ignitionEvent] = lastGoodEvent;
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
-					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
+					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				}else if(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
-					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
+					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
+					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+					pinEventNumbers[ignitionEvent] = lastGoodEvent;
 					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
-					injectorMainPulseWidthsMath[ignitionEvent] = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
-					/// @todo TODO either have banked vars like RPM/core/adc/etc OR just lock out interrupts while writing these vars. If the latter, do the calc into a temp var first, lock, then write, then unlock.
+					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
+					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					Counters.DwellStretchedToSchedule++;
 				}else{
 					/* ELSE leave unscheduled rather than advance too much
 					 * This indicates that the output event is too far from the input event
 					 * This will only occur on input patterns with two few teeth, or bad alignment
 					 */
+					pinEventNumbers[ignitionEvent] = ONES; // unschedule this pin... lockout not required because the operation is naturally atomic
 					Counters.TooFarToSchedule++;
-					pinEventNumbers[ignitionEvent] = ONES; // unschedule this pin...
 				}
 				break;
 			}else{
