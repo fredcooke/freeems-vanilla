@@ -47,7 +47,6 @@
 #define EXTERN extern
 #endif
 
-
 typedef struct {
 	unsigned short programCounterValue; /* This data is forced into the XGATE PC register */
 	unsigned short initialVariable; /* This data is forced into the XGATE R1 register */
@@ -55,6 +54,8 @@ typedef struct {
 
 // This statement imports the symbol from the xgate ASM for use in the vector table
 extern void xgateSchedule(); // extern not EXTERN because it is defined outside of C
+extern void startXGATECode();
+extern void endXGATECode();
 
 EXTERN const xgateIntVector xgateIntVectorTable[121];
 

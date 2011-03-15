@@ -542,10 +542,16 @@ void initXgate(){
 	INT_CFDATA0 = 0x01; 		/* RQST = 1 */
 	INT_CFDATA1 = 0x81;		/* PRIO = 1 */
 
-	/* XGATE sees flash starting at paged address 0xE0, 0x8800 */
-
-	// XGATE threads execute from flash at the moment
-
+	/* XGATE sees flash starting at paged address 0xE0, 0x8800 to + 30Kb*/
+	unsigned char savedRPAGE = RPAGE;
+	unsigned char savedPPAGE = PPAGE;
+	// XGATE threads execute from RAM
+	RPAGE = RPAGE_TUNE_TWO;
+	PPAGE = 0xE1;
+	// we cant use the symbols for the memcpy part because the symbols need to contain xgate relevant values
+	memcpy((unsigned short *)0x1000, (unsigned short *)0x8000, (endXGATECode - startXGATECode));
+	RPAGE = savedRPAGE;
+	PPAGE = savedPPAGE;
 	// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)
 	XGVBR = (unsigned short )0x0800; // EO region is divided to ensure vectors end up here visible to xgate
 

@@ -39,30 +39,9 @@ include "assembly/xgate/xgate.inc"
 .equ    SOMEVALUE, 0x01
 .equ    AVALUE, 0x05
 
-; *****************************************************************************
-;
-;	VARIABLES
-;
-;	Remember we are dealing with a 16-bit RISC CPU, alignment care should be
-;	taken when defining 8-bit vars/constants
-;
-; *****************************************************************************
-
 ;	.sect .data
     .sect .ppageE1
-;.ascii "FreeEMS > MS"
-;.word 0x1010
-;.skip 40 ; block of 40 bytes uninitialized
-;variables:
-;.word 0; nextEventTime holds the next(soonest) event time
-
-; our event structure[8]
-eventStruct: ; The last four pins in portsBA are used for other functions and
-;              must not be modified by this code or the mask below (0xAAAA).
-.word 0xAAAA; "cylinderMask" the mask to apply to our bit bang port
-.word 0; "scheduledTime" the time when you want an event to happen
-.word 0; "stateToSet" 0 to turn somting off, 1 to turn something on
-.word 0xDDDD; "isReady"  a var to test if the event is enabled
+startXGATECode:
 
 ; *****************************************************************************
 ;
@@ -84,7 +63,8 @@ eventStruct: ; The last four pins in portsBA are used for other functions and
 ;; Default interrupt handler.
 def:
 ;        rts
-
+.global startXGATECode
+.global endXGATECode
 .global xgateSchedule
 .global xgateScheduleEnd
 .global xgatePITTurnOn
@@ -101,12 +81,16 @@ xgateSchedule: ; SoftWare Trigger 0, call this from the main core when you want 
 	LDD R4, SWISRZEROCLEARMASK
 	STW R4, R3, ZEROOFFSET ; clear interrupt flag
 
-	LDD R5, eventStruct ; unused at this time, currently still flashes User LED on TA
+	;LDD R5, eventStruct ; unused at this time, currently still flashes User LED on TA
 
 	LDB R2, R1, #0x00 ; get data at port-p, the value of R1 is passed by the vector table
 	COM R2, R2 ; flip the bits
 	STB R2, R1, #0x00 ; write the bits to port-p
 
+	LDD R2, eventStruct
+	LDD R2, 0x9040
+	LDD R4, 0x4321
+	STW R4, R2, ZEROOFFSET
 	; pseudo code:
 	;update the proper que array member's data, lets say R4=cyl#, R5=eventTime, R6=bang on or off
 	;check to see if this event is scheduled to happen before the pit fires next(nextEventTime) if so update PIT count down
@@ -131,4 +115,27 @@ xgateErrorThread:
 	;R1 will have the xgate channel number that was executed
 	;TODO build some defualt code to increment an error counter
 
+; *****************************************************************************
+;
+;	VARIABLES
+;
+;	Remember we are dealing with a 16-bit RISC CPU, alignment care should be
+;	taken when defining 8-bit vars/constants
+;
+; *****************************************************************************
+
+;.ascii "FreeEMS > MS"
+;.word 0x1010
+;.skip 40 ; block of 40 bytes uninitialized
+;variables:
+;.word 0; nextEventTime holds the next(soonest) event time
+; our event structure[8]
+eventStruct: ; The last four pins in portsBA are used for other functions and
+;              must not be modified by this code or the mask below (0xAAAA).
+.word 0xAAAA; "cylinderMask" the mask to apply to our bit bang port
+.word 0; "scheduledTime" the time when you want an event to happen
+.word 0; "stateToSet" 0 to turn somting off, 1 to turn something on
+.word 0xDDDD; "isReady"  a var to test if the event is enabled
+
+endXGATECode:
 end
