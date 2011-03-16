@@ -107,8 +107,8 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{(unsigned short)xgateSchedule, (unsigned short)&PORTP}, // Channel 39 - XGATE Software Trigger 0 address in first field is from xgate linear 64k point of view. The VMA MUST BE CHANGED IN THE COPYOPTS PORTION OF THE MAKEFILE to reflect how xgate see's this section
 		{XGATE_ERROR_HANDLER, 0x3A},  // Channel 3A - Periodic Interrupt Timer 3
 		{XGATE_ERROR_HANDLER, 0x3B},  // Channel 3B - Periodic Interrupt Timer 2
-		{XGATE_ERROR_HANDLER, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1
-		{XGATE_ERROR_HANDLER, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0 //TODO trigger PIT scheduler
+		{(unsigned short)xgatePITTurnOff, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1
+		{(unsigned short)xgatePITTurnOn, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0 //TODO trigger PIT scheduler
 		{XGATE_ERROR_HANDLER, 0x3E},  // Reserved
 		{XGATE_ERROR_HANDLER, 0x3F},  // Channel 3F - Autonomous Periodical interrupt API
 		{XGATE_ERROR_HANDLER, 0x40},  // Channel 40 - Low Voltage interrupt LVI
