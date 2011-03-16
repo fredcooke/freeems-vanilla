@@ -243,11 +243,6 @@ EXTERN unsigned char currentTuneRPage;
 EXTERN unsigned char currentTimeRPage;
 
 
-//union { /* Declare Union http://www.esacademy.com/faq/docs/cpointers/structures.htm */
-//    unsigned long timeLong;
-//    unsigned short timeShorts[2];
-//} LongNoTime RWINDOW ;
-
 /* These are inited once and remain the same, rpage switches change meaning. */
 
 ///* Pointers to main tables to aid readability */

@@ -49,20 +49,21 @@
  * Init is called first to set everything up and then the main loop is entered
  * where the flow of control continues until the device is switched off or
  * reset (excluding asynchronous ISR code). Currently the main loop only runs
- * the fuel, ignition and scheduling calculation code, and only when actually
- * required. The intention is to maintain a very low latency for calculations
- * such that the behaviour of the device more closely reflects the attached
- * engines rapidly changing requirements. When accessory code is added a new
- * scheduling algorithm will be required to keep the latency low without
- * starving any particular blocks of CPU time.
+ * the fuel, ignition and scheduling calculation code, and the communications
+ * code and only when actually required. The intention is to maintain a very
+ * low latency for calculations such that the behaviour of the device more
+ * closely reflects the attached engines rapidly changing requirements. When
+ * accessory code is added a new scheduling algorithm will be required to keep
+ * the latency low without starving any particular blocks of CPU time.
  *
  * @author Fred Cooke
  */
-int  main(){ // TODO maybe move this to paged flash ?
+int  main(){ /// @todo TODO maybe move this to paged flash ?
 	// Set everything up.
 	init();
 
-	//LongNoTime.timeLong = 54;
+	/// @todo TODO Add priming pulse code here, this code will be driven from configuration such that only the correct channels fire and for the correc period each, regardless of cylinder count and channel count, etc
+
 	// Run forever repeating.
 	while(TRUE){
 	//	unsigned short start = realTimeClockMillis;
@@ -276,22 +277,6 @@ int  main(){ // TODO maybe move this to paged flash ?
 				// mechanism to ensure we only send something if the data has been updated
 				lastCalcCount = Counters.calculationsPerformed;
 			}
-		}
-		// on once per cycle for main loop heart beat (J0)
-		PORTJ ^= 0x01;
-
-
-		// debug...
-		if(SCI0CR2 & SCICR2_RX_ENABLE){
-			PORTK |= BIT2;
-		}else{
-			PORTK &= NBIT2;
-		}
-
-		if(SCI0CR2 & SCICR2_RX_ISR_ENABLE){
-			PORTK |= BIT3;
-		}else{
-			PORTK &= NBIT3;
 		}
 
 		// PWM experimentation
