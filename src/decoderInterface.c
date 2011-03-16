@@ -82,7 +82,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	unsigned long startTimeLong = timeStamp.timeLong + postReferenceEventDelays[pin];
 
 	// determine whether or not to reschedule or self schedule assuming pin is currently scheduled
-	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + code);
+	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
 #define newStartIsAfterOutputEndTimeAndCanSelfSet	(diff > LONGHALF)
 // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
 
