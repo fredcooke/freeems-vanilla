@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -50,37 +50,14 @@
 void StagedOnISR(void){
 	// clear the flag
 	PITINTE |= 0x04;
-
-	// bit bang on the correct injector channel
-	// TODO figure out which channel and switch it
-	// TODO set the flag for that channel
-
-	// if there are other staged channels pending, schedule them and adjust the data
-	// TODO
-
-	/* If staged injection needs the end point scheduled, do it now (otherwise it will turn off naturally with the main injector) */
-	if(!(fixedConfigs1.coreSettingsA & STAGED_END)){
-		// TODO schedule the end of staged injection with PIT 3
-	}
-
-	/* Clear the PIT2 flag */
-	// TODO
+	/// @todo TODO This will be handled by XGATE, somehow, in the mean time, move to UISR file along with others.
 }
 
 /* Staged injection switch off timer */
 void StagedOffISR(void){
 	// clear the flag
 	PITINTE |= 0x08;
-
-	// bit bang off the correct injector channel
-	// TODO figure out which channel and switch it
-	// TODO set the flag for that channel
-
-	// if there are other staged channels pending, schedule them and adjust the data
-	// TODO
-
-	/* Clear the PIT3 flag */
-	// TODO
+	/// @todo TODO This will be handled by XGATE, somehow, in the mean time, move to UISR file along with others.
 }
 
 
@@ -127,5 +104,3 @@ void StagedOffISR(void){
 #include "inc/injectorISR.c"
 #undef InjectorXISR
 #undef INJECTOR_CHANNEL_NUMBER
-
-/* If switching to 8 OC channels with non-IC engine input, place two more sets of defines here :-) (along with all the other mods needed of course) */
