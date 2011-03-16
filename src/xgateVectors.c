@@ -104,13 +104,11 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{XGATE_ERROR_HANDLER, 0x36},  // Channel 36 - XGATE Software Trigger 3
 		{XGATE_ERROR_HANDLER, 0x37},  // Channel 37 - XGATE Software Trigger 2
 		{XGATE_ERROR_HANDLER, 0x38},  // Channel 38 - XGATE Software Trigger 1
-		//{(unsigned short)(XGATE_RPAGE_TWO + (xgateSchedule - startXGATECode)), (unsigned short)&PORTP}, // Channel 39 - XGATE Software Trigger 0 address in first field is from xgate linear 64k point of view. 0x4000 is start of E1
-		// we need xgateSchedule to == 0x9000 for now
 		{(unsigned short)xgateSchedule, (unsigned short)&PORTP}, // Channel 39 - XGATE Software Trigger 0 address in first field is from xgate linear 64k point of view. The VMA MUST BE CHANGED IN THE COPYOPTS PORTION OF THE MAKEFILE to reflect how xgate see's this section
 		{XGATE_ERROR_HANDLER, 0x3A},  // Channel 3A - Periodic Interrupt Timer 3
 		{XGATE_ERROR_HANDLER, 0x3B},  // Channel 3B - Periodic Interrupt Timer 2
-		{XGATE_ERROR_HANDLER, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1
-		{XGATE_ERROR_HANDLER, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0 //TODO trigger PIT scheduler
+		{(unsigned short)xgatePITTurnOff, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1
+		{(unsigned short)xgatePITTurnOn, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0 //TODO trigger PIT scheduler
 		{XGATE_ERROR_HANDLER, 0x3E},  // Reserved
 		{XGATE_ERROR_HANDLER, 0x3F},  // Channel 3F - Autonomous Periodical interrupt API
 		{XGATE_ERROR_HANDLER, 0x40},  // Channel 40 - Low Voltage interrupt LVI

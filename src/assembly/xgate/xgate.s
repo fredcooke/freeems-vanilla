@@ -73,28 +73,29 @@ def:
 .global xgatePITTurnOffEnd
 
 ; -----------------------------------------------------------------------------
-;	Main subroutine TODO move to RAM at RPAGE_TIME_TWO
+;	Main subroutine
+;	the value of R1 is passed by the vector table
 ; -----------------------------------------------------------------------------
 xgateSchedule: ; SoftWare Trigger 0, call this from the main core when you want to add/update an xgate scheduled event
-    ;CIF
+    ;clear interrupt flag
 	LDD R3, SWISRFLAGREG
-	LDD R4, SWISRZEROCLEARMASK
-	STW R4, R3, ZEROOFFSET ; clear interrupt flag
+	LDD R2, SWISRZEROCLEARMASK
+	STW R2, R3, ZEROOFFSET
 
-	;LDD R5, eventStruct ; unused at this time, currently still flashes User LED on TA
+	;save parameters
+	LDD R0, parameterR4
+	STW R4, R0, ZEROOFFSET
+	LDD R0, parameterR5
+	STW R5, R0, ZEROOFFSET
+	LDD R0, parameterR6
+	STW R6, R0, ZEROOFFSET
+	LDD R0, parameterR7
+	STW R7, R0, ZEROOFFSET
 
-	LDB R2, R1, #0x00 ; get data at port-p, the value of R1 is passed by the vector table
-	COM R2, R2 ; flip the bits
-	STB R2, R1, #0x00 ; write the bits to port-p
-
-	LDD R2, eventStruct
-	LDD R4, 0x4321
-	STW R4, R2, ZEROOFFSET ; writing to FLASH will freeze the CPU and the LED will stop cycling
-						   ; this little check makes sure wer are running from ram
 	; pseudo code:
 	;update the proper que array member's data, lets say R4=cyl#, R5=eventTime, R6=bang on or off
 	;check to see if this event is scheduled to happen before the pit fires next(nextEventTime) if so update PIT count down
-	RTS
+	BRA xgatePORTPFlip
 xgateScheduleEnd:
 
 xgatePITTurnOn: ; PIT 0 ISR, called by PIT0 interrupt. Loop though our que and see if we need to bang any registers
@@ -104,7 +105,7 @@ xgatePITTurnOn: ; PIT 0 ISR, called by PIT0 interrupt. Loop though our que and s
 	RTS
 xgatePITTurnOnEnd:
 
-xgatePITTurnOff: ; PIT 1 ISR, called by PIT0 interrupt. Loop though our que and see if we need to bang any registers
+xgatePITTurnOff: ; PIT 1 ISR, called by PIT1 interrupt. Loop though our que and see if we need to bang any registers
 	;CIF
 	;Loop though the que to see if there are any events that need to be fired if so band the proper bits
 	;Update PIT count down with the nearest nextEventTime
@@ -113,7 +114,19 @@ xgatePITTurnOffEnd:
 
 xgateErrorThread:
 	;R1 will have the xgate channel number that was executed
-	;TODO build some defualt code to increment an error counter
+	;TODO build some defualt code to increment an error counter, Fred can you give me the addres of a a status var that will show in the log output !
+xgatePORTPFlip:
+	;LDB R2, PORTP, #0x00 ; get data at port-p
+	LDD R2, PORTP ; load port-p address
+	LDB R1, R2, ZEROOFFSET; load data(1 byte) at port-p address to R1
+	COM R1, R1 ; flip the bits
+	STB R1, R2, #0x00 ; write the byte to port-p address
+
+	;test if we can write to a var, led will fail to flash if an error occours
+	LDD R2, eventStruct
+	LDD R4, 0x4321
+	STW R4, R2, ZEROOFFSET
+	RTS ; return from current xgate thread
 
 ; *****************************************************************************
 ;
@@ -129,13 +142,30 @@ xgateErrorThread:
 ;.skip 40 ; block of 40 bytes uninitialized
 ;variables:
 ;.word 0; nextEventTime holds the next(soonest) event time
-; our event structure[8]
+
+; possobile parameters passed by s12 cpu
+parameterR7:
+	.word parameterR7
+parameterR6:
+	.word parameterR6
+parameterR5:
+	.word parameterR5
+parameterR4:
+	.word parameterR4
+
+protectMask: ;protecting against chaning port pins which should not be touched
+	.word	PORTPROTECTIONMASK
+nextEvent: ;nextEventTime holds the next(soonest) event time
+	.word	0x0000
+
+; our event structure[12]
 eventStruct: ; The last four pins in portsBA are used for other functions and
-;              must not be modified by this code or the mask below (0xAAAA).
-.word 0xAAAA; "cylinderMask" the mask to apply to our bit bang port
-.word 0; "scheduledTime" the time when you want an event to happen
-.word 0; "stateToSet" 0 to turn somting off, 1 to turn something on
-.word 0xDDDD; "isReady"  a var to test if the event is enabled
+;              must not be modified by this code or the mask below (0x0FFF).
+	.word 0xAAAA; "cylinderMask" the mask to apply to our bit bang port
+	.word 0; "scheduledTime" the time when you want an event to happen
+	.word 0; "stateToSet" 0 to turn somting off, 1 to turn something on
+	.word 0xDDDD; "isReady"  a var to test if the event is enabled
+eventStructEnd:
 
 endXGATECode:
 end
