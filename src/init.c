@@ -73,7 +73,7 @@ void init(){
 //	initPITTimer();         	/* TODO ditto... */
 	initSCIStuff();         	/* Setup the sci module(s) that we will use. */
 	initConfiguration();    	/* TODO Set user/feature/config up here! */
-	initXgate();
+//	initXgate(); // Your shit fucked up the outputs in real live running code on my car at 4am away from home, leave it commented out till it's stable, please...
 	initInterrupts();       	/* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
 	ATOMIC_END();           	/* Re-enable any configured interrupts */
 }
