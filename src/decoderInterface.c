@@ -86,6 +86,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
 	if(diff > LONGHALF){
 		reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
+		Counters.testCounter1++;
 	}
 
 	// schedule the appropriate channel
@@ -94,8 +95,10 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
 		TFLG = injectorMainOnMasks[pin];
+		Counters.testCounter2++;
 	}else{
 		injectorMainStartTimesHolding[pin] = startTime;
 		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+		Counters.testCounter3++;
 	}
 }

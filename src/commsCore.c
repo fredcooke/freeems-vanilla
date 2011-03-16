@@ -71,10 +71,10 @@ void populateBasicDatalog(){
 	/// @todo TODO setup proper sequence and clock with some sort of differential measurement log to log. insert in front of actual data because these are part of the log itself.
 
 	// temp debug, done here to ensure it matches the other data.
-//	CoreVars->DRPM = Counters.primaryTeethSeen;
-//	CoreVars->DDRPM = Counters.secondaryTeethSeen;
-//	CoreVars->DTPS = Counters.camSyncCorrections;
-//	CoreVars->DMAP = Counters.camSyncLosses;
+//	CoreVars->DRPM = Counters.; currently in use as at wed nzst 3:10pm 16 march 2011
+	CoreVars->DDRPM = Counters.testCounter1;
+	CoreVars->DTPS = Counters.testCounter2;
+	CoreVars->DMAP = Counters.testCounter3;
 
 	// Use these any way you like:
 	DerivedVars->zsp1 = Clocks.realTimeClockMain;

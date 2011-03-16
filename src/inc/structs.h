@@ -378,6 +378,9 @@ typedef struct {
 //	unsigned short primaryTeethDroppedFromLackOfSync;   // number of primary teeth dropped due to no primary sync
 	unsigned short TooFarToSchedule;                    // times sched wasnt done to prevent excess advance
 	unsigned short DwellStretchedToSchedule;            // times sched needed to extend dwell to prevent excess advance
+	unsigned short testCounter1;
+	unsigned short testCounter2;
+	unsigned short testCounter3;
 // TODO remove the two commented out lines above this
 
 	unsigned short primaryTeethSeen;                    // Free running counters for number of teeth seen such that...
