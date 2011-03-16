@@ -147,7 +147,7 @@ void PrimaryRPMISR(){
 
 		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessivePrimaryPulses / 16);
 
-		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
+		// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
 		*mathSampleTimeStampRecord = TCNT;
@@ -170,7 +170,7 @@ void PrimaryRPMISR(){
 
 		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessiveSecondaryPulses / 16);
 
-		// TODO sample ADCs on teeth other than that used by the scheduler in order to minimise peak run time and get clean signals
+		/// @todo TODO make this stuff behave correctly, this one will only run at startup, and the other will always run, but do it by generic config and split this stuff out into a shared function, soon.
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
 		*mathSampleTimeStampRecord = TCNT;
