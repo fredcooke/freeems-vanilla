@@ -58,6 +58,8 @@ typedef struct {
 
 // This statement imports the symbol from the xgate ASM for use in the vector table
 extern void xgateSchedule(); // extern not EXTERN because it is defined outside of C
+extern void xgatePITTurnOff();
+extern void xgatePITTurnOn();
 extern void startXGATECode();
 extern void endXGATECode();
 
