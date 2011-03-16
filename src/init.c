@@ -550,6 +550,7 @@ void initXgate(){
 	PPAGE = 0xE1;
 	// we can't use the symbols for the memcpy part because the symbols need to contain xgate relevant values
 	memcpy(START_OF_RAM_WINDOW, START_OF_FLASH_WINDOW, XGATE_RAM_ALLOCATION_SIZE);
+	//TODO set RAM protection
 	RPAGE = savedRPAGE;
 	PPAGE = savedPPAGE;
 	// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)
