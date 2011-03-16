@@ -46,6 +46,8 @@
  * Currently this simply counts bad calls like any other event type.
  *
  * @author Fred Cooke
+ * @todo TODO Split this into its own file, create one for each, and clear flags for all, and increment shared counter as is.
+ * @todo TODO Currently not a problem, but as indirectly pointed out by johntramp, if no flag clearing is being done, then this code will run continuously, which is not a good idea...
  */
 void UISR(void){
 	/* Increment the unimplemented ISR execution counter */
