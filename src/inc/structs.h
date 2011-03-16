@@ -381,6 +381,9 @@ typedef struct {
 	unsigned short testCounter1;
 	unsigned short testCounter2;
 	unsigned short testCounter3;
+	unsigned short testCounter4;
+	unsigned short testCounter5;
+	unsigned short testCounter6;
 // TODO remove the two commented out lines above this
 
 	unsigned short primaryTeethSeen;                    // Free running counters for number of teeth seen such that...

@@ -105,6 +105,8 @@ void InjectorXISR(){
 
 		/* This is the point we actually want the time to, but because the code is so simple, it can't help but be a nice short time */
 
+		Counters.testCounter4++;
+
 		/* Calculate and store code run time */
 		injectorCodeOpenRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
 	}else{ // Stuff for switch off time
@@ -113,10 +115,12 @@ void InjectorXISR(){
 			*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] = injectorMainStartTimesHolding[INJECTOR_CHANNEL_NUMBER];
 			*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
 			selfSetTimer &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
+			Counters.testCounter5++;
 		}else{
 			// Disable interrupts and actions incase the period from this end to the next start is long (saves cpu)
 			TIE &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
 			*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= injectorMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
+			Counters.testCounter6++;
 		}
 		/* Calculate and store code run time */
 		injectorCodeCloseRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;

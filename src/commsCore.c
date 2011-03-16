@@ -91,9 +91,12 @@ void populateBasicDatalog(){
 	DerivedVars->zsp12 = Counters.primaryTeethSeen;
 	DerivedVars->zsp13 = Counters.secondaryTeethSeen;
 	DerivedVars->zsp14 = *ticksPerDegree;
-	DerivedVars->zsp15 = Counters.camSyncLosses;
-	DerivedVars->zsp16 = Counters.crankSyncLosses;
-	DerivedVars->zsp17 = Counters.combustionSyncLosses;
+	DerivedVars->zsp15 = Counters.testCounter4;
+	DerivedVars->zsp16 = Counters.testCounter5;
+	DerivedVars->zsp17 = Counters.testCounter6;
+//	DerivedVars->zsp15 = Counters.camSyncLosses;
+//	DerivedVars->zsp16 = Counters.crankSyncLosses;
+//	DerivedVars->zsp17 = Counters.combustionSyncLosses;
 	DerivedVars->zsp18 = Counters.DwellStretchedToSchedule;
 	DerivedVars->zsp19 = Counters.TooFarToSchedule;
 
