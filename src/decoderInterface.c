@@ -81,24 +81,21 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	// remove this temporarily too, no need for it without the later conditional code
 	unsigned long startTimeLong = timeStamp.timeLong + postReferenceEventDelays[pin];
 
-	// determine whether or not to reschedule
-	unsigned char reschedule = 0;
-	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime);
-	if(diff > LONGHALF){
-		reschedule = 1; // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
-		Counters.testCounter1++;
-	}
+	// determine whether or not to reschedule or self schedule assuming pin is currently scheduled
+	unsigned long diff = startTimeLong - (injectorMainEndTimes[pin] + code);
+#define newStartIsAfterOutputEndTimeAndCanSelfSet	(diff > LONGHALF)
+// http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
 
-	// schedule the appropriate channel
-	if(!(*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) || reschedule){ /* If the timer isn't still running, or if its set too long, set it to start again at the right time soon */
+	// pin is set to activate AND can self set
+	if((*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) && newStartIsAfterOutputEndTimeAndCanSelfSet){
+		injectorMainStartTimesHolding[pin] = startTime;
+		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+		Counters.testCounter1++;
+	}else{ // pin is not set to active OR pin is set to active and can't self set
 		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
 		TFLG = injectorMainOnMasks[pin];
-		Counters.testCounter2++;
-	}else{
-		injectorMainStartTimesHolding[pin] = startTime;
-		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
 		Counters.testCounter3++;
 	}
 }

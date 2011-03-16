@@ -108,13 +108,13 @@ const unsigned long MAFFuelConstant = 0;
 
 ///* Injection limits */
 /* The number of timer units it takes for the switch on scheduling code to run */
-const unsigned short injectorSwitchOnCodeTime = 300; /* Measured 4 timer cycles, going on the safe side by a lot, and limiting minimum pulse to 0.02ms which is well below any dead time I've heard of */
+const unsigned short injectorSwitchOnCodeTime = 100; /* Measured 4 timer cycles, going on the safe side by a lot, and limiting minimum pulse to 0.02ms which is well below any dead time I've heard of */
 /* The number of timer units it takes for the switch off scheduling code to run */
-const unsigned short injectorSwitchOffCodeTime = 300; /* This is actually shorter than the switch on time above as measured between 0.0.8 and 0.0.9 */
+const unsigned short injectorSwitchOffCodeTime = 100; /* This is actually shorter than the switch on time above as measured between 0.0.8 and 0.0.9 */
 /* The minimum a requested pulsewidth can be before it is not switched on at all */
-const unsigned short injectorMinimumPulseWidth = 300;
+const unsigned short injectorMinimumPulseWidth = 100;
 /* Engine position/RPM decoder limits */
-const unsigned short trailingEdgeSecondaryRPMInputCodeTime = 300; /* random large safe value */
+const unsigned short trailingEdgeSecondaryRPMInputCodeTime = 100; /* random large safe value */
 
 // TODO put these where they belong, just dumped from other file for now...
 /* Main injector channel bit masks and registers for use in both injection_isrs.c and engine_position_isrs.c */
