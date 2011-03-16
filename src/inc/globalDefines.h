@@ -71,10 +71,10 @@
 #define ONES16  0xFFFF
 
 /* Halves and Maxes */
-#define LONGHALF  0x80000000 /* 2147483648 */
-#define LONGMAX   0xFFFFFFFF /* 4294967295 */
-#define SHORTHALF 0x8000     /* 32768 */
-#define SHORTMAX  0xFFFF     /* 65535 */
+#define LONGHALF  0x80000000UL /* 2147483648 */ // Ned IS awesome! ;-)
+#define LONGMAX   0xFFFFFFFFUL /* 4294967295 */
+#define SHORTHALF 0x8000       /* 32768 */
+#define SHORTMAX  0xFFFF       /* 65535 */
 
 /* Individual bits WARNING, do not not these for notted versions, use the notted ones below instead : http://supp.iar.com/Support/?note=12582&from=search+result */
 #define BIT0        0x01      /*  1st bit =     1 */
