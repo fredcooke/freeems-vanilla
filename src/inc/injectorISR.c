@@ -112,8 +112,8 @@ void InjectorXISR(){
 	}else{ // Stuff for switch off time
 		/* Set the action for compare to switch on and the time to next start time, clear the self timer flag */
 		if(selfSetTimer & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){
-			*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] = injectorMainStartTimesHolding[INJECTOR_CHANNEL_NUMBER];
 			*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
+			*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] = injectorMainStartTimesHolding[INJECTOR_CHANNEL_NUMBER];
 			selfSetTimer &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
 			Counters.testCounter5++;
 		}else{

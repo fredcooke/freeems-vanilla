@@ -329,6 +329,19 @@ void calculateFuelAndIgnition(){
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+					/** @todo TODO for both of these blocks that DO schedule a pin, we need to
+					 * provide a time stamp or current event number AFTER disabling the interrupts
+					 * such that the next input isr can figure out if it should run from the
+					 * previous data for a single cycle in the case when moving forward a tooth
+					 * between the tooth you are moving forward from and the one you are moving
+					 * back forward to. In this case a scheduled event will be lost, because the
+					 * one its intended for has past, and the one after that is yet to arrive is
+					 * not going to fire it. Some trickery around the post input min delay could
+					 * be required as you will be operating under dynamic conditions and trying to
+					 * use a tooth you're not supposed to be, not doing fancy delay semantics will
+					 * just mean a single cycle of scheduling is slightly too retarded for a single
+					 * event around change of tooth time which could easily be acceptable.
+					 */
 					pinEventNumbers[ignitionEvent] = lastGoodEvent;
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;

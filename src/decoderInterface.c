@@ -96,6 +96,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
 		TFLG = injectorMainOnMasks[pin];
+		selfSetTimer &= injectorMainOffMasks[pin];
 		Counters.testCounter3++;
 	}
 }
