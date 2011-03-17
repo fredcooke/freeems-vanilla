@@ -188,7 +188,7 @@ void PrimaryRPMISR(){
 
 		/// @todo TODO gain and lose combustion sync based on timing between teeth, and save state and use flags to only check if good, etc
 //		if(decoderFlags & COMBUSTION_SYNC){
-			if(pinEventNumbers[0] == currentEvent){
+			if((pinEventNumbers[0] == currentEvent) || (skipEventFlags & injectorMainOnMasks[0])){
 				schedulePortTPin(0, timeStamp);
 			}
 //		}

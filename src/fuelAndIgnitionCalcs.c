@@ -335,34 +335,34 @@ void calculateFuelAndIgnition(){
 			if(ticksBetweenEventAndSpark > safeAdd(DerivedVars->Dwell, trailingEdgeSecondaryRPMInputCodeTime)){
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
-//					// Stash previous state for post check
-//					unsigned short currentDelay = pinEventNumbers[ignitionEvent];
-//					unsigned char eventBeforeCurrent = 0;
-//					if(pinEventNumbers[ignitionEvent] == 0){
-//						eventBeforeCurrent = numberOfEventAngles - 1;
-//					}else{
-//						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
-//					}
+					// Determine the eventBeforeCurrent outside the atomic block
+					unsigned char eventBeforeCurrent = 0;
+					if(pinEventNumbers[ignitionEvent] == 0){
+						eventBeforeCurrent = numberOfEventAngles - 1;
+					}else{
+						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
+					}
 
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-					/** @todo TODO for both of these blocks that DO schedule a pin, we need to
-					 * provide a time stamp or current event number AFTER disabling the interrupts
+
+					/* For this block we need to provide a flag AFTER disabling the interrupts
 					 * such that the next input isr can figure out if it should run from the
 					 * previous data for a single cycle in the case when moving forward a tooth
 					 * between the tooth you are moving forward from and the one you are moving
-					 * back forward to. In this case a scheduled event will be lost, because the
+					 * forward to. In this case a scheduled event will be lost, because the
 					 * one its intended for has past, and the one after that is yet to arrive is
-					 * not going to fire it. Some trickery around the post input min delay could
-					 * be required as you will be operating under dynamic conditions and trying to
+					 * not going to fire it.
+					 *
+					 * Some trickery around the post input min delay could benefit timing or be
+					 * required as you will be operating under dynamic conditions and trying to
 					 * use a tooth you're not supposed to be, not doing fancy delay semantics will
 					 * just mean a single cycle of scheduling is slightly too retarded for a single
 					 * event around change of tooth time which could easily be acceptable.
 					 */
+					if((lastGoodEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > pinEventNumbers[ignitionEvent])){
+						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
+					}
 
-
-//					if((lastGoodEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > currentDelay)){
-//						set flag saying so
-//					}
 					pinEventNumbers[ignitionEvent] = lastGoodEvent;
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;

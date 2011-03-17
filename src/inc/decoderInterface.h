@@ -118,6 +118,7 @@ EXTERN unsigned short lastPrimaryTicksPerDegree;
 EXTERN unsigned short lastSecondaryTicksPerDegree;
 EXTERN unsigned char currentEvent;
 EXTERN unsigned char decoderFlags;
+EXTERN unsigned char skipEventFlags;
 EXTERN unsigned long engineCyclePeriod;
 #define COMBUSTION_SYNC      BIT0 // Dizzy/Batch Injection
 #define CRANK_SYNC           BIT1 // Wasted Spark/Semi-Sequential

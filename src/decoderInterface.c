@@ -75,11 +75,23 @@ void resetToNonRunningState(){
 }
 
 
+/** Schedule an ignition output event on port T
+ *
+ * @author Fred Cooke
+ * @warning If you do not handle the skipEventFlags then excess advance may occur!
+ */
 void schedulePortTPin(unsigned char pin, LongTime timeStamp){
+	unsigned short postReferenceEventDelay = 0;
+	if(skipEventFlags & injectorMainOnMasks[pin]){
+		postReferenceEventDelay = trailingEdgeSecondaryRPMInputCodeTime;
+		skipEventFlags &= injectorMainOffMasks[pin]; // Clear the flag
+	}else{
+		postReferenceEventDelay = postReferenceEventDelays[pin];
+	}
 	// determine the long and short start times
-	unsigned short startTime = timeStamp.timeShorts[1] + postReferenceEventDelays[pin];
+	unsigned short startTime = timeStamp.timeShorts[1] + postReferenceEventDelay;
 	// remove this temporarily too, no need for it without the later conditional code
-	unsigned long startTimeLong = timeStamp.timeLong + postReferenceEventDelays[pin];
+	unsigned long startTimeLong = timeStamp.timeLong + postReferenceEventDelay;
 
 	/// @todo TODO Make this more understandable as right now it is difficult to grok.
 	// determine whether or not to reschedule or self schedule assuming pin is currently scheduled
