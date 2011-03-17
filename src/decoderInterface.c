@@ -81,6 +81,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	// remove this temporarily too, no need for it without the later conditional code
 	unsigned long startTimeLong = timeStamp.timeLong + postReferenceEventDelays[pin];
 
+	/// @todo TODO Make this more understandable as right now it is difficult to grok.
 	// determine whether or not to reschedule or self schedule assuming pin is currently scheduled
 	unsigned long diff = (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime) - startTimeLong;
 #define newStartIsAfterOutputEndTimeAndCanSelfSet	(diff > LONGHALF)
