@@ -71,6 +71,7 @@ def:
 .global xgatePITTurnOnEnd
 .global xgatePITTurnOff
 .global xgatePITTurnOffEnd
+.global parameterGuard
 
 ; -----------------------------------------------------------------------------
 ;	Main subroutine
@@ -81,22 +82,32 @@ xgateSchedule: ; SoftWare Trigger 0, call this from the main core when you want 
 	LDD R3, SWISRFLAGREG
 	LDD R2, SWISRZEROCLEARMASK
 	STW R2, R3, ZEROOFFSET
+	;update pervious parameter guard(previousParameterGuard = parameterGuard)
+	LDD R2, parameterGuard
+	LDD R3, previousParameterGuard
+	LDW R4, R2, ZEROOFFSET
+	STW R4, R3, ZEROOFFSET
+	;for Debugging write our previousParameterGuard to the port
+	LDD R4, previousParameterGuard ; load variable address
+	LDD R2, PORTB ; load register address
+	LDW R5, R4, ZEROOFFSET
+	STB R5, R2, ZEROOFFSET ; move data from one address to another
 
-	;save parameters
-	LDD R0, parameterR4
-	STW R4, R0, ZEROOFFSET
-	LDD R0, parameterR5
-	STW R5, R0, ZEROOFFSET
-	LDD R0, parameterR6
-	STW R6, R0, ZEROOFFSET
-	LDD R0, parameterR7
-	STW R7, R0, ZEROOFFSET
+	;for debugging flip the led's states on portp
+	LDD R5, xgatePORTPFlip
+	JAL R5; jump to xgatePORTPFlip
 
 	; pseudo code:
 	;update the proper que array member's data, lets say R4=cyl#, R5=eventTime, R6=bang on or off
 	;check to see if this event is scheduled to happen before the pit fires next(nextEventTime) if so update PIT count down
-	BRA xgatePORTPFlip
+
+	;check to make sure we completed our thread before the s12 tried to overwrite our current set of parameters
+	;	another way to do this would be to set a ro guard on the s12 side much like we have done here. Since it's the one doing the writing it actually make more sence
+	; Fred please comment.
+
+	RTS
 xgateScheduleEnd:
+
 
 xgatePITTurnOn: ; PIT 0 ISR, called by PIT0 interrupt. Loop though our que and see if we need to bang any registers
 	;CIF
@@ -116,17 +127,17 @@ xgateErrorThread:
 	;R1 will have the xgate channel number that was executed
 	;TODO build some defualt code to increment an error counter, Fred can you give me the addres of a a status var that will show in the log output !
 xgatePORTPFlip:
-	;LDB R2, PORTP, #0x00 ; get data at port-p
+	; Flip the bits at PORTP
 	LDD R2, PORTP ; load port-p address
 	LDB R1, R2, ZEROOFFSET; load data(1 byte) at port-p address to R1
 	COM R1, R1 ; flip the bits
 	STB R1, R2, #0x00 ; write the byte to port-p address
 
-	;test if we can write to a var, led will fail to flash if an error occours
+	;test if we can write to a var, led will fail to flash(xgate error state) if an error occours
 	LDD R2, eventStruct
 	LDD R4, 0x4321
 	STW R4, R2, ZEROOFFSET
-	RTS ; return from current xgate thread
+	JAL R5 ; return
 
 ; *****************************************************************************
 ;
@@ -152,16 +163,20 @@ parameterR5:
 	.word parameterR5
 parameterR4:
 	.word parameterR4
+parameterGuard:
+	.word 0x00AA
+previousParameterGuard:
+	.word 0x0FFF
 
 protectMask: ;protecting against chaning port pins which should not be touched
-	.word	PORTPROTECTIONMASK
+	.word	PORTBAROTECTIONMASK
 nextEvent: ;nextEventTime holds the next(soonest) event time
 	.word	0x0000
 
 ; our event structure[12]
 eventStruct: ; The last four pins in portsBA are used for other functions and
 ;              must not be modified by this code or the mask below (0x0FFF).
-	.word 0xAAAA; "cylinderMask" the mask to apply to our bit bang port
+	.word 0x00FF; "cylinderMask" the mask to apply to our bit bang port
 	.word 0; "scheduledTime" the time when you want an event to happen
 	.word 0; "stateToSet" 0 to turn somting off, 1 to turn something on
 	.word 0xDDDD; "isReady"  a var to test if the event is enabled
