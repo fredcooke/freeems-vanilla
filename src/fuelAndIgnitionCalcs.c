@@ -274,7 +274,7 @@ void calculateFuelAndIgnition(){
 
 		/// @todo TODO refactor this partly into init.c as per more detailed TD above
 		unsigned short codeAngleOfIgnition = 0;
-		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + DerivedVars->Advance)){
+		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + DerivedVars->Advance)){ /// @todo TODO keep an eye on overflow here when increasing resolution by scaling angles
 			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + DerivedVars->Advance);
 		}else{
 			codeAngleOfIgnition = (totalEventAngleRange + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + DerivedVars->Advance);
@@ -291,12 +291,18 @@ void calculateFuelAndIgnition(){
 		/// @todo TODO rather than look for the nearest tooth and  then step through till you find the right one that can work, instead figure out the dwell in angle and subtract that too, and find the correct tooth first time, will save cpu cycles, and get same answer and be less complex...
 
 
-		// needs to be tested...
+		// Find the closest event to our desired angle of ignition by working through from what is, by definition, the farthest
 		unsigned char lastGoodEvent = ONES;
-		unsigned char possibleEvent;
-		for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
-			if(eventAngles[possibleEvent] < codeAngleOfIgnition){
-				lastGoodEvent = possibleEvent;
+		if(codeAngleOfIgnition == 0){ // Special case, if equal to zero, the last good event will not be found
+			// And the last good event is the last event!
+			lastGoodEvent = numberOfEventAngles - 1;
+		}else{
+			// Otherwise iterate through and find the closest one.
+			unsigned char possibleEvent;
+			for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
+				if(eventAngles[possibleEvent] < codeAngleOfIgnition){
+					lastGoodEvent = possibleEvent;
+				}
 			}
 		}
 
@@ -306,7 +312,7 @@ void calculateFuelAndIgnition(){
 		// 2 = 3
 		// 3 = 5
 
-		// Don't actually use this var, just need that many iterations
+		// Don't actually use this var, just need that many iterations to work back from the closest tooth that we found above
 		for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
 			unsigned long ticksBetweenEventAndSpark = LONGMAX;
 			if(codeAngleOfIgnition > eventAngles[lastGoodEvent]){
@@ -328,6 +334,15 @@ void calculateFuelAndIgnition(){
 			if(ticksBetweenEventAndSpark > safeAdd(DerivedVars->Dwell, trailingEdgeSecondaryRPMInputCodeTime)){
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
+//					// Stash previous state for post check
+//					unsigned short currentDelay = pinEventNumbers[ignitionEvent];
+//					unsigned char eventBeforeCurrent = 0;
+//					if(pinEventNumbers[ignitionEvent] == 0){
+//						eventBeforeCurrent = numberOfEventAngles - 1;
+//					}else{
+//						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
+//					}
+
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					/** @todo TODO for both of these blocks that DO schedule a pin, we need to
 					 * provide a time stamp or current event number AFTER disabling the interrupts
@@ -342,6 +357,11 @@ void calculateFuelAndIgnition(){
 					 * just mean a single cycle of scheduling is slightly too retarded for a single
 					 * event around change of tooth time which could easily be acceptable.
 					 */
+
+
+//					if((lastGoodEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > currentDelay)){
+//						set flag saying so
+//					}
 					pinEventNumbers[ignitionEvent] = lastGoodEvent;
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
