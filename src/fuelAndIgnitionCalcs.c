@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -313,6 +313,7 @@ void calculateFuelAndIgnition(){
 		// 3 = 5
 
 		// Don't actually use this var, just need that many iterations to work back from the closest tooth that we found above
+		unsigned char possibleEvent;
 		for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
 			unsigned long ticksBetweenEventAndSpark = LONGMAX;
 			if(codeAngleOfIgnition > eventAngles[lastGoodEvent]){
