@@ -124,14 +124,14 @@ void PrimaryRPMISR(){
 		Clocks.timeoutADCreadingClock = 0;
 
 		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
-		if(decoderFlags & COMBUSTION_SYNC){
-			unsigned char pin;
-			for(pin=0;pin<6;pin++){
-				if(pinEventNumbers[pin] == 0){
-					schedulePortTPin(pin, timeStamp);
-				}
-			}
-		}
+//		if(decoderFlags & COMBUSTION_SYNC){
+//			unsigned char pin;
+//			for(pin=0;pin<6;pin++){
+//				if(pinEventNumbers[pin] == 0){
+//					schedulePortTPin(pin, timeStamp);
+//				}
+//			}
+//		} todo in mitsi decoder
 
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{

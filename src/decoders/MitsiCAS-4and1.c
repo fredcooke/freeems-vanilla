@@ -539,14 +539,14 @@ void PrimaryRPMISR(){
 	}
 
 	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
-	if(decoderFlags & CAM_SYNC){
-		unsigned char pin;
-		for(pin=0;pin<6;pin++){
-			if(pinEventNumbers[pin] == currentEvent){
-				schedulePortTPin(pin, timeStamp);
-			}
-		}
-	}
+//	if(decoderFlags & CAM_SYNC){
+//		unsigned char pin;
+//		for(pin=0;pin<6;pin++){
+//			if(pinEventNumbers[pin] == currentEvent){
+//				schedulePortTPin(pin, timeStamp);
+//			}
+//		}
+//	} see other isr for todo details...
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
@@ -663,14 +663,15 @@ void SecondaryRPMISR(){
 		}
 	}
 
-	if(decoderFlags & CAM_SYNC){
-		unsigned char pin;
-		for(pin=0;pin<6;pin++){
-			if(pinEventNumbers[pin] == currentEvent){
-				schedulePortTPin(pin, timeStamp);
-			}
-		}
-	}
+	/// @todo TODO check for skipEventFlags
+//	if(decoderFlags & CAM_SYNC){
+//		unsigned char pin;
+//		for(pin=0;pin<6;pin++){
+//			if(pinEventNumbers[pin] == currentEvent){
+//				schedulePortTPin(pin, timeStamp);
+//			}
+//		}
+//	}
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
