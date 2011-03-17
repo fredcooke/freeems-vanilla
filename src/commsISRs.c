@@ -145,7 +145,8 @@ void resetReceiveState(unsigned char sourceIDState){
  * @author Fred Cooke
  *
  * @todo TODO Move this code into an include file much like the fuel interrupts such that it can be used for multiple UART SCI devices without duplication.
- * @todo TODO Remove the debug code that uses the IO ports to light LEDs during specific actions.
+ * @todo TODO Fix the init code such that this doesn't run at boot without a serail device attached. Clear buffer maybe? or flag clearing/isr enabling ordering?
+ * @todo TODO Fix the dual start/stop issue by finding out why bytes get dropped at the ends. IE, read docs thoroughly.
  */
 void SCI0ISR(){
 	/* Read the flags register */
@@ -160,50 +161,44 @@ void SCI0ISR(){
 		/* Grab the received byte from the register */
 		unsigned char rawByte = SCI0DRL;
 
-		//PORTB |= BIT0;
-		PORTB = ONES;
-
-		/* Record error conditions always */
-		unsigned char resetOnError = 0;
 		/* If there is noise on the receive line record it */
 		if(flags & SCISR1_RX_NOISE){
 			Counters.serialNoiseErrors++;
-			resetOnError++;
-		}/* If an overrun occurs record it */
-		if(flags & SCISR1_RX_OVERRUN){
-			Counters.serialOverrunErrors++;
-			resetOnError++;
-		}/* If a framing error occurs record it */
-		if(flags & SCISR1_RX_FRAMING){
-			Counters.serialFramingErrors++;
-			resetOnError++;
-		}/* If a parity error occurs record it */
-		if(flags & SCISR1_RX_PARITY){
-			Counters.serialParityErrors++;
-			resetOnError++;
+			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+			return;
 		}
 
-		/* Drop out because of error flags	*/
-		if(resetOnError){
+		/* If an overrun occurs record it */
+		if(flags & SCISR1_RX_OVERRUN){
+			Counters.serialOverrunErrors++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			PORTB |= BIT1;
+			return;
+		}
+
+		/* If a framing error occurs record it */
+		if(flags & SCISR1_RX_FRAMING){
+			Counters.serialFramingErrors++;
+			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+			return;
+		}
+
+		/* If a parity error occurs record it */
+		if(flags & SCISR1_RX_PARITY){
+			Counters.serialParityErrors++;
+			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
 		}
 
 		/* If there is data waiting to be received */
 		if(flags & SCISR1_RX_REGISTER_FULL){
-			PORTB |= BIT2;
 			/* Look for a start bresetReceiveStateyte to indicate a new packet */
 			if(rawByte == START_BYTE){
-				PORTB |= BIT3;
 				/* If another interface is using it (Note, clear flag, not normal) */
 				if(RXBufferContentSourceID & COM_CLEAR_SCI0_INTERFACE_ID){
 					/* Turn off our reception */
 					SCI0CR2 &= SCICR2_RX_DISABLE;
 					SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
-					PORTB |= BIT4;
 				}else{
-					PORTB |= BIT5;
 					/* If we are using it */
 					if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
 						/* Increment the counter */
@@ -216,10 +211,8 @@ void SCI0ISR(){
 				/* Buffer was full, record and reset */
 				Counters.serialPacketsOverLength++;
 				resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-				PORTB |= BIT6;
 			}else if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
 				if(RXStateFlags & RX_SCI_ESCAPED_NEXT){
-					PORTB |= BIT7;
 					/* Clear escaped byte next flag, thanks Karsten! ((~ != !) == (! ~= ~)) == LOL */
 					RXStateFlags &= RX_SCI_NOT_ESCAPED_NEXT;
 
@@ -238,11 +231,9 @@ void SCI0ISR(){
 						Counters.serialEscapePairMismatches++;
 					}
 				}else if(rawByte == ESCAPE_BYTE){
-					PORTA |= BIT0;
 					/* Set flag to indicate that the next byte should be un-escaped. */
 					RXStateFlags |= RX_SCI_ESCAPED_NEXT;
 				}else if(rawByte == STOP_BYTE){
-					PORTA |= BIT1;
 					/* Turn off reception */
 					SCI0CR2 &= SCICR2_RX_DISABLE;
 					SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
@@ -258,22 +249,16 @@ void SCI0ISR(){
 					}else if(RXCalculatedChecksum == RXReceivedChecksum){
 						/* If it's OK set process flag */
 						RXStateFlags |= RX_READY_TO_PROCESS;
-						PORTA |= BIT2;
 					}else{
-						PORTA |= BIT3;
 						/* Otherwise reset the state and record it */
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 						Counters.commsChecksumMismatches++;
 					}
 				}else{
-					PORTA |= BIT4;
 					/* If it isn't special process it! */
 					receiveAndIncrement(rawByte);
 				}
-			}else{
-				/* Do nothing : drop the byte */
-				PORTA |= BIT5;
-			}
+			} /* ELSE: Do nothing : drop the byte */
 		}
 	}
 

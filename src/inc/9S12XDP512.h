@@ -66,7 +66,7 @@
 /* PIM information from 5 tables the last of which is spread over three pages */
 
 /* Plain ports output switch, input state registers */
-#define PORTS_BA DVUSP(0x0001) /* Both A and B combined as a 16 bit register for ignition access */
+#define PORTS_BA DVUSP(0x0001) /// @todo TODO is this address wrong? Test this... /* Both A and B combined as a 16 bit register for ignition access */
 #define PORTA DVUCP(0x0000)
 #define PORTB DVUCP(0x0001)
 #define PORTE DVUCP(0x0008)

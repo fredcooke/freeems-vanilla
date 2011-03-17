@@ -175,7 +175,7 @@ void ModDownCtrISR(){
 	MCCNT = tachoPeriod;
 
 	/* Bit bang the output port */
-	PORTA ^= 0x40; // SM pin (A6)
+//	PO-leave this alone for now-RTA ^= 0x40; // SM pin (A6)
 }
 
 

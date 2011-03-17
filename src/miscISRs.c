@@ -99,7 +99,7 @@ void PortHISR(void)
 	PIFH = ONES;
 //
 //	// Toggle a LED so we can see if the code ran
-	PORTA ^= 0x80; // Fuel pump pin (A7)
+//	PO-don't use this-RTA ^= 0x80; // Fuel pump pin (A7)
 //
 	// debounce
 	if(portHDebounce == 0){

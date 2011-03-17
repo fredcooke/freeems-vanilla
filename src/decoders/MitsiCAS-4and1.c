@@ -597,9 +597,6 @@ void SecondaryRPMISR(){
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent;
 	if(PTITCurrentState & 0x02){
-		PORTB = ONES; // bang port B and hope for led action
-		PORTJ |= 0x40;
-
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);
@@ -614,9 +611,6 @@ void SecondaryRPMISR(){
 
 		correctEvent = 6;
 	}else{
-		PORTB = ZEROS; // match above
-		PORTJ &= 0xBF;
-
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);

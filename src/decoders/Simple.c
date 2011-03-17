@@ -153,7 +153,6 @@ void SecondaryRPMISR(){
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-//	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;

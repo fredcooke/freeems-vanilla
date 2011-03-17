@@ -724,11 +724,11 @@ void initConfiguration(){
 
 	while(cumulativeConfigErrors > 0){
 		sleep(1000);
-		PORTS_BA ^= ONES16; // flash leds
+		/// @todo TODO send an async error of some sort here, perhaps upgrade errors to handle args for this purpose, or perhaps send an async error for each error, inc this var, then send a "errors occurred, reset and listen to see what they were" packet?
 		//send("There were ");
 		//sendUC(cumulativeConfigErrors);
 		//send(" config errors, init aborted!");
-	} // TODO ensure that we can recieve config and settings via serial while this is occuring! If not a bad config will lock us out all together.
+	} /// @todo TODO ensure that we can recieve config and settings via serial while this is occuring! If not a bad config will lock us out all together.
 }
 
 

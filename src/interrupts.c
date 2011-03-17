@@ -83,7 +83,7 @@ const interruptTable _vectors[] VECTORS = {
 /*																																*/
 
 /* 0xFF70 to 0xFF7F */
-	UISR,			UISR,			StagedOffISR,	StagedOnISR,	IgnitionFireISR,IgnitionDwellISR,UISR,			UISR,//VRegAPIISR,
+	UISR,			UISR,			UISR,			UISR,			UISR,			UISR			,UISR,			UISR,//VRegAPIISR,
 /*	XGATE 1			XGATE 0			PIT 3			PIT 2			PIT 1			PIT 0			Reserved		API			*/
 /*																	Fire Coil		Dwell Coil									*/
 

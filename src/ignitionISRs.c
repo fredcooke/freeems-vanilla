@@ -76,7 +76,7 @@ void IgnitionDwellISR(void)
 	PITTF = DWELL_ENABLE;
 
 	// start dwelling asap
-	PORTS_BA |= dwellStartMasks[nextDwellChannel];
+//	PO-xgate-handles-this-RTS_BA |= dwellStartMasks[nextDwellChannel];
 
 	if(dwellQueueLength == 0){
 		// turn off the int
@@ -126,7 +126,7 @@ void IgnitionFireISR(void)
 	PITTF = IGNITION_ENABLE;
 
 	// fire the coil asap
-	PORTS_BA &= ignitionMasks[nextIgnitionChannel];
+//	PO-xgate-handles-this-RTS_BA &= ignitionMasks[nextIgnitionChannel];
 
 	if(ignitionQueueLength == 0){
 		// turn off the int

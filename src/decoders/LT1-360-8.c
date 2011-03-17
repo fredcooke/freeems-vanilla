@@ -102,7 +102,6 @@ void PrimaryRPMISR(void) {
 	     unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 
-	     //	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
 	//if (!isSynced) {
 	//	if (skippedWindowCount == SKIPWINDOWS) {
 	if (PTITCurrentState & 0x01) { /* pin is high so we look for a low window count */
@@ -219,7 +218,6 @@ void SecondaryRPMISR(void){
 //	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 //	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
 //	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-//	unsigned short PORTS_BACurrentState = PORTS_BA;	/* Save ignition output state */
 
 	/** PT0 Accumulator Mode
  * @brief Change the accumulator mode to overflow every 5 inputs on PT0 making our 360
@@ -228,6 +226,11 @@ void SecondaryRPMISR(void){
  @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
  */
 }
+
+
+/** custom init routine
+ * @todo TODO Docs here!
+ */
 void configPulseAccumulator(){
 	if (synced != 1) { /* disable accumulator counter, so an ISR is fired on all 360 teeth */
 		PACTL = 0x00; /* disable PAEN and PBOIV */
