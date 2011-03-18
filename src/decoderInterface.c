@@ -82,12 +82,12 @@ void resetToNonRunningState(){
  */
 void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	unsigned short postReferenceEventDelay = 0;
-	if(skipEventFlags & injectorMainOnMasks[pin]){
-		postReferenceEventDelay = trailingEdgeSecondaryRPMInputCodeTime;
-		skipEventFlags &= injectorMainOffMasks[pin]; // Clear the flag
-	}else{
+//	if(skipEventFlags & injectorMainOnMasks[pin]){
+//		postReferenceEventDelay = trailingEdgeSecondaryRPMInputCodeTime;
+//		skipEventFlags &= injectorMainOffMasks[pin]; // Clear the flag
+//	}else{
 		postReferenceEventDelay = postReferenceEventDelays[pin];
-	}
+//	}
 	// determine the long and short start times
 	unsigned short startTime = timeStamp.timeShorts[1] + postReferenceEventDelay;
 	// remove this temporarily too, no need for it without the later conditional code
@@ -113,7 +113,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 		if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
 			Counters.testCounter0++;
 			// if too close, do nothing, or if far enough away, resched
-			// for now just always do nothing as it's going to fire, and whatever configured got it right enough...
+			// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
 		}else{ // ELSE "go low" from a high state!
 			// if too close, resched to turn, ie, stay on... , if far enough away, self sched
 			if(newStartIsAfterOutputEndTimeAndCanSelfSet){
