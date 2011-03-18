@@ -336,12 +336,12 @@ void calculateFuelAndIgnition(){
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					// Determine the eventBeforeCurrent outside the atomic block
-//					unsigned char eventBeforeCurrent = 0;
-//					if(pinEventNumbers[ignitionEvent] == 0){
-//						eventBeforeCurrent = numberOfEventAngles - 1;
-//					}else{
-//						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
-//					}
+					unsigned char eventBeforeCurrent = 0;
+					if(pinEventNumbers[ignitionEvent] == 0){
+						eventBeforeCurrent = numberOfEventAngles - 1;
+					}else{
+						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
+					}
 
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
@@ -359,9 +359,9 @@ void calculateFuelAndIgnition(){
 					 * just mean a single cycle of scheduling is slightly too retarded for a single
 					 * event around change of tooth time which could easily be acceptable.
 					 */
-//					if((lastGoodEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > pinEventNumbers[ignitionEvent])){
-//						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
-//					}
+					if((lastGoodEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
+						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
+					}
 
 					pinEventNumbers[ignitionEvent] = lastGoodEvent;
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;

@@ -82,12 +82,12 @@ void resetToNonRunningState(){
  */
 void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	unsigned short postReferenceEventDelay = 0;
-//	if(skipEventFlags & injectorMainOnMasks[pin]){
-//		postReferenceEventDelay = trailingEdgeSecondaryRPMInputCodeTime;
-//		skipEventFlags &= injectorMainOffMasks[pin]; // Clear the flag
-//	}else{
+	if(skipEventFlags & injectorMainOnMasks[pin]){
+		postReferenceEventDelay = trailingEdgeSecondaryRPMInputCodeTime;
+		skipEventFlags &= injectorMainOffMasks[pin]; // Clear the flag
+	}else{
 		postReferenceEventDelay = postReferenceEventDelays[pin];
-//	}
+	}
 	// determine the long and short start times
 	unsigned short startTime = timeStamp.timeShorts[1] + postReferenceEventDelay;
 	// remove this temporarily too, no need for it without the later conditional code
