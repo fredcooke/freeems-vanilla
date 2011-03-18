@@ -136,9 +136,17 @@ const unsigned short dwellStartMasks[IGNITION_CHANNELS] = { BIT8_16, BIT9_16, BI
 const unsigned short ignitionMasks[IGNITION_CHANNELS]   = {NBIT8_16,NBIT9_16,NBIT10_16,NBIT11_16,NBIT12_16,NBIT13_16,NBIT14_16,NBIT15_16,NBIT0_16,NBIT1_16,NBIT2_16,NBIT3_16};		/* Set of masks such that a cylinder can be fired with a single line of code */
 
 /* Injection masks */
+
+// To be used with flag vars and TIE and TFLG
 const unsigned char injectorMainOnMasks[INJECTION_CHANNELS] = {BIT2,  BIT3,  BIT4,  BIT5,  BIT6,  BIT7};
 const unsigned char injectorMainOffMasks[INJECTION_CHANNELS] = {NBIT2, NBIT3, NBIT4, NBIT5, NBIT6, NBIT7};
-const unsigned char injectorMainEnableMasks[INJECTION_CHANNELS] = {0x30, 0xC0, 0x03, 0x0C, 0x30, 0xC0};
-const unsigned char injectorMainDisableMasks[INJECTION_CHANNELS] = {0xCF, 0x3F, 0xFC, 0xF3, 0xCF, 0x3F};
-const unsigned char injectorMainGoHighMasks[INJECTION_CHANNELS] = {BIT4, BIT6, BIT0, BIT2, BIT4, BIT6};
-const unsigned char injectorMainGoLowMasks[INJECTION_CHANNELS] = {NBIT4, NBIT6, NBIT0, NBIT2, NBIT4, NBIT6};
+
+// To be used in conjunction with injectorMainControlRegisters
+const unsigned char injectorMainActiveMasks[INJECTION_CHANNELS] = {BIT5, BIT7, BIT1, BIT3, BIT5, BIT7};      // Is this enabled for go high OR go low?
+const unsigned char injectorMainEnableMasks[INJECTION_CHANNELS] = {0x30, 0xC0, 0x03, 0x0C, 0x30, 0xC0};      // Regardless of state, mask to enable and cause to go high
+const unsigned char injectorMainDisableMasks[INJECTION_CHANNELS] = {0xCF, 0x3F, 0xFC, 0xF3, 0xCF, 0x3F};     // Regardless of state, mask to disable completely
+const unsigned char injectorMainGoHighMasks[INJECTION_CHANNELS] = {BIT4, BIT6, BIT0, BIT2, BIT4, BIT6};      // Already enabled, mask to change from go low to go high
+const unsigned char injectorMainGoLowMasks[INJECTION_CHANNELS] = {NBIT4, NBIT6, NBIT0, NBIT2, NBIT4, NBIT6}; // Already enabled, mask to change from go high to go low
+
+
+

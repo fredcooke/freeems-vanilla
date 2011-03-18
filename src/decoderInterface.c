@@ -99,12 +99,38 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 #define newStartIsAfterOutputEndTimeAndCanSelfSet	(diff > LONGHALF)
 // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
 
-	// pin is set to activate AND can self set
-	if((*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) && newStartIsAfterOutputEndTimeAndCanSelfSet){
-		injectorMainStartTimesHolding[pin] = startTime;
-		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
-		Counters.testCounter1++;
-	}else{ // pin is not set to active OR pin is set to active and can't self set
+/*
+	fresh code again, three states, 5 behaviours:
+
+	not enabled - sched!!! always
+	enabled and low, ready to turn on - if too close, do nothing, or if far enough away, resched
+	enabled and high, ready to turn off - if too close, resched to turn on, if far enough away, self sched
+*/
+
+	// Is it enabled and about to do *something*?
+	if(*injectorMainControlRegisters[pin] & injectorMainActiveMasks[pin]){
+		// Is that something "go high" from a low state?
+		if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
+			Counters.testCounter0++;
+			// if too close, do nothing, or if far enough away, resched
+			// for now just always do nothing as it's going to fire, and whatever configured got it right enough...
+		}else{ // ELSE "go low" from a high state!
+			// if too close, resched to turn, ie, stay on... , if far enough away, self sched
+			if(newStartIsAfterOutputEndTimeAndCanSelfSet){
+				// self sched
+				injectorMainStartTimesHolding[pin] = startTime;
+				selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+				Counters.testCounter1++;
+			}else{
+				*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
+				*injectorMainTimeRegisters[pin] = startTime;
+				TIE |= injectorMainOnMasks[pin];
+				TFLG = injectorMainOnMasks[pin];
+				selfSetTimer &= injectorMainOffMasks[pin];
+				Counters.testCounter2++;
+			}
+		}
+	}else{
 		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
@@ -112,4 +138,20 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 		selfSetTimer &= injectorMainOffMasks[pin];
 		Counters.testCounter3++;
 	}
+
+
+	// This code is broken and checks for an effective OR of the enable and direction pins causing self sched to occur when it shouldnt...
+//	// pin is set to activate AND can self set
+//	if((*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) && newStartIsAfterOutputEndTimeAndCanSelfSet){
+//		injectorMainStartTimesHolding[pin] = startTime;
+//		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+//		Counters.testCounter1++;
+//	}else{ // pin is not set to active OR pin is set to active and can't self set
+//		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
+//		*injectorMainTimeRegisters[pin] = startTime;
+//		TIE |= injectorMainOnMasks[pin];
+//		TFLG = injectorMainOnMasks[pin];
+//		selfSetTimer &= injectorMainOffMasks[pin];
+//		Counters.testCounter3++;
+//	}
 }

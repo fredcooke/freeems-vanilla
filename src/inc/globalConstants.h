@@ -90,6 +90,7 @@ EXTERN const unsigned short ignitionMasks[IGNITION_CHANNELS];
 /* Injection */
 EXTERN const unsigned char injectorMainOnMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainOffMasks[INJECTION_CHANNELS];
+EXTERN const unsigned char injectorMainActiveMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainEnableMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainDisableMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainGoHighMasks[INJECTION_CHANNELS];
