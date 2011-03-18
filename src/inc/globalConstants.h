@@ -159,7 +159,8 @@ EXTERN const unsigned long MAFFuelConstant;
 EXTERN const unsigned short maxBasicDatalogLength;
 
 
-///* These need to be changed if the timer period is changed at all */
+/// @todo TODO Move these to decoder interface AND rename to be more generic/meaningful/accurate, and make set by each decoder where appropriate
+// These need to be changed if the timer period is changed at all
 /* The number of timer units it takes for the switch on scheduling code to run */
 EXTERN const unsigned short injectorSwitchOnCodeTime;
 /* The number of timer units it takes for the switch off scheduling code to run */

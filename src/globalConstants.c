@@ -106,6 +106,7 @@ const unsigned long masterFuelConstant = 139371764;
  */
 const unsigned long MAFFuelConstant = 0;
 
+/// @todo TODO Move these to decoder interface AND rename to be more generic/meaningful/accurate, and make set by each decoder where appropriate
 ///* Injection limits */
 /* The number of timer units it takes for the switch on scheduling code to run */
 const unsigned short injectorSwitchOnCodeTime = 100; /* Measured 4 timer cycles, going on the safe side by a lot, and limiting minimum pulse to 0.02ms which is well below any dead time I've heard of */
