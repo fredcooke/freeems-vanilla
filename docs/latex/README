@@ -1,4 +1,4 @@
-The executing the following should procuce a .pdf;
+Executing the following should procuce a .pdf;
 
  $ latex file.tex && latex file.tex && dvipdfm file.dvi
 
