@@ -131,6 +131,7 @@ EXTERN unsigned long engineCyclePeriod;
 #define CLEAR_LAST_TIMESTAMP_VALID NBIT3
 #define CLEAR_LAST_PERIOD_VALID    NBIT4
 
+
 // These are defined per decoder and used elsewhere!
 EXTERN const unsigned short eventAngles[256]; // From 0 - 720 degrees, scale: not at all, x10 x60 or x90?
 EXTERN const unsigned char decoderName[32]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
@@ -147,27 +148,24 @@ EXTERN unsigned char unknownEdges; // here so can be reset with sync loss generi
 
 // prelim, will change...
 EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on? 255/0xFF = not fired. populated by scheduler in main loop
-/* IDEA: array of chars 256 long, where a number of 0 means nothing scheduled,
- * and anothe number is a reference to a struct in a block of structs, each of
- * which contains scheduling info for all things that event must do.
- *
- * lots of ideas, none seem good on memory and fast...
- *
-// TODO @todo the below vars are just drafts so far, nothing is used, except the RPM stuff which I migrated here from the main header. More work to come.
-//#define numberOfWheelEvents 1 // not teeth, teeth is misleading - could be leading or trailing edge or both
-//unsigned char currentWheelEvent; // Current or last wheel event index.
-//unsigned long wheelEventTimeStamps[numberOfWheelEvents]; // For logging wheel patterns as observed. LOTS of memory :-/ may not be possible except by sending lastStamp rapidly at low RPM
-//unsigned char ignitionEvents[6];
-//unsigned char injectionEvents[12];
-//unsigned char ADCSampleEvents[12]; // ???
-//unsigned char stagedInjectionEvents; // ???
-//unsigned char chickenCookerEvents; //  ??? */
+
+//// Config items: These must exist in flash only config, not here...
+//EXTERN const unsigned char ADCSampleEvents[12];
+//EXTERN const unsigned char numberOfOutputEvents;
+//
+//// Live vars for subprocess intercommunication
+//EXTERN unsigned char outputEventPinNumbers[12];            // 0xFF (disabled) by default, populated to actual pin numbers by the scheduler
+//EXTERN unsigned char outputEventInputEventNumbers[12];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
+//EXTERN unsigned short outputEventDurations[12];            // Unused if above are not configured, set from either dwell (stretched or not) or pulsewidth (scaled for number of shots or not)
+//EXTERN unsigned short outputEventPostInputEventDelays[12]; // Unused if above are not configured, set either fixed or from angle calculations (always the latter for ignition)
+//EXTERN unsigned char pinEventDurations[6];                 // Set from decoder when setting timer registers etc, set from outputEventDurations, along with other data from there.
+//
+////unsigned long wheelEventTimeStamps[numberOfWheelEvents]; // For logging wheel patterns as observed. LOTS of memory :-/ may not be possible except by sending lastStamp rapidly at low RPM
 
 
 // Helpers - force all these to be inlined!
 EXTERN void resetToNonRunningState(void);
 EXTERN void schedulePortTPin(unsigned char pin, LongTime timeStamp);
-
 
 
 #undef EXTERN
