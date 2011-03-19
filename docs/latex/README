@@ -1,5 +1,4 @@
-To build the .pdf documents you need to execute
- $ pdflatex file.tex
-where pdflatex is provided by texlive. This needs to be run twice to build
-the table of contents.
+The executing the following should procuce a .pdf;
+
+ $ latex file.tex && latex file.tex && dvipdfm file.dvi
 
