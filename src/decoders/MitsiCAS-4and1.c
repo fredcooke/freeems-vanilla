@@ -376,7 +376,7 @@ void PrimaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = ~PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = ~PTIT;	/// @todo TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -530,7 +530,7 @@ void SecondaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = ~PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = ~PTIT;	/// @todo TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
