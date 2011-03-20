@@ -382,7 +382,7 @@ void calculateFuelAndIgnition(){
 				}else{
 					/* ELSE leave unscheduled rather than advance too much
 					 * This indicates that the output event is too far from the input event
-					 * This will only occur on input patterns with two few teeth, or bad alignment
+					 * This will only occur on input patterns with too few teeth, or bad alignment
 					 */
 					pinEventNumbers[ignitionEvent] = ONES; // unschedule this pin... lockout not required because the operation is naturally atomic
 					Counters.TooFarToSchedule++;
