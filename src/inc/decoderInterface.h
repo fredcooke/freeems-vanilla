@@ -64,7 +64,8 @@
 
 // ADC
 
-// RPM
+
+// RPM - need some sort of state to say not to use these first time through...
 EXTERN unsigned short ticksPerDegree0; // to be replaced with logging scheme for teeth.
 EXTERN unsigned short ticksPerDegree1; // to be replaced with logging scheme for teeth.
 EXTERN unsigned short* ticksPerDegree; // final output variable, probably move into inputVars struct?

@@ -24,6 +24,15 @@
  */
 
 
+#define DECODER_IMPLEMENTATION_C
+
+#include "../inc/freeEMS.h"
+#include "../inc/utils.h"
+#include "../inc/interrupts.h"
+#include "../inc/decoderInterface.h"
+#include "../inc/MitsiCAS-4and1.h"
+
+
 /**	@file MitsiCAS-4and1.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
@@ -347,59 +356,6 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
  *
  * @author Fred Cooke
  */
-
-
-#define DECODER_IMPLEMENTATION_C
-
-#include "../inc/freeEMS.h"
-#include "../inc/utils.h"
-#include "../inc/interrupts.h"
-#include "../inc/decoderInterface.h"
-//#include "../inc/MitsiCAS-4and1.h"
-
-
-static unsigned short edgeTimeStamp;
-static LongTime timeStamp;
-
-//static unsigned short ticksPerCrankDegree; // need some sort of state to say not to use this first time through...
-
-// These are fixed and by definition correct
-#define E0   0
-#define E2 180
-#define E4 360
-#define E7 540
-
-#define OuterSlotAngle   69 // BUT 69 is too high, and 68 is even more too low = need to refactor to specify these angles accurately enough for perfect RPM/scheduling
-
-// These are offset from the fixed ones by the angle of the slot
-#define E1 (E0 + OuterSlotAngle)
-#define E3 (E2 + OuterSlotAngle)
-#define E5 (E4 + OuterSlotAngle)
-#define E8 (E7 + OuterSlotAngle)
-
-#define InnerSlotAngle 140 // WAS 138 // WAS 139 // WAS 137 // Speculation: 140? Close to it... ignore my affection for round numbers... :-) HA! I was close to right this time, the other was right first guess and wants to be a little lower.
-
-#define E6 525 // WAS 527 // WAS 526 // Start position measured, just like outer on/off duty.
-#define E9 (E6 + InnerSlotAngle)
-
-// 529 from E0 for E6 measured                      so (529 + 137 = 666)
-
-// 526 from E5 for E6 measured from (360 + 69 + 97) so (526 + 137 = 663)
-// 525 from E7 for E6 measured from (540 - 15)      so (525 + 137 = 662)
-
-// 666 from E0 for E9 measured
-
-// 663 from E8 for E9 measured from (540 + 69 + 54) so (663 - 137 = 526)
-// 666 from 10 for E9 measured from (720 - 54)      so (666 - 137 = 529)
-
-const unsigned char decoderName[] = "MitsiCAS-4and1.c";
-const unsigned char numberOfEvents = 10;
-const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
-const unsigned short totalEventAngleRange = 720;
-const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
-
-
-/// @todo TODO migrate ALL decoder vars, arrays, fields, whatever to the decoder header out of the global header...
 
 
 /** Primary RPM ISR
