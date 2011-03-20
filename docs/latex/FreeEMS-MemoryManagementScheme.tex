@@ -1,0 +1,295 @@
+\documentclass[12pt,a4paper,titlepage]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{datetime}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\begin {document}
+
+\begin{titlepage} 
+\begin{center}
+
+\includegraphics[width=1\textwidth]{./logos/freeems}\\[1cm] \vfill
+
+\HRule \\[0.8cm]
+{ \huge \bfseries Memory Management Scheme}\\[0.4cm]
+\HRule \vfill
+
+\Large 
+%\emph{Author:}\\
+%\textsc{Fred Cooke} \vfill
+
+{\large Version 0.2 --- 27th November 2008}
+
+\end{center}
+\end{titlepage} 
+
+
+\tableofcontents
+\thispagestyle{empty}
+\pagebreak
+
+
+\section {Purpose / Preamble} 
+
+This document exists to summarise and explain the memory available on the
+\texttt{XDP512} processor and how it is being used in the FreeEMS application
+firmware.
+
+This document is believed to be true and correct at the time of writing.
+Obviously the firmware is under continuous active development and there will
+be changes to the way things are done as time passes. The code is the best
+reference, however I will endeavour to keep this up to date.
+
+
+\section{Overall Memory Layout}
+
+The \texttt{XDP512} has a 16 bit data bus and main addressing scheme. This
+limits addressable space to a total of 64k (65536 bytes). The 64k is made up of
+the following parts:
+
+\begin{itemize}
+\item 2k of control registers from \texttt{0x0000-0x07FF} with 
+length \texttt{0x0800}
+
+\item 2k of addressable EEPROM from \texttt{0x0800-0x0FFF} with
+length \texttt{0x0800}
+
+\item 12k of addressable RAM from \texttt{0x1000-0x3FFF} with
+length \texttt{0x3000}
+
+\item 48k of addressable Flash from \texttt{0x4000-0xFFFF} with
+length \texttt{0xC000}
+\end{itemize}
+
+The registers are permanently exposed and linearly addressed, and therefore
+accessed directly at any time. The EEPROM, RAM and Flash, however, all use a
+paging scheme to expose a larger space than would otherwise be possible. The
+total amount of each accessible using paging is as follows:
+
+\begin{itemize}
+\item 4k of EEPROM
+
+\item 32k of RAM
+
+\item 512k of Flash
+\end{itemize}
+
+
+\section{EEPROM Memory Layout}
+
+EEPROM is not used in FreeEMS at this time, however the 2k is made up of the
+following parts:
+
+\begin{itemize}
+\item 1k of EEPROM page window from \texttt{0x0C00-0x0FFF} with
+length \texttt{0x0400}
+
+\item 1k of direct addressable EEPROM from \texttt{0x0800-0x0BFF}
+with length \texttt{0x0400}
+\end{itemize}
+
+The following are valid \texttt{EPAGE} values: \texttt{0xFF}, \texttt{0xFE},
+\texttt{0xFD}, \texttt{0xFC}. The fixed 1K page from \texttt{0x0C00} to
+\texttt{0x0FFF} is the page exposed by setting \texttt{EPAGE-0xFF}.
+Doing that is pointless however as you then have two copies of the same EEPROM
+exposed at the same time. The reset value of \texttt{EPAGE} is \texttt{0xFE}
+and ensures that there is a linear EEPROM space available between addresses
+\texttt{0x0800} and \texttt{0x0FFF} out of reset. Therefore, the useful set of
+\texttt{EPAGE} values are: \texttt{0xFE}, \texttt{0xFD}, \texttt{0xFC}
+
+
+\section{RAM Memory Layout}
+
+This section details how the available RAM is laid out and used in FreeEMS.
+The 12k of direct addressable RAM consists of the following parts:
+\begin{itemize}
+\item 4k of RAM page window from \texttt{0x1000-0x1FFF} of length
+\texttt{0x1000}
+
+\item 8k of direct addressable RAM from \texttt{0x2000-0x3FFF} of
+length \texttt{0x2000}
+\end{itemize}
+
+The following are valid \texttt{RPAGE} values: \texttt{0xFF, 0xFE, 0xFD, 0xFC,
+0xFB, 0xFA, 0xF9, 0xF8}. The fixed 4K page from \texttt{0x2000-0x2FFF} is the
+page exposed by setting \texttt{RPAGE} to \texttt{0xFE}. The fixed 4K page
+from \texttt{0x3000-0x3FFF} is the page exposed by setting \texttt{RPAGE} to
+\texttt{0xFF}. As with the EEPROM, doing that is pointless because you are just
+exposing the region twice at the same time. The reset value of \texttt{RPAGE}
+is \texttt{0xFD} and ensures that there is a linear RAM space available between
+addresses \texttt{0x1000} and \texttt{0x3FFF} out of reset. Therefore the
+useful set of \texttt{RPAGE} values is: \texttt{0xFD, 0xFC, 0xFB, 0xFA, 0xF9,
+0xF8}.
+
+In FreeEMS we use the 6 available pages as two triplets for tune switching
+(like table switching, but almost everything is switched). At any given time
+the firmware is using 3 pages that contain one copy of the following:
+
+\begin{itemize}
+\item 3 VE Tables
+
+\item 1 Lambda Target Table
+
+\item 2 Ignition Timing Tables
+
+\item 2 Injection Timing Tables
+
+\item 4 blocks of tunable items including all small tables etc.
+\end{itemize}
+
+Each of these 12 items is 1k in size totalling 12k which doubled (for tune
+switching) is 24k. These are available in 3 sets of four blocks at a time.
+VE and Lambda are together, Timing tables are together and the tunable items
+are together. The remaining 8k is directly addressable linear space, used as
+follows:
+
+\begin{itemize}
+\item 2k buffer for reception of communications data
+
+\item 2k buffer for transmission of communications data
+
+\item 4k of general purpose RAM
+\end{itemize}
+
+The 4k of general purpose RAM is used in the traditional way with all of the
+global variables at the low end and the stack at the high end growing down
+toward the globals. Currently there are approximately 1k of global variables in
+that region.
+
+
+
+\section{Flash Memory Layout}
+
+This section details how the available Flash is laid out and used in FreeEMS.
+The 48k of direct addressable Flash consists of the following parts:
+
+\begin{itemize}
+\item 16k of direct addressable Flash from \texttt{0x4000-0x7FFF}
+of length \texttt{0x4000}
+
+\item 16k of Flash page window from \texttt{0x8000-0xBFFF} of
+length \texttt{0x4000}
+
+\item 16k of direct addressable Flash from \texttt{0xC000-0xFFFF}
+of length \texttt{0x4000}
+\end{itemize}
+
+The following are valid \texttt{PPAGE} values: \texttt{0xFF, 0xFE, 0xFD, 0xFC,
+0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4, 0xF3, 0xF2, 0xF1, 0xF0, 0xEF,
+0xEE, 0xED, 0xEC, 0xEB, 0xEA, 0xE9, 0xE8, 0xE7, 0xE6, 0xE5, 0xE4, 0xE3, 0xE2,
+0xE1, 0xE0}.
+
+The fixed 16K page from \texttt{0x4000-0x7FFF} is the page exposed by setting
+\texttt{PPAGE} to \texttt{0xFD}. The fixed 16K page from \texttt{0xC000-0xFFFF}
+is the page exposed by setting \texttt{PPAGE} to \texttt{0xFF}. As with the RAM
+and EEPROM, doing that is pointless because you are just exposing the region
+twice at the same time.
+
+The reset value of \texttt{PPAGE} is \texttt{0xFE} and ensures that there
+is a linear Flash space available between addresses \texttt{0x8000} and
+\texttt{0xBFFF} out of reset. Therefore, the useful set of \texttt{PPAGE}
+values are: \texttt{0xFE, 0xFC, 0xFB, 0xFA, 0xF9, 0xF8, 0xF7, 0xF6, 0xF5, 0xF4,
+0xF3, 0xF2, 0xF1, 0xF0, 0xEF, 0xEE, 0xED, 0xEC, 0xEB, 0xEA, 0xE9, 0xE8, 0xE7,
+0xE6, 0xE5, 0xE4, 0xE3, 0xE2, 0xE1, 0xE0}.
+
+The 512k of available flash space is made up of four 128k blocks, each with
+eight 16k pages. Currently, due to limitations of hcs12mem and/or the serial
+monitor, we can only use up to eight 16k pages totalling 128k of Flash. Two of
+those pages are permanently exposed in linear space (\texttt{0xFF/text} and
+\texttt{0xFD/text1}) leaving six pages of Flash for dynamic use in the short to
+medium term.
+
+The two linear regions are called \texttt{text} and \texttt{text1}, the six Flash pages are
+swapped in and out automatically by the compiler whenever needed. In them we
+store the following:
+
+\begin{itemize}
+\item Commonly used items and the serial monitor
+
+\item All Interrupt Service Routines
+
+\item Lookups and functions operating on them
+
+\item Fuel tables and functions operating on them
+
+\item Timing tables and functions operating on them
+
+\item Tunable items and functions operating on them
+
+\item General function storage area one
+
+\item General function storage area two
+\end{itemize}
+
+
+
+\section{Where Things Are}
+
+The current break down of usage within those pages is as follows:
+
+Commonly used items and the serial monitor:
+\begin{itemize}
+\item All functions without a page specified are stored in text region by default
+\item The serial monitor takes up 2k of space at the high end of text
+\end{itemize}
+
+All Interrupt Service Routines:
+\begin{itemize}
+\item All placed in text1 region as a way of tracking flash usage
+\end{itemize}
+
+Lookups and functions:
+\begin{itemize}
+\item 2k CHT lookup table
+\item 2k IAT lookup table
+\item 2k MAF lookup table
+\item Core variable generation function
+\end{itemize}
+
+Fuel tables and functions:
+\begin{itemize}
+\item 6 1k VE tables
+\item 2 1k Lambda tables
+\item Copy flash to ram function
+\end{itemize}
+
+Timing tables and functions:
+\begin{itemize}
+\item 4 1k Ignition timing tables
+\item 4 1k Injection timing tables
+\end{itemize}
+
+Tunable items and functions:
+\begin{itemize}
+\item 8 1k blocks of tunable items
+\end{itemize}
+
+General paged function space one:
+\begin{itemize}
+\item Assorted functions and data used purely within them
+\end{itemize}
+
+General paged function space two:
+\begin{itemize}
+\item Assorted functions and data used purely within them
+\end{itemize}
+
+Note: The ISR code \emph{must} be kept in linear space such that they can be
+called asynchronously at any time.
+
+
+\end {document}
