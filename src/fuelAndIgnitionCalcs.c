@@ -191,6 +191,7 @@ void calculateFuelAndIgnition(){
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
 #define Mitsi4and1OffsetOnTruck  90
 #define HyundaiHackOffset        17
+#define SilverTop4age             0
 
 	unsigned short decoderEngineOffset = HyundaiHackOffset;
 	if(decoderEngineOffset >= totalEventAngleRange){
@@ -209,10 +210,19 @@ void calculateFuelAndIgnition(){
 	/** @todo TODO, do this at init time from fixed config as an array of
 	 * angles and a single engine offset combined into this runtime array.
 	 */
-	anglesOfTDC[0] = 0;
+
+// SilverTop4ageTruck:
+//	anglesOfTDC[0] = 0;
+//	anglesOfTDC[1] = 360;
+
+// Truck:
+//	anglesOfTDC[0] = 0;
 //	anglesOfTDC[1] = 180;
 //	anglesOfTDC[2] = 360;
 //	anglesOfTDC[3] = 540;
+
+// Hyundai:
+	anglesOfTDC[0] = 0;
 
 
 	/** @todo TODO move this loop variable to fixedConfig and make a subset of
@@ -259,14 +269,6 @@ void calculateFuelAndIgnition(){
 		 *      once xgate bit banging works sweetly.
 		 */
 
-		//		anglesOfTDC[0] = 0;
-		//		anglesOfTDC[1] = 180;
-		//		anglesOfTDC[2] = 360;
-		//		anglesOfTDC[3] = 540;
-
-		// desired timing is 15
-
-		// and offset of 90
 
 		/** @todo TODO move sched code to a function or functions (inline?)
 		 * that can be unit tested such that we KNOW it performs as anticipated
@@ -399,13 +401,23 @@ void calculateFuelAndIgnition(){
 
 	// fuel shit: could sched the same way.
 
+// Truck:
 //	// just fire the fuel off whenever... doesn't matter much.
-//	postReferenceEventDelays[4] = 0;
-//	postReferenceEventDelays[5] = 0;
+//	postReferenceEventDelays[4] = decoderMaxCodeTime;
+//	postReferenceEventDelays[5] = decoderMaxCodeTime;
 //
 //	// from alternate teeth so as to keep code simple for now.
 //	pinEventNumbers[4] = 1;
 //	pinEventNumbers[5] = 5;
+
+// SilverTop4age:
+//	// just fire the fuel off whenever... doesn't matter much.
+//	postReferenceEventDelays[4] = decoderMaxCodeTime;
+//	postReferenceEventDelays[5] = decoderMaxCodeTime;
+//
+//	// from alternate teeth so as to keep code simple for now.
+//	pinEventNumbers[4] = 0;
+//	pinEventNumbers[5] = 12;
 
 	// nothing much, L&P:
 

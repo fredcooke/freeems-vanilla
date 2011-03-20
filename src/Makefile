@@ -2,7 +2,7 @@
 #
 #	Makefile
 #
-#	Copyright 2008, 2009, 2010 Fred Cooke
+#	Copyright 2008, 2009, 2010, 2011 Fred Cooke
 #
 #	This Makefile is part of the FreeEMS project.
 #
@@ -137,7 +137,7 @@ LINKER = memory.x regions.x hc9s12xdp512elfb.x
 GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h decoderInterface.h
 GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
-RPMH = Simple.h NipponDenso.h LT1-360-8.h MissingTeeth.h MitsiCAS-4and1.h
+RPMH = Simple.h LT1-360-8.h MissingTeeth.h MitsiCAS-4and1.h
 DATACONF = defaultUteConfig.h
 DATATABLESAXIS = FredsTruck-Load.h FredsTruck-RPM.h mainTable-Load.h mainTable-RPM.h
 DATATABLESIGN = FE-DOHC.h flat15degrees.h flat0degrees.h FredsTruckIgnitionTiming.h
@@ -192,7 +192,7 @@ SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSE
 CLASSES = $(SOURCE) $(DATA)
 
 # Engine position/RPM here
-RPMCLASSESRAW = MitsiCAS-4and1.c Simple.c NipponDenso.c LT1-360-8.c MissingTeeth.c Listener.c HyundaiHack.c
+RPMCLASSESRAW = MitsiCAS-4and1.c Simple.c LT1-360-8.c MissingTeeth.c Listener.c HyundaiHack.c EvenTeethOnCam-Nand1.c
 # Future decoders: MiataNB.c Subaru-36-2-2-2.c 
 RPMCLASSES = $(patsubst %.c,$(DECDIR)/%.c,$(RPMCLASSESRAW))
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
