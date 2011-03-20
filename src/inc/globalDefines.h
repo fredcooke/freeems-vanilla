@@ -167,11 +167,14 @@
 #define idlePulseWidth               2000       /* ~1.5ms */
 #define idleAirFlow                  1500       /* guessed */
 
-//#define typicalCylinderSize         16384       /* 500cc per cylinder */
-#define typicalCylinderSize         14746       /* 450cc per cylinder for my F8-DOHC */
-#define typicalInjectorSize          9387       /* 550cc per minute */
+#define cylinderSize500cc           16384       /* 500cc per cylinder for my FE-DOHC */
+#define cylinderSize450cc           14746       /* 450cc per cylinder for my F8-DOHC */
+#define cylinderSize400cc           13107       /* 400cc per cylinder for the Toyota 4age */
+#define injector550cc                9387       /* 550cc per minute for my RX7 injectors */
+#define injector213cc                3635       /* 213cc per minute for SilverTop 4age injectors */
 
 #define densityOfOctane             22496       /* 703 grams per litre */
+#define densityOfPetrol             23040       /* 720 grams per litre */
 #define stoichiometricLambda        32768       /* Lambda = 1.0 */
 
 /* Generated with http://www.diyefi.org/calculators.htm#stoich AFR x stoichiometricAFRDivisor (1024) = value */
