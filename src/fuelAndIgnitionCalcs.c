@@ -212,8 +212,8 @@ void calculateFuelAndIgnition(){
 	 */
 
 // SilverTop4ageTruck:
-//	anglesOfTDC[0] = 0;
-//	anglesOfTDC[1] = 360;
+//	anglesOfTDC[0] = 0;   // hack converts this to 360 as well
+//	anglesOfTDC[1] = 180; // hack converts this to 540 as well
 
 // Truck:
 //	anglesOfTDC[0] = 0;
