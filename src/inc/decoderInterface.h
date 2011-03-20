@@ -110,6 +110,8 @@ from the above we can check one gap+angle with the next gap+angle and ensure smo
 
 // unsigned long thisEventTimeStamp; recommended variable naming, may be enforced for/with macro use
 // unsigned long thisInterEventPeriod; ditto
+/// @todo TODO sync loss/gain semantics - how paranoid? under what circumstances? should we make it configurable whether a decoder that is in a situation where it would find sync if not synced, resets sync, or loses sync. Likewise, at initial sync gain time, should it go "prelim sync found" and only verify sync on the second lap around, or start firing events straight off the bat. Starting will suck if paranoid, but if there is noise at high load/rpm and events get mis-scheduled before sync is lost, that is serious. This is philosophical, and the reality is that you must assume that your signal is clean to some level and verified clean under lower risk conditions.
+EXTERN unsigned char syncLostOnThisEvent;
 EXTERN unsigned char syncCaughtOnThisEvent;
 EXTERN unsigned long lastEventTimeStamp;
 EXTERN unsigned long lastPrimaryEventTimeStamp;

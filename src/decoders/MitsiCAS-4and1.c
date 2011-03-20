@@ -454,11 +454,13 @@ void PrimaryRPMISR(){
 
 		// ...and check that it's correct
 		if((correctEvent != 0) && (currentEvent != correctEvent)){
+			syncLostOnThisEvent = currentEvent;
 			currentEvent = correctEvent;
 			lastEvent = currentEvent - 1;
 
 			// Record that we had to reset position...
 			Counters.camSyncCorrections++;
+			syncCaughtOnThisEvent = currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else if(correctEvent != 0){
@@ -590,11 +592,13 @@ void SecondaryRPMISR(){
 
 		// ...and check that it's correct
 		if(currentEvent != correctEvent){
+			syncLostOnThisEvent = currentEvent;
 			currentEvent = correctEvent;
 			lastEvent = currentEvent - 1;
 
 			// Record that we had to reset position...
 			Counters.camSyncCorrections++;
+			syncCaughtOnThisEvent = currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
