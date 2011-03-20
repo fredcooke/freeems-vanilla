@@ -1,0 +1,10 @@
+Decoder implementation development status:
+
+Listener             - 100% Complete - Test ONLY.
+EvenTeethOnCam-Nand1 - Functional, but incomplete.
+HyundaiHack          - Functional, but incomplete.
+MitsiCAS-4and1       - Functional, but incomplete.
+LT1-360-8            - Not functional, yet.
+NipponDenso          - Not functional, does not represent its name well.
+MissingTeeth         - Probably broken, untested since interface changes.
+Simple               - Probably broken, untested since interface changes.
