@@ -1,7 +1,13 @@
 doxygen.output
 bin/a.out
 docs/doxygen-html/
-docs/*.pdf
+docs/latex/*.aux
+docs/latex/*.dvi
+docs/latex/*.log
+docs/latex/*.out
+docs/latex/*.pdf
+docs/latex/*.ps
+docs/latex/*.toc
 src/firmware/
 src/output/
 src/preprocessedc/
