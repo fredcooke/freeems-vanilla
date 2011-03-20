@@ -147,15 +147,28 @@ void PrimaryRPMISR(){
 //			Clocks.timeoutADCreadingClock = 0;
 //		}
 
+		// if sched is for is N and we are on N+1 and flag is set, sched with zero delay
 		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
-		//	if(decoderFlags & CAM_SYNC){
-		//		unsigned char pin;
-		//		for(pin=0;pin<6;pin++){
-		//			if(pinEventNumbers[pin] == currentEvent){
-		//				schedulePortTPin(pin, timeStamp);
-		//			}
-		//		}
-		//	} see other isr for todo details...
+		if(decoderFlags & CAM_SYNC){
+			unsigned char pin;
+			for(pin=0;pin<6;pin++){
+				if(pinEventNumbers[pin] == currentEvent){
+					skipEventFlags &= injectorMainOffMasks[0];
+					schedulePortTPin(pin, timeStamp);
+				}else if (skipEventFlags & injectorMainOnMasks[pin]){
+					unsigned char eventBeforeCurrent = 0;
+					if(currentEvent == 0){
+						eventBeforeCurrent = numberOfEvents - 1;
+					}else{
+						eventBeforeCurrent = currentEvent - 1;
+					}
+
+					if(pinEventNumbers[pin] == eventBeforeCurrent){
+						schedulePortTPin(pin, timeStamp);
+					}
+				}
+			}
+		}
 
 		// do these always at first, and use them with a single 30 degree angle for the first cut
 		if(decoderFlags & LAST_TIMESTAMP_VALID){
