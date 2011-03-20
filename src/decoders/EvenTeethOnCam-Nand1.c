@@ -92,6 +92,10 @@ void PrimaryRPMISR(){
 
 		unsigned char lastEvent = currentEvent;
 		currentEvent++;
+		if(currentEvent == 0){
+			lastEvent = numberOfEvents - 1;
+		}
+
 		if(currentEvent == numberOfEvents){
 			resetToNonRunningState();
 			syncLostOnThisEvent = currentEvent;
