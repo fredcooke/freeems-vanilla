@@ -352,6 +352,7 @@ void decodePacketAndRespond(){
 	 * ensure the negative ack flag is set if the operation failed.
 	 */
 	switch (RXHeaderPayloadID){
+	// FreeEMS Core Comms Interface cases
 		case requestInterfaceVersion:
 		{
 			if(RXCalculatedPayloadLength != 0){
@@ -437,6 +438,24 @@ void decodePacketAndRespond(){
 			}
 
 			init();
+			break;
+		}
+	// FreeEMS Vanilla Firmware Specific cases
+		case requestDecoderName:
+		{
+			/// @todo TODO add this call to the documentation, John maybe?
+			if(RXCalculatedPayloadLength != 0){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
+			/* This type must have a length field, set that up */
+			*((unsigned short*)TXBufferCurrentPositionHandler) = sizeof(decoderName);
+			*TXHeaderFlags |= HEADER_HAS_LENGTH;
+			TXBufferCurrentPositionHandler += 2;
+			/* Load the body into place */
+			memcpy((void*)TXBufferCurrentPositionHandler, (void*)&decoderName, sizeof(decoderName));
+			TXBufferCurrentPositionHandler += sizeof(decoderName);
 			break;
 		}
 		case updateBlockInRAM:

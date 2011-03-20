@@ -105,6 +105,7 @@
 // Data interrogation gold
 #define retrieveListOfLocationIDs   0xDA5E // Idea is Dave's, impl is Fred's
 #define retrieveLocationIDDetails   0xF8E0 // Idea is Fred's, impl is Fred's
+#define requestDecoderName          0xEEEE // Ensure interogation knows everything about this firmware
 
 
 #else
