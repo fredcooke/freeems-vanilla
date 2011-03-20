@@ -484,6 +484,14 @@ void initVariables(){
 	coreStatusA |= FUEL_PUMP_PRIME;
 	unknownEdges = 0;
 
+	// Initial state is NOT to fire... can be configured by scheduler if required.
+	pinEventNumbers[0] = 0xFF;
+	pinEventNumbers[1] = 0xFF;
+	pinEventNumbers[2] = 0xFF;
+	pinEventNumbers[3] = 0xFF;
+	pinEventNumbers[4] = 0xFF;
+	pinEventNumbers[5] = 0xFF;
+
 	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
 }
 
