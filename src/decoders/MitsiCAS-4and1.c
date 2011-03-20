@@ -392,10 +392,11 @@ static LongTime timeStamp;
 // 663 from E8 for E9 measured from (540 + 69 + 54) so (663 - 137 = 526)
 // 666 from 10 for E9 measured from (720 - 54)      so (666 - 137 = 529)
 
-const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 const unsigned char decoderName[] = "MitsiCAS-4and1.c";
-const unsigned char numberOfEventAngles = 10;
+const unsigned char numberOfEvents = 10;
+const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 const unsigned short totalEventAngleRange = 720;
+const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 
 /// @todo TODO migrate ALL decoder vars, arrays, fields, whatever to the decoder header out of the global header...
@@ -491,7 +492,7 @@ void PrimaryRPMISR(){
 	if(decoderFlags & CAM_SYNC){
 		lastEvent = currentEvent;
 		currentEvent++;
-		if(currentEvent == numberOfEventAngles){
+		if(currentEvent == numberOfEvents){
 			currentEvent = 0;
 		}
 

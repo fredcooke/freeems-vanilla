@@ -168,8 +168,6 @@ EXTERN const unsigned short injectorSwitchOnCodeTime;
 EXTERN const unsigned short injectorSwitchOffCodeTime;
 /* The minimum a requested pulsewidth can be before it is not switched on at all */
 EXTERN const unsigned short injectorMinimumPulseWidth;
-/* Time in ticks taken to run */
-EXTERN const unsigned short trailingEdgeSecondaryRPMInputCodeTime;
 
 
 #undef EXTERN

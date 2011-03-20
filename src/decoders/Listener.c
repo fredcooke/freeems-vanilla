@@ -48,8 +48,11 @@
 #include "../inc/decoderInterface.h"
 
 
-const unsigned short eventAngles[] = {0}; // no events really...
 const unsigned char decoderName[] = "Listener.c";
+const unsigned char numberOfEvents = 1;
+const unsigned short eventAngles[] = {0}; // no events really...
+const unsigned short totalEventAngleRange = 720;
+const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 
 /** Primary RPM ISR

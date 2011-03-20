@@ -98,10 +98,11 @@
 #include "../inc/utils.h"
 
 
-const unsigned short eventAngles[] = {0, 54}; // 1/4 cycle events.
 const unsigned char decoderName[] = "HyundaiHack.c";
-const unsigned char numberOfEventAngles = 2;
+const unsigned char numberOfEvents = 2;
+const unsigned short eventAngles[] = {0, 54}; // 1/4 cycle events.
 const unsigned short totalEventAngleRange = 180;
+const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 
 /** Primary RPM ISR

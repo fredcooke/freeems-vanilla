@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -53,8 +53,11 @@
 #include "../inc/utils.h"
 
 
-const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out... maybe unused for this decoder? In sched "if(compare(decoderName, "Simple.c")){just always sched 1 fuel and 1 ign delayed after the tooth by some amount.}
 const unsigned char decoderName[] = "Simple.c";
+const unsigned char numberOfEvents = 2;
+const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out... maybe unused for this decoder? In sched "if(compare(decoder_Name, "Simple.c")){just always sched 1 fuel and 1 ign delayed after the tooth by some amount.} but better to keep it consistent across all decoders!!
+const unsigned short totalEventAngleRange = 180; /// @todo TODO split this out into multiple builds for different cylinder counts (and leading/trailing edge too) total of 24 builds, maybe less
+const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 
 /** Primary RPM ISR

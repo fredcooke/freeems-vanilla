@@ -83,7 +83,7 @@ void resetToNonRunningState(){
 void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 	unsigned short postReferenceEventDelay = 0;
 	if(skipEventFlags & injectorMainOnMasks[pin]){
-		postReferenceEventDelay = trailingEdgeSecondaryRPMInputCodeTime;
+		postReferenceEventDelay = decoderMaxCodeTime;
 		skipEventFlags &= injectorMainOffMasks[pin]; // Clear the flag
 	}else{
 		postReferenceEventDelay = postReferenceEventDelays[pin];
@@ -138,20 +138,4 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 		selfSetTimer &= injectorMainOffMasks[pin];
 		Counters.testCounter3++;
 	}
-
-
-	// This code is broken and checks for an effective OR of the enable and direction pins causing self sched to occur when it shouldnt...
-//	// pin is set to activate AND can self set
-//	if((*injectorMainControlRegisters[pin] & injectorMainEnableMasks[pin]) && newStartIsAfterOutputEndTimeAndCanSelfSet){
-//		injectorMainStartTimesHolding[pin] = startTime;
-//		selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
-//		Counters.testCounter1++;
-//	}else{ // pin is not set to active OR pin is set to active and can't self set
-//		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
-//		*injectorMainTimeRegisters[pin] = startTime;
-//		TIE |= injectorMainOnMasks[pin];
-//		TFLG = injectorMainOnMasks[pin];
-//		selfSetTimer &= injectorMainOffMasks[pin];
-//		Counters.testCounter3++;
-//	}
 }

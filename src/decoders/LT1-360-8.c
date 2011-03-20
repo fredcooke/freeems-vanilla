@@ -54,8 +54,12 @@
 #include "../inc/LT1-360-8.h"
 
 
-const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
 const unsigned char decoderName[] = "LT1-360-8.c";
+const unsigned char numberOfEvents = 2; /// @todo TODO make this match above
+const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
+const unsigned short totalEventAngleRange = 720;
+const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
+
 static unsigned char synced = 0;
 static unsigned char skippedWindowCount = 0;
 

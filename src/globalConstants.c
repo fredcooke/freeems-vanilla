@@ -114,8 +114,6 @@ const unsigned short injectorSwitchOnCodeTime = 100; /* Measured 4 timer cycles,
 const unsigned short injectorSwitchOffCodeTime = 100; /* This is actually shorter than the switch on time above as measured between 0.0.8 and 0.0.9 */
 /* The minimum a requested pulsewidth can be before it is not switched on at all */
 const unsigned short injectorMinimumPulseWidth = 100;
-/* Engine position/RPM decoder limits */
-const unsigned short trailingEdgeSecondaryRPMInputCodeTime = 100; /* random large safe value */
 
 // TODO put these where they belong, just dumped from other file for now...
 /* Main injector channel bit masks and registers for use in both injection_isrs.c and engine_position_isrs.c */

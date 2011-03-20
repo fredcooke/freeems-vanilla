@@ -214,6 +214,7 @@ void calculateFuelAndIgnition(){
 //	anglesOfTDC[2] = 360;
 //	anglesOfTDC[3] = 540;
 
+
 	/** @todo TODO move this loop variable to fixedConfig and make a subset of
 	 * the remainder of channels configured for fuel with a start time/tooth
 	 * directly set for now, ie, make the 6 channels usable as fuel or ignition
@@ -295,11 +296,11 @@ void calculateFuelAndIgnition(){
 		unsigned char lastGoodEvent = ONES;
 		if(codeAngleOfIgnition == 0){ // Special case, if equal to zero, the last good event will not be found
 			// And the last good event is the last event!
-			lastGoodEvent = numberOfEventAngles - 1;
+			lastGoodEvent = numberOfEvents - 1;
 		}else{
 			// Otherwise iterate through and find the closest one.
 			unsigned char possibleEvent;
-			for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
+			for(possibleEvent = 0;possibleEvent < numberOfEvents;possibleEvent++){
 				if(eventAngles[possibleEvent] < codeAngleOfIgnition){
 					lastGoodEvent = possibleEvent;
 				}
@@ -314,7 +315,7 @@ void calculateFuelAndIgnition(){
 
 		// Don't actually use this var, just need that many iterations to work back from the closest tooth that we found above
 		unsigned char possibleEvent;
-		for(possibleEvent = 0;possibleEvent < numberOfEventAngles;possibleEvent++){
+		for(possibleEvent = 0;possibleEvent < numberOfEvents;possibleEvent++){
 			unsigned long ticksBetweenEventAndSpark = LONGMAX;
 			if(codeAngleOfIgnition > eventAngles[lastGoodEvent]){
 				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
@@ -332,13 +333,13 @@ void calculateFuelAndIgnition(){
 //				125 ish at redline
 //				this is from logs, real values, 125 is calced... but div 10 now.
 
-			if(ticksBetweenEventAndSpark > safeAdd(DerivedVars->Dwell, trailingEdgeSecondaryRPMInputCodeTime)){
+			if(ticksBetweenEventAndSpark > safeAdd(DerivedVars->Dwell, decoderMaxCodeTime)){
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					// Determine the eventBeforeCurrent outside the atomic block
 					unsigned char eventBeforeCurrent = 0;
 					if(pinEventNumbers[ignitionEvent] == 0){
-						eventBeforeCurrent = numberOfEventAngles - 1;
+						eventBeforeCurrent = numberOfEvents - 1;
 					}else{
 						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
 					}
@@ -389,7 +390,7 @@ void calculateFuelAndIgnition(){
 				if(lastGoodEvent > 0){
 					lastGoodEvent--;
 				}else{
-					lastGoodEvent = numberOfEventAngles - 1;
+					lastGoodEvent = numberOfEvents - 1;
 				}
 			}
 		}
