@@ -153,7 +153,17 @@ void PrimaryRPMISR(){
 		if(decoderFlags & CAM_SYNC){
 			unsigned char pin;
 			for(pin=0;pin<6;pin++){
-				if(pinEventNumbers[pin] == currentEvent){
+				// WARNING, hack... yuck...
+				unsigned char dodgyHack = 0xFF; // set to unschedulable value such that if not one of our w/s ign pins, we wont get a successful test on this...
+				if((pin == 0) || (pin == 1)){ // if it is one of our w/s ign pins then find the opposite pin, and act like we are on it, this hack will ONLY work with evenly spaced pins, not missing teeth or any other types...
+					if(currentEvent < 12){
+						dodgyHack = currentEvent + 12;
+					}else{
+						dodgyHack = currentEvent - 12;
+					}
+				}
+
+				if((pinEventNumbers[pin] == currentEvent) || (pinEventNumbers[pin] == dodgyHack)){
 					skipEventFlags &= injectorMainOffMasks[0];
 					schedulePortTPin(pin, timeStamp);
 				}else if (skipEventFlags & injectorMainOnMasks[pin]){
@@ -164,7 +174,14 @@ void PrimaryRPMISR(){
 						eventBeforeCurrent = currentEvent - 1;
 					}
 
-					if(pinEventNumbers[pin] == eventBeforeCurrent){
+					unsigned char eventBeforeDodgyHack = 0;
+					if(dodgyHack == 0){
+						eventBeforeDodgyHack = numberOfEvents - 1;
+					}else{
+						eventBeforeDodgyHack = dodgyHack - 1;
+					}
+
+					if((pinEventNumbers[pin] == eventBeforeCurrent) || (pinEventNumbers[pin] == eventBeforeDodgyHack)){
 						schedulePortTPin(pin, timeStamp);
 					}
 				}
