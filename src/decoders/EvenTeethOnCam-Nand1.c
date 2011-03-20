@@ -94,6 +94,7 @@ void PrimaryRPMISR(){
 		currentEvent++;
 		if(currentEvent == numberOfEvents){
 			resetToNonRunningState();
+			syncLostOnThisEvent = currentEvent;
 			RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 			return;
 		}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
@@ -226,13 +227,12 @@ void SecondaryRPMISR(){
 				// Record that we had to reset position...
 				Counters.camSyncCorrections++;
 				syncLostOnThisEvent = currentEvent;				// Should never happen, or should be caught by timing checks below
-				currentEvent = 0xFF; /// @todo TODO reset always, and catch noise induced errors below, this behaviour may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.
-			currentEvent = 0xFF;
 			decoderFlags |= CAM_SYNC;
 			syncCaughtOnThisEvent = numberOfEvents; // Always caught here!
 		}
+		currentEvent = 0xFF; /// @todo TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 
 		/// Check that it's within reason on a per engine cycle basis TODO : @todo (wider tolerance? if not, then generic settings will need to be less aggresive than they could be and detect less noise than they could) perhaps have 2 or 3 or ? different settings for tolerance that can be used within a specific decoder in any way that the author thinks is appropriate? Defaults set from each decoder and configurable by the user later too.
 //		unsigned short thisTicksPerDegree = 0;
