@@ -61,7 +61,7 @@
 #include "../inc/utils.h"
 
 
-const unsigned char decoderName[] = "NipponDenso.c";
+const unsigned char decoderName[] = "NipponDenso";
 const unsigned char numberOfEvents = 2;
 const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
 const unsigned short totalEventAngleRange = 180;

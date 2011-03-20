@@ -42,7 +42,7 @@
 #include "../inc/decoderInterface.h"
 
 
-const unsigned char decoderName[] = "MissingTeeth.c";
+const unsigned char decoderName[] = "MissingTeeth";
 const unsigned char numberOfEvents = 10;
 const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
 const unsigned short totalEventAngleRange = 360; // set up for crank only at this point, build twice, once for crank only,

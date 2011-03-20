@@ -61,7 +61,7 @@ static LongTime timeStamp; /// @todo TODO why is this here, and why is it static
 
 
 // Definitions of decoder interface constants
-const unsigned char decoderName[] = "MitsiCAS-4and1.c";
+const unsigned char decoderName[] = "MitsiCAS-4and1";
 const unsigned char numberOfEvents = 10;
 const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 const unsigned short totalEventAngleRange = 720;

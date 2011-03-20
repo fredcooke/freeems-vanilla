@@ -48,7 +48,7 @@
 #include "../inc/decoderInterface.h"
 
 
-const unsigned char decoderName[] = "EvenTeethOnCam-Nand1.c";
+const unsigned char decoderName[] = "EvenTeethOnCam-Nand1";
 const unsigned char numberOfEvents = 24;
 const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690};
 const unsigned short totalEventAngleRange = 720;

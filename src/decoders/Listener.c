@@ -48,7 +48,7 @@
 #include "../inc/decoderInterface.h"
 
 
-const unsigned char decoderName[] = "Listener.c";
+const unsigned char decoderName[] = "Listener";
 const unsigned char numberOfEvents = 1;
 const unsigned short eventAngles[] = {0}; // no events really...
 const unsigned short totalEventAngleRange = 720;
