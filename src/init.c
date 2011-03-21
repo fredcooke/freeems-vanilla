@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -63,19 +63,19 @@
  * @author Fred Cooke
  */
 void init(){
-	ATOMIC_START();         	/* Disable ALL interrupts while we configure the board ready for use */
-	initPLL();              	/* Set up the PLL and use it */
-	initIO();               	/* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
-	initAllPagedRAM();      	/* Copy table and config blocks of data from flash to the paged RAM blocks for fast data lookup */
-	initVariables();        	/* Initialise the rest of the running variables etc */
-	initFlash();            	/* TODO, finalise this */
-	initECTTimer();         	/* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
-//	initPITTimer();         	/* TODO ditto... */
-	initSCIStuff();         	/* Setup the sci module(s) that we will use. */
-	initConfiguration();    	/* TODO Set user/feature/config up here! */
-//	initXgate(); 				/* Fred is a cry baby, for good reason as of now */
-	initInterrupts();       	/* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
-	ATOMIC_END();           	/* Re-enable any configured interrupts */
+	ATOMIC_START();         /* Disable ALL interrupts while we configure the board ready for use */
+	initPLL();              /* Set up the PLL and use it */
+	initIO();               /* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
+	initAllPagedRAM();      /* Copy table and config blocks of data from flash to the paged RAM blocks for fast data lookup */
+	initVariables();        /* Initialise the rest of the running variables etc */
+	initFlash();            /* TODO, finalise this */
+	initECTTimer();         /* TODO move this to inside config in an organised way. Set up the timer module and its various aspects */
+//	initPITTimer();         /* TODO ditto... */
+	initSCIStuff();         /* Setup the sci module(s) that we will use. */
+	initConfiguration();    /* TODO Set user/feature/config up here! */
+//	initXgate();            /* Fred is a legend, for good reason as of now */
+	initInterrupts();       /* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
+	ATOMIC_END();           /* Re-enable any configured interrupts */
 }
 
 
