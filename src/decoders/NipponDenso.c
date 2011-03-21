@@ -62,9 +62,11 @@
 
 
 const unsigned char decoderName[] = "NipponDenso";
-const unsigned char numberOfEvents = 2;
-const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
-const unsigned short totalEventAngleRange = 180;
+const unsigned char numberOfRealEvents = 24;
+const unsigned char numberOfVirtualEvents = 24;
+const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690};
+const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
+const unsigned short totalEventAngleRange = 720;
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 

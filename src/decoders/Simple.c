@@ -54,9 +54,11 @@
 
 
 const unsigned char decoderName[] = "Simple";
-const unsigned char numberOfEvents = 2;
-const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out... maybe unused for this decoder? In sched "if(compare(decoder_Name, "Simple.c")){just always sched 1 fuel and 1 ign delayed after the tooth by some amount.} but better to keep it consistent across all decoders!!
-const unsigned short totalEventAngleRange = 180; /// @todo TODO split this out into multiple builds for different cylinder counts (and leading/trailing edge too) total of 24 builds, maybe less
+const unsigned char numberOfRealEvents = 1;
+const unsigned char numberOfVirtualEvents = 4;
+const unsigned short eventAngles[] = {0,180,360,540};
+const unsigned char eventMapping[] = {0,0,0,0};
+const unsigned short totalEventAngleRange = 720; /// @todo TODO split this out into multiple builds for different cylinder counts (and leading/trailing edge too) total of 24 builds, maybe less
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 

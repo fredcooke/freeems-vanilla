@@ -49,8 +49,10 @@
 
 
 const unsigned char decoderName[] = "Listener";
-const unsigned char numberOfEvents = 1;
+const unsigned char numberOfRealEvents = 1;
+const unsigned char numberOfVirtualEvents = 1;
 const unsigned short eventAngles[] = {0}; // no events really...
+const unsigned char eventMapping[] = {0}; // no events really...
 const unsigned short totalEventAngleRange = 720;
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 

@@ -97,11 +97,23 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
+#define angleOfSingleIteration 180
+
+#define E0 0
+#define E1 54
+#define E2 (E0 + angleOfSingleIteration)
+#define E3 (E1 + angleOfSingleIteration)
+#define E4 (E0 + (2 * angleOfSingleIteration))
+#define E5 (E1 + (2 * angleOfSingleIteration))
+#define E6 (E0 + (3 * angleOfSingleIteration))
+#define E7 (E1 + (3 * angleOfSingleIteration))
 
 const unsigned char decoderName[] = "HyundaiHack";
-const unsigned char numberOfEvents = 2;
-const unsigned short eventAngles[] = {0, 54}; // 1/4 cycle events.
-const unsigned short totalEventAngleRange = 180;
+const unsigned char numberOfRealEvents = 2;
+const unsigned char numberOfVirtualEvents = 8;
+const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7};
+const unsigned char eventMapping[] = {0,1,0,1,0,1,0,1};
+const unsigned short totalEventAngleRange = 720;
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 

@@ -55,24 +55,21 @@
 
 
 const unsigned char decoderName[] = "LT1-360-8";
-const unsigned char numberOfEvents = 2; /// @todo TODO make this match above
-const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
+const unsigned char numberOfRealEvents = 16; // Start simple, Sean, start simple! :-)
+const unsigned char numberOfVirtualEvents = 16;
+const unsigned short eventAngles[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}; /// @todo TODO fill this out...
+const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 const unsigned short totalEventAngleRange = 720;
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
+
 
 static unsigned char synced = 0;
 static unsigned char skippedWindowCount = 0;
 
-unsigned short angle = 0;  /* angle of our CAS */
+
+unsigned short angle = 0;  /* angle of our CAS */ /// @todo TODO Sean, don't count the angle, count the event number only, the angle can be got from the array that holds them above once you define what they are.
 unsigned short accumulatorCount = 0;
-unsigned char currentCyl;
 
-//enum CYLENDAR{ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT}
-
-//windowAngle windowAngles[2] = {
-//	{ONE, LOW, 23, 0, 2},
-//	{EIGHT, HIGH, 43, 7}
-//};
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
  *  @todo TODO Put this in the correct place

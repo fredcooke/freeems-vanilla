@@ -137,9 +137,11 @@ EXTERN unsigned long engineCyclePeriod;
 
 // These are defined per decoder and used elsewhere!
 EXTERN const unsigned char decoderName[32]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
-EXTERN const unsigned char numberOfEvents; // How many of the members of the eventAngles array are valid.
+EXTERN const unsigned char numberOfRealEvents; // How many unique events the decoder sees.
+EXTERN const unsigned char numberOfVirtualEvents; // How many of the members of the eventAngles array are valid. (multiples of real events (1 - 12))
 EXTERN const unsigned short eventAngles[256]; // From 0 - totalEventAngleRange degrees, scale: not at all, x10 x60 or x90? Currently not at all (1 deg resolution)
-EXTERN const unsigned short totalEventAngleRange; /// A full engine cycle for a 4 stroke takes 720 degrees, this value will always be 720, 360, or (720/cylinder count) @todo TODO perhaps use dynamic change to this to make scheduling for different sync levels work? I expect that a missing tooth + cam sync will count through events 0 - 360 degrees repeatedly until it figures out where it is, and then count up to 720 such that output events scheduled for the later input events never get fired. Needs more thought.
+EXTERN const unsigned char eventMapping[256]; // Event to both schedule as, and check for scheduling as!
+EXTERN const unsigned short totalEventAngleRange; // A full engine cycle for a 4 stroke takes 720 degrees, and for a 2 stroke is 360, unsure about rotaries.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
 

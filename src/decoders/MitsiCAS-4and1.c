@@ -448,7 +448,7 @@ void PrimaryRPMISR(){
 	if(decoderFlags & CAM_SYNC){
 		lastEvent = currentEvent;
 		currentEvent++;
-		if(currentEvent == numberOfEvents){
+		if(currentEvent == numberOfRealEvents){
 			currentEvent = 0;
 		}
 
@@ -634,7 +634,7 @@ void SecondaryRPMISR(){
 			}else if (skipEventFlags & injectorMainOnMasks[pin]){
 				unsigned char eventBeforeCurrent = 0;
 				if(currentEvent == 0){
-					eventBeforeCurrent = numberOfEvents - 1;
+					eventBeforeCurrent = numberOfRealEvents - 1;
 				}else{
 					eventBeforeCurrent = currentEvent - 1;
 				}

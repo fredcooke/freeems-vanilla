@@ -298,11 +298,11 @@ void calculateFuelAndIgnition(){
 		unsigned char lastGoodEvent = ONES;
 		if(codeAngleOfIgnition == 0){ // Special case, if equal to zero, the last good event will not be found
 			// And the last good event is the last event!
-			lastGoodEvent = numberOfEvents - 1;
+			lastGoodEvent = numberOfVirtualEvents - 1;
 		}else{
 			// Otherwise iterate through and find the closest one.
 			unsigned char possibleEvent;
-			for(possibleEvent = 0;possibleEvent < numberOfEvents;possibleEvent++){
+			for(possibleEvent = 0;possibleEvent < numberOfVirtualEvents;possibleEvent++){
 				if(eventAngles[possibleEvent] < codeAngleOfIgnition){
 					lastGoodEvent = possibleEvent;
 				}
@@ -317,7 +317,7 @@ void calculateFuelAndIgnition(){
 
 		// Don't actually use this var, just need that many iterations to work back from the closest tooth that we found above
 		unsigned char possibleEvent;
-		for(possibleEvent = 0;possibleEvent < numberOfEvents;possibleEvent++){
+		for(possibleEvent = 0;possibleEvent < numberOfVirtualEvents;possibleEvent++){
 			unsigned long ticksBetweenEventAndSpark = LONGMAX;
 			if(codeAngleOfIgnition > eventAngles[lastGoodEvent]){
 				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
@@ -341,7 +341,7 @@ void calculateFuelAndIgnition(){
 					// Determine the eventBeforeCurrent outside the atomic block
 					unsigned char eventBeforeCurrent = 0;
 					if(pinEventNumbers[ignitionEvent] == 0){
-						eventBeforeCurrent = numberOfEvents - 1;
+						eventBeforeCurrent = numberOfVirtualEvents - 1;
 					}else{
 						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
 					}
@@ -366,7 +366,7 @@ void calculateFuelAndIgnition(){
 						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
 					}
 
-					pinEventNumbers[ignitionEvent] = lastGoodEvent;
+					pinEventNumbers[ignitionEvent] = eventMapping[lastGoodEvent];
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -374,7 +374,7 @@ void calculateFuelAndIgnition(){
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
 					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-					pinEventNumbers[ignitionEvent] = lastGoodEvent;
+					pinEventNumbers[ignitionEvent] = eventMapping[lastGoodEvent];
 					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
 					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -392,7 +392,7 @@ void calculateFuelAndIgnition(){
 				if(lastGoodEvent > 0){
 					lastGoodEvent--;
 				}else{
-					lastGoodEvent = numberOfEvents - 1;
+					lastGoodEvent = numberOfVirtualEvents - 1;
 				}
 			}
 		}

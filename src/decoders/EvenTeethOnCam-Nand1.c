@@ -49,8 +49,10 @@
 
 
 const unsigned char decoderName[] = "EvenTeethOnCam-Nand1";
-const unsigned char numberOfEvents = 24;
+const unsigned char numberOfRealEvents = 24;
+const unsigned char numberOfVirtualEvents = 24;
 const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690};
+const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
 const unsigned short totalEventAngleRange = 720;
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
@@ -93,10 +95,10 @@ void PrimaryRPMISR(){
 		unsigned char lastEvent = currentEvent;
 		currentEvent++;
 		if(currentEvent == 0){
-			lastEvent = numberOfEvents - 1;
+			lastEvent = numberOfRealEvents - 1;
 		}
 
-		if(currentEvent == numberOfEvents){
+		if(currentEvent == numberOfRealEvents){
 			resetToNonRunningState();
 			syncLostOnThisEvent = currentEvent;
 			RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
@@ -173,14 +175,14 @@ void PrimaryRPMISR(){
 				}else if (skipEventFlags & injectorMainOnMasks[pin]){
 					unsigned char eventBeforeCurrent = 0;
 					if(currentEvent == 0){
-						eventBeforeCurrent = numberOfEvents - 1;
+						eventBeforeCurrent = numberOfRealEvents - 1;
 					}else{
 						eventBeforeCurrent = currentEvent - 1;
 					}
 
 					unsigned char eventBeforeDodgyHack = 0;
 					if(dodgyHack == 0){
-						eventBeforeDodgyHack = numberOfEvents - 1;
+						eventBeforeDodgyHack = numberOfRealEvents - 1;
 					}else{
 						eventBeforeDodgyHack = dodgyHack - 1;
 					}
@@ -244,14 +246,14 @@ void SecondaryRPMISR(){
 
 		// This sets currentEvent to 255 such that when the primary ISR runs it is rolled over to zero!
 		if(decoderFlags & CAM_SYNC){
-			if(currentEvent != (numberOfEvents - 1)){
+			if(currentEvent != (numberOfRealEvents - 1)){
 				// Record that we had to reset position...
 				Counters.camSyncCorrections++;
 				syncLostOnThisEvent = currentEvent;				// Should never happen, or should be caught by timing checks below
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.
 			decoderFlags |= CAM_SYNC;
-			syncCaughtOnThisEvent = numberOfEvents; // Always caught here!
+			syncCaughtOnThisEvent = numberOfRealEvents; // Always caught here!
 		}
 		currentEvent = 0xFF; /// @todo TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 

@@ -1,6 +1,6 @@
 /*	FreeEMS - the open source engine management system
 
-	Copyright 2009, 2010 Philip L Johnson, Fred Cooke
+	Copyright 2009, 2010, 2011 Philip L Johnson, Fred Cooke
 
 	This file is part of the FreeEMS project.
 
@@ -23,13 +23,13 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file MissingTeeth.c
+/**	@file MissingTeeth36-1-Crank-Only.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief Missing teeth, mostly 36-1 and 60-2
+ * @brief Missing teeth, 36-1, Crank only
  *
- * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
+ * This will be made generic, and built as an include with multiple headers containing the parameters required to make it function.
  *
  * @author Philip Johnson
  */
@@ -42,9 +42,11 @@
 #include "../inc/decoderInterface.h"
 
 
-const unsigned char decoderName[] = "MissingTeeth";
-const unsigned char numberOfEvents = 10;
-const unsigned short eventAngles[] = {0, 1}; /// @todo TODO fill this out...
+const unsigned char decoderName[] = "MissingTeeth36-1-Crank-Only";
+const unsigned char numberOfRealEvents = 35;
+const unsigned char numberOfVirtualEvents = 35;
+const unsigned short eventAngles[] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340};
+const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34};
 const unsigned short totalEventAngleRange = 360; // set up for crank only at this point, build twice, once for crank only,
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
