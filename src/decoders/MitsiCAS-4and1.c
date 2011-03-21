@@ -624,15 +624,27 @@ void SecondaryRPMISR(){
 		}
 	}
 
-	/// @todo TODO check for skipEventFlags
-//	if(decoderFlags & CAM_SYNC){
-//		unsigned char pin;
-//		for(pin=0;pin<6;pin++){
-//			if(pinEventNumbers[pin] == currentEvent){
-//				schedulePortTPin(pin, timeStamp);
-//			}
-//		}
-//	}
+	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+	if(decoderFlags & CAM_SYNC){
+		unsigned char pin;
+		for(pin=0;pin<6;pin++){
+			if(pinEventNumbers[pin] == currentEvent){
+				skipEventFlags &= injectorMainOffMasks[0];
+				schedulePortTPin(pin, timeStamp);
+			}else if (skipEventFlags & injectorMainOnMasks[pin]){
+				unsigned char eventBeforeCurrent = 0;
+				if(currentEvent == 0){
+					eventBeforeCurrent = numberOfEvents - 1;
+				}else{
+					eventBeforeCurrent = currentEvent - 1;
+				}
+
+				if(pinEventNumbers[pin] == eventBeforeCurrent){
+					schedulePortTPin(pin, timeStamp);
+				}
+			}
+		}
+	}
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
