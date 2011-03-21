@@ -50,6 +50,7 @@
 #define START_OF_FLASH_WINDOW	(unsigned short*)0x8000 /* 16KB long */
 #define START_OF_RAM_WINDOW		(unsigned short*)0x1000 /* 4KB long */
 #define XGATE_RAM_ALLOCATION_SIZE	0x0200 /* 512Bytes */
+#define RPAGE_TUNE_TWO_WINDOW_DIFFERENCE (0x8000) /*xgate RPAGE2 starts at 0x9000 but the s12 window starts at 0x10000 */
 
 typedef struct {
 	unsigned short programCounterValue; /* This data is forced into the XGATE PC register */
@@ -62,6 +63,7 @@ extern void xgatePITTurnOff();
 extern void xgatePITTurnOn();
 extern void startXGATECode();
 extern void endXGATECode();
+extern void parameterGuard(); /* counter that gets update when a write to shared RAM begins and again when the write is complete */
 
 EXTERN const xgateIntVector xgateIntVectorTable[121];
 
