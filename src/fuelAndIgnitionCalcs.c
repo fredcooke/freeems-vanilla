@@ -190,7 +190,7 @@ void calculateFuelAndIgnition(){
 
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
 #define Mitsi4and1OffsetOnTruck  90
-#define HyundaiHackOffset        17
+#define HyundaiHackOffset        22
 #define SilverTop4age           670
 
 	unsigned short decoderEngineOffset = HyundaiHackOffset;
@@ -335,7 +335,7 @@ void calculateFuelAndIgnition(){
 //				125 ish at redline
 //				this is from logs, real values, 125 is calced... but div 10 now.
 
-			if(ticksBetweenEventAndSpark > safeAdd(DerivedVars->Dwell, decoderMaxCodeTime)){
+			if(ticksBetweenEventAndSpark > ((unsigned long)DerivedVars->Dwell + decoderMaxCodeTime)){
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					// Determine the eventBeforeCurrent outside the atomic block
