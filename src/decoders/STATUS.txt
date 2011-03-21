@@ -1,10 +1,10 @@
 Decoder implementation development status:
 
-Listener             - 100% Complete - Test ONLY.
-EvenTeethOnCam-Nand1 - Functional, but incomplete.
-HyundaiHack          - Functional, but incomplete.
-MitsiCAS-4and1       - Functional, but incomplete.
-LT1-360-8            - Not functional, yet.
-NipponDenso          - Not functional, does not represent its name well.
-MissingTeeth         - Probably broken, untested since interface changes.
-Simple               - Probably broken, untested since interface changes.
+Listener             - 100% Complete - Test ONLY. No thread, it just prevents math code from running, allowing a perfectly smooth LA log to be taken.
+EvenTeethOnCam-Nand1 - Functional, but incomplete. http://forum.diyefi.org/viewtopic.php?f=56&t=1099
+HyundaiHack          - Functional, but incomplete. http://forum.diyefi.org/viewtopic.php?f=56&t=1082
+MitsiCAS-4and1       - Functional, but incomplete. http://forum.diyefi.org/viewtopic.php?f=56&t=1078
+LT1-360-8            - Not functional, yet.        http://forum.diyefi.org/viewtopic.php?f=56&t=1100
+NipponDenso          - Not functional, does not represent its name well.  No thread, yet.
+MissingTeeth         - Probably broken, untested since interface changes. No thread, yet.
+Simple               - Probably broken, untested since interface changes. No thread, yet.
