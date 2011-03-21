@@ -30,3 +30,4 @@
 .equ	PORTBA, 0x0000
 .equ	PORTBAROTECTIONMASK, 0x0FFF ; only use the first 12 pins on PORTBA 
 .equ	PORTB, 0x0001
+
