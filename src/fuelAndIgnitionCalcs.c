@@ -190,7 +190,7 @@ void calculateFuelAndIgnition(){
 
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
 #define Mitsi4and1OffsetOnTruck  90
-#define HyundaiHackOffset        22
+#define HyundaiHackOffset        30
 #define SilverTop4age           670
 
 	unsigned short decoderEngineOffset = HyundaiHackOffset;
