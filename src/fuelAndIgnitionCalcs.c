@@ -341,7 +341,7 @@ void calculateFuelAndIgnition(){
 					// Determine the eventBeforeCurrent outside the atomic block
 					unsigned char eventBeforeCurrent = 0;
 					if(pinEventNumbers[ignitionEvent] == 0){
-						eventBeforeCurrent = numberOfVirtualEvents - 1;
+						eventBeforeCurrent = numberOfRealEvents - 1;
 					}else{
 						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
 					}
@@ -362,7 +362,7 @@ void calculateFuelAndIgnition(){
 					 * just mean a single cycle of scheduling is slightly too retarded for a single
 					 * event around change of tooth time which could easily be acceptable.
 					 */
-					if((lastGoodEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
+					if((eventMapping[lastGoodEvent] == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
 						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
 					}
 
