@@ -128,7 +128,7 @@ void RTIISR(){
 						coreStatusA &= CLEAR_FUEL_PUMP_PRIME;
 						PORTA &= NBIT7;
 					}
-				}else if(CoreVars->RPM == 0){
+				}else if(CoreVars->RPM == 0){ /// @todo TODO This is too quick to turn off, average 0.5 seconds, which is OK, but fastest = 0seconds which is difficult to understand, needs a flag and to be 1 - 2 with average 1.5.
 					PORTA &= NBIT7;
 				}
 
