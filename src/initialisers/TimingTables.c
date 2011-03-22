@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -43,21 +43,59 @@
 #include "../inc/freeEMS.h"
 
 
+// See fuelAndIgnitionCalcs.c for more info about CLIFLAGS builds!
 /* The main Advance Table */
 const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 	MAINTABLE_RPM_LENGTH,		/* AdvanceTableMain.RPMLength */
 	MAINTABLE_LOAD_LENGTH,		/* AdvanceTableMain.LoadLength */
 	/* AdvanceTableMain.RPM */
 	{
-		#include "../data/tables/axis/FredsTruck-RPM.h"
+#ifdef TRUCK
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#elif HOTEL
+#include "../data/tables/axis/HotelHyundai-RPM.h"
+#elif PRESTO
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#elif SEANKLT1
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#elif SEANKR1
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#else
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#endif
 	},
 	/*AdvanceTableMain.Load */
 	{
-		#include "../data/tables/axis/FredsTruck-Load.h"
+#ifdef TRUCK
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif HOTEL
+#include "../data/tables/axis/HotelHyundai-Load.h"
+#elif PRESTO
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif SEANKLT1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif SEANKR1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#else
+#include "../data/tables/axis/FredsTruck-Load.h"
+#endif
 	},
 	/* AdvanceTableMain.Table */
 	{
-		#include "../data/tables/ign/flat0degrees.h"
+// USE FLAT 0 DEGREE TIMING UNTIL YOU CAN VERIFY YOUR DECODER OFFSET!!
+#ifdef TRUCK
+#include "../data/tables/ign/FredsTruckIgnitionTiming.h"
+#elif HOTEL
+#include "../data/tables/ign/HotelHyundaiIgnitionTiming.h"
+#elif PRESTO
+#include "../data/tables/ign/flat0degrees.h"
+#elif SEANKLT1
+#include "../data/tables/ign/flat0degrees.h"
+#elif SEANKR1
+#include "../data/tables/ign/flat0degrees.h"
+#else
+#include "../data/tables/ign/flat0degrees.h"
+#endif
 	}
 };
 
