@@ -123,6 +123,13 @@ EXTERN unsigned char currentEvent;
 EXTERN unsigned char decoderFlags;
 EXTERN unsigned char skipEventFlags;
 EXTERN unsigned long engineCyclePeriod;
+/// @todo Introduce the concept of sync level to schedule for if NOT synced
+/// @todo and a way of deciding what to do in different sync states
+/// @todo and proper dividers for pulsewidths
+/// @todo and ability to lock pulsewidht/dwell for scheduling
+/// @todo and generalise scheduling to all pins
+/// @todo and provide a way of choosing a source of pulsewidth dwell or fuel duration
+/// @todo and a way of allowing overly advanced scheduling instead of none, when its fuel
 #define COMBUSTION_SYNC      BIT0 // Dizzy/Batch Injection
 #define CRANK_SYNC           BIT1 // Wasted Spark/Semi-Sequential
 #define CAM_SYNC             BIT2 // COP/CNP/Sequential
@@ -139,13 +146,13 @@ EXTERN unsigned long engineCyclePeriod;
 EXTERN const unsigned char decoderName[32]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
 EXTERN const unsigned char numberOfRealEvents; // How many unique events the decoder sees.
 EXTERN const unsigned char numberOfVirtualEvents; // How many of the members of the eventAngles array are valid. (multiples of real events (1 - 12))
-EXTERN const unsigned short eventAngles[256]; // From 0 - totalEventAngleRange degrees, scale: not at all, x10 x60 or x90? Currently not at all (1 deg resolution)
+EXTERN const unsigned short eventAngles[256]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x10, x60 or x90? 1x is NOT enough. Currently 1x (1 deg resolution) review all related code for potential overflow and put checks in place before adjusting scaling.
 EXTERN const unsigned char eventMapping[256]; // Event to both schedule as, and check for scheduling as!
 EXTERN const unsigned short totalEventAngleRange; // A full engine cycle for a 4 stroke takes 720 degrees, and for a 2 stroke is 360, unsure about rotaries.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
 
-// specific to one decoder, generalise this later! Or put a call to an inline function in the main reset sync function and the definition in every decoder
+// specific to one decoder, generalise this later! Or put a call to an inline function in the main reset sync function and the definition in every decoder or just remember to clear it with the main call.
 EXTERN unsigned char unknownEdges; // here so can be reset with sync loss generic function
 
 
@@ -165,13 +172,18 @@ EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on
 //EXTERN unsigned short outputEventDurations[12];            // Unused if above are not configured, set from either dwell (stretched or not) or pulsewidth (scaled for number of shots or not)
 //EXTERN unsigned short outputEventPostInputEventDelays[12]; // Unused if above are not configured, set either fixed or from angle calculations (always the latter for ignition)
 //EXTERN unsigned char pinEventDurations[6];                 // Set from decoder when setting timer registers etc, set from outputEventDurations, along with other data from there.
-//
+/// @todo TODO back this ^ array with flags saying set, and then clear them when fired, check the flag before setting, and if required buffer in a secondary array, maybe mimic that to several levels such that a queue is formed, and shuffle them through the queue as we go, or move a pointer around or somthing like that.
+
+/// @todo TODO Perhaps use some of the space freed by shrinking all timing tables for this:
 ////unsigned long wheelEventTimeStamps[numberOfWheelEvents]; // For logging wheel patterns as observed. LOTS of memory :-/ may not be possible except by sending lastStamp rapidly at low RPM
 
 
 // Helpers - force all these to be inlined!
 EXTERN void resetToNonRunningState(void);
 EXTERN void schedulePortTPin(unsigned char pin, LongTime timeStamp);
+
+
+/// @todo TODO add xgate scheduling functions here! Sean, looking forward to it, but after LT1 goes :-)
 
 
 #undef EXTERN
