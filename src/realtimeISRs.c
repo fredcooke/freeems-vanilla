@@ -89,14 +89,14 @@ void RTIISR(){
 			/* Increment the tenths counter */
 			Clocks.realTimeClockTenths++;
 
-			if(0){ /* XGMCTL == (unsigned short)0x8181 volatile doesnt not work*/
-				//set off software trigger 0 that is handled by xgate
-				unsigned char savedRPage = RPAGE;
-				RPAGE = RPAGE_TUNE_TWO;
-				(*(unsigned short*)(((unsigned short)parameterGuard) - ((unsigned short)RPAGE_TUNE_TWO_WINDOW_DIFFERENCE)))++; /* increment our parameterGuard variable in shared RAM*/
-				RPAGE = savedRPage;
-				XGSWT = 0x0101;
-			}
+#ifdef XGATE
+			//set off software trigger 0 that is handled by xgate
+			unsigned char savedRPage = RPAGE;
+			RPAGE = RPAGE_TUNE_TWO;
+			(*(unsigned short*)(((unsigned short)parameterGuard) - ((unsigned short)RPAGE_TUNE_TWO_WINDOW_DIFFERENCE)))++; /* increment our parameterGuard variable in shared RAM*/
+			RPAGE = savedRPage;
+			XGSWT = 0x0101;
+#endif
 
 			/* Increment the tenths roll over variable */
 			Clocks.tenthsToSeconds++;
