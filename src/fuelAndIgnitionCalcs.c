@@ -134,6 +134,11 @@ void calculateFuelAndIgnition(){
 	unsigned short refPW = safeAdd(DerivedVars->EffectivePW, DerivedVars->IDT);
 	DerivedVars->RefPW = refPW;
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+	/* "Calculate" the nominal total pulse width before per channel corrections */
+	masterPulseWidth = refPW;
+
+
+
 
 
 
@@ -157,26 +162,10 @@ void calculateFuelAndIgnition(){
 	/** @todo TODO work needs to be done on scheduling before this can be completed. */
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-
-
-
-
-	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Calculate Dwell and Ignition angle &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-
-
-
-
 	/*&&&&&&&&&&&&&&& Based on Dwell and Ignition angle schedule the start and end of dwell &&&&&&&&&&&&&&&&*/
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 
-
-
-	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& TEMPORARY (and old) &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-
-	/* "Calculate" the nominal total pulse width before per channel corrections */
-	masterPulseWidth = refPW;
 
 
 /**
@@ -186,43 +175,117 @@ void calculateFuelAndIgnition(){
  */
 
 
+	// Required vars for scheduling!
+	unsigned short anglesOfTDC[6];
+	unsigned short decoderEngineOffset;
+	unsigned char numberOfIgnitionEvents;
+
+
+	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& RULES FOR HAVING CONFIG IN THE CODE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+	/*&&&&&&&&&&&&&&& you are building frequently, for a vehicle, and contributing dev time &&&&&&&&&&&&&&&&*/
+	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
-#define Mitsi4and1OffsetOnTruck  90
-#define HyundaiHackOffset        30
-#define SilverTop4age           670
+#define Mitsi4and1OffsetOnTruck  90 // FE-DOHC, CAS approximately centre
+#define HyundaiHackOffset        30 // Distributor fully retarded
+#define SilverTop4age           670 // Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre
 
-	unsigned short decoderEngineOffset = HyundaiHackOffset;
+// Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
+#ifdef TRUCK
+anglesOfTDC[0] = 0;   // Cylinder 1
+anglesOfTDC[1] = 180; // Cylinder 3
+anglesOfTDC[2] = 360; // Cylinder 4
+anglesOfTDC[3] = 540; // Cylinder 2
+#define cliConfigredNumberOfIgnitionEvents 4
+#define numberOfInjectionEvents 2
+#define cliConfiguredOffset Mitsi4and1OffsetOnTruck
+pinEventNumbers[4] = 1;
+pinEventNumbers[5] = 5;
+postReferenceEventDelays[4] = decoderMaxCodeTime;
+postReferenceEventDelays[5] = decoderMaxCodeTime;
+injectorMainPulseWidthsMath[4] = masterPulseWidth;
+injectorMainPulseWidthsMath[5] = masterPulseWidth;
+
+// Fred's Hyundai Stellar http://forum.diyefi.org/viewtopic.php?f=55&t=1086
+#elif HOTEL
+anglesOfTDC[0] = 0; // 1,2,3,4, repeating pattern
+#define cliConfigredNumberOfIgnitionEvents 1
+#define numberOfInjectionEvents 0
+#define cliConfiguredOffset HyundaiHackOffset
+//pinEventNumbers[?] = ?;
+//postReferenceEventDelays[?] = decoderMaxCodeTime;
+//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+
+// Preston's silver-top-on-a-stand http://forum.diyefi.org/viewtopic.php?f=55&t=1101
+#elif PRESTO
+anglesOfTDC[0] = 0;   // 1 and 4, hack converts this to 360 as well
+anglesOfTDC[1] = 180; // 2 and 3, hack converts this to 540 as well
+#define cliConfigredNumberOfIgnitionEvents 2
+#define numberOfInjectionEvents 2
+#define cliConfiguredOffset SilverTop4age
+pinEventNumbers[4] = 0;
+pinEventNumbers[5] = 12;
+postReferenceEventDelays[4] = decoderMaxCodeTime;
+postReferenceEventDelays[5] = decoderMaxCodeTime;
+injectorMainPulseWidthsMath[4] = masterPulseWidth;
+injectorMainPulseWidthsMath[5] = masterPulseWidth;
+
+// Looking forwared to there being a link to a thread here soon!
+#elif SEANKLT1
+// anglesOfTDC[?] = ?;
+#define cliConfigredNumberOfIgnitionEvents 0
+#define numberOfInjectionEvents 0
+#define cliConfiguredOffset 0
+//pinEventNumbers[?] = ?;
+//postReferenceEventDelays[?] = decoderMaxCodeTime;
+//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+
+// Looking forwared to there being a link to a thread here soon!
+#elif SEANKR1
+// anglesOfTDC[?] = ?;
+#define cliConfigredNumberOfIgnitionEvents 0
+#define numberOfInjectionEvents 0
+#define cliConfiguredOffset 0
+//pinEventNumbers[?] = ?;
+//postReferenceEventDelays[?] = decoderMaxCodeTime;
+//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+
+// Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
+#else
+// anglesOfTDC[?] = ?;
+#define cliConfigredNumberOfIgnitionEvents 0
+#define numberOfInjectionEvents 0
+#define cliConfiguredOffset 0
+//pinEventNumbers[?] = ?;
+//postReferenceEventDelays[?] = decoderMaxCodeTime;
+//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+#endif
+
+
+	decoderEngineOffset = cliConfiguredOffset;
+	numberOfIgnitionEvents = cliConfigredNumberOfIgnitionEvents;
+
+
+	// Sanity checks:
 	if(decoderEngineOffset >= totalEventAngleRange){
 		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
 	}
+	if(numberOfIgnitionEvents > 6){
+		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
+	}
+	if((cliConfigredNumberOfIgnitionEvents + numberOfInjectionEvents) > 6){
+		return; /// @todo TODO temp, fix up
+	}
+/// @todo TODO create this check:
+//	if(event angles not valid order/numbers/etc){
+//		return;
+//	}
 
-// TDC output 1 and cylinder 1 is 0
-// TDC output 2 and cylinder 3 is therefore 180
-// TDC output 3 and cylinder 4 is therefore 360
-// TDC output 4 and cylinder 2 is therefore 540
 
-#define numberOfIgnitionEvents 1
-
-	unsigned short anglesOfTDC[numberOfIgnitionEvents]; // no timing for fuel channels yet KISS for now.
-
-	/** @todo TODO, do this at init time from fixed config as an array of
-	 * angles and a single engine offset combined into this runtime array.
-	 */
-
-// SilverTop4ageTruck:
-//	anglesOfTDC[0] = 0;   // hack converts this to 360 as well
-//	anglesOfTDC[1] = 180; // hack converts this to 540 as well
-
-// Truck:
-//	anglesOfTDC[0] = 0;
-//	anglesOfTDC[1] = 180;
-//	anglesOfTDC[2] = 360;
-//	anglesOfTDC[3] = 540;
-
-// Hyundai:
-	anglesOfTDC[0] = 0;
+	/// @todo TODO Schedule injection with real timing, requires some tweaks to work right.
 
 
 	/** @todo TODO move this loop variable to fixedConfig and make a subset of
@@ -282,16 +345,11 @@ void calculateFuelAndIgnition(){
 		}else{
 			codeAngleOfIgnition = (totalEventAngleRange + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + DerivedVars->Advance);
 		}
+		/** @todo TODO, do this ^ at init time from fixed config as an array of
+		 * angles and a single engine offset combined into this runtime array.
+		 */
 
-		// codeAngleOfIgnition
-		// 0 = 720 - 105 = 615
-		// 1 = 180 - 105 =  75
-		// 2 = 360 - 105 = 255
-		// 3 = 540 - 105 = 435
-
-		// eventAngles = {0, 69, 180, 249, 360, 429, 525, 540, 609, 665}
-
-		/// @todo TODO rather than look for the nearest tooth and  then step through till you find the right one that can work, instead figure out the dwell in angle and subtract that too, and find the correct tooth first time, will save cpu cycles, and get same answer and be less complex...
+		/// @todo TODO rather than look for the nearest tooth and then step through till you find the right one that can work, instead figure out the dwell in angle and subtract that too, and find the correct tooth first time, will save cpu cycles, and get same answer and be less complex...
 
 
 		// Find the closest event to our desired angle of ignition by working through from what is, by definition, the farthest
@@ -309,12 +367,6 @@ void calculateFuelAndIgnition(){
 			}
 		}
 
-		// lastGoodEvent
-		// 0 = 8
-		// 1 = 1
-		// 2 = 3
-		// 3 = 5
-
 		// Don't actually use this var, just need that many iterations to work back from the closest tooth that we found above
 		unsigned char possibleEvent;
 		for(possibleEvent = 0;possibleEvent < numberOfVirtualEvents;possibleEvent++){
@@ -324,16 +376,6 @@ void calculateFuelAndIgnition(){
 			}else{
 				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition + (totalEventAngleRange - eventAngles[lastGoodEvent]))) / ticks_per_degree_multiplier;
 			}
-
-			// 0 = ? * (615 - 609) = ? * 6
-			// 1 = ? * ( 75 -  69) = ? * 6
-			// 2 = ? * (255 - 249) = ? * 6
-			// 3 = ? * (435 - 429) = ? * 6
-
-//		ticks = 4500 ish at crank
-//				1000 ish at idle
-//				125 ish at redline
-//				this is from logs, real values, 125 is calced... but div 10 now.
 
 			if(ticksBetweenEventAndSpark > ((unsigned long)DerivedVars->Dwell + decoderMaxCodeTime)){
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
@@ -397,51 +439,5 @@ void calculateFuelAndIgnition(){
 			}
 		}
 	}
-
-
-	// fuel shit: could sched the same way.
-
-// Truck:
-//	// just fire the fuel off whenever... doesn't matter much.
-//	postReferenceEventDelays[4] = decoderMaxCodeTime;
-//	postReferenceEventDelays[5] = decoderMaxCodeTime;
-//
-//	// from alternate teeth so as to keep code simple for now.
-//	pinEventNumbers[4] = 1;
-//	pinEventNumbers[5] = 5;
-
-// SilverTop4age:
-//	// just fire the fuel off whenever... doesn't matter much.
-//	postReferenceEventDelays[4] = decoderMaxCodeTime;
-//	postReferenceEventDelays[5] = decoderMaxCodeTime;
-//
-//	// from alternate teeth so as to keep code simple for now.
-//	pinEventNumbers[4] = 0;
-//	pinEventNumbers[5] = 12;
-
 	// nothing much, L&P:
-
-
-
-
-
-
-
-
-
-//	/* "Calculate" the individual fuel pulse widths */
-	injectorMainPulseWidthsMath[4] = masterPulseWidth;
-	injectorMainPulseWidthsMath[5] = masterPulseWidth;
-
-	/// @todo TODO x 6 main pulsewidths, x 6 staged pulsewidths, x 6 flags for staged channels if(coreSettingsA & STAGED_ON){}
-
-	/* Set the staged status on or off (for now based on changeable settings) */
-	if(fixedConfigs1.coreSettingsA & STAGED_ON){
-		coreStatusA |= STAGED_REQUIRED;
-		/// @todo TODO determine the requirement for staged based on some sort of map and or complex load based configuration.
-	}else{
-		coreStatusA &= STAGED_NOT_REQUIRED;
-	}
-
-	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& TEMPORARY END &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 }
