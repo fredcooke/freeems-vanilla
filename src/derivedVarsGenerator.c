@@ -41,6 +41,7 @@
 #include "inc/tableLookup.h"
 #include "inc/derivedVarsGenerator.h"
 #include "inc/locationIDs.h"
+#include "inc/decoderInterface.h"
 
 
 /** @brief Generate the derived variables.
@@ -83,6 +84,14 @@ void generateDerivedVars(){
 	// temp dwell and advance vars...
 	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
 	DerivedVars->Advance = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID) / 1024; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
+
+#ifdef HOTEL
+	/// @bug hack for hyundai! 135 = 3/4 of 180 = one cycle...
+	unsigned long threeQuartersOfAvailableTime = ((unsigned long)CoreVars->DRPM * 135) / ticks_per_degree_multiplier;
+	if(DerivedVars->Dwell > threeQuartersOfAvailableTime){
+		DerivedVars->Dwell = threeQuartersOfAvailableTime;
+	}
+#endif
 
 	/* Look up the engine temperature enrichment percentage with temperature */
 	DerivedVars->ETE = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent, CoreVars->CHT);
