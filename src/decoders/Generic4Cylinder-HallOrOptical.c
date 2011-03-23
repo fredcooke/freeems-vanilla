@@ -24,83 +24,21 @@
  */
 
 
-/**	@file HyundaiHack.c
+/**	@file Generic4CylinderHallOrOptical.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
  * @brief Echos the input on the first ignition output
  *
- * This decoder is for unlocked distributor cars such as the MIGHTY Hyundai
- * that I've been living in for 6 months. The mechanical distributor continues
- * to set the timing, the ECU just logs RPM and MAP and any other senors and/or
- * solenoids you hook up and configure.
- *
- * No plugs cranking LA test results:
- *
-
-17302
-17346
-17451
-17498
-17600
-17646
-17751
-17795
-17900
-
-0
-44
-149
-196
-298
-344
-449
-493
-598
-
-0
-52.98
-179.4
-235.99
-358.8
-414.18
-540.6
-593.58
-720
-
-52.98
-126.42
-56.59
-122.81
-55.38
-126.42
-52.98
-126.42
-
-54.48
-125.52
-
-54,126
-
- *
- * Approximately 1000 samples per second
- *
+ * This decoder is for any 4 tooth/slot hall or optical cam speed sensor and to
+ * be used for distributor and/or 4 shot batch injection only.
  *
  * @author Fred Cooke
  */
 
 
-#define DECODER_IMPLEMENTATION_C
-
-#include "../inc/freeEMS.h"
-#include "../inc/interrupts.h"
-#include "../inc/decoderInterface.h"
-#include "../inc/utils.h"
-
 #define angleOfSingleIteration 180
 
-#define E0 0
-#define E1 54
 #define E2 (E0 + angleOfSingleIteration)
 #define E3 (E1 + angleOfSingleIteration)
 #define E4 (E0 + (2 * angleOfSingleIteration))
@@ -108,7 +46,6 @@
 #define E6 (E0 + (3 * angleOfSingleIteration))
 #define E7 (E1 + (3 * angleOfSingleIteration))
 
-const unsigned char decoderName[] = "HyundaiHack";
 const unsigned char numberOfRealEvents = 2;
 const unsigned char numberOfVirtualEvents = 8;
 const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7};
