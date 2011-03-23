@@ -158,6 +158,11 @@ EXTERN unsigned char unknownEdges; // here so can be reset with sync loss generi
 
 
 
+/// @todo TODO two unsigned chars, and two unsigned shorts, which is the MAP ADC value, the MAP value is sampled on every event in a cycle, and if less than the previous stored value, which is reset at every zeroth event, with the old value and old event number stored globally.
+/// @todo TODO the same thing could be done, but with a median filter or similar, perhaps map sampling could be done dymanically like this, though it could yield unpredictable results, it could also yield the best running engines, just a thought...
+
+
+
 // Scheduling
 
 // prelim, will change...
