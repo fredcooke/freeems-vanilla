@@ -59,6 +59,7 @@ const unsigned char numberOfRealEvents = 16; // Start simple, Sean, start simple
 const unsigned char numberOfVirtualEvents = 16;
 const unsigned short eventAngles[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}; /// @todo TODO fill this out...
 const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
 const unsigned short totalEventAngleRange = 720;
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 

@@ -47,6 +47,7 @@ const unsigned char numberOfRealEvents = 35;
 const unsigned char numberOfVirtualEvents = 35;
 const unsigned short eventAngles[] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340};
 const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34};
+const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // this is only correct while doing pure crank sync, wrong once doing more, i think, TBC...
 const unsigned short totalEventAngleRange = 360; // set up for crank only at this point, build twice, once for crank only,
 const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 /// @todo TODO make the below code generic and bullet proof, add all of the above to a header, and make the secondary code not run if not configured to run in the header, then make headers for every common combo
