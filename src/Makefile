@@ -138,6 +138,7 @@ GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h decoderIn
 GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
 FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
 RPMH = Simple.h LT1-360-8.h MissingTeeth.h MitsiCAS-4and1.h
+RPMC = Generic4Cylinder-HallOrOptical.c
 DATACONF = defaultUteConfig.h
 DATATABLESAXIS = FredsTruck-Load.h FredsTruck-RPM.h mainTable-Load.h mainTable-RPM.h
 DATATABLESIGN = FE-DOHC.h flat15degrees.h flat0degrees.h FredsTruckIgnitionTiming.h
@@ -164,7 +165,8 @@ ALLH2 = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS2))
 ALLH3 = $(patsubst %.c,$(INCDIR)/%.c,$(CINCS))
 ALLH4 = $(LINKER) $(MFILE) $(INCDIR)/$(ASMH)
 ALLH5 = $(DATAH1) $(DATAH2) $(DATAH3) $(DATAH4) $(DATAH5) $(DATAH6) 
-ALLH = $(ALLH1) $(ALLH2) $(ALLH3) $(ALLH4) $(ALLH5)
+RPMINC = $(patsubst %.c,decoders/%.c,$(RPMC))
+ALLH = $(ALLH1) $(ALLH2) $(ALLH3) $(ALLH4) $(ALLH5) $(RPMINC)
 
 # Warning : do not include .c files from inc/ as they are
 # included into the other C files and automatically compiled.

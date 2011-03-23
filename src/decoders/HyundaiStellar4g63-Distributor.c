@@ -97,7 +97,6 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-#define E0 0
 #define E1 54
 
 const unsigned char decoderName[] = "HyundaiStellar4g63-Distributor";

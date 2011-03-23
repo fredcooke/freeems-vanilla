@@ -33,12 +33,22 @@
  * This decoder is for any 4 tooth/slot hall or optical cam speed sensor and to
  * be used for distributor and/or 4 shot batch injection only.
  *
+ * To build a version of this decoder with a specific angle pair for your hall
+ * or optical distributor, just define the DECODER_IMPLEMENTATION_C flag,
+ * include the four required headers, define the angle for E1, and define the
+ * unique decoder name string!
+ *
+ * To effectively reverse the polarity, just subtract your angle from 180 and
+ * it will then be correct, assuming that either angle is correct.
+ *
  * @author Fred Cooke
  */
 
 
 #define angleOfSingleIteration 180
 
+#define E0 0
+// Define E1 in your reverse header!
 #define E2 (E0 + angleOfSingleIteration)
 #define E3 (E1 + angleOfSingleIteration)
 #define E4 (E0 + (2 * angleOfSingleIteration))
