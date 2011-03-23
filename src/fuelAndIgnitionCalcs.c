@@ -137,6 +137,7 @@ void calculateFuelAndIgnition(){
 	/* "Calculate" the nominal total pulse width before per channel corrections */
 	masterPulseWidth = refPW;
 
+/// @todo accumulate errors such that we know what sort of PW WOULD have been requested and enable a "over duty cut" to protect boosted users with insufficient injector size on cold nights
 
 
 
