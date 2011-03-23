@@ -143,7 +143,7 @@ EXTERN unsigned long engineCyclePeriod;
 
 
 // These are defined per decoder and used elsewhere!
-EXTERN const unsigned char decoderName[32]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
+EXTERN const unsigned char decoderName[64]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
 EXTERN const unsigned char numberOfRealEvents; // How many unique events the decoder sees.
 EXTERN const unsigned char numberOfVirtualEvents; // How many of the members of the eventAngles array are valid. (multiples of real events (1 - 12))
 EXTERN const unsigned short eventAngles[256]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x10, x60 or x90? 1x is NOT enough. Currently 1x (1 deg resolution) review all related code for potential overflow and put checks in place before adjusting scaling.
