@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009, 2010 Sean Keys, Fred Cooke
+ * Copyright 2009, 2010, 2011 Sean Keys, Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -71,10 +71,11 @@ static unsigned char skippedWindowCount = 0;
 //static unsigned char* windowCountIndex = 0;
 unsigned char isSynced = 0;
 unsigned short angle = 0;  /* angle of our CAS */ /// @todo TODO Sean, don't count the angle, count the event number only, the angle can be got from the array that holds them above once you define what they are.
-unsigned char accumulatorCount = 0; // use secondaryEventCount
-unsigned char windowState = 0; // use currentEvent
-unsigned char currentWindowIndex = 0;
+unsigned char accumulatorCount = 0; // use secondaryEventCount?
+unsigned char windowState = 0;
+unsigned char currentWindowIndex = 0; // FRED remove this var and use currentEvent
 
+// FRED make this a simple array like the commented out one above
 const windowCount windowCounts[] = { /* the first element is the window count, the second is the translated absolute position */
 		{24,294},
 		{66,360}, //TDC
@@ -106,7 +107,7 @@ void LT1PAInit(void){
 	// disable interrupt on PT1
 	ICPAR = 0x02; // set the second bit in ICPAR (PAC1) to enable PT1's pulse accumulator
 	// enable interrupt on overflow and set count to 0xFF-245 to enable an int on every ten teeth
-	PACN1 = 0x0; //reset our count register
+	PACN1 = 0x00; // reset our count register
 }
 
 /**
@@ -139,7 +140,7 @@ void PrimaryRPMISR(void) {
     unsigned char i;
 
     if(currentWindowIndex > (numberOfRealEvents - 1)){ /* wrap our index on virtual overflow */
-    	currentWindowIndex = 0;
+    	currentWindowIndex = 0; // FRED move this AFTER increment above loop var where other comment is
     }
     /* for data logging */
     Counters.testCounter0 = accumulatorCount;
@@ -159,12 +160,15 @@ void PrimaryRPMISR(void) {
 			skippedWindowCount++;
 		}
 	}else{/* make sure our count is good */
-		if(windowCounts[++currentWindowIndex].count == accumulatorCount){
-
+		// FRED update current event on separate line, current code is obfuscated by doing more than one thing on a line
+		// FRED make this != instead and return; at the end of the if block after clearning sync
+		if(windowCounts[/* bad/evil code here: */++currentWindowIndex].count == accumulatorCount){
 		}else{
-			isSynced = 0;
+			isSynced = 0; // FRED don't clear like this, or increment var like below, just call lose sync function from interface...
 			Counters.camSyncLosses++;
+			// return here...
 		}
+		// FRED once sync is solid AND rpm is smooth, copy paste sched loop here.
 	}
 }
 
