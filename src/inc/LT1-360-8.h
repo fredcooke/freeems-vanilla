@@ -47,19 +47,24 @@
 #define EXTERN extern
 #endif
 
-
 // hash defines here
-
-// declarations here
 #define SKIPWINDOWS 1
 #define LOWRESWINDOWS	16
 #define HIGH	1
 #define LOW		0
+// declarations here
 EXTERN unsigned char PrimaryTeethDuringHigh;
 EXTERN unsigned char PrimaryTeethDuringLow;
 EXTERN unsigned char isSynced; //need a shared var/bit for this
 EXTERN void changeSyncStatus(unsigned char);
+EXTERN void LT1PAInit(void);
+EXTERN unsigned char accumulatorCount;
+EXTERN unsigned char windowState;
 
+typedef struct{
+	unsigned char count;
+	unsigned short absPosition;
+} windowCount;
 
 #undef EXTERN
 
