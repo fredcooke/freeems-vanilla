@@ -187,6 +187,20 @@ EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on
 // Helpers - force all these to be inlined!
 EXTERN void resetToNonRunningState(void);
 EXTERN void schedulePortTPin(unsigned char pin, LongTime timeStamp);
+/** @todo TODO add shared function here that takes a long time stamp and stores
+ * it in an array pointed to by a var with a flag saying "do it or not",
+ * populate array entry, check pointer, set send flag, and unset record flag OR
+ * increment pointer and return. Add call to this from all decoders. Add code
+ * to interact with this in commsCore.c and/or main.c
+ *
+ * probably need to think it through a bit more to support both inputs at the
+ * same time. Should also have 16 bits as an option for the purposes of
+ * increased storage and not needing 32 bit resolution at higher revs. Better
+ * to record stamps or diffs? Perhaps set the relative array sizes in a config
+ * var such that if we expect 8 primary for every 2 secondary, then one array
+ * is 4x as big as the other, and the population routine knows this. Think
+ * about how to decode it later too in olv/mtx.
+ */
 
 
 /// @todo TODO add xgate scheduling functions here! Sean, looking forward to it, but after LT1 goes :-)
