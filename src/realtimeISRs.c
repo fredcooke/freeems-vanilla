@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke, Sean Keys
  *
  * This file is part of the FreeEMS project.
  *
@@ -66,6 +66,7 @@ void RTIISR(){
 
 	// TODO add content to eighths of a milli RTC ?
 
+	/// @todo TODO refactor this entire file, especially to remove apparently expensive modulus operations which could be replaced with >= instead. Maybe much more.
 	/* Every 8th RTI execution is one milli */
 	if(Clocks.realTimeClockMain % 8 == 0){
 		/* Increment the milli counter */
