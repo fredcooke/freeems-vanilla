@@ -34,7 +34,6 @@
 #ifndef FILE_LT1_360_8_H_SEEN
 #define FILE_LT1_360_8_H_SEEN
 
-
 #ifdef EXTERN
 #warning "EXTERN already defined by another header, please sort it out!"
 #undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
@@ -52,19 +51,14 @@
 #define LOWRESWINDOWS	16
 #define HIGH	1
 #define LOW		0
-// declarations here
-EXTERN unsigned char PrimaryTeethDuringHigh;
-EXTERN unsigned char PrimaryTeethDuringLow;
-EXTERN unsigned char isSynced; //need a shared var/bit for this
-EXTERN void changeSyncStatus(unsigned char);
-EXTERN void LT1PAInit(void);
-EXTERN unsigned char accumulatorCount;
-EXTERN unsigned char windowState;
 
-typedef struct{
-	unsigned char count;
-	unsigned short absPosition;
-} windowCount;
+#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define NUMBER_OF_REAL_EVENTS     16
+#define NUMBER_OF_VIRTUAL_EVENTS  16
+
+// declarations here
+EXTERN unsigned char isSynced; //need a shared var/bit for this
+EXTERN void LT1PAInit(void);
 
 #undef EXTERN
 
