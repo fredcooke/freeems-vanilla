@@ -46,6 +46,9 @@
 
 
 #define DECODER_IMPLEMENTATION_C
+#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define NUMBER_OF_REAL_EVENTS     1
+#define NUMBER_OF_VIRTUAL_EVENTS  4
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
@@ -54,13 +57,9 @@
 
 
 const unsigned char decoderName[] = "Simple";
-const unsigned char numberOfRealEvents = 1;
-const unsigned char numberOfVirtualEvents = 4;
 const unsigned short eventAngles[] = {0,180,360,540};
 const unsigned char eventMapping[] = {0,0,0,0};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0};
-const unsigned short totalEventAngleRange = 720; /// @todo TODO split this out into multiple builds for different cylinder counts (and leading/trailing edge too) total of 24 builds, maybe less
-const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 
 /** Primary RPM ISR

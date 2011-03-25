@@ -26,10 +26,6 @@
 
 #define DECODER_IMPLEMENTATION_C
 
-#include "../inc/freeEMS.h"
-#include "../inc/utils.h"
-#include "../inc/interrupts.h"
-#include "../inc/decoderInterface.h"
 #include "../inc/MitsiCAS-4and1.h"
 
 

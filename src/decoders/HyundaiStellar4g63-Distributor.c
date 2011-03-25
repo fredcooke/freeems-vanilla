@@ -91,6 +91,9 @@
 
 
 #define DECODER_IMPLEMENTATION_C
+#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define NUMBER_OF_REAL_EVENTS      2 /// @todo TODO  All three of these should migrate to a generic 4 cyl header...
+#define NUMBER_OF_VIRTUAL_EVENTS   8 /// @todo TODO  All three of these should migrate to a generic 4 cyl header...
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"

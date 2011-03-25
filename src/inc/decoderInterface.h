@@ -142,25 +142,54 @@ EXTERN unsigned long engineCyclePeriod;
 #define CLEAR_LAST_PERIOD_VALID    NBIT4
 
 
+#define ARBITRARY_DECODER_NAME_MAX_LENGTH 64
+#define SIZE_OF_EVENT_ARRAYS 256
+#if (SIZE_OF_EVENT_ARRAYS > 256)
+#error "Event array size larger than variable used to index it!"
+#endif // Is it paranoid to check myself like this? :-)
+
+
 // These are defined per decoder and used elsewhere!
-EXTERN const unsigned char decoderName[64]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
+EXTERN const unsigned char decoderName[ARBITRARY_DECODER_NAME_MAX_LENGTH]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
 EXTERN const unsigned char numberOfRealEvents; // How many unique events the decoder sees.
 EXTERN const unsigned char numberOfVirtualEvents; // How many of the members of the eventAngles array are valid. (multiples of real events (1 - 12))
-EXTERN const unsigned short eventAngles[256]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x10, x60 or x90? 1x is NOT enough. Currently 1x (1 deg resolution) review all related code for potential overflow and put checks in place before adjusting scaling.
-EXTERN const unsigned char eventMapping[256]; // Event to both schedule as, and check for scheduling as!
-EXTERN const unsigned char eventValidForCrankSync[256]; // For decoders with crank sync possible before cam sync, mark which events are eligble for crank scheduling here 0 = not valid, anything else = valid
-EXTERN const unsigned short totalEventAngleRange; // A full engine cycle for a 4 stroke takes 720 degrees, and for a 2 stroke is 360, unsure about rotaries.
+EXTERN const unsigned short eventAngles[SIZE_OF_EVENT_ARRAYS]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x10, x60 or x90? 1x is NOT enough. Currently 1x (1 deg resolution) review all related code for potential overflow and put checks in place before adjusting scaling.
+EXTERN const unsigned char eventMapping[SIZE_OF_EVENT_ARRAYS]; /// @todo TODO Event to both schedule as, and check for scheduling as! generate with logic, remove this array.
+EXTERN const unsigned char eventValidForCrankSync[SIZE_OF_EVENT_ARRAYS]; // For decoders with crank sync possible before cam sync, mark which events are eligble for crank scheduling here 0 = not valid, anything else = valid
+EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360 for a two stroke, ? for a rotary. move this to code with a single setting for engine type and generate transformations based on that? All decoders will be 720 for now and only support 4 strokes without hackage.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
+
+
+#ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
+
+// These give a warning in eclipse because they aren't defined in this file, they are defined per decoder and enforced here.
+#ifndef DECODER_MAX_CODE_TIME
+#error "Define your code max runtime conservatively at first, then optimise once the code is complete."
+#endif
+#ifndef NUMBER_OF_REAL_EVENTS
+#error "Define how many unique events your decoder sees!"
+#endif
+#ifndef NUMBER_OF_VIRTUAL_EVENTS
+#error "Define the length of the event array!"
+#endif
+#if ((NUMBER_OF_VIRTUAL_EVENTS % NUMBER_OF_REAL_EVENTS) != 0)
+#error "Virtual events should be a multiple of real events!"
+#endif
+
+const unsigned char numberOfRealEvents = NUMBER_OF_REAL_EVENTS;
+const unsigned char numberOfVirtualEvents = NUMBER_OF_VIRTUAL_EVENTS;
+const unsigned short totalEventAngleRange = 720; //TOTAL_EVENT_ANGLE_RANGE;
+const unsigned short decoderMaxCodeTime = DECODER_MAX_CODE_TIME;
+
+#endif
 
 
 // specific to one decoder, generalise this later! Or put a call to an inline function in the main reset sync function and the definition in every decoder or just remember to clear it with the main call.
 EXTERN unsigned char unknownEdges; // here so can be reset with sync loss generic function
 
 
-
 /// @todo TODO two unsigned chars, and two unsigned shorts, which is the MAP ADC value, the MAP value is sampled on every event in a cycle, and if less than the previous stored value, which is reset at every zeroth event, with the old value and old event number stored globally.
 /// @todo TODO the same thing could be done, but with a median filter or similar, perhaps map sampling could be done dymanically like this, though it could yield unpredictable results, it could also yield the best running engines, just a thought...
-
 
 
 // Scheduling

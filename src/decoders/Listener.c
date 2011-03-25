@@ -42,6 +42,9 @@
 
 
 #define DECODER_IMPLEMENTATION_C
+#define DECODER_MAX_CODE_TIME    666 // This is optimal!
+#define NUMBER_OF_REAL_EVENTS      1 // no events really...
+#define NUMBER_OF_VIRTUAL_EVENTS   1 // no events really...
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
@@ -49,13 +52,9 @@
 
 
 const unsigned char decoderName[] = "Listener";
-const unsigned char numberOfRealEvents = 1;         // no events really...
-const unsigned char numberOfVirtualEvents = 1;      // no events really...
 const unsigned short eventAngles[] = {0};           // no events really...
 const unsigned char eventMapping[] = {0};           // no events really...
 const unsigned char eventValidForCrankSync[] = {0}; // no events really...
-const unsigned short totalEventAngleRange = 720;
-const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 
 /** Primary RPM ISR
