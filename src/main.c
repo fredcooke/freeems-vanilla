@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -61,6 +61,8 @@
 int  main(){ /// @todo TODO maybe move this to paged flash ?
 	// Set everything up.
 	init();
+
+	/// @todo TODO Add verification reporting code here that disables the timer interrupts such that no events ever get scheduled, and then sits looping sending error packets out about what is wrong. set a whole bunch of flags and check them here sending a packet for each with a unique errorID for each and thus a unique easy to understand message for each on the PC side. BEFORE the priming code such that no fuel gets injected. Will need to modularise the comms stuff to process packets based on calls from this section too, avoid excess duplication if possible.
 
 	/// @todo TODO Add priming pulse code here, this code will be driven from configuration such that only the correct channels fire and for the correc period each, regardless of cylinder count and channel count, etc
 
