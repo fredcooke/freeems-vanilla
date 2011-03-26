@@ -57,6 +57,7 @@ const unsigned char decoderName[] = "LT1-360-8";
 //const unsigned char numberOfRealEvents = 16; // Start simple, Sean, start simple! :-)
 //const unsigned char numberOfVirtualEvents = 16; // Start simple, Sean, start simple! :-)
 const unsigned short eventAngles[] = {0,3,90,103,180,183,270,294,360,364,450,483,540,544,630,673}; /// @todo TODO fill this out...
+const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
 //const unsigned short totalEventAngleRange = 720;
 //const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
@@ -68,32 +69,14 @@ static unsigned char PAInitialized = 0;
 //unsigned char skippedWindowCount = 0;
 
 //static unsigned char* windowCountIndex = 0;
-unsigned char isSynced = 0;
+unsigned char isSynced = 0x00;
 //unsigned short angle = 0;  /* angle of our CAS */ /// @todo TODO Sean, don't count the angle, count the event number only, the angle can be got from the array that holds them above once you define what they are.
 unsigned char accumulatorCount = 0; // use secondaryEventCount?
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
-unsigned char windowState = 0;
-unsigned char lastNumberOfRealEvents = 0;
-
-// FRED make this a simple array like the commented out one above
-//const windowCount windowCounts[] = { /* the first element is the window count, the second is the translated absolute position */
-//		{24,294},
-//		{66,360}, //TDC
-//		{4,364},
-//		{86,450}, //TDC
-//		{33,483},
-//		{57,540}, //TDC
-//		{4,544},
-//		{86,630}, //TDC
-//		{43,673},
-//		{46,0},   //TDC
-//		{4,3},
-//		{87,90},  //TDC
-//		{13,103},
-//		{77,180}, //TDC
-//		{3,183},
-//		{87,270}  //TDC
-//};
+unsigned char lastPARegisterReading = 0xFF;
+unsigned char windowState = 0x00;
+unsigned char lastNumberOfRealEvents = 0x00;
+unsigned char accumulatorRegisterCount = 0x00;
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
  *  @todo TODO Put this in the correct place
@@ -123,6 +106,9 @@ void LT1PAInit(void){
  * resoloution. Such as fire on every 10x.
  */
 void PrimaryRPMISR(void) {
+	// Grab this first as it is the most critical var in this decoder
+	accumulatorRegisterCount = PACN1;/* save count before it changes */
+
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 	if(!PAInitialized){
@@ -131,10 +117,8 @@ void PrimaryRPMISR(void) {
 	}
 
 	/* Save all relevant available data here */
-	accumulatorCount = PACN1;/* save count before it changes */
-	//Counters.testCounter5 = accumulatorCount;
-	PACN1 = 0x00; /* reset the count */
-	//PORTB = accumulatorCount; /* echo PACount on port*/
+	accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
+	lastPARegisterReading =  accumulatorRegisterCount;
 	PORTJ |= 0x80; /* Echo input condition on J7 */
 	//unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	//unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
@@ -149,7 +133,7 @@ void PrimaryRPMISR(void) {
     Counters.testCounter4 = currentEvent;
 
     /* always make sure you have two good counts(there are a few windows that share counts) */
-	if (!isSynced) {
+	if (!(decoderFlags & CAM_SYNC)) {
 		for(i = 0; numberOfRealEvents > i; i++){
 			if( windowCounts[i] == accumulatorCount){
 				currentEvent = i;
@@ -163,13 +147,12 @@ void PrimaryRPMISR(void) {
 			i--;
 		}
 		if(windowCounts[i] == lastAccumulatorCount){ /* if true we are in sync! */
-			decoderFlags |= COMBUSTION_SYNC;
+			decoderFlags |= CAM_SYNC;
 			isSynced = 1;
 			PORTB = 0x03; /* light the board */
 		}else{
-			lastAccumulatorCount = accumulatorCount;
+			// missedsync opportunity ++ or something
 		}
-		return; /* seems a shame to skip a window before processing a sync condition  we should use one of those fancy goto statements*/
 	}
 
 	/* save vars for next ISR call */
@@ -177,17 +160,19 @@ void PrimaryRPMISR(void) {
 	if(currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
 		currentEvent = 0x00;
 	}
-	if(windowCounts[currentEvent] != accumulatorCount){
-		resetToNonRunningState();
-		isSynced = 0x00;
-		PORTB = 0x00;
-		return;
-	}else{
-		/* TODO all required calcs etc as shown in other working decoders */
-		// FRED once sync is solid AND rpm is smooth, copy paste sched loop here.
-		PORTB = 0xFF;
-	}
+	lastAccumulatorCount = accumulatorCount;
 
+	if(decoderFlags & CAM_SYNC){
+		if(windowCounts[currentEvent] != accumulatorCount){
+				resetToNonRunningState();
+				PORTB = 0x00;
+				return;
+			}else{
+				/* TODO all required calcs etc as shown in other working decoders */
+				// FRED once sync is solid AND rpm is smooth, copy paste sched loop here.
+				PORTB = 0xFF;
+			}
+	}
 }
 
 
