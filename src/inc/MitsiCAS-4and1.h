@@ -74,5 +74,4 @@ static LongTime timeStamp; /// @todo TODO why is this here, and why is it static
 // Definitions of decoder interface constants
 const unsigned char decoderName[] = "MitsiCAS-4and1";
 const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
-const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9};
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,0,1,1,0}; // Unused for now, but correct anyway.

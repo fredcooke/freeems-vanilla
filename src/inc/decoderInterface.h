@@ -154,7 +154,6 @@ EXTERN const unsigned char decoderName[ARBITRARY_DECODER_NAME_MAX_LENGTH]; /// @
 EXTERN const unsigned char numberOfRealEvents; // How many unique events the decoder sees.
 EXTERN const unsigned char numberOfVirtualEvents; // How many of the members of the eventAngles array are valid. (multiples of real events (1 - 12))
 EXTERN const unsigned short eventAngles[SIZE_OF_EVENT_ARRAYS]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x10, x60 or x90? 1x is NOT enough. Currently 1x (1 deg resolution) review all related code for potential overflow and put checks in place before adjusting scaling.
-EXTERN const unsigned char eventMapping[SIZE_OF_EVENT_ARRAYS]; /// @todo TODO Event to both schedule as, and check for scheduling as! generate with logic, remove this array.
 EXTERN const unsigned char eventValidForCrankSync[SIZE_OF_EVENT_ARRAYS]; // For decoders with crank sync possible before cam sync, mark which events are eligble for crank scheduling here 0 = not valid, anything else = valid
 EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360 for a two stroke, ? for a rotary. move this to code with a single setting for engine type and generate transformations based on that? All decoders will be 720 for now and only support 4 strokes without hackage.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!

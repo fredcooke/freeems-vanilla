@@ -379,6 +379,14 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 			}
 
 			if(ticksBetweenEventAndSpark > ((unsigned long)DerivedVars->Dwell + decoderMaxCodeTime)){
+				// generate event mapping from real vs virtual counts, how? better with a cylinder ratio?
+				unsigned char mappedEvent = 0xFF;
+				if(numberOfRealEvents == numberOfVirtualEvents){
+					mappedEvent = lastGoodEvent;
+				}else{
+					mappedEvent = lastGoodEvent % numberOfRealEvents;
+				}
+
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					// Determine the eventBeforeCurrent outside the atomic block
@@ -405,11 +413,11 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 					 * just mean a single cycle of scheduling is slightly too retarded for a single
 					 * event around change of tooth time which could easily be acceptable.
 					 */
-					if((eventMapping[lastGoodEvent] == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
+					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
 						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
 					}
 
-					pinEventNumbers[ignitionEvent] = eventMapping[lastGoodEvent];
+					pinEventNumbers[ignitionEvent] = mappedEvent;
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -417,7 +425,7 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
 					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-					pinEventNumbers[ignitionEvent] = eventMapping[lastGoodEvent];
+					pinEventNumbers[ignitionEvent] = mappedEvent;
 					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
 					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/

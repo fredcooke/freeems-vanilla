@@ -53,6 +53,9 @@
 
 
 #define DECODER_IMPLEMENTATION_C
+#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define NUMBER_OF_REAL_EVENTS     24
+#define NUMBER_OF_VIRTUAL_EVENTS  24
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
@@ -62,13 +65,8 @@
 
 
 const unsigned char decoderName[] = "NipponDenso";
-const unsigned char numberOfRealEvents = 24;
-const unsigned char numberOfVirtualEvents = 24;
 const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690};
-const unsigned char eventMapping[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
 const unsigned char eventValidForCrankSync[] = {?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?}; // Needs some thought.
-const unsigned short totalEventAngleRange = 720;
-const unsigned short decoderMaxCodeTime = 100; // To be optimised (shortened)!
 
 
 /** Primary RPM ISR

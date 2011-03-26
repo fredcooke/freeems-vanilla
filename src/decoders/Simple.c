@@ -58,7 +58,6 @@
 
 const unsigned char decoderName[] = "Simple";
 const unsigned short eventAngles[] = {0,180,360,540};
-const unsigned char eventMapping[] = {0,0,0,0};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0};
 
 
