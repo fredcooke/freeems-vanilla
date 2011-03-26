@@ -57,7 +57,6 @@
 #define NUMBER_OF_VIRTUAL_EVENTS  16
 
 // declarations here
-EXTERN unsigned char isSynced; //need a shared var/bit for this
 EXTERN void LT1PAInit(void);
 
 #undef EXTERN
