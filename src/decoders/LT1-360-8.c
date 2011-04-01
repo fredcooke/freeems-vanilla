@@ -53,6 +53,7 @@
 #include "../inc/LT1-360-8.h"
 #include "../inc/decoderInterface.h"
 
+
 const unsigned char decoderName[] = "LT1-360-8";
 const unsigned short eventAngles[] = {0,3,90,103,180,183,270,294,360,364,450,483,540,544,630,673}; /// @todo TODO fill this out...
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
@@ -60,7 +61,6 @@ const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 //const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
 const unsigned char windowCounts[] = {23,2,43,7,38,2,43,12,33,2,43,17,28,2,43,22}; // FRED Split me to increase speed and reduce probability of mismatches when counts are slightly off and doing soft matches.
 
-static unsigned char PAInitialized = 0;
 //unsigned char skippedWindowCount = 0;
 
 //static unsigned char* windowCountIndex = 0;
@@ -76,7 +76,7 @@ unsigned char accumulatorRegisterCount = 0x00;
  *  @todo TODO Put this in the correct place
  *
  */
-void LT1PAInit(void){
+void decoderInitPreliminary(void){
 	/* set pt1 to capture on rising and falling */
 
 	// set PACMX to 0 which is the default so there should be no need
@@ -106,12 +106,6 @@ void PrimaryRPMISR(void) {
 
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
-
-	/// @todo TODO Remove this very clever custom init hack
-	if(!PAInitialized){
-		LT1PAInit();
-		PAInitialized = 1;
-	}
 
 	/* Save all relevant available data here */
 	accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */

@@ -213,6 +213,7 @@ EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on
 
 
 // Helpers - force all these to be inlined!
+EXTERN void decoderInitPreliminary(void);
 EXTERN void resetToNonRunningState(void);
 EXTERN void schedulePortTPin(unsigned char pin, LongTime timeStamp);
 /** @todo TODO add shared function here that takes a long time stamp and stores

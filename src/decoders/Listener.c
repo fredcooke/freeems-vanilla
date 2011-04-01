@@ -50,6 +50,7 @@
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
 
+void decoderInitPreliminary(){} // This decoder works with the defaults
 
 const unsigned char decoderName[] = "Listener";
 const unsigned short eventAngles[] = {0};           // no events really...

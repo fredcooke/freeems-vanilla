@@ -55,6 +55,7 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
+void decoderInitPreliminary(){} // This decoder works with the defaults
 
 const unsigned char decoderName[] = "Simple";
 const unsigned short eventAngles[] = {0,180,360,540};

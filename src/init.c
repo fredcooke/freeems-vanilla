@@ -621,6 +621,8 @@ void initECTTimer(){
 	MCCNT = ONES16; // init to slowest possible, first
 	MCCTL = 0xC4; // turn on and setup the mod down counter
 	MCFLG = 0x80; // clear the flag up front
+
+	decoderInitPreliminary();
 #endif
 }
 

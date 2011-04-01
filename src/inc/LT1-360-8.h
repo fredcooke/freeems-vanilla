@@ -56,9 +56,6 @@
 #define NUMBER_OF_REAL_EVENTS     16
 #define NUMBER_OF_VIRTUAL_EVENTS  16
 
-// declarations here
-EXTERN void LT1PAInit(void);
-
 #undef EXTERN
 
 #else
