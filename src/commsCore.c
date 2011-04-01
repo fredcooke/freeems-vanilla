@@ -1073,7 +1073,7 @@ void decodePacketAndRespond(){
 			RXBufferCurrentPosition += 2;
 
 			switch(unitTestID){
-				case emptyTest:
+				case testEmptyTest:
 				{
 					// Must be only the ID
 					if(RXCalculatedPayloadLength != 2){
@@ -1086,7 +1086,7 @@ void decodePacketAndRespond(){
 
 					break;
 				}
-				case twoDTableUSLookup:
+				case testTwoDTableUSLookup:
 				{
 					// ID + Value + Table
 					if(RXCalculatedPayloadLength != (2 + 2 + sizeof(twoDTableUS))){

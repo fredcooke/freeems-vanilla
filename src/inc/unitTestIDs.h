@@ -37,8 +37,8 @@
 // Simple test example, cross between C and Java
 // unsigned short result = (unsigned short*)callTest(testID, charArray, length);
 // assertEquals(testID, result);
-#define emptyTest         0x0000 // Returns its own ID value as the result.
-#define twoDTableUSLookup 0x0001 /// XYZ args fill out later TODO @todo
+#define testEmptyTest         0x0000 // Returns its own ID value as the result.
+#define testTwoDTableUSLookup 0x0001 /// XYZ args fill out later TODO @todo
 
 
 #else
