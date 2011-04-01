@@ -1141,6 +1141,13 @@ void decodePacketAndRespond(){
 			}
 			break;
 		}
+		case startBenchTestSequence:
+		{
+			// check for decoder name correct
+			// configure data to be as required
+			// fire decoder interrupt to do the work
+			break;
+		}
 		default:
 		{
 			if((RXHeaderPayloadID % 2) == 1){
