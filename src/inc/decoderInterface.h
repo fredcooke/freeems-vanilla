@@ -56,6 +56,8 @@
 #endif
 
 
+#define BENCH_TEST_NAME "BenchTest"
+
 // Change these together...
 #define degreeTicksPerMinute 4166667
 #define ticks_per_degree_multiplier 10

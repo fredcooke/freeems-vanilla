@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -129,6 +129,8 @@
 #define errorBaseTwoDTableAxis			0x6010
 #define invalidTwoDTableAxisOrder		0x6011
 #define invalidTwoDTableIndex			0x6012
+
+#define thisIsNotTheBenchTestDecoder    0x7777
 
 
 #else
