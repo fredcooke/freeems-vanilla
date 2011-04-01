@@ -603,7 +603,7 @@ $(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XGOBJ
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $< $(OBJECTS) $(XGOBJECTS)
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $(OBJECTS) $(XGOBJECTS) $<
 
 
 gclinkmsg:
@@ -618,7 +618,7 @@ $(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XG
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $< $(OBJECTS) $(XGOBJECTS)
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $(OBJECTS) $(XGOBJECTS) $<
 # The links with garbage collection are to ensure that there are no warnings
 # TODO find out how to stop .tramp from being collected (or inserted)!
 # This will be the only way once Sean's stuff is done and distributed, I can't wait to cut all this bullshit out!
