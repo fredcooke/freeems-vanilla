@@ -52,7 +52,7 @@
 #include "inc/decoderInterface.h"
 #include "inc/commsCore.h"
 #include "inc/init.h"
-#include <string.h>
+#include <string.h> /// @todo TODO this is pulling in the system string.h not the m68hc1x version, and functions other than memcpy do not work because they are not in crt1.o or other included-by-default libs
 
 
 /** @brief Populate a basic datalog packet
