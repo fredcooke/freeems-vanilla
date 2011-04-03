@@ -151,38 +151,5 @@ void PrimaryRPMISR(){
  * Unused in this decoder.
  */
 void SecondaryRPMISR(){
-	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
-
-	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
-	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-
-	/* Calculate the latency in ticks */
-	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
-
-	/** @todo TODO discard narrow ones! test for tooth width and tooth period
-	 * the width should be based on how the hardware is setup. IE the LM1815
-	 * is adjusted to have a pulse output of a particular width. This noise
-	 * filter should be matched to that width as should the hardware filter.
-	 */
-
-	LongTime timeStamp;
-
-	/* Install the low word */
-	timeStamp.timeShorts[1] = edgeTimeStamp;
-	/* Find out what our timer value means and put it in the high word */
-	if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
-		timeStamp.timeShorts[0] = timerExtensionClock + 1;
-	}else{
-		timeStamp.timeShorts[0] = timerExtensionClock;
-	}
-
-	if(PTITCurrentState & 0x02){
-		// echo input condition
-		PORTJ |= 0x40;
-	}else{
-		PORTJ &= 0xBF;
-	}
 }
