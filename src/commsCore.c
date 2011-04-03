@@ -1143,7 +1143,8 @@ void decodePacketAndRespond(){
 		}
 		case startBenchTestSequence:
 		{
-			if(strcmp(decoderName, BENCH_TEST_NAME)){
+			// see TODO on include at top and modify this line appropriately
+			if(compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME))){
 				// check packet structure, size, contents
 				// configure data to be as required
 				// fire decoder interrupt to do the work
