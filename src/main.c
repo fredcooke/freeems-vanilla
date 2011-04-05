@@ -146,20 +146,6 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 			RuntimeVars.mathTotalRuntime = TCNT - mathStartTime;
 
 			RuntimeVars.mathSumRuntime = RuntimeVars.calcsRuntime + RuntimeVars.genCoreVarsRuntime + RuntimeVars.genDerivedVarsRuntime;
-
-			ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-			/* Atomic block to ensure that outputBank and outputBank Offsets match */
-
-			/* Switch banks to the latest data */
-			if(injectorMainPulseWidthsMath == injectorMainPulseWidths1){
-				injectorMainPulseWidthsMath = injectorMainPulseWidths0;
-				injectorMainPulseWidthsRealtime = injectorMainPulseWidths1;
-			}else{
-				injectorMainPulseWidthsMath = injectorMainPulseWidths1;
-				injectorMainPulseWidthsRealtime = injectorMainPulseWidths0;
-			}
-
-			ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 		}else{
 			/* In the event that no calcs are required, sleep a little before returning to retry. */
 			sleepMicro(RuntimeVars.mathTotalRuntime); // not doing this will cause the ISR lockouts to run for too high a proportion of the time

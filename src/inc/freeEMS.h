@@ -366,6 +366,7 @@ EXTERN unsigned short injectorCodeCloseRuntimes[INJECTION_CHANNELS];
 /* individual channel pulsewidths (init not required) */
 EXTERN unsigned short* injectorMainPulseWidthsMath;
 EXTERN unsigned short* injectorMainPulseWidthsRealtime;
+EXTERN unsigned short injectorMainPulseWidthsHolding[INJECTION_CHANNELS];
 EXTERN unsigned short injectorMainPulseWidths0[INJECTION_CHANNELS];
 EXTERN unsigned short injectorMainPulseWidths1[INJECTION_CHANNELS];
 

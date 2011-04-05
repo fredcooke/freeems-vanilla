@@ -119,6 +119,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 			if(newStartIsAfterOutputEndTimeAndCanSelfSet){
 				// self sched
 				injectorMainStartTimesHolding[pin] = startTime;
+				injectorMainPulseWidthsHolding[pin] = injectorMainPulseWidthsMath[pin];
 				selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
 				Counters.testCounter1++;
 			}else{
@@ -126,6 +127,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 				*injectorMainTimeRegisters[pin] = startTime;
 				TIE |= injectorMainOnMasks[pin];
 				TFLG = injectorMainOnMasks[pin];
+				injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[pin];
 				selfSetTimer &= injectorMainOffMasks[pin];
 				Counters.testCounter2++;
 			}
@@ -135,6 +137,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
 		TFLG = injectorMainOnMasks[pin];
+		injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[pin];
 		selfSetTimer &= injectorMainOffMasks[pin];
 		Counters.testCounter3++;
 	}

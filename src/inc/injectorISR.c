@@ -114,6 +114,7 @@ void InjectorXISR(){
 		if(selfSetTimer & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){
 			*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
 			*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] = injectorMainStartTimesHolding[INJECTOR_CHANNEL_NUMBER];
+			injectorMainPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER] = injectorMainPulseWidthsHolding[INJECTOR_CHANNEL_NUMBER];
 			selfSetTimer &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
 			Counters.testCounter5++;
 		}else{
