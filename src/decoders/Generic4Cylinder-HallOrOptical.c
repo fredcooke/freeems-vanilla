@@ -56,6 +56,12 @@
 #define E6 (E0 + (3 * angleOfSingleIteration))
 #define E7 (E1 + (3 * angleOfSingleIteration))
 
+
+#if (E1 >= angleOfSingleIteration)
+#error "Angle E1 defined to be larger than the available angle which it is within!"
+#endif
+
+
 const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0}; // Unused in this decoder.
 
