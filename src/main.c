@@ -154,13 +154,9 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 			if(injectorMainPulseWidthsMath == injectorMainPulseWidths1){
 				injectorMainPulseWidthsMath = injectorMainPulseWidths0;
 				injectorMainPulseWidthsRealtime = injectorMainPulseWidths1;
-				injectorStagedPulseWidthsMath = injectorStagedPulseWidths0;
-				injectorStagedPulseWidthsRealtime = injectorStagedPulseWidths1;
 			}else{
 				injectorMainPulseWidthsMath = injectorMainPulseWidths1;
 				injectorMainPulseWidthsRealtime = injectorMainPulseWidths0;
-				injectorStagedPulseWidthsMath = injectorStagedPulseWidths1;
-				injectorStagedPulseWidthsRealtime = injectorStagedPulseWidths0;
 			}
 
 			ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/

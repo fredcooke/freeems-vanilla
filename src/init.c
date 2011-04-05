@@ -459,8 +459,6 @@ void initVariables(){
 
 	injectorMainPulseWidthsMath = injectorMainPulseWidths0;
 	injectorMainPulseWidthsRealtime = injectorMainPulseWidths1;
-	injectorStagedPulseWidthsMath = injectorStagedPulseWidths0;
-	injectorStagedPulseWidthsRealtime = injectorStagedPulseWidths1;
 
 	mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp0; // TODO temp, remove
 	mathSampleTimeStampRecord = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove
