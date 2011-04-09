@@ -45,7 +45,7 @@
  */
 
 
-#define angleOfSingleIteration 180
+#define angleOfSingleIteration (180 * oneDegree)
 
 #define E0 0
 // Define E1 in your reverse header!

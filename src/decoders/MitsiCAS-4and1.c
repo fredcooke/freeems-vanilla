@@ -481,7 +481,7 @@ void PrimaryRPMISR(){
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				resetToNonRunningState();
+				resetToNonRunningState(1);
 			}else{
 				if(PTITCurrentState & 0x01){
 					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
@@ -614,7 +614,7 @@ void SecondaryRPMISR(){
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-				resetToNonRunningState();
+				resetToNonRunningState(2);
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
 			*ticksPerDegreeRecord = thisTicksPerDegree;

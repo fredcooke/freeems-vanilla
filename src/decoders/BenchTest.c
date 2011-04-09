@@ -42,6 +42,7 @@
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
+#include "../inc/BenchTest.h"
 
 
 // Setup the timer interrupts as internal timers only triggered by a serial call that returns if this isn't the decoder.
@@ -55,15 +56,72 @@ const unsigned short eventAngles[] = {0};           // no events really...
 const unsigned char eventValidForCrankSync[] = {0}; // no events really...
 
 
+unsigned short testCount; // move this to where it can be set from the comms switch
+
+
 /** Primary RPM ISR
+ *
+ * Fire from serial, then repeat X revolutions or seconds or whatever and trigger Z outputs of various types etc
+ *
+ * Possible modes of repetition:
+ * - Iterations
+ * - Revolutions
+ * - Time units
  *
  * @author Fred Cooke
  */
-void PrimaryRPMISR(){} // Fire from serial, then repeat X revolutions or seconds or whatever and trigger Z outputs of various types etc
+void PrimaryRPMISR(){
+	TFLG = 0x01;
+
+	unsigned char shouldFire = 0;
+//	unsigned long localPeriod = 0; // mutlifire or busy wait, if doing this, check last period for some min, and if too small, shrink second to last and increase last
+	unsigned short localPeriod = 0; // normal mode
+	if(testMode == TEST_MODE_ITERATIONS){
+		testCount--;
+		if(testCount == 0){
+			//TIE = disable;
+		}else{
+			//localPeriod = decoderPeriod;
+		}
+		shouldFire = ONES;
+	// no else just yet, refactor for more advanced testing such as
+	}else if(testMode == TEST_MODE_REVOLUTIONS){
+		// sub modes of different patterns, use scheduler for this by setting the ADC array up and probing/triggering/touching/poking/starting/
+		// switch statement for selecting different const arrays of angles, use busy wait, or multiple interrupt to do larger gaps for lower rpms/coarse events
+		// perhaps accept the pattern in the input packet and busy wait on some "run completed" flag before returning and freeing the buffer.
+	}else if(testMode == TEST_MODE_TIME_UNITS_SECONDS){
+		// reset all timer modes for first time around, then check for timer >= requested value, check appropriate units of time, obviously...
+	}else if(testMode == TEST_MODE_TIME_UNITS_MINUTES){
+		// ditto
+	}else if(testMode == TEST_MODE_TIME_UNITS_HOURS){
+		// ditto again
+	}else{
+		// de-configure timers and leave shouldFire zeroed.
+	}
+
+	if(TRUE /*TIE == enabled*/){
+		TC0 += localPeriod;
+		// configuration for multiple periods setup here.
+
+		// fire outputs here
+		unsigned char channel;
+		for(channel = 3;channel<(3+6);channel++){
+			if(shouldFire & (1 << channel)){
+				//TCTL? = ?; // setup to switch on outputs as required
+				//TCX = future value;
+				//TIE = ?; // turn on interrupts for configured channels
+			}
+		}
+	}
+
+	/// todo do i check in decoders for outputs that have gone off recently? ie, are off, with interrupt set? if so, what do i do? i can just take control of such pins again at that point. i may just check for pins that aren't on, and not look at flags, etc.
+}
 
 
 /** Secondary RPM ISR
  *
- * @author Fred Cooke
+ * Unused in this decoder.
  */
-void SecondaryRPMISR(){} // Possibly unused
+void SecondaryRPMISR(){
+	TFLG = 0x02;
+}

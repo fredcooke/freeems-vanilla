@@ -58,10 +58,10 @@
 
 #define BENCH_TEST_NAME "BenchTest"
 
-// Change these together...
 #define degreeTicksPerMinute 4166667
-#define ticks_per_degree_multiplier 10
+#define ticks_per_degree_multiplier (10 * oneDegree)
 /// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
+#define oneDegree 50U // Scaler for all scheduler and decoder angles, not tables etc. Suffix is necessary otherwise 8 bit is assumed. TODO Mount Messenger road to New Plymouth! Recommended Kim@bach with NAZZZ and Steve!
 
 
 // ADC
@@ -113,6 +113,7 @@ from the above we can check one gap+angle with the next gap+angle and ensure smo
 // unsigned long thisEventTimeStamp; recommended variable naming, may be enforced for/with macro use
 // unsigned long thisInterEventPeriod; ditto
 /// @todo TODO sync loss/gain semantics - how paranoid? under what circumstances? should we make it configurable whether a decoder that is in a situation where it would find sync if not synced, resets sync, or loses sync. Likewise, at initial sync gain time, should it go "prelim sync found" and only verify sync on the second lap around, or start firing events straight off the bat. Starting will suck if paranoid, but if there is noise at high load/rpm and events get mis-scheduled before sync is lost, that is serious. This is philosophical, and the reality is that you must assume that your signal is clean to some level and verified clean under lower risk conditions.
+EXTERN unsigned char syncLostWithThisID;
 EXTERN unsigned char syncLostOnThisEvent;
 EXTERN unsigned char syncCaughtOnThisEvent;
 EXTERN unsigned long lastEventTimeStamp;
@@ -152,12 +153,12 @@ EXTERN unsigned long engineCyclePeriod;
 
 
 // These are defined per decoder and used elsewhere!
-EXTERN const unsigned char decoderName[ARBITRARY_DECODER_NAME_MAX_LENGTH]; /// @todo TODO Make use of this name in the comms/block code to allow a tuning app to identify what is being used and provide feedback to user and/or make other config dependent on this one.
+EXTERN const unsigned char decoderName[ARBITRARY_DECODER_NAME_MAX_LENGTH];
 EXTERN const unsigned char numberOfRealEvents; // How many unique events the decoder sees.
 EXTERN const unsigned char numberOfVirtualEvents; // How many of the members of the eventAngles array are valid. (multiples of real events (1 - 12))
-EXTERN const unsigned short eventAngles[SIZE_OF_EVENT_ARRAYS]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x10, x60 or x90? 1x is NOT enough. Currently 1x (1 deg resolution) review all related code for potential overflow and put checks in place before adjusting scaling.
+/*scale*/EXTERN const unsigned short eventAngles[SIZE_OF_EVENT_ARRAYS]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x50
 EXTERN const unsigned char eventValidForCrankSync[SIZE_OF_EVENT_ARRAYS]; // For decoders with crank sync possible before cam sync, mark which events are eligble for crank scheduling here 0 = not valid, anything else = valid
-EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360 for a two stroke, ? for a rotary. move this to code with a single setting for engine type and generate transformations based on that? All decoders will be 720 for now and only support 4 strokes without hackage.
+/*scale*/EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360 for a two stroke, ? for a rotary. move this to code with a single setting for engine type and generate transformations based on that? All decoders will be 720 for now and only support 4 strokes without hackage.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
 
@@ -179,7 +180,7 @@ EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the prima
 
 const unsigned char numberOfRealEvents = NUMBER_OF_REAL_EVENTS;
 const unsigned char numberOfVirtualEvents = NUMBER_OF_VIRTUAL_EVENTS;
-const unsigned short totalEventAngleRange = 720; //TOTAL_EVENT_ANGLE_RANGE;
+/*scale*/const unsigned short totalEventAngleRange = 720 * oneDegree; //TOTAL_EVENT_ANGLE_RANGE;
 const unsigned short decoderMaxCodeTime = DECODER_MAX_CODE_TIME;
 
 #endif
@@ -216,7 +217,7 @@ EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on
 
 // Helpers - force all these to be inlined!
 EXTERN void decoderInitPreliminary(void);
-EXTERN void resetToNonRunningState(void);
+EXTERN void resetToNonRunningState(unsigned char uniqueLossID);
 EXTERN void schedulePortTPin(unsigned char pin, LongTime timeStamp);
 /** @todo TODO add shared function here that takes a long time stamp and stores
  * it in an array pointed to by a var with a flag saying "do it or not",

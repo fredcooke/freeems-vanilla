@@ -46,7 +46,7 @@
  *
  * @author Fred Cooke
  */
-void resetToNonRunningState(){
+void resetToNonRunningState(unsigned char uniqueLossID){
 	/* Reset RPM to zero */
 	ticksPerDegree0 = 0;
 	ticksPerDegree1 = 0;
@@ -67,6 +67,12 @@ void resetToNonRunningState(){
 	if(decoderFlags & COMBUSTION_SYNC){
 		Counters.combustionSyncLosses++;
 	}
+
+	// record unique loss ID
+	syncLostWithThisID = uniqueLossID;
+
+	// record current event
+	syncLostOnThisEvent = currentEvent;
 
 	/* Clear all sync flags to lost state */
 	decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC & CLEAR_LAST_PERIOD_VALID & CLEAR_LAST_TIMESTAMP_VALID);

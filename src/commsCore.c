@@ -101,8 +101,10 @@ void populateBasicDatalog(){
 	DerivedVars->zsp15 = Counters.camSyncLosses;
 	DerivedVars->zsp16 = Counters.crankSyncLosses;
 	DerivedVars->zsp17 = Counters.combustionSyncLosses;
-	DerivedVars->zsp18 = Counters.DwellStretchedToSchedule;
-	DerivedVars->zsp19 = Counters.TooFarToSchedule;
+	DerivedVars->zsp18 = Counters.camSyncCorrections;
+	DerivedVars->zsp19 = syncLostWithThisID;
+//	DerivedVars->zsp18 = Counters.DwellStretchedToSchedule;
+//	DerivedVars->zsp19 = Counters.TooFarToSchedule;
 
 	/* UART/serial specific counters */
 //	DerivedVars->zsp? = Counters.serialEscapePairMismatches + Counters.serialStartsInsideAPacket + Counters.serialPacketsOverLength + Counters.serialNoiseErrors + Counters.serialOverrunErrors + Counters.serialFramingErrors + Counters.serialParityErrors;

@@ -82,12 +82,12 @@ void generateDerivedVars(){
 	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
 	// temp dwell and advance vars...
-	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
-	DerivedVars->Advance = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID) / 1024; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
+	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV) * 2;
+	DerivedVars->Advance = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID) / 20/* should be 1024/oneDegree, for now, but this is close enough (5% error or so) */; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
 #ifdef HOTEL
 	/// @bug hack for hyundai! 135 = 3/4 of 180 = one cycle...
-	unsigned long threeQuartersOfAvailableTime = ((unsigned long)CoreVars->DRPM * 135) / ticks_per_degree_multiplier;
+	unsigned long threeQuartersOfAvailableTime = ((unsigned long)CoreVars->DRPM * 135 * oneDegree) / ticks_per_degree_multiplier;
 	if(DerivedVars->Dwell > threeQuartersOfAvailableTime){
 		DerivedVars->Dwell = threeQuartersOfAvailableTime;
 	}

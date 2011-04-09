@@ -164,7 +164,7 @@ void PrimaryRPMISR(void) {
 
 	if(decoderFlags & CAM_SYNC){
 		if(windowCounts[currentEvent] != accumulatorCount){
-			resetToNonRunningState();
+			resetToNonRunningState(1);
 			PORTB = 0x00;
 			return;
 		}else{

@@ -177,8 +177,8 @@ void calculateFuelAndIgnition(){
 
 
 	// Required vars for scheduling!
-	unsigned short anglesOfTDC[6];
-	unsigned short decoderEngineOffset;
+	unsigned short anglesOfTDC[6];/*scale*/
+	unsigned short decoderEngineOffset;/*scale*/
 	unsigned char numberOfIgnitionEvents;
 
 
@@ -190,16 +190,16 @@ void calculateFuelAndIgnition(){
 
 
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
-#define Mitsi4and1OffsetOnTruck  90 // FE-DOHC, CAS approximately centre
-#define HyundaiHackOffset        30 // Distributor fully retarded
-#define SilverTop4age           670 // Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre
+#define Mitsi4and1OffsetOnTruck ( 90 * oneDegree) // FE-DOHC, CAS approximately centre
+#define HyundaiHackOffset       ( 30 * oneDegree) // Distributor fully retarded
+#define SilverTop4age           (128.52 * oneDegree) // Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK
-anglesOfTDC[0] = 0;   // Cylinder 1
-anglesOfTDC[1] = 180; // Cylinder 3
-anglesOfTDC[2] = 360; // Cylinder 4
-anglesOfTDC[3] = 540; // Cylinder 2
+	/*scale*/anglesOfTDC[0] =   0 * oneDegree;   // Cylinder 1
+	/*scale*/anglesOfTDC[1] = 180 * oneDegree; // Cylinder 3
+	/*scale*/anglesOfTDC[2] = 360 * oneDegree; // Cylinder 4
+	/*scale*/anglesOfTDC[3] = 540 * oneDegree; // Cylinder 2
 #define cliConfigredNumberOfIgnitionEvents 4
 #define numberOfInjectionEvents 2
 #define cliConfiguredOffset Mitsi4and1OffsetOnTruck
@@ -212,7 +212,7 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 // Fred's Hyundai Stellar http://forum.diyefi.org/viewtopic.php?f=55&t=1086
 #elif HOTEL
-anglesOfTDC[0] = 0; // 1,2,3,4, repeating pattern
+anglesOfTDC[0] = 0 * oneDegree; // 1,2,3,4, repeating pattern
 #define cliConfigredNumberOfIgnitionEvents 1
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset HyundaiHackOffset
@@ -222,8 +222,8 @@ anglesOfTDC[0] = 0; // 1,2,3,4, repeating pattern
 
 // Preston's silver-top-on-a-stand http://forum.diyefi.org/viewtopic.php?f=55&t=1101
 #elif PRESTO
-anglesOfTDC[0] = 0;   // 1 and 4, hack converts this to 360 as well
-anglesOfTDC[1] = 180; // 2 and 3, hack converts this to 540 as well
+anglesOfTDC[0] =   0 * oneDegree;   // 1 and 4, hack converts this to 360 as well
+anglesOfTDC[1] = 180 * oneDegree; // 2 and 3, hack converts this to 540 as well
 #define cliConfigredNumberOfIgnitionEvents 2
 #define numberOfInjectionEvents 2
 #define cliConfiguredOffset SilverTop4age
@@ -236,7 +236,7 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 // Looking forwared to there being a link to a thread here soon!
 #elif SEANKLT1
-// anglesOfTDC[?] = ?;
+// anglesOfTDC[?] = ? * oneDegree;
 #define cliConfigredNumberOfIgnitionEvents 0
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
@@ -246,17 +246,17 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 // Looking forwared to there being a link to a thread here soon!
 #elif SEANKR1
-// anglesOfTDC[?] = ?;
+// anglesOfTDC[?] = ? * oneDegree;
 #define cliConfigredNumberOfIgnitionEvents 0
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
-//pinEventNumbers[?] = ?;
+//pinEventNumbers[?] = ? * oneDegree;
 //postReferenceEventDelays[?] = decoderMaxCodeTime;
 //injectorMainPulseWidthsMath[?] = masterPulseWidth;
 
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 #else
-// anglesOfTDC[?] = ?;
+// anglesOfTDC[?] = ? * oneDegree;
 #define cliConfigredNumberOfIgnitionEvents 0
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
@@ -266,7 +266,7 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 #endif
 
 
-	decoderEngineOffset = cliConfiguredOffset;
+	decoderEngineOffset = cliConfiguredOffset;/*scale*/
 	numberOfIgnitionEvents = cliConfigredNumberOfIgnitionEvents;
 
 
@@ -341,10 +341,10 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 		/// @todo TODO refactor this partly into init.c as per more detailed TD above
 		unsigned short codeAngleOfIgnition = 0;
-		if(anglesOfTDC[ignitionEvent] > (decoderEngineOffset + DerivedVars->Advance)){ /// @todo TODO keep an eye on overflow here when increasing resolution by scaling angles
+		if(anglesOfTDC[ignitionEvent] > ((unsigned long)decoderEngineOffset + DerivedVars->Advance)){ /// @todo TODO keep an eye on overflow here when increasing resolution by scaling angles
 			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + DerivedVars->Advance);
 		}else{
-			codeAngleOfIgnition = (totalEventAngleRange + anglesOfTDC[ignitionEvent]) - (decoderEngineOffset + DerivedVars->Advance);
+			codeAngleOfIgnition = (unsigned short)(((unsigned long)totalEventAngleRange + anglesOfTDC[ignitionEvent]) - ((unsigned long)decoderEngineOffset + DerivedVars->Advance));
 		}
 		/** @todo TODO, do this ^ at init time from fixed config as an array of
 		 * angles and a single engine offset combined into this runtime array.
@@ -375,7 +375,7 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 			if(codeAngleOfIgnition > eventAngles[lastGoodEvent]){
 				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition - eventAngles[lastGoodEvent])) / ticks_per_degree_multiplier;
 			}else{
-				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * (codeAngleOfIgnition + (totalEventAngleRange - eventAngles[lastGoodEvent]))) / ticks_per_degree_multiplier;
+				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * ((unsigned long)codeAngleOfIgnition + (totalEventAngleRange - eventAngles[lastGoodEvent]))) / ticks_per_degree_multiplier;
 			}
 
 			if(ticksBetweenEventAndSpark > ((unsigned long)DerivedVars->Dwell + decoderMaxCodeTime)){
@@ -423,11 +423,11 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				}else if(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
-					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
+					/*scale*/					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					pinEventNumbers[ignitionEvent] = mappedEvent;
-					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
-					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
+					/*scale*/					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
+					/*scale*/					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					Counters.DwellStretchedToSchedule++;
 				}else{

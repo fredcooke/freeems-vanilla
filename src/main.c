@@ -79,7 +79,7 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 
 				sampleEachADC(ADCArraysRecord); // TODO still need to do a pair of loops and clock these two functions for performance.
 				//sampleLoopADC(&ADCArrays);
-				resetToNonRunningState();
+				resetToNonRunningState(0);
 				Counters.timeoutADCreadings++;
 
 				/* Set flag to say calc required */

@@ -88,7 +88,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 #elif HOTEL
 #include "../data/tables/ign/HotelHyundaiIgnitionTiming.h"
 #elif PRESTO
-#include "../data/tables/ign/flat0degrees.h"
+#include "../data/tables/ign/flat15degrees.h"
 #elif SEANKLT1
 #include "../data/tables/ign/flat0degrees.h"
 #elif SEANKR1

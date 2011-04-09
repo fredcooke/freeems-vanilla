@@ -53,7 +53,7 @@
 void decoderInitPreliminary(){} // This decoder works with the defaults
 
 const unsigned char decoderName[] = "EvenTeethOnCam-Nand1";
-const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690};
+const unsigned short eventAngles[] = {(0 * oneDegree), (30 * oneDegree), (60 * oneDegree), (90 * oneDegree), (120 * oneDegree), (150 * oneDegree), (180 * oneDegree), (210 * oneDegree), (240 * oneDegree), (270 * oneDegree), (300 * oneDegree), (330 * oneDegree), (360 * oneDegree), (390 * oneDegree), (420 * oneDegree), (450 * oneDegree), (480 * oneDegree), (510 * oneDegree), (540 * oneDegree), (570 * oneDegree), (600 * oneDegree), (630 * oneDegree), (660 * oneDegree), (690 * oneDegree)};
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
 
 
@@ -69,6 +69,10 @@ void PrimaryRPMISR(){
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+
+	// Prevent main from clearing values before sync is obtained!
+	Clocks.timeoutADCreadingClock = 0;
+	/// @todo TODO integrate this into all decoders, and integrate with the fuel pump stuff too, this can be a flag that says "we've received an RPM signal of SOME sort recently"
 
 	if(!(PTITCurrentState & 0x01)){
 		/* Calculate the latency in ticks */
@@ -87,39 +91,38 @@ void PrimaryRPMISR(){
 		}
 		unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
-		unsigned long thisInterEventPeriod = 0;
-		if(decoderFlags & LAST_TIMESTAMP_VALID){
-			thisInterEventPeriod = thisEventTimeStamp - lastPrimaryEventTimeStamp;
-		}
-
 		unsigned char lastEvent = currentEvent;
 		currentEvent++;
 		if(currentEvent == 0){
 			lastEvent = numberOfRealEvents - 1;
 		}
 
-		if(currentEvent == numberOfRealEvents){
-			resetToNonRunningState();
-			syncLostOnThisEvent = currentEvent;
-			RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-			return;
-		}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
-
+		unsigned long thisInterEventPeriod = 0;
 		unsigned short thisTicksPerDegree = 0;
-		if(decoderFlags & CAM_SYNC){
+		if(decoderFlags & LAST_TIMESTAMP_VALID){
 			unsigned short thisAngle = 0;
 			if(currentEvent == 0){
-				thisAngle = eventAngles[currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+				thisAngle = totalEventAngleRange - eventAngles[lastEvent];
 			}else{
 				thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
 			}
 
+			thisInterEventPeriod = thisEventTimeStamp - lastPrimaryEventTimeStamp;
 			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+		}
 
+		if(currentEvent == numberOfRealEvents){
+			resetToNonRunningState(1);
+			RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+			return;
+		}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
+
+
+		if(decoderFlags & CAM_SYNC){
 			if(decoderFlags & LAST_PERIOD_VALID){
 				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
 				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-					resetToNonRunningState();
+					resetToNonRunningState(2);
 				}else{
 					if(PTITCurrentState & 0x01){
 						/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
