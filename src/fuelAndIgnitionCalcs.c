@@ -145,7 +145,7 @@ void calculateFuelAndIgnition(){
 
 
 
-/// TODO @todo FXIME part of to schedule or not to schedule should be : (masterPulseWidth > injectorMinimumPulseWidth)
+/// TODO @todo FIXME part of to schedule or not to schedule should be : (masterPulseWidth > injectorMinimumPulseWidth)
 
 // IE, NOT in the decoders... KISS in the decoders. This is a hangover from (very) early decoder dev
 
@@ -177,8 +177,8 @@ void calculateFuelAndIgnition(){
 
 
 	// Required vars for scheduling!
-	unsigned short anglesOfTDC[6];/*scale*/
-	unsigned short decoderEngineOffset;/*scale*/
+	unsigned short anglesOfTDC[6];
+	unsigned short decoderEngineOffset;
 	unsigned char numberOfIgnitionEvents;
 
 
@@ -190,16 +190,16 @@ void calculateFuelAndIgnition(){
 
 
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
-#define Mitsi4and1OffsetOnTruck ( 90 * oneDegree) // FE-DOHC, CAS approximately centre
-#define HyundaiHackOffset       ( 30 * oneDegree) // Distributor fully retarded
+#define Mitsi4and1OffsetOnTruck ( 90.00 * oneDegree) // FE-DOHC, CAS approximately centre
+#define HyundaiHackOffset       ( 30.00 * oneDegree) // Distributor fully retarded
 #define SilverTop4age           (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK
-	/*scale*/anglesOfTDC[0] =   0 * oneDegree;   // Cylinder 1
-	/*scale*/anglesOfTDC[1] = 180 * oneDegree; // Cylinder 3
-	/*scale*/anglesOfTDC[2] = 360 * oneDegree; // Cylinder 4
-	/*scale*/anglesOfTDC[3] = 540 * oneDegree; // Cylinder 2
+anglesOfTDC[0] =   0 * oneDegree; // Cylinder 1
+anglesOfTDC[1] = 180 * oneDegree; // Cylinder 3
+anglesOfTDC[2] = 360 * oneDegree; // Cylinder 4
+anglesOfTDC[3] = 540 * oneDegree; // Cylinder 2
 #define cliConfigredNumberOfIgnitionEvents 4
 #define numberOfInjectionEvents 2
 #define cliConfiguredOffset Mitsi4and1OffsetOnTruck
@@ -266,7 +266,7 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 #endif
 
 
-	decoderEngineOffset = cliConfiguredOffset;/*scale*/
+	decoderEngineOffset = cliConfiguredOffset;
 	numberOfIgnitionEvents = cliConfigredNumberOfIgnitionEvents;
 
 
@@ -423,11 +423,11 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				}else if(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
-					/*scale*/					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
+					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					pinEventNumbers[ignitionEvent] = mappedEvent;
-					/*scale*/					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
-					/*scale*/					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
+					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
+					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					Counters.DwellStretchedToSchedule++;
 				}else{
