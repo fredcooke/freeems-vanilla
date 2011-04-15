@@ -192,7 +192,7 @@ void calculateFuelAndIgnition(){
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
 #define Mitsi4and1OffsetOnTruck ( 90 * oneDegree) // FE-DOHC, CAS approximately centre
 #define HyundaiHackOffset       ( 30 * oneDegree) // Distributor fully retarded
-#define SilverTop4age           (128.52 * oneDegree) // Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre
+#define SilverTop4age           (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK
