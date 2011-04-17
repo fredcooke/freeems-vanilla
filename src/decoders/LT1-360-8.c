@@ -59,7 +59,6 @@ const unsigned short eventAngles[] = {(0 * oneDegree), (86 * oneDegree), (130 * 
                                      (540 * oneDegree), (626 * oneDegree), (660 * oneDegree), (716 * oneDegree)};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
 const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
-unsigned char accumulatorCount = 0; // use secondaryEventCount?
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
 unsigned char lastPARegisterReading = 0xFF;
 unsigned char windowState = 0x00;
@@ -108,12 +107,13 @@ void PrimaryRPMISR(void) {
 	unsigned short edgeTimeStamp = TC0; /* Save the edge time stamp */
 	windowState = PTITCurrentState & 0x01; /* Save the high/low state of the port, HIGH PRIORITY some windows are only 2deg wide */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp; /* Calculate the latency in ticks */
-	accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
+	unsigned char accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
 	lastPARegisterReading = accumulatorRegisterCount;
 	PORTJ |= 0x80; /* Echo input condition on J7 */
 	unsigned char i; /* temp loop var */
 
 	Counters.primaryTeethSeen++;
+	Counters.secondaryTeethSeen += accumulatorCount;
 
 	/* inc our event index, if not in sync it will be set for us anyway */
 	currentEvent++;
@@ -125,6 +125,10 @@ void PrimaryRPMISR(void) {
 	//Counters.testCounter5 = 0x00;
 	//Counters.testCounter6 = accumulatorCount;
 	//Counters.testCounter4 = currentEvent;
+	Counters.testCounter6 = windowCounts[currentEvent];
+	Counters.testCounter5 = accumulatorCount;
+	Counters.testCounter4 = bastardTeeth;
+
 
 	/* always make sure you have two good counts(there are a few windows that share counts) */
 	if (!(decoderFlags & CAM_SYNC)) {
@@ -183,10 +187,6 @@ void PrimaryRPMISR(void) {
 	} else {
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
-	// temporary data from inputs
-	unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
-	unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
-	lastPrimaryEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
 	if (decoderFlags & CAM_SYNC) {
 		if (bastardTeeth > 2) {
@@ -206,14 +206,15 @@ void PrimaryRPMISR(void) {
 			/* TODO all required calcs etc as shown in other working decoders */
 			if (!((currentEvent % 2) == 0)) { /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
 
-				Counters.testCounter6 = windowCounts[currentEvent];
-				Counters.testCounter5 = accumulatorCount;
-				Counters.testCounter4 = bastardTeeth;
+				// temporary data from inputs
+				unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+				unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
+				lastPrimaryEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
 				/* RPM CALC, KISS for now and only run this part of the ISR when the edge has gone high
 				 * this way we have evenly spaced teeth
 				 */
-				*ticksPerDegreeRecord = (unsigned short) (timeBetweenSuccessivePrimaryPulses / 4 ); /* 8 / 2 for crankshaft RPM */
+				*ticksPerDegreeRecord = (unsigned short) (timeBetweenSuccessivePrimaryPulses / 8 ); /* 8 / 2 for crankshaft RPM */
 
 				// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 				sampleEachADC(ADCArrays);
