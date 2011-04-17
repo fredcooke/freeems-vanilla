@@ -236,8 +236,13 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 // Looking forwared to there being a link to a thread here soon!
 #elif SEANKLT1
-// anglesOfTDC[?] = ? * oneDegree;
-#define cliConfigredNumberOfIgnitionEvents 0
+anglesOfTDC[0] =   0 * oneDegree;
+anglesOfTDC[1] = 120 * oneDegree;
+anglesOfTDC[2] = 240 * oneDegree;
+anglesOfTDC[3] = 360 * oneDegree;
+anglesOfTDC[4] = 480 * oneDegree;
+anglesOfTDC[5] = 600 * oneDegree;
+#define cliConfigredNumberOfIgnitionEvents 6
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
 //pinEventNumbers[?] = ?;

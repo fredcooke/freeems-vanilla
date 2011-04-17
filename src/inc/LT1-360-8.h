@@ -55,6 +55,10 @@
 #define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
 #define NUMBER_OF_REAL_EVENTS     16
 #define NUMBER_OF_VIRTUAL_EVENTS  16
+#define AMBIGUOUS_COUNT           86
+
+#define DECODER_IMPLEMENTATION_C
+#define LT1_360_8_C
 
 #undef EXTERN
 

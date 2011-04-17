@@ -43,8 +43,6 @@
  *
  * @author Sean Keys
  */
-
-
 #define DECODER_IMPLEMENTATION_C
 #define LT1_360_8_C
 
@@ -52,24 +50,22 @@
 #include "../inc/interrupts.h"
 #include "../inc/LT1-360-8.h"
 #include "../inc/decoderInterface.h"
-
+#include "../inc/utils.h"
 
 const unsigned char decoderName[] = "LT1-360-8";
-const unsigned short eventAngles[] = {0,3,90,103,180,183,270,294,360,364,450,483,540,544,630,673}; /// @todo TODO fill this out...
+const unsigned short eventAngles[] = {(0 * oneDegree), (86 * oneDegree), (130 * oneDegree), (176 * oneDegree),
+                                     (180 * oneDegree), (266 * oneDegree), (280 * oneDegree), (356 * oneDegree),
+                                     (360 * oneDegree), (446 * oneDegree), (470 * oneDegree), (536 * oneDegree),
+                                     (540 * oneDegree), (626 * oneDegree), (660 * oneDegree), (716 * oneDegree)};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
-//const unsigned char windowCounts[] = {24,66,4,86,33,57,4,86,43,46,4,87,13,77,3,87}; // @todo TODO find out which count is TDC #1
-//const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
-const unsigned char windowCounts[] = {23,2,43,7,38,2,43,12,33,2,43,17,28,2,43,22}; // FRED Split me to increase speed and reduce probability of mismatches when counts are slightly off and doing soft matches.
-
-//unsigned char skippedWindowCount = 0;
-
-//static unsigned char* windowCountIndex = 0;
+const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
 unsigned char accumulatorCount = 0; // use secondaryEventCount?
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
 unsigned char lastPARegisterReading = 0xFF;
 unsigned char windowState = 0x00;
 unsigned char lastNumberOfRealEvents = 0x00;
 unsigned char accumulatorRegisterCount = 0x00;
+unsigned char bastardTeeth = 0x00;
 
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
@@ -85,7 +81,7 @@ void decoderInitPreliminary(void){
 	ICPAR = 0x02; // set the second bit in ICPAR (PAC1) to enable PT1's pulse accumulator
 	// enable interrupt on overflow and set count to 0xFF-245 to enable an int on every ten teeth
 	PACN1 = 0x00; // reset our count register
-	TCTL4 = 0x0B; /* Capture on both edges of pin 0 and only on the falling edges of pin 1, capture off for 2,3 */ // FRED why interrupt on the other one at all, there is no code and you're *causing* jitter in your primary rpm by doing this, along with eating CPU up.
+	TCTL4 = 0xFF; /* Capture on both edges of pin 0 and only on the falling edges of pin 1, capture off for 2,3 */ // FRED why interrupt on the other one at all, there is no code and you're *causing* jitter in your primary rpm by doing this, along with eating CPU up.
 	//TIE = 0x01; // FRED necessary to do this too? I think so, but check the docs.
 }
 
@@ -101,76 +97,156 @@ void decoderInitPreliminary(void){
  * resoloution. Such as fire on every 10x.
  */
 void PrimaryRPMISR(void) {
+	/* Clear the interrupt flag for this input compare channel */
+	TFLG = 0x01;
 	// Grab this first as it is the most critical var in this decoder
 	accumulatorRegisterCount = PACN1;/* save count before it changes */
 
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x01;
-
 	/* Save all relevant available data here */
-	accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
-	lastPARegisterReading =  accumulatorRegisterCount;
-	PORTJ |= 0x80; /* Echo input condition on J7 */
-	//unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
-	//unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
-	windowState = PTITCurrentState & 0x01;
-	unsigned char i;
+	unsigned short codeStartTimeStamp = TCNT; /* Save the current timer count */
+	unsigned short edgeTimeStamp = TC0; /* Save the edge time stamp */
+	windowState = PTITCurrentState & 0x01; /* Save the high/low state of the port, HIGH PRIORITY some windows are only 2deg wide */
+	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp; /* Calculate the latency in ticks */
+	accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
+	lastPARegisterReading = accumulatorRegisterCount;
+	PORTJ |= 0x80; /* Echo input condition on J7 */
+	unsigned char i; /* temp loop var */
 
+	Counters.primaryTeethSeen++;
+
+	/* inc our event index, if not in sync it will be set for us anyway */
+	currentEvent++;
+	if (currentEvent == numberOfRealEvents) { /* roll our event over if we are at the end */
+		currentEvent = 0x00;
+	}
 	/* for data logging */
 	//Counters.testCounter5 = accumulatorCount;
-	Counters.testCounter5 = windowState;
-	Counters.testCounter6 = accumulatorCount;
-	Counters.testCounter4 = currentEvent;
+	//Counters.testCounter5 = 0x00;
+	//Counters.testCounter6 = accumulatorCount;
+	//Counters.testCounter4 = currentEvent;
 
 	/* always make sure you have two good counts(there are a few windows that share counts) */
-	if(!(decoderFlags & CAM_SYNC)){
+	if (!(decoderFlags & CAM_SYNC)) {
 		// FRED do this on a per edge basis to lower chances of false match with +/- 1 counts
-		for(i = 0; numberOfRealEvents > i; i++){
-			if(windowCounts[i] == accumulatorCount){
-				decoderFlags |= CAM_SYNC;
+		Counters.testCounter3 = accumulatorCount;
+		if (accumulatorCount == AMBIGUOUS_COUNT) {
+			return;
+		}
+		for (i = 0; numberOfRealEvents > i; i++) {
+			if (windowCounts[i] == accumulatorCount) {
 				currentEvent = i;
 				PORTB |= 0x01; /* found count */
 				break;
-		    }
+			}
 		}
-
-		// FRED This isn't necessary, only need to check once above, already know if last time was good from last check, no point rechecking.
-		if(i == 0x00){ /* keep our counter from going out of range */
+		if (i == 0x00) { /* keep our counter from going out of range */
 			i = 0x0F;
-		}else{
+		} else {
 			i--;
 		}
-		if(windowCounts[i] == lastAccumulatorCount){ /* if true we are in sync! */
+		Counters.testCounter4 = bastardTeeth;
+		if (windowCounts[i] == lastAccumulatorCount) { /* if true we are in sync! */
 			decoderFlags |= CAM_SYNC;
-			PORTB = 0x03; /* light the board */
-		}else{
+			PORTB = 0x0F; /* light the board */
+		} else {
 			// missedsync opportunity ++ or something
 		}
-//		// If still not synced, try to do fuzzy sync
-//		if(!(decoderFlags & CAM_SYNC)){
-//			// loop with +1 and -1
-//			// count fuzzy syncs, if genuine, should only be one + and one -
-//			// if not, give up and clear all state
-//		}
+		lastAccumulatorCount = accumulatorCount;
+		//		// If still not synced, try to do fuzzy sync
+		//		if(!(decoderFlags & CAM_SYNC)){
+		//			// loop with +1 and -1
+		//			// count fuzzy syncs, if genuine, should only be one + and one -
+		//			// if not, give up and clear all state
+		//		}
+		//		return; /// @todo TODO remove and continue on down the thread
 	}
 
-	/* save vars for next ISR call */
-	currentEvent++;
-	if(currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
-		currentEvent = 0x00;
+	if (!(decoderFlags & CAM_SYNC)) {
+		return;
 	}
-	lastAccumulatorCount = accumulatorCount;
 
-	if(decoderFlags & CAM_SYNC){
-		if(windowCounts[currentEvent] != accumulatorCount){
+	if (windowCounts[currentEvent] >= accumulatorCount) {
+		bastardTeeth = windowCounts[currentEvent] - accumulatorCount;
+	} else {
+		bastardTeeth = accumulatorCount - windowCounts[currentEvent];
+	}
+
+	/* if we are in-sync continue checking and perform required decoder calcs */
+	LongTime timeStamp;
+
+	/* Install the low word */
+	timeStamp.timeShorts[1] = edgeTimeStamp;
+	/* Find out what our timer value means and put it in the high word */
+	if (TFLGOF && !(edgeTimeStamp & 0x8000)) { /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
+		timeStamp.timeShorts[0] = timerExtensionClock + 1;
+	} else {
+		timeStamp.timeShorts[0] = timerExtensionClock;
+	}
+	// temporary data from inputs
+	unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
+	unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
+	lastPrimaryEventTimeStamp = primaryLeadingEdgeTimeStamp;
+
+	if (decoderFlags & CAM_SYNC) {
+		if (bastardTeeth > 2) {
 			resetToNonRunningState(1);
-			PORTB = 0x00;
-			return;
-		}else{
-			/* TODO all required calcs etc as shown in other working decoders */
-			// FRED once sync is solid AND rpm is smooth, copy paste sched loop here.
+			//Counters.testCounter6 = windowCounts[currentEvent];
+			//Counters.testCounter5 = accumulatorCount;
+			//Counters.testCounter5 = windowCounts[currentEvent];
+			//Counters.testCounter4 = bastardTeeth;
 			PORTB = 0xFF;
+			return;
+		} else {
+			//lastAccumulatorCount = windowCounts[currentEvent]; //correct count now or we will get a wider margin of error on the next ISR
+//			Counters.testCounter6 = windowCounts[currentEvent];
+//			Counters.testCounter5 = accumulatorCount;
+//			Counters.testCounter4 = bastardTeeth;
+
+			/* TODO all required calcs etc as shown in other working decoders */
+			if (!((currentEvent % 2) == 0)) { /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
+
+				Counters.testCounter6 = windowCounts[currentEvent];
+				Counters.testCounter5 = accumulatorCount;
+				Counters.testCounter4 = bastardTeeth;
+
+				/* RPM CALC, KISS for now and only run this part of the ISR when the edge has gone high
+				 * this way we have evenly spaced teeth
+				 */
+				*ticksPerDegreeRecord = (unsigned short) (timeBetweenSuccessivePrimaryPulses / 4 ); /* 8 / 2 for crankshaft RPM */
+
+				// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
+				sampleEachADC(ADCArrays);
+				Counters.syncedADCreadings++;
+				*mathSampleTimeStampRecord = TCNT;
+				/* Set flag to say calc required */
+				coreStatusA |= CALC_FUEL_IGN;
+				/* Reset the clock for reading timeout */
+				Clocks.timeoutADCreadingClock = 0;
+				RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+				PORTB = 0x00;
+			}
+		}
+	}
+	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+	if(decoderFlags & CAM_SYNC){
+		unsigned char pin;
+		for(pin=0;pin<6;pin++){
+			if(pinEventNumbers[pin] == currentEvent){
+				skipEventFlags &= injectorMainOffMasks[0];
+				schedulePortTPin(pin, timeStamp);
+			}else if (skipEventFlags & injectorMainOnMasks[pin]){
+				unsigned char eventBeforeCurrent = 0;
+				if(currentEvent == 0){
+					eventBeforeCurrent = numberOfRealEvents - 1;
+				}else{
+					eventBeforeCurrent = currentEvent - 1;
+				}
+
+				if(pinEventNumbers[pin] == eventBeforeCurrent){
+					schedulePortTPin(pin, timeStamp);
+				}
+			}
 		}
 	}
 }
