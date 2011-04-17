@@ -45,7 +45,7 @@
 
 /* Currently this gets copied from wherever it ends up into the XGATE flash pages */
 const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
-		/* Channel # = Vector address / 2 */
+		/* Channel ID = vector address offset / 4 */
 		/* channel 0x00-0x08 are not used, 0x09-0x1D are reserved first used must match macro XGATE_VECTOR_OFFSET in xgate.h */
 		{XGATE_ERROR_HANDLER, 0x00},  /* NOT USED */
 		{XGATE_ERROR_HANDLER, 0x01},  /* NOT USED */
@@ -106,9 +106,9 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{XGATE_ERROR_HANDLER, 0x38},  // Channel 38 - XGATE Software Trigger 1
 		{(unsigned short)xgateSchedule, (unsigned short)&PORTP}, // Channel 39 - XGATE Software Trigger 0 address in first field is from xgate linear 64k point of view. The VMA MUST BE CHANGED IN THE COPYOPTS PORTION OF THE MAKEFILE to reflect how xgate see's this section
 		{XGATE_ERROR_HANDLER, 0x3A},  // Channel 3A - Periodic Interrupt Timer 3
-		{XGATE_ERROR_HANDLER, 0x3B},  // Channel 3B - Periodic Interrupt Timer 2
+		{(unsigned short)xgateDelayCounter, 0x3B},  // Channel 3B - Periodic Interrupt Timer 2
 		{(unsigned short)xgatePITTurnOff, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1
-		{(unsigned short)xgatePITTurnOn, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0 //TODO trigger PIT scheduler
+		{(unsigned short)xgatePITTurnOn, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0
 		{XGATE_ERROR_HANDLER, 0x3E},  // Reserved
 		{XGATE_ERROR_HANDLER, 0x3F},  // Channel 3F - Autonomous Periodical interrupt API
 		{XGATE_ERROR_HANDLER, 0x40},  // Channel 40 - Low Voltage interrupt LVI

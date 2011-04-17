@@ -23,11 +23,26 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-.equ	SWISRFLAGREG,	0x0398
-.equ	SWISRZEROCLEARMASK, 0b0000000100000000
-.equ	ZEROOFFSET, 0x0000
-.equ	PORTP, 0x0258
-.equ	PORTBA, 0x0000
-.equ	PORTBAROTECTIONMASK, 0x0FFF ; only use the first 12 pins on PORTBA 
-.equ	PORTB, 0x0001
+/* Flag Masks */ 
+.equ	SW_ISR_ZERO_CFLAG_MASK, 0x0100
+.equ	PIT0_CFLAG_MASK, 0x0001
+.equ	PIT1_CFLAG_MASK, 0x0002
+.equ	PIT2_CFLAG_MASK, 0x0003
+
+/* Registers */
+.equ	SW_ISR_FLAG_REG, 0x0398
+.equ	PITTF, 0x0345     /* PIT Time-Out Flag Register, low 4 bits set when each counter reaches 0 */
+.equ    PITINTE, 0x0344   /* PIT Interrupt Enable Register, low four bits control the ISRs */
+.equ    PITCE, 0x0342     /* PIT Channel Enable Register, low 4 bits let the channel count */
+.equ    PITFLT, 0x0341    /* PIT Force Load Timer Register, low 4 bits force load timers */
+.equ	PORTP, 0x0258     /* PORT-P register */
+.equ	PORTBA, 0x0000	  /* PORT-BA register */
+.equ	PORTB, 0x0001	  /* PORT-B register */
+
+/* General Defines */
+.equ	ZERO_OFFSET, 0x0000
+
+/* Bit Masks */
+.equ	PORTBA_PROTECTION_MASK, 0x0FFF ; only use the first 12 pins on PORTBA 
+
 

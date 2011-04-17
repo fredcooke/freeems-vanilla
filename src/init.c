@@ -543,10 +543,12 @@ void initFlash(){
  *
  */
 void initXgate(){
-	/* route interrupt to xgate */
-	INT_CFADDR = (0x72 & 0xF0);	/* vector address = channel_id * 2 */
-	INT_CFDATA0 = 0x01; 		/* RQST = 1 */
-	INT_CFDATA1 = 0x81;		/* PRIO = 1 */
+	/* route interrupt to xgate, vector address = channel_id * 2 */
+	ROUTE_INTERRUPT(0x39, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on software0 interrupt */
+	ROUTE_INTERRUPT(0x3A, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT3 */
+	ROUTE_INTERRUPT(0x3B, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT2 */
+	ROUTE_INTERRUPT(0x3C, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT1 */
+	ROUTE_INTERRUPT(0x3D, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT0 */
 
 	/* XGATE sees flash starting at paged address 0xE0, 0x8800 to + 30Kb*/
 	unsigned char savedRPAGE = RPAGE;
@@ -564,6 +566,20 @@ void initXgate(){
 
 	// Enable XGate and XGate interrupts
 	XGMCTL= (unsigned short)0x8181;
+
+	/* Enable PIT TODO move back to proper section once unit tested */
+	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
+	PITMTLD1 = 0x1F; /* ditto */
+	PITMUX = 0xC0; /* set chan 0-1 to use PITMTLD0 base and chan 2-3 to use PITMTLD1 */
+	/* http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2840MHz+%2F+32+%29 Exactly the same as for ECT */
+	PITLD0 = 0xFFFF; // set timers running //TEST ONLY
+	PITLD1 = 0x7FFF; // set timers running //TEST ONLY
+	PITLD2 = 0xFFFF; // set timers running //TEST ONLY
+
+	PITCFLMT = 0x80; // enable module
+	PITCE = 0x05; // enable channels 0, 1 and 2
+	PITINTE = 0x05; // enable interrupt on 0, 1 and 2
+	PITFLT = ONES; // clear flags
 }
 
 /* Set up the timer module and its various interrupts */
@@ -628,22 +644,22 @@ void initECTTimer(){
 /* Configure the PIT timers for their various uses. */
 void initPITTimer(){
 #ifndef NO_INIT
-	/*  */
-	// set micro periods
-	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
-	PITMTLD1 = 0x1F; /* ditto */
-	/* http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2840MHz+%2F+32+%29 Exactly the same as for ECT */
-
-	// set timers running
+//	/*  */
+//	// set micro periods
+//	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
+//	PITMTLD1 = 0x1F; /* ditto */
+//	/* http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2840MHz+%2F+32+%29 Exactly the same as for ECT */
+//
+//	// set timers running
 //	PITLD0 = dwellPeriod;
-	// enable module
-	PITCFLMT = 0x80;
-	// enable channels
-	//PITCE = 0x03;
-	// enable interrupt
+//	// enable module
+//	PITCFLMT = 0x80;
+//	// enable channels
+//	//PITCE = 0x03;
+//	// enable interrupt
 //	PITINTE = 0x01;
-	// clear flags
-	//PITFLT = ONES;
+//	// clear flags
+//	//PITFLT = ONES;
 #endif
 }
 

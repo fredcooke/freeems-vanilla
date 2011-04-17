@@ -51,6 +51,12 @@
 #define START_OF_RAM_WINDOW		(unsigned short*)0x1000 /* 4KB long */
 #define XGATE_RAM_ALLOCATION_SIZE	0x0200 /* 512Bytes */
 #define RPAGE_TUNE_TWO_WINDOW_DIFFERENCE (0x8000) /*xgate RPAGE2 starts at 0x9000 but the s12 window starts at 0x10000 */
+#define XGATE_INTERRUPT	0x80
+#define	PRIORITY_LEVEL_ONE	0x01
+
+#define ROUTE_INTERRUPT(channel_id, cpu_assignment, priority) \
+        INT_CFADDR = (channel_id * 2) & 0xF0;                 \
+        INT_CFDATA_ARR[((channel_id * 2) & 0x0F) >> 1] = (cpu_assignment | priority);
 
 typedef struct {
 	unsigned short programCounterValue; /* This data is forced into the XGATE PC register */
@@ -61,6 +67,7 @@ typedef struct {
 extern void xgateSchedule(); // extern not EXTERN because it is defined outside of C
 extern void xgatePITTurnOff();
 extern void xgatePITTurnOn();
+extern void xgateDelayCounter();
 extern void startXGATECode();
 extern void endXGATECode();
 extern void parameterGuard(); /* counter that gets update when a write to shared RAM begins and again when the write is complete */
