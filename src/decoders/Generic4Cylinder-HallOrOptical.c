@@ -148,15 +148,27 @@ void PrimaryRPMISR(){
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 
-		/// @todo TODO gain and lose combustion sync based on timing between teeth, and save state and use flags to only check if good, etc
-//		if(decoderFlags & COMBUSTION_SYNC){
-			if(pinEventNumbers[0] == currentEvent){
+	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+	if(decoderFlags & CAM_SYNC){
+		unsigned char outputEventNumber;
+		for(outputEventNumber=0;outputEventNumber<6;outputEventNumber++){
+			if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
 				skipEventFlags &= injectorMainOffMasks[0];
-				schedulePortTPin(0, timeStamp);
-			}else if(skipEventFlags & injectorMainOnMasks[0]){
-				schedulePortTPin(0, timeStamp);
+				schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
+			}else if (skipEventFlags & injectorMainOnMasks[outputEventNumber]){
+				unsigned char eventBeforeCurrent = 0;
+				if(currentEvent == 0){
+					eventBeforeCurrent = numberOfRealEvents - 1;
+				}else{
+					eventBeforeCurrent = currentEvent - 1;
+				}
+
+				if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){
+					schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
+				}
 			}
-//		}
+		}
+	}
 }
 
 

@@ -457,9 +457,6 @@ void initVariables(){
 	asyncADCArrays = &asyncADCArrays0;
 	asyncADCArraysRecord = &asyncADCArrays1;
 
-	injectorMainPulseWidthsMath = injectorMainPulseWidths0;
-	injectorMainPulseWidthsRealtime = injectorMainPulseWidths1;
-
 	mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp0; // TODO temp, remove
 	mathSampleTimeStampRecord = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove
 	ticksPerDegree = &ticksPerDegree0; // TODO temp, remove, maybe
@@ -485,12 +482,30 @@ void initVariables(){
 	unknownEdges = 0;
 
 	// Initial state is NOT to fire... can be configured by scheduler if required.
-	pinEventNumbers[0] = 0xFF;
-	pinEventNumbers[1] = 0xFF;
-	pinEventNumbers[2] = 0xFF;
-	pinEventNumbers[3] = 0xFF;
-	pinEventNumbers[4] = 0xFF;
-	pinEventNumbers[5] = 0xFF;
+	outputEventInputEventNumbers[0] = 0xFF;
+	outputEventInputEventNumbers[1] = 0xFF;
+	outputEventInputEventNumbers[2] = 0xFF;
+	outputEventInputEventNumbers[3] = 0xFF;
+	outputEventInputEventNumbers[4] = 0xFF;
+	outputEventInputEventNumbers[5] = 0xFF;
+	outputEventInputEventNumbers[6] = 0xFF;
+	outputEventInputEventNumbers[7] = 0xFF;
+	outputEventInputEventNumbers[8] = 0xFF;
+	outputEventInputEventNumbers[9] = 0xFF;
+	outputEventInputEventNumbers[10] = 0xFF;
+	outputEventInputEventNumbers[11] = 0xFF;
+	outputEventInputEventNumbers[12] = 0xFF;
+	outputEventInputEventNumbers[13] = 0xFF;
+	outputEventInputEventNumbers[14] = 0xFF;
+	outputEventInputEventNumbers[15] = 0xFF;
+	outputEventInputEventNumbers[16] = 0xFF;
+	outputEventInputEventNumbers[17] = 0xFF;
+	outputEventInputEventNumbers[18] = 0xFF;
+	outputEventInputEventNumbers[19] = 0xFF;
+	outputEventInputEventNumbers[20] = 0xFF;
+	outputEventInputEventNumbers[21] = 0xFF;
+	outputEventInputEventNumbers[22] = 0xFF;
+	outputEventInputEventNumbers[23] = 0xFF;
 
 	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
 }

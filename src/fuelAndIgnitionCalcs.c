@@ -134,8 +134,6 @@ void calculateFuelAndIgnition(){
 	unsigned short refPW = safeAdd(DerivedVars->EffectivePW, DerivedVars->IDT);
 	DerivedVars->RefPW = refPW;
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-	/* "Calculate" the nominal total pulse width before per channel corrections */
-	masterPulseWidth = refPW;
 
 /// @todo accumulate errors such that we know what sort of PW WOULD have been requested and enable a "over duty cut" to protect boosted users with insufficient injector size on cold nights
 
@@ -177,7 +175,7 @@ void calculateFuelAndIgnition(){
 
 
 	// Required vars for scheduling!
-	unsigned short anglesOfTDC[6];
+	unsigned short anglesOfTDC[MAX_NUMBER_OF_OUTPUT_EVENTS];
 	unsigned short decoderEngineOffset;
 	unsigned char numberOfIgnitionEvents;
 
@@ -190,6 +188,8 @@ void calculateFuelAndIgnition(){
 
 
 // add this to code degrees to find 0/TDC for cyl/output 1 or subtract from real degrees to get code degrees
+// make this number larger to advance the base timing, make it smaller to retard it.
+// IE, if you have 10btdc in your table, flat, and a timing light shows 5btdc on the engine, then increase this number by 5 degrees.
 #define Mitsi4and1OffsetOnTruck ( 90.00 * oneDegree) // FE-DOHC, CAS approximately centre
 #define HyundaiHackOffset       ( 30.00 * oneDegree) // Distributor fully retarded
 #define SilverTop4age           (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
@@ -200,11 +200,19 @@ anglesOfTDC[0] =   0 * oneDegree; // Cylinder 1
 anglesOfTDC[1] = 180 * oneDegree; // Cylinder 3
 anglesOfTDC[2] = 360 * oneDegree; // Cylinder 4
 anglesOfTDC[3] = 540 * oneDegree; // Cylinder 2
+outputEventPinNumbers[0] = 0;
+outputEventPinNumbers[1] = 1;
+outputEventPinNumbers[2] = 2;
+outputEventPinNumbers[3] = 3;
 #define cliConfigredNumberOfIgnitionEvents 4
 #define numberOfInjectionEvents 2
 #define cliConfiguredOffset Mitsi4and1OffsetOnTruck
-pinEventNumbers[4] = 1;
-pinEventNumbers[5] = 5;
+#define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+/// @todo TODO migrate this to sequential with above = 1 OR to two shots with above = 2 and 2 pins only.
+outputEventInputEventNumbers[4] = 1;
+outputEventInputEventNumbers[5] = 5;
+outputEventPinNumbers[4] = 4;
+outputEventPinNumbers[5] = 5;
 postReferenceEventDelays[4] = decoderMaxCodeTime;
 postReferenceEventDelays[5] = decoderMaxCodeTime;
 injectorMainPulseWidthsMath[4] = masterPulseWidth;
@@ -213,10 +221,12 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 // Fred's Hyundai Stellar http://forum.diyefi.org/viewtopic.php?f=55&t=1086
 #elif HOTEL
 anglesOfTDC[0] = 0 * oneDegree; // 1,2,3,4, repeating pattern
+outputEventPinNumbers[0] = 0;
 #define cliConfigredNumberOfIgnitionEvents 1
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset HyundaiHackOffset
-//pinEventNumbers[?] = ?;
+#define numberOfInjectionsPerEngineCycle 4 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+//outputEventInputEventNumbers[?] = ?;
 //postReferenceEventDelays[?] = decoderMaxCodeTime;
 //injectorMainPulseWidthsMath[?] = masterPulseWidth;
 
@@ -224,11 +234,21 @@ anglesOfTDC[0] = 0 * oneDegree; // 1,2,3,4, repeating pattern
 #elif PRESTO
 anglesOfTDC[0] =   0 * oneDegree;   // 1 and 4, hack converts this to 360 as well
 anglesOfTDC[1] = 180 * oneDegree; // 2 and 3, hack converts this to 540 as well
+anglesOfTDC[2] = 360 * oneDegree;   // 1 and 4, hack converts this to 360 as well
+anglesOfTDC[3] = 540 * oneDegree; // 2 and 3, hack converts this to 540 as well
+outputEventPinNumbers[0] = 0;
+outputEventPinNumbers[1] = 1;
+outputEventPinNumbers[2] = 0;
+outputEventPinNumbers[3] = 1;
 #define cliConfigredNumberOfIgnitionEvents 2
 #define numberOfInjectionEvents 2
 #define cliConfiguredOffset SilverTop4age
-pinEventNumbers[4] = 0;
-pinEventNumbers[5] = 12;
+#define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+/// @todo TODO migrate this to sequential with above = 1 OR to two shots with above = 2 and 2 pins only.
+outputEventPinNumbers[4] = 4;
+outputEventPinNumbers[5] = 5;
+outputEventInputEventNumbers[4] = 0;
+outputEventInputEventNumbers[5] = 12;
 postReferenceEventDelays[4] = decoderMaxCodeTime;
 postReferenceEventDelays[5] = decoderMaxCodeTime;
 injectorMainPulseWidthsMath[4] = masterPulseWidth;
@@ -237,38 +257,88 @@ injectorMainPulseWidthsMath[5] = masterPulseWidth;
 // Looking forwared to there being a link to a thread here soon!
 #elif SEANKLT1
 anglesOfTDC[0] =   0 * oneDegree;
-anglesOfTDC[1] = 120 * oneDegree;
-anglesOfTDC[2] = 240 * oneDegree;
-anglesOfTDC[3] = 360 * oneDegree;
-anglesOfTDC[4] = 480 * oneDegree;
-anglesOfTDC[5] = 600 * oneDegree;
-#define cliConfigredNumberOfIgnitionEvents 6
+anglesOfTDC[1] =  90 * oneDegree;
+anglesOfTDC[2] = 180 * oneDegree;
+anglesOfTDC[3] = 270 * oneDegree;
+anglesOfTDC[4] = 360 * oneDegree;
+anglesOfTDC[5] = 450 * oneDegree;
+anglesOfTDC[6] = 540 * oneDegree;
+anglesOfTDC[7] = 630 * oneDegree;
+outputEventPinNumbers[0] = 0;
+outputEventPinNumbers[1] = 0;
+outputEventPinNumbers[2] = 0;
+outputEventPinNumbers[3] = 0;
+outputEventPinNumbers[4] = 0;
+outputEventPinNumbers[5] = 0;
+outputEventPinNumbers[6] = 0;
+outputEventPinNumbers[7] = 0;
+#define cliConfigredNumberOfIgnitionEvents 8
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
-//pinEventNumbers[?] = ?;
-//postReferenceEventDelays[?] = decoderMaxCodeTime;
-//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+#define numberOfInjectionsPerEngineCycle 2 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+
+outputEventPinNumbers[ 8] = 2;
+outputEventPinNumbers[ 9] = 3;
+outputEventPinNumbers[10] = 4;
+outputEventPinNumbers[11] = 5;
+outputEventPinNumbers[12] = 2;
+outputEventPinNumbers[13] = 3;
+outputEventPinNumbers[14] = 4;
+outputEventPinNumbers[15] = 5;
+outputEventInputEventNumbers[ 8] =  1;
+outputEventInputEventNumbers[ 9] =  3;
+outputEventInputEventNumbers[10] =  5;
+outputEventInputEventNumbers[11] =  7;
+outputEventInputEventNumbers[12] =  9;
+outputEventInputEventNumbers[13] = 11;
+outputEventInputEventNumbers[14] = 13;
+outputEventInputEventNumbers[15] = 15;
+postReferenceEventDelays[ 8] = decoderMaxCodeTime;
+postReferenceEventDelays[ 9] = decoderMaxCodeTime;
+postReferenceEventDelays[10] = decoderMaxCodeTime;
+postReferenceEventDelays[11] = decoderMaxCodeTime;
+postReferenceEventDelays[12] = decoderMaxCodeTime;
+postReferenceEventDelays[13] = decoderMaxCodeTime;
+postReferenceEventDelays[14] = decoderMaxCodeTime;
+postReferenceEventDelays[15] = decoderMaxCodeTime;
+injectorMainPulseWidthsMath[ 8] = masterPulseWidth;
+injectorMainPulseWidthsMath[ 9] = masterPulseWidth;
+injectorMainPulseWidthsMath[10] = masterPulseWidth;
+injectorMainPulseWidthsMath[11] = masterPulseWidth;
+injectorMainPulseWidthsMath[12] = masterPulseWidth;
+injectorMainPulseWidthsMath[13] = masterPulseWidth;
+injectorMainPulseWidthsMath[14] = masterPulseWidth;
+injectorMainPulseWidthsMath[15] = masterPulseWidth;
 
 // Looking forwared to there being a link to a thread here soon!
 #elif SEANKR1
-// anglesOfTDC[?] = ? * oneDegree;
+//anglesOfTDC[?] = ? * oneDegree;
+//outputEventPinNumbers[?] = ?;
 #define cliConfigredNumberOfIgnitionEvents 0
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
-//pinEventNumbers[?] = ? * oneDegree;
+#define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+//outputEventInputEventNumbers[?] = ? * oneDegree;
 //postReferenceEventDelays[?] = decoderMaxCodeTime;
 //injectorMainPulseWidthsMath[?] = masterPulseWidth;
 
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 #else
-// anglesOfTDC[?] = ? * oneDegree;
+//anglesOfTDC[?] = ? * oneDegree;
+//outputEventPinNumbers[?] = ?;
 #define cliConfigredNumberOfIgnitionEvents 0
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
-//pinEventNumbers[?] = ?;
+#define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+//outputEventInputEventNumbers[?] = ?;
 //postReferenceEventDelays[?] = decoderMaxCodeTime;
 //injectorMainPulseWidthsMath[?] = masterPulseWidth;
 #endif
+
+
+/* "Calculate" the nominal total pulse width before per channel corrections */
+masterPulseWidth = refPW / numberOfInjectionsPerEngineCycle; // div by number of injections per cycle, configured above
+// but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
 
 	decoderEngineOffset = cliConfiguredOffset;
@@ -396,10 +466,10 @@ anglesOfTDC[5] = 600 * oneDegree;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					// Determine the eventBeforeCurrent outside the atomic block
 					unsigned char eventBeforeCurrent = 0;
-					if(pinEventNumbers[ignitionEvent] == 0){
+					if(outputEventInputEventNumbers[ignitionEvent] == 0){
 						eventBeforeCurrent = numberOfRealEvents - 1;
 					}else{
-						eventBeforeCurrent = pinEventNumbers[ignitionEvent] - 1;
+						eventBeforeCurrent = outputEventInputEventNumbers[ignitionEvent] - 1;
 					}
 
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -422,7 +492,8 @@ anglesOfTDC[5] = 600 * oneDegree;
 						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
 					}
 
-					pinEventNumbers[ignitionEvent] = mappedEvent;
+					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
+
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -430,7 +501,7 @@ anglesOfTDC[5] = 600 * oneDegree;
 					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
 					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-					pinEventNumbers[ignitionEvent] = mappedEvent;
+					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
 					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
 					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -440,7 +511,7 @@ anglesOfTDC[5] = 600 * oneDegree;
 					 * This indicates that the output event is too far from the input event
 					 * This will only occur on input patterns with too few teeth, or bad alignment
 					 */
-					pinEventNumbers[ignitionEvent] = ONES; // unschedule this pin... lockout not required because the operation is naturally atomic
+					outputEventInputEventNumbers[ignitionEvent] = ONES; // unschedule this pin... lockout not required because the operation is naturally atomic
 					Counters.TooFarToSchedule++;
 				}
 				break;

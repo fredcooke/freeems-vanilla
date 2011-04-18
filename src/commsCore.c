@@ -77,7 +77,7 @@ void populateBasicDatalog(){
 //	CoreVars->DMAP = Counters.testCounter3;
 	CoreVars->DDRPM = injectorMainPulseWidthsMath[1];
 	CoreVars->DTPS = postReferenceEventDelays[1];
-	CoreVars->DMAP = pinEventNumbers[1];
+	CoreVars->DMAP = outputEventInputEventNumbers[1];
 
 	// Use these any way you like:
 	DerivedVars->zsp1 = Clocks.realTimeClockMain;
@@ -88,7 +88,7 @@ void populateBasicDatalog(){
 //	DerivedVars->zsp6 = Counters.testCounter0;
 	DerivedVars->zsp6 = injectorMainPulseWidthsMath[0];
 	DerivedVars->zsp7 = postReferenceEventDelays[0];
-	DerivedVars->zsp8 = pinEventNumbers[0];
+	DerivedVars->zsp8 = outputEventInputEventNumbers[0];
 	DerivedVars->zsp9 = currentEvent;
 	DerivedVars->zsp10 = syncLostOnThisEvent;
 	DerivedVars->zsp11 = syncCaughtOnThisEvent;

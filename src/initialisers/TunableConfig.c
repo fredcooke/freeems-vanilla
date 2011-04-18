@@ -48,7 +48,11 @@
 
 
 const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
+#if SEANKLT1
+		{ARRAY_OF_16_VOLTAGES, {5000, 5000, 5000, 5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000}},
+#else
 		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},        // dwellDesiredVersusVoltageTable
+#endif
 		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},     // injectorDeadTimeTable
 		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_BASE_PERCENTS}, // postStartEnrichmentTable
 		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_TIMES},         // postStartTaperTimeTable

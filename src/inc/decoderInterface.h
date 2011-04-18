@@ -196,23 +196,50 @@ EXTERN unsigned char unknownEdges; // here so can be reset with sync loss generi
 
 // Scheduling
 
-// prelim, will change...
-EXTERN unsigned char pinEventNumbers[6]; // 6 pins, which even should they go on? 255/0xFF = not fired. populated by scheduler in main loop
-
 //// Config items: These must exist in flash only config, not here...
 //EXTERN const unsigned char ADCSampleEvents[12];
 //EXTERN const unsigned char numberOfOutputEvents;
 //
 //// Live vars for subprocess intercommunication
-//EXTERN unsigned char outputEventPinNumbers[12];            // 0xFF (disabled) by default, populated to actual pin numbers by the scheduler
-//EXTERN unsigned char outputEventInputEventNumbers[12];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
-//EXTERN unsigned short outputEventDurations[12];            // Unused if above are not configured, set from either dwell (stretched or not) or pulsewidth (scaled for number of shots or not)
-//EXTERN unsigned short outputEventPostInputEventDelays[12]; // Unused if above are not configured, set either fixed or from angle calculations (always the latter for ignition)
+#define MAX_NUMBER_OF_OUTPUT_EVENTS 24
+EXTERN unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];            // 0xFF (disabled) by default, populated to actual pin numbers by the scheduler
+EXTERN unsigned char outputEventInputEventNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
+//EXTERN unsigned short outputEventDurations[MAX_NUMBER_OF_OUTPUT_EVENTS];            // Unused if above are not configured, set from either dwell (stretched or not) or pulsewidth (scaled for number of shots or not)
+//EXTERN unsigned short outputEventPostInputEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS]; // Unused if above are not configured, set either fixed or from angle calculations (always the latter for ignition)
+EXTERN unsigned short postReferenceEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS];
 //EXTERN unsigned char pinEventDurations[6];                 // Set from decoder when setting timer registers etc, set from outputEventDurations, along with other data from there.
 /// @todo TODO back this ^ array with flags saying set, and then clear them when fired, check the flag before setting, and if required buffer in a secondary array, maybe mimic that to several levels such that a queue is formed, and shuffle them through the queue as we go, or move a pointer around or somthing like that.
 
 /// @todo TODO Perhaps use some of the space freed by shrinking all timing tables for this:
 ////unsigned long wheelEventTimeStamps[numberOfWheelEvents]; // For logging wheel patterns as observed. LOTS of memory :-/ may not be possible except by sending lastStamp rapidly at low RPM
+
+
+
+/* Injection stuff */
+
+/* Register addresses */
+EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS];
+EXTERN volatile unsigned char * volatile injectorMainControlRegisters[INJECTION_CHANNELS];
+
+/* Timer holding vars (init not required) */
+EXTERN unsigned short injectorMainStartTimesHolding[INJECTION_CHANNELS];
+EXTERN unsigned long injectorMainEndTimes[INJECTION_CHANNELS];
+
+// TODO make these names consistent
+/* Code time to run variables (init not required) */
+EXTERN unsigned short injectorCodeOpenRuntimes[INJECTION_CHANNELS];
+EXTERN unsigned short injectorCodeCloseRuntimes[INJECTION_CHANNELS];
+
+/* individual channel pulsewidths (init not required) */
+EXTERN unsigned short injectorMainPulseWidthsMath[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned short injectorMainPulseWidthsRealtime[INJECTION_CHANNELS];
+EXTERN unsigned short injectorMainPulseWidthsHolding[INJECTION_CHANNELS];
+
+/* Channel latencies (init not required) */
+EXTERN unsigned short injectorCodeLatencies[INJECTION_CHANNELS];
+
+
+
 
 
 // Helpers - force all these to be inlined!

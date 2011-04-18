@@ -157,25 +157,14 @@ void PrimaryRPMISR(){
 //			Clocks.timeoutADCreadingClock = 0;
 //		}
 
-		// if sched is for is N and we are on N+1 and flag is set, sched with zero delay
-		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
+		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
 		if(decoderFlags & CAM_SYNC){
-			unsigned char pin;
-			for(pin=0;pin<6;pin++){
-				// WARNING, hack... yuck...
-				unsigned char dodgyHack = 0xEE; // set to unschedulable value such that if not one of our w/s ign pins, we wont get a successful test on this...
-				if((pin == 0) || (pin == 1)){ // if it is one of our w/s ign pins then find the opposite pin, and act like we are on it, this hack will ONLY work with evenly spaced pins, not missing teeth or any other types...
-					if(currentEvent < 12){
-						dodgyHack = currentEvent + 12;
-					}else{
-						dodgyHack = currentEvent - 12;
-					}
-				}
-
-				if((pinEventNumbers[pin] == currentEvent) || (pinEventNumbers[pin] == dodgyHack)){
+			unsigned char outputEventNumber;
+			for(outputEventNumber=0;outputEventNumber<6;outputEventNumber++){
+				if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
 					skipEventFlags &= injectorMainOffMasks[0];
-					schedulePortTPin(pin, timeStamp);
-				}else if (skipEventFlags & injectorMainOnMasks[pin]){
+					schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
+				}else if (skipEventFlags & injectorMainOnMasks[outputEventNumber]){
 					unsigned char eventBeforeCurrent = 0;
 					if(currentEvent == 0){
 						eventBeforeCurrent = numberOfRealEvents - 1;
@@ -183,15 +172,8 @@ void PrimaryRPMISR(){
 						eventBeforeCurrent = currentEvent - 1;
 					}
 
-					unsigned char eventBeforeDodgyHack = 0;
-					if(dodgyHack == 0){
-						eventBeforeDodgyHack = numberOfRealEvents - 1;
-					}else{
-						eventBeforeDodgyHack = dodgyHack - 1;
-					}
-
-					if((pinEventNumbers[pin] == eventBeforeCurrent) || (pinEventNumbers[pin] == eventBeforeDodgyHack)){
-						schedulePortTPin(pin, timeStamp);
+					if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){
+						schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
 					}
 				}
 			}

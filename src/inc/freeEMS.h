@@ -280,7 +280,6 @@ EXTERN unsigned char currentTimeRPage;
 /* Output variables (init not required) TODO ditch this in favour of the real vars in the calcs function and struct */
 extern unsigned short masterPulseWidth;
 EXTERN unsigned short totalDwell;
-EXTERN unsigned short postReferenceEventDelays[6];
 
 EXTERN unsigned long bootFuelConst;	/* constant derived from configurable constants */
 EXTERN unsigned short TPSMAPRange;	/* The MAP range used to convert fake TPS from MAP and vice versa */
@@ -346,32 +345,6 @@ EXTERN unsigned char nextIgnitionChannel;			/* Which one to bang off next */
 EXTERN unsigned short ignitionAdvances[IGNITION_CHANNELS * 2]; // Uses channel + offset to have two values at any time
 EXTERN unsigned short queuedDwellOffsets[IGNITION_CHANNELS]; // Uses next channel as index
 EXTERN unsigned short queuedIgnitionOffsets[IGNITION_CHANNELS]; // Uses next channel as index
-
-
-/* Injection stuff */
-
-/* Register addresses */
-EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS];
-EXTERN volatile unsigned char * volatile injectorMainControlRegisters[INJECTION_CHANNELS];
-
-/* Timer holding vars (init not required) */
-EXTERN unsigned short injectorMainStartTimesHolding[INJECTION_CHANNELS];
-EXTERN unsigned long injectorMainEndTimes[INJECTION_CHANNELS];
-
-// TODO make these names consistent
-/* Code time to run variables (init not required) */
-EXTERN unsigned short injectorCodeOpenRuntimes[INJECTION_CHANNELS];
-EXTERN unsigned short injectorCodeCloseRuntimes[INJECTION_CHANNELS];
-
-/* individual channel pulsewidths (init not required) */
-EXTERN unsigned short* injectorMainPulseWidthsMath;
-EXTERN unsigned short* injectorMainPulseWidthsRealtime;
-EXTERN unsigned short injectorMainPulseWidthsHolding[INJECTION_CHANNELS];
-EXTERN unsigned short injectorMainPulseWidths0[INJECTION_CHANNELS];
-EXTERN unsigned short injectorMainPulseWidths1[INJECTION_CHANNELS];
-
-/* Channel latencies (init not required) */
-EXTERN unsigned short injectorCodeLatencies[INJECTION_CHANNELS];
 
 
 #undef EXTERN

@@ -43,6 +43,7 @@
 #define INJECTIONISRS_C
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+#include "inc/decoderInterface.h"
 
 
 /* Staged control algorithms for PIT2 and PIT3 */
