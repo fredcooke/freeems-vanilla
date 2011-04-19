@@ -206,6 +206,7 @@ outputEventPinNumbers[2] = 2;
 outputEventPinNumbers[3] = 3;
 #define cliConfigredNumberOfIgnitionEvents 4
 #define numberOfInjectionEvents 2
+#define firstInjectionEvent 4
 #define cliConfiguredOffset Mitsi4and1OffsetOnTruck
 #define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 /// @todo TODO migrate this to sequential with above = 1 OR to two shots with above = 2 and 2 pins only.
@@ -213,10 +214,6 @@ outputEventInputEventNumbers[4] = 1;
 outputEventInputEventNumbers[5] = 5;
 outputEventPinNumbers[4] = 4;
 outputEventPinNumbers[5] = 5;
-postReferenceEventDelays[4] = decoderMaxCodeTime;
-postReferenceEventDelays[5] = decoderMaxCodeTime;
-injectorMainPulseWidthsMath[4] = masterPulseWidth;
-injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 // Fred's Hyundai Stellar http://forum.diyefi.org/viewtopic.php?f=55&t=1086
 #elif HOTEL
@@ -224,11 +221,11 @@ anglesOfTDC[0] = 0 * oneDegree; // 1,2,3,4, repeating pattern
 outputEventPinNumbers[0] = 0;
 #define cliConfigredNumberOfIgnitionEvents 1
 #define numberOfInjectionEvents 0
+#define firstInjectionEvent 1
 #define cliConfiguredOffset HyundaiHackOffset
 #define numberOfInjectionsPerEngineCycle 4 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 //outputEventInputEventNumbers[?] = ?;
-//postReferenceEventDelays[?] = decoderMaxCodeTime;
-//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+//outputEventPinNumbers[?] = ?;
 
 // Preston's silver-top-on-a-stand http://forum.diyefi.org/viewtopic.php?f=55&t=1101
 #elif PRESTO
@@ -242,6 +239,7 @@ outputEventPinNumbers[2] = 0;
 outputEventPinNumbers[3] = 1;
 #define cliConfigredNumberOfIgnitionEvents 2
 #define numberOfInjectionEvents 2
+#define firstInjectionEvent 4
 #define cliConfiguredOffset SilverTop4age
 #define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 /// @todo TODO migrate this to sequential with above = 1 OR to two shots with above = 2 and 2 pins only.
@@ -249,10 +247,6 @@ outputEventPinNumbers[4] = 4;
 outputEventPinNumbers[5] = 5;
 outputEventInputEventNumbers[4] = 0;
 outputEventInputEventNumbers[5] = 12;
-postReferenceEventDelays[4] = decoderMaxCodeTime;
-postReferenceEventDelays[5] = decoderMaxCodeTime;
-injectorMainPulseWidthsMath[4] = masterPulseWidth;
-injectorMainPulseWidthsMath[5] = masterPulseWidth;
 
 // Looking forwared to there being a link to a thread here soon!
 #elif SEANKLT1
@@ -273,7 +267,8 @@ outputEventPinNumbers[5] = 0;
 outputEventPinNumbers[6] = 0;
 outputEventPinNumbers[7] = 0;
 #define cliConfigredNumberOfIgnitionEvents 8
-#define numberOfInjectionEvents 0
+#define numberOfInjectionEvents 8
+#define firstInjectionEvent 8
 #define cliConfiguredOffset 0
 #define numberOfInjectionsPerEngineCycle 2 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
@@ -293,22 +288,6 @@ outputEventInputEventNumbers[12] =  9;
 outputEventInputEventNumbers[13] = 11;
 outputEventInputEventNumbers[14] = 13;
 outputEventInputEventNumbers[15] = 15;
-postReferenceEventDelays[ 8] = decoderMaxCodeTime;
-postReferenceEventDelays[ 9] = decoderMaxCodeTime;
-postReferenceEventDelays[10] = decoderMaxCodeTime;
-postReferenceEventDelays[11] = decoderMaxCodeTime;
-postReferenceEventDelays[12] = decoderMaxCodeTime;
-postReferenceEventDelays[13] = decoderMaxCodeTime;
-postReferenceEventDelays[14] = decoderMaxCodeTime;
-postReferenceEventDelays[15] = decoderMaxCodeTime;
-injectorMainPulseWidthsMath[ 8] = masterPulseWidth;
-injectorMainPulseWidthsMath[ 9] = masterPulseWidth;
-injectorMainPulseWidthsMath[10] = masterPulseWidth;
-injectorMainPulseWidthsMath[11] = masterPulseWidth;
-injectorMainPulseWidthsMath[12] = masterPulseWidth;
-injectorMainPulseWidthsMath[13] = masterPulseWidth;
-injectorMainPulseWidthsMath[14] = masterPulseWidth;
-injectorMainPulseWidthsMath[15] = masterPulseWidth;
 
 // Looking forwared to there being a link to a thread here soon!
 #elif SEANKR1
@@ -316,11 +295,11 @@ injectorMainPulseWidthsMath[15] = masterPulseWidth;
 //outputEventPinNumbers[?] = ?;
 #define cliConfigredNumberOfIgnitionEvents 0
 #define numberOfInjectionEvents 0
+#define firstInjectionEvent 0
 #define cliConfiguredOffset 0
 #define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
-//outputEventInputEventNumbers[?] = ? * oneDegree;
-//postReferenceEventDelays[?] = decoderMaxCodeTime;
-//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+//outputEventInputEventNumbers[?] = ?;
+//outputEventPinNumbers[?] = ?;
 
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 #else
@@ -329,10 +308,10 @@ injectorMainPulseWidthsMath[15] = masterPulseWidth;
 #define cliConfigredNumberOfIgnitionEvents 0
 #define numberOfInjectionEvents 0
 #define cliConfiguredOffset 0
+#define firstInjectionEvent 0
 #define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 //outputEventInputEventNumbers[?] = ?;
-//postReferenceEventDelays[?] = decoderMaxCodeTime;
-//injectorMainPulseWidthsMath[?] = masterPulseWidth;
+//outputEventPinNumbers[?] = ?;
 #endif
 
 
@@ -340,6 +319,13 @@ injectorMainPulseWidthsMath[15] = masterPulseWidth;
 masterPulseWidth = refPW / numberOfInjectionsPerEngineCycle; // div by number of injections per cycle, configured above
 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
+
+	// Populate fuel channels with values if required.
+	int injectionEvent;
+	for(injectionEvent = firstInjectionEvent;injectionEvent < (firstInjectionEvent + numberOfInjectionEvents);injectionEvent++){
+		postReferenceEventDelays[injectionEvent] = decoderMaxCodeTime;
+		injectorMainPulseWidthsMath[injectionEvent] = masterPulseWidth;
+	}
 
 	decoderEngineOffset = cliConfiguredOffset;
 	numberOfIgnitionEvents = cliConfigredNumberOfIgnitionEvents;
