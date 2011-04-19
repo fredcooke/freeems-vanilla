@@ -267,7 +267,7 @@ GCDS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(GCDS19S))
 
 # http://www.gnu.org/software/m68hc11/m68hc11_gcc.html shows code size with different options used
 # include debug info, optimise , 16 bit ints, hcs12 platform
-GCCOPTS1 = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections
+GCCOPTS1 = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
 GCCOPTS2 = -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
 GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS)
 # -ffunction-sections option splits out the functions such that the garbage collection can get
