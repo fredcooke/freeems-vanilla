@@ -494,15 +494,27 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
-//	if(decoderFlags & CAM_SYNC){
-//		unsigned char pin;
-//		for(pin=0;pin<6;pin++){
-//			if(pinEventNumbers[pin] == currentEvent){
-//				schedulePortTPin(pin, timeStamp);
-//			}
-//		}
-//	} see other isr for todo details...
+	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+	if(decoderFlags & CAM_SYNC){
+		unsigned char outputEventNumber;
+		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){ /// @todo TODO this should only iterate through what is necessary, based on config...
+			if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
+				skipEventFlags &= injectorMainOffMasks[0];
+				schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
+			}else if(skipEventFlags & injectorMainOnMasks[outputEventNumber]){
+				unsigned char eventBeforeCurrent = 0;
+				if(currentEvent == 0){
+					eventBeforeCurrent = numberOfRealEvents - 1;
+				}else{
+					eventBeforeCurrent = currentEvent - 1;
+				}
+
+				if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){
+					schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
+				}
+			}
+		}
+	}
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
