@@ -636,11 +636,11 @@ void SecondaryRPMISR(){
 	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
 	if(decoderFlags & CAM_SYNC){
 		unsigned char outputEventNumber;
-		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){ /// @todo TODO this should only iterate through what is necessary, based on config...
+		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){
 			if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
-				skipEventFlags &= injectorMainOffMasks[0];
+				skipEventFlags &= ~(1UL << outputEventNumber);
 				schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
-			}else if(skipEventFlags & injectorMainOnMasks[outputEventNumber]){
+			}else if(skipEventFlags & (1UL << outputEventNumber)){
 				unsigned char eventBeforeCurrent = 0;
 				if(currentEvent == 0){
 					eventBeforeCurrent = numberOfRealEvents - 1;

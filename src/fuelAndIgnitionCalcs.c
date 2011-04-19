@@ -248,7 +248,7 @@ outputEventPinNumbers[5] = 5;
 outputEventInputEventNumbers[4] = 0;
 outputEventInputEventNumbers[5] = 12;
 
-// Looking forwared to there being a link to a thread here soon!
+// Looking forward to there being a link to a thread here soon!
 #elif SEANKLT1
 anglesOfTDC[0] =   0 * oneDegree;
 anglesOfTDC[1] =  90 * oneDegree;
@@ -289,7 +289,7 @@ outputEventInputEventNumbers[13] = 11;
 outputEventInputEventNumbers[14] = 13;
 outputEventInputEventNumbers[15] = 15;
 
-// Looking forwared to there being a link to a thread here soon!
+// Looking forward to there being a link to a thread here soon!
 #elif SEANKR1
 //anglesOfTDC[?] = ? * oneDegree;
 //outputEventPinNumbers[?] = ?;
@@ -478,7 +478,7 @@ masterPulseWidth = refPW / numberOfInjectionsPerEngineCycle; // div by number of
 					 * event around change of tooth time which could easily be acceptable.
 					 */
 					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
-						skipEventFlags |= injectorMainOnMasks[ignitionEvent];
+						skipEventFlags |= (1UL << ignitionEvent);
 					}
 
 					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;

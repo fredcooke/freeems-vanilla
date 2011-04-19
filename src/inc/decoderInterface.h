@@ -124,7 +124,7 @@ EXTERN unsigned short lastPrimaryTicksPerDegree;
 EXTERN unsigned short lastSecondaryTicksPerDegree;
 EXTERN unsigned char currentEvent;
 EXTERN unsigned char decoderFlags;
-EXTERN unsigned char skipEventFlags;
+EXTERN unsigned long skipEventFlags;
 EXTERN unsigned long engineCyclePeriod;
 /// @todo Introduce the concept of sync level to schedule for if NOT synced
 /// @todo and a way of deciding what to do in different sync states
