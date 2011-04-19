@@ -335,10 +335,13 @@ masterPulseWidth = refPW / numberOfInjectionsPerEngineCycle; // div by number of
 	if(decoderEngineOffset >= totalEventAngleRange){
 		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
 	}
-	if(numberOfIgnitionEvents > 6){
+	if(numberOfIgnitionEvents > 12){
 		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
 	}
-	if((cliConfigredNumberOfIgnitionEvents + numberOfInjectionEvents) > 6){
+	if(numberOfInjectionEvents > 12){
+		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
+	}
+	if((cliConfigredNumberOfIgnitionEvents + numberOfInjectionEvents) > 24){
 		return; /// @todo TODO temp, fix up
 	}
 /// @todo TODO create this check:
