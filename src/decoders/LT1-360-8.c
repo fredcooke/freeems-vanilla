@@ -113,41 +113,32 @@ void PrimaryRPMISR(void){
 
 	Counters.primaryTeethSeen++;
 	Counters.secondaryTeethSeen += accumulatorCount;
-
-	/* inc our event index, if not in sync it will be set for us anyway */
-	currentEvent++;
-	if(currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
-		currentEvent = 0x00;
-	}
-	/* for data logging */
-	Counters.testCounter6 = windowCounts[currentEvent];
-	Counters.testCounter5 = accumulatorCount;
-	Counters.testCounter4 = bastardTeeth;
+	Counters.testCounter5 = accumulatorCount; /// @todo TODO remove DEBUG
 
 	/* always make sure you have two good counts(there are a few windows that share counts) */
 	if(!(decoderFlags & CAM_SYNC)){
 		// FRED do this on a per edge basis to lower chances of false match with +/- 1 counts
-		Counters.testCounter3 = accumulatorCount;
 		if(accumulatorCount == AMBIGUOUS_COUNT){
 			return;
 		}else{
+			unsigned char lastEvent = 0xFF;
 			for(i = 0; numberOfRealEvents > i; i++){
 				if(windowCounts[i] == accumulatorCount){
-					currentEvent = i;
+					if(i == 0){ /* keep our counter from going out of range */
+						currentEvent = 0xFF; // Will be rolled over to 0
+						lastEvent = NUMBER_OF_REAL_EVENTS - 1;
+					}else{
+						currentEvent = i;
+						lastEvent = i - 1;
+					}
 					PORTB |= 0x01; /// @todo TODO remove DEBUG found count
 					break;
 				}
 			}
 
-			if(i == 0){ /* keep our counter from going out of range */
-				i = NUMBER_OF_REAL_EVENTS - 1;
-			}else{
-				i--;
-			}
-
-			Counters.testCounter4 = bastardTeeth;
-
-			if(windowCounts[i] == lastAccumulatorCount){ /* if true we are in sync! */
+			if(lastEvent == 0xFF){ // Indicates that we didn't find a match, previously uncaught, would have occasionally matched last event with i = max and no match found on THIS event
+				return;
+			}else if(windowCounts[lastEvent] == lastAccumulatorCount){ /* if true we are in sync! */
 				decoderFlags |= CAM_SYNC;
 				PORTB = 0x0F; /* light the board DEBUG */
 			}else{
@@ -168,6 +159,11 @@ void PrimaryRPMISR(void){
 	}
 
 	if(decoderFlags & CAM_SYNC){
+		currentEvent++;
+		if(currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
+			currentEvent = 0;
+		}
+
 		/*
 		 * bastardTeeth will be zero if things are going well, and a low number
 		 * if there is some latency, and a large number if totally wrong. This
@@ -179,6 +175,9 @@ void PrimaryRPMISR(void){
 		}else{
 			bastardTeeth = accumulatorCount - windowCounts[currentEvent];
 		}
+
+		Counters.testCounter4 = bastardTeeth; /// @todo TODO remove DEBUG
+		Counters.testCounter6 = windowCounts[currentEvent]; /// @todo TODO remove DEBUG
 
 		/* if we are in-sync continue checking and perform required decoder calcs */
 		LongTime timeStamp;

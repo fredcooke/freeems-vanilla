@@ -46,12 +46,6 @@
 #define EXTERN extern
 #endif
 
-// hash defines here
-#define SKIPWINDOWS 1
-#define LOWRESWINDOWS	16
-#define HIGH	1
-#define LOW		0
-
 #define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
 #define NUMBER_OF_REAL_EVENTS     16
 #define NUMBER_OF_VIRTUAL_EVENTS  16
