@@ -128,8 +128,8 @@ void PrimaryRPMISR(void){
 						currentEvent = 0xFF; // Will be rolled over to 0
 						lastEvent = NUMBER_OF_REAL_EVENTS - 1;
 					}else{
-						currentEvent = i;
 						lastEvent = i - 1;
+						currentEvent = lastEvent; // Will be rolled up to current
 					}
 					PORTB |= 0x01; /// @todo TODO remove DEBUG found count
 					break;
