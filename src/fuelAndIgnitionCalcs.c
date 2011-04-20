@@ -131,8 +131,7 @@ void calculateFuelAndIgnition(){
 //	}
 
 	/* Reference PW for comparisons etc */
-	unsigned short refPW = safeAdd(DerivedVars->EffectivePW, DerivedVars->IDT);
-	DerivedVars->RefPW = refPW;
+	DerivedVars->RefPW = safeAdd(DerivedVars->EffectivePW, DerivedVars->IDT);
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 /// @todo accumulate errors such that we know what sort of PW WOULD have been requested and enable a "over duty cut" to protect boosted users with insufficient injector size on cold nights
@@ -316,7 +315,7 @@ outputEventInputEventNumbers[15] = 15;
 
 
 /* "Calculate" the nominal total pulse width before per channel corrections */
-masterPulseWidth = refPW / numberOfInjectionsPerEngineCycle; // div by number of injections per cycle, configured above
+masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngineCycle), DerivedVars->IDT); // div by number of injections per cycle, configured above
 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
 
