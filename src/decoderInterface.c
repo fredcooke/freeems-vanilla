@@ -86,13 +86,14 @@ void resetToNonRunningState(unsigned char uniqueLossID){
  * @author Fred Cooke
  * @warning If you do not handle the skipEventFlags then excess advance may occur!
  */
-void schedulePortTPin(unsigned char pin, LongTime timeStamp){
+void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
+	unsigned char pin = outputEventPinNumbers[outputEventNumber];
 	unsigned short postReferenceEventDelay = 0;
-	if(skipEventFlags & injectorMainOnMasks[pin]){
+	if(skipEventFlags & (1UL << outputEventNumber)){
 		postReferenceEventDelay = decoderMaxCodeTime;
-		skipEventFlags &= injectorMainOffMasks[pin]; // Clear the flag
+		skipEventFlags &= ~(1UL << outputEventNumber); // Clear the flag
 	}else{
-		postReferenceEventDelay = postReferenceEventDelays[pin];
+		postReferenceEventDelay = postReferenceEventDelays[outputEventNumber];
 	}
 	// determine the long and short start times
 	unsigned short startTime = timeStamp.timeShorts[1] + postReferenceEventDelay;
@@ -125,7 +126,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 			if(newStartIsAfterOutputEndTimeAndCanSelfSet){
 				// self sched
 				injectorMainStartTimesHolding[pin] = startTime;
-				injectorMainPulseWidthsHolding[pin] = injectorMainPulseWidthsMath[pin];
+				injectorMainPulseWidthsHolding[pin] = injectorMainPulseWidthsMath[outputEventNumber];
 				selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
 				Counters.testCounter1++;
 			}else{
@@ -133,7 +134,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 				*injectorMainTimeRegisters[pin] = startTime;
 				TIE |= injectorMainOnMasks[pin];
 				TFLG = injectorMainOnMasks[pin];
-				injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[pin];
+				injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[outputEventNumber];
 				selfSetTimer &= injectorMainOffMasks[pin];
 				Counters.testCounter2++;
 			}
@@ -143,7 +144,7 @@ void schedulePortTPin(unsigned char pin, LongTime timeStamp){
 		*injectorMainTimeRegisters[pin] = startTime;
 		TIE |= injectorMainOnMasks[pin];
 		TFLG = injectorMainOnMasks[pin];
-		injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[pin];
+		injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[outputEventNumber];
 		selfSetTimer &= injectorMainOffMasks[pin];
 		Counters.testCounter3++;
 	}

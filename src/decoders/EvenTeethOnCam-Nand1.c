@@ -163,7 +163,7 @@ void PrimaryRPMISR(){
 			for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){
 				if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
 					skipEventFlags &= ~(1UL << outputEventNumber);
-					schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
+					schedulePortTPin(outputEventNumber, timeStamp);
 				}else if(skipEventFlags & (1UL << outputEventNumber)){
 					unsigned char eventBeforeCurrent = 0;
 					if(currentEvent == 0){
@@ -173,7 +173,7 @@ void PrimaryRPMISR(){
 					}
 
 					if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){
-						schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
+						schedulePortTPin(outputEventNumber, timeStamp);
 					}
 				}
 			}
