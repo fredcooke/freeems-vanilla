@@ -82,7 +82,7 @@ void generateDerivedVars(){
 	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
 	// temp dwell and advance vars...
-	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV) * 2;
+	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
 	DerivedVars->Advance = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID) / 20/* should be 1024/oneDegree, for now, but this is close enough (5% error or so) */; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
 /// @todo TODO make generic!!!!
