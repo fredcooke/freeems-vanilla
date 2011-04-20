@@ -53,10 +53,10 @@
 #include "../inc/utils.h"
 
 const unsigned char decoderName[] = "LT1-360-8";
-const unsigned short eventAngles[] = {(0 * oneDegree), (86 * oneDegree), (130 * oneDegree), (176 * oneDegree),
-                                     (180 * oneDegree), (266 * oneDegree), (280 * oneDegree), (356 * oneDegree),
-                                     (360 * oneDegree), (446 * oneDegree), (470 * oneDegree), (536 * oneDegree),
-                                     (540 * oneDegree), (626 * oneDegree), (660 * oneDegree), (716 * oneDegree)};
+const unsigned short eventAngles[] = {(  0 * oneDegree), ( 86 * oneDegree), (130 * oneDegree), (176 * oneDegree),
+                                      (180 * oneDegree), (266 * oneDegree), (280 * oneDegree), (356 * oneDegree),
+                                      (360 * oneDegree), (446 * oneDegree), (470 * oneDegree), (536 * oneDegree),
+                                      (540 * oneDegree), (626 * oneDegree), (660 * oneDegree), (716 * oneDegree)};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
 const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
@@ -95,7 +95,7 @@ void decoderInitPreliminary(void){
  * @todo TODO config pulse accumulator to fire its own RPM interrupt to give the wheel more
  * resoloution. Such as fire on every 10x.
  */
-void PrimaryRPMISR(void) {
+void PrimaryRPMISR(void){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 	// Grab this first as it is the most critical var in this decoder
@@ -109,7 +109,6 @@ void PrimaryRPMISR(void) {
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp; /* Calculate the latency in ticks */
 	unsigned char accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
 	lastPARegisterReading = accumulatorRegisterCount;
-	PORTJ |= 0x80; /* Echo input condition on J7 */
 	unsigned char i; /* temp loop var */
 
 	Counters.primaryTeethSeen++;
@@ -117,95 +116,89 @@ void PrimaryRPMISR(void) {
 
 	/* inc our event index, if not in sync it will be set for us anyway */
 	currentEvent++;
-	if (currentEvent == numberOfRealEvents) { /* roll our event over if we are at the end */
+	if(currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
 		currentEvent = 0x00;
 	}
 	/* for data logging */
-	//Counters.testCounter5 = accumulatorCount;
-	//Counters.testCounter5 = 0x00;
-	//Counters.testCounter6 = accumulatorCount;
-	//Counters.testCounter4 = currentEvent;
 	Counters.testCounter6 = windowCounts[currentEvent];
 	Counters.testCounter5 = accumulatorCount;
 	Counters.testCounter4 = bastardTeeth;
 
-
 	/* always make sure you have two good counts(there are a few windows that share counts) */
-	if (!(decoderFlags & CAM_SYNC)) {
+	if(!(decoderFlags & CAM_SYNC)){
 		// FRED do this on a per edge basis to lower chances of false match with +/- 1 counts
 		Counters.testCounter3 = accumulatorCount;
-		if (accumulatorCount == AMBIGUOUS_COUNT) {
+		if(accumulatorCount == AMBIGUOUS_COUNT){
 			return;
-		}
-		for (i = 0; numberOfRealEvents > i; i++) {
-			if (windowCounts[i] == accumulatorCount) {
-				currentEvent = i;
-				PORTB |= 0x01; /* found count */
-				break;
+		}else{
+			for(i = 0; numberOfRealEvents > i; i++){
+				if(windowCounts[i] == accumulatorCount){
+					currentEvent = i;
+					PORTB |= 0x01; /// @todo TODO remove DEBUG found count
+					break;
+				}
 			}
+
+			if(i == 0){ /* keep our counter from going out of range */
+				i = NUMBER_OF_REAL_EVENTS - 1;
+			}else{
+				i--;
+			}
+
+			Counters.testCounter4 = bastardTeeth;
+
+			if(windowCounts[i] == lastAccumulatorCount){ /* if true we are in sync! */
+				decoderFlags |= CAM_SYNC;
+				PORTB = 0x0F; /* light the board DEBUG */
+			}else{
+				/// @todo TODO missedsync opportunity ++ or something
+			}
+
+			lastAccumulatorCount = accumulatorCount;
+
+			/// @todo TODO put fuzzy initial sync in place, maybe.
+			//		// If still not synced, try to do fuzzy sync
+			//		if(!(decoderFlags & CAM_SYNC)){
+			//			// loop with +1 and -1
+			//			// count fuzzy syncs, if genuine, should only be one + and one -
+			//			// if not, give up and clear all state
+			//		}
+			//		return; /// @todo TODO remove and continue on down the thread
 		}
-		if (i == 0x00) { /* keep our counter from going out of range */
-			i = 0x0F;
-		} else {
-			i--;
+	}
+
+	if(decoderFlags & CAM_SYNC){
+		/*
+		 * bastardTeeth will be zero if things are going well, and a low number
+		 * if there is some latency, and a large number if totally wrong. This
+		 * will not catch sequences of same direction errors, though. We need
+		 * to keep a running track of past bastardTeeth too. TODO
+		 */
+		if(windowCounts[currentEvent] >= accumulatorCount){
+			bastardTeeth = windowCounts[currentEvent] - accumulatorCount;
+		}else{
+			bastardTeeth = accumulatorCount - windowCounts[currentEvent];
 		}
-		Counters.testCounter4 = bastardTeeth;
-		if (windowCounts[i] == lastAccumulatorCount) { /* if true we are in sync! */
-			decoderFlags |= CAM_SYNC;
-			PORTB = 0x0F; /* light the board */
-		} else {
-			// missedsync opportunity ++ or something
+
+		/* if we are in-sync continue checking and perform required decoder calcs */
+		LongTime timeStamp;
+
+		/* Install the low word */
+		timeStamp.timeShorts[1] = edgeTimeStamp;
+		/* Find out what our timer value means and put it in the high word */
+		if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
+			timeStamp.timeShorts[0] = timerExtensionClock + 1;
+		}else{
+			timeStamp.timeShorts[0] = timerExtensionClock;
 		}
-		lastAccumulatorCount = accumulatorCount;
-		//		// If still not synced, try to do fuzzy sync
-		//		if(!(decoderFlags & CAM_SYNC)){
-		//			// loop with +1 and -1
-		//			// count fuzzy syncs, if genuine, should only be one + and one -
-		//			// if not, give up and clear all state
-		//		}
-		//		return; /// @todo TODO remove and continue on down the thread
-	}
 
-	if (!(decoderFlags & CAM_SYNC)) {
-		return;
-	}
-
-	if (windowCounts[currentEvent] >= accumulatorCount) {
-		bastardTeeth = windowCounts[currentEvent] - accumulatorCount;
-	} else {
-		bastardTeeth = accumulatorCount - windowCounts[currentEvent];
-	}
-
-	/* if we are in-sync continue checking and perform required decoder calcs */
-	LongTime timeStamp;
-
-	/* Install the low word */
-	timeStamp.timeShorts[1] = edgeTimeStamp;
-	/* Find out what our timer value means and put it in the high word */
-	if (TFLGOF && !(edgeTimeStamp & 0x8000)) { /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
-		timeStamp.timeShorts[0] = timerExtensionClock + 1;
-	} else {
-		timeStamp.timeShorts[0] = timerExtensionClock;
-	}
-
-	if (decoderFlags & CAM_SYNC) {
-		if (bastardTeeth > 2) {
+		if(bastardTeeth > 2){
 			resetToNonRunningState(1);
-			//Counters.testCounter6 = windowCounts[currentEvent];
-			//Counters.testCounter5 = accumulatorCount;
-			//Counters.testCounter5 = windowCounts[currentEvent];
-			//Counters.testCounter4 = bastardTeeth;
-			PORTB = 0xFF;
+			PORTB = 0xFF; /// @todo TODO remove DEBUG
 			return;
-		} else {
-			//lastAccumulatorCount = windowCounts[currentEvent]; //correct count now or we will get a wider margin of error on the next ISR
-//			Counters.testCounter6 = windowCounts[currentEvent];
-//			Counters.testCounter5 = accumulatorCount;
-//			Counters.testCounter4 = bastardTeeth;
-
+		}else{
 			/* TODO all required calcs etc as shown in other working decoders */
-			if (!((currentEvent % 2) == 0)) { /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
-
+			if((currentEvent % 2) == 1){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
 				// temporary data from inputs
 				unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 				unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
@@ -225,13 +218,11 @@ void PrimaryRPMISR(void) {
 				/* Reset the clock for reading timeout */
 				Clocks.timeoutADCreadingClock = 0;
 				RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-				PORTB = 0x00;
+				PORTB = 0x00; /// @todo TODO remove DEBUG
 			}
 		}
-	}
 
-	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
-	if(decoderFlags & CAM_SYNC){
+		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
 		unsigned char outputEventNumber;
 		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){
 			if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
@@ -255,24 +246,13 @@ void PrimaryRPMISR(void) {
 
 
 /** Secondary RPM ISR
+ *
  * @brief Update the scheduler every time 5 teeth are counted by the pulse accumulator
- * @todo TODO Docs here!
- * @todo TODO
- * @todo TODO
+ *
+ * @todo TODO Change the accumulator mode to overflow every 5 inputs on PT0 making our 360 tooth wheel interrupt like a 72 tooth wheel
+ * @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
  */
 void SecondaryRPMISR(void){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
-
-	/* Save all relevant available data here */
-//	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
-//	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
-//	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-
-	/** PT0 Accumulator Mode
- * @brief Change the accumulator mode to overflow every 5 inputs on PT0 making our 360
- *  tooth wheel interrupt like a 72 tooth wheel
- *
- @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
- */
 }
