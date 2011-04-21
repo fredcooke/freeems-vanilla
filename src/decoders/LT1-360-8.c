@@ -158,6 +158,7 @@ void PrimaryRPMISR(void){
 		}
 	}
 
+	unsigned char numberScheduled = 0; /// @todo TODO remove DEBUG
 	if(decoderFlags & CAM_SYNC){
 		currentEvent++;
 		if(currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
@@ -221,12 +222,14 @@ void PrimaryRPMISR(void){
 			}
 		}
 
+		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
 		unsigned char outputEventNumber;
 		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){
 			if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
 				skipEventFlags &= ~(1UL << outputEventNumber);
 				schedulePortTPin(outputEventNumber, timeStamp);
+				numberScheduled++;
 			}else if(skipEventFlags & (1UL << outputEventNumber)){
 				unsigned char eventBeforeCurrent = 0;
 				if(currentEvent == 0){
@@ -237,10 +240,13 @@ void PrimaryRPMISR(void){
 
 				if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){
 					schedulePortTPin(outputEventNumber, timeStamp);
+					numberScheduled++;
 				}
 			}
 		}
 	}
+	RuntimeVars.secondaryInputTrailingRuntime = numberScheduled;
+	RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 }
 
 
