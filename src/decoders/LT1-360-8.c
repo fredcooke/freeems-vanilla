@@ -58,13 +58,13 @@ const unsigned short eventAngles[] = {(  0 * oneDegree), ( 86 * oneDegree), (130
                                       (360 * oneDegree), (446 * oneDegree), (470 * oneDegree), (536 * oneDegree),
                                       (540 * oneDegree), (626 * oneDegree), (660 * oneDegree), (716 * oneDegree)};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
-const unsigned char windowCounts[] = {56,4,86,44,46,4,86,14,76,4,86,24,66,4,86,34};
+const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
 unsigned char lastPARegisterReading = 0xFF;
 unsigned char windowState = 0x00;
 unsigned char lastNumberOfRealEvents = 0x00;
 unsigned char accumulatorRegisterCount = 0x00;
-signed char bastardTeeth = 0x00;
+signed char cumulativeBastardTeeth = 0x00;
 
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
@@ -171,9 +171,11 @@ void PrimaryRPMISR(void){
 		 * will not catch sequences of same direction errors, though. We need
 		 * to keep a running track of past bastardTeeth too. TODO
 		 */
-		bastardTeeth += accumulatorCount - windowCounts[currentEvent];
 
-		Counters.testCounter4 = bastardTeeth; /// @todo TODO remove DEBUG
+		signed char bastardTeeth = accumulatorCount - windowCounts[currentEvent];
+		cumulativeBastardTeeth += bastardTeeth;
+
+		Counters.testCounter4 = cumulativeBastardTeeth; /// @todo TODO remove DEBUG
 		Counters.testCounter6 = windowCounts[currentEvent]; /// @todo TODO remove DEBUG
 
 		/* if we are in-sync continue checking and perform required decoder calcs */
@@ -188,13 +190,17 @@ void PrimaryRPMISR(void){
 			timeStamp.timeShorts[0] = timerExtensionClock;
 		}
 
-		if((bastardTeeth > 2) || (bastardTeeth < -2)){
-			resetToNonRunningState(BASTARD_BASE + bastardTeeth);
+		if((bastardTeeth > MAX_BASTARD_TEETH) || (bastardTeeth < -MAX_BASTARD_TEETH)){
+			resetToNonRunningState(BASTARD_SYNC_LOSS_ID_BASE + bastardTeeth);
+			PORTB = 0xAA; /// @todo TODO remove DEBUG
+			return;
+		}else if((cumulativeBastardTeeth > MAX_CUMULATIVE_BASTARD_TEETH) || (cumulativeBastardTeeth < -MAX_CUMULATIVE_BASTARD_TEETH)){
+			resetToNonRunningState(BASTARD_CUMULATIVE_SYNC_LOSS_ID_BASE + cumulativeBastardTeeth);
 			PORTB = 0xFF; /// @todo TODO remove DEBUG
 			return;
 		}else{
 			/* TODO all required calcs etc as shown in other working decoders */
-			if((currentEvent % 2) == 0){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
+			if((currentEvent % 2) == 1){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
 				// temporary data from inputs
 				unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 				unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
