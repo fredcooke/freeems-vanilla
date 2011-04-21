@@ -203,7 +203,7 @@ void PrimaryRPMISR(void){
 				/* RPM CALC, KISS for now and only run this part of the ISR when the edge has gone high
 				 * this way we have evenly spaced teeth
 				 */
-				*ticksPerDegreeRecord = (unsigned short) (timeBetweenSuccessivePrimaryPulses / 8 ); /* 8 / 2 for crankshaft RPM */
+				*ticksPerDegreeRecord = (unsigned short) (timeBetweenSuccessivePrimaryPulses / 16 ); /* 8 * 2 for crankshaft RPM */
 
 				// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 				sampleEachADC(ADCArrays);
