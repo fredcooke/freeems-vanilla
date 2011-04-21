@@ -58,7 +58,7 @@ const unsigned short eventAngles[] = {(  0 * oneDegree), ( 86 * oneDegree), (130
                                       (360 * oneDegree), (446 * oneDegree), (470 * oneDegree), (536 * oneDegree),
                                       (540 * oneDegree), (626 * oneDegree), (660 * oneDegree), (716 * oneDegree)};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
-const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
+const unsigned char windowCounts[] = {56,4,86,44,46,4,86,14,76,4,86,24,66,4,86,34};
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
 unsigned char lastPARegisterReading = 0xFF;
 unsigned char windowState = 0x00;
@@ -194,7 +194,7 @@ void PrimaryRPMISR(void){
 			return;
 		}else{
 			/* TODO all required calcs etc as shown in other working decoders */
-			if((currentEvent % 2) == 1){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
+			if((currentEvent % 2) == 0){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
 				// temporary data from inputs
 				unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 				unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;
