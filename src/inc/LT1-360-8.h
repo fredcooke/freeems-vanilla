@@ -46,7 +46,7 @@
 #define EXTERN extern
 #endif
 
-#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define DECODER_MAX_CODE_TIME    200 // To be optimised (shortened)!
 #define NUMBER_OF_REAL_EVENTS     16
 #define NUMBER_OF_VIRTUAL_EVENTS  16
 #define AMBIGUOUS_COUNT           86
