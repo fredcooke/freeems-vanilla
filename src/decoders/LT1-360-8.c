@@ -64,7 +64,7 @@ unsigned char lastPARegisterReading = 0xFF;
 unsigned char windowState = 0x00;
 unsigned char lastNumberOfRealEvents = 0x00;
 unsigned char accumulatorRegisterCount = 0x00;
-unsigned char bastardTeeth = 0x00;
+signed char bastardTeeth = 0x00;
 
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
@@ -171,11 +171,7 @@ void PrimaryRPMISR(void){
 		 * will not catch sequences of same direction errors, though. We need
 		 * to keep a running track of past bastardTeeth too. TODO
 		 */
-		if(windowCounts[currentEvent] >= accumulatorCount){
-			bastardTeeth = windowCounts[currentEvent] - accumulatorCount;
-		}else{
-			bastardTeeth = accumulatorCount - windowCounts[currentEvent];
-		}
+		bastardTeeth += accumulatorCount - windowCounts[currentEvent];
 
 		Counters.testCounter4 = bastardTeeth; /// @todo TODO remove DEBUG
 		Counters.testCounter6 = windowCounts[currentEvent]; /// @todo TODO remove DEBUG
@@ -192,8 +188,8 @@ void PrimaryRPMISR(void){
 			timeStamp.timeShorts[0] = timerExtensionClock;
 		}
 
-		if(bastardTeeth > 2){
-			resetToNonRunningState(1);
+		if((bastardTeeth > 2) || (bastardTeeth < -2)){
+			resetToNonRunningState(BASTARD_BASE + bastardTeeth);
 			PORTB = 0xFF; /// @todo TODO remove DEBUG
 			return;
 		}else{
