@@ -58,7 +58,12 @@
 
 #define BENCH_TEST_NAME "BenchTest"
 
-#define degreeTicksPerMinute 4166667
+// http://www.google.com/search?hl=en&biw=1283&bih=670&q=1250+*+60%29+*+50&aq=f&aqi=h1&aql=&oq=
+// 1250 ticks per second
+// 60 seconds per minute
+// 50 units per degree
+// 1250 * 60 * 50 =
+#define degreeTicksPerMinute 3750000
 #define ticks_per_degree_multiplier (10 * oneDegree)
 /// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
 #define oneDegree 50U // Scaler for all scheduler and decoder angles, not tables etc. Suffix is necessary otherwise 8 bit is assumed. TODO Mount Messenger road to New Plymouth! Recommended Kim@bach with NAZZZ and Steve!
