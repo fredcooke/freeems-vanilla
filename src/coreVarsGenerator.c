@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
