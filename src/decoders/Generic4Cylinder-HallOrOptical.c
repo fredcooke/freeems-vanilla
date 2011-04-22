@@ -107,7 +107,7 @@ void PrimaryRPMISR(){
 		lastPrimaryEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
 
-		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessivePrimaryPulses / 16);
+		*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / angleOfSingleIteration); /* 8 * 2 for crankshaft RPM */
 
 		// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 		sampleEachADC(ADCArrays);
@@ -130,7 +130,7 @@ void PrimaryRPMISR(){
 		lastSecondaryEventTimeStamp = secondaryLeadingEdgeTimeStamp;
 
 
-		*ticksPerDegreeRecord = (unsigned short)(timeBetweenSuccessiveSecondaryPulses / 16);
+		*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / angleOfSingleIteration); /* 8 * 2 for crankshaft RPM */
 
 		/// @todo TODO make this stuff behave correctly, this one will only run at startup, and the other will always run, but do it by generic config and split this stuff out into a shared function, soon.
 		sampleEachADC(ADCArrays);
