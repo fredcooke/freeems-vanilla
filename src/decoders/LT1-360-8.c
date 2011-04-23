@@ -210,7 +210,13 @@ void PrimaryRPMISR(void){
 				/* RPM CALC, KISS for now and only run this part of the ISR when the edge has gone high
 				 * this way we have evenly spaced teeth
 				 */
-				*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / (90 * oneDegree)); /* 8 * 2 for crankshaft RPM */
+				*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / (90 * oneDegree));
+				// instead of above:
+				// save time difference
+				// have angle of time difference as setting
+				// do whole rpm calc in main loop to save ISR time, make more sense, and be more coherent to read
+				// then it's possible to use different tpdm figures for different RPM levels, thereby allowing a large range AND fine granularity!
+				// tpd would still need to be calculated for scheduling reasons, and the different scalings would need to be checked for overflow there.
 
 				// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 				sampleEachADC(ADCArrays);
