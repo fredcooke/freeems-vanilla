@@ -86,6 +86,11 @@ void generateDerivedVars(){
 	DerivedVars->Advance = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID) / 20/* should be 1024/oneDegree, for now, but this is close enough (5% error or so) */; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
 /// @todo TODO make generic!!!!
+// to go generic we need:
+// angle between ignition events (if have tpd) (or total angle and number of events)
+// max % dwell
+// minimum spark time
+// a setting to choose which behaviour (don't limit/% dwell limit/min spark time/other?)
 #ifdef HOTEL
 	/// @bug hack for hyundai! 135 = 3/4 of 180 = one cycle...
 	unsigned long threeQuartersOfAvailableTime = ((unsigned long)CoreVars->DRPM * 135 * oneDegree) / ticks_per_degree_multiplier;
