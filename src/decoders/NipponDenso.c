@@ -209,125 +209,6 @@ void PrimaryRPMISR(){
 
 
 
-				// TODO advance/retard/dwell numbers all need range checking etc done. some of this should be done in the calculator section, and some here. currently none is done at all and for that reason, this will not work in a real system yet, if it works at all.
-				// as do array indexs here and in the ISRs...
-
-
-				// TODO implement mechanism for dropping a cylinder in event of over queueing or spark cut/round robin
-				// important as ignition sequence disrupted when this occurs as it stands.
-
-				// TODO check queue length checks to ensure we dont count up to somewhere we can never count down from. This could be causing the hanging long phenomina
-
-				// DWELL
-/*
-				// If dwell is not currently enabled, set it all up
-				if(!(PITCE & DWELL_ENABLE)){
-					// Schedule Dwell event (do this first because it comes earliest.
-					// set the channel to fire
-					nextDwellChannel = ignitionChannel;
-
-					// set the time
-					PITLD0 = advance;
-					//				PITLD0 = ignitionAdvances[ignitionChannel] - *currentDwellRealtime; this var removed too... and: BAD for various reasons!
-
-					// clear the flags first as they apparently become set any old time whether enabled or not.
-					PITTF |= DWELL_ENABLE;
-
-					// turn on the ints
-					PITINTE |= DWELL_ENABLE;
-
-					// clear the flags first as they apparently become set any old time whether enabled or not.
-					PITTF |= DWELL_ENABLE;
-
-					// enable channels
-					PITCE |= DWELL_ENABLE;
-				}else if(dwellQueueLength == 0){
-					// load time offset such that next period is correct
-					PITLD0 = (advance - PITCNT0);
-
-					// increment queue length
-					dwellQueueLength++;
-				}else if(dwellQueueLength > fixedConfigs1.engineSettings.combustionEventsPerEngineCycle){ //TODO sensible figures here for array index OOBE
-					// do nothing, or increment a counter or something similar.
-				}else{
-					unsigned short sumOfDwells = PITLD0;
-					// add up the prequeued time periods
-
-					// queue = 1 pitld is all
-					// queue = 2 one from 0 index of array AND pitld
-
-					unsigned char index = 0;
-					while(index < (dwellQueueLength -1)){
-						sumOfDwells += queuedDwellOffsets[index];
-						index++;
-					}
-					//				for(index = 0;index < (dwellQueueLength -1);index++){ // is this right?
-					//					sumOfDwells += queuedDwellOffsets[index];
-					//				}
-
-					// store time offset in appropriate array location
-					queuedDwellOffsets[dwellQueueLength - 1] = advance - (PITCNT0 + sumOfDwells);
-
-					// increment queue length from one or more
-					dwellQueueLength++;
-				}
-
-				// IGNITION experimental stuff
-
-				// If ignition is not currently enabled, set it all up
-				if(!(PITCE & IGNITION_ENABLE)){
-					// Schedule Ignition event (do this first because it comes earliest.
-					// set the channel to fire
-					nextIgnitionChannel = ignitionChannel;
-
-					// figure out the time to set the delay reg to
-					PITLD1 = advance + injectorMainPulseWidthsRealtime[fuelChannel];
-					//				PITLD1 = ignitionAdvances[ignitionChannel + outputBankIgnitionOffset];
-
-					// clear the flags first as they apparently become set any old time whether enabled or not.
-					PITTF |= IGNITION_ENABLE;
-
-					// turn on the ints
-					PITINTE |= IGNITION_ENABLE;
-
-					// clear the flags first as they apparently become set any old time whether enabled or not.
-					PITTF |= IGNITION_ENABLE;
-
-					// enable channels
-					PITCE |= IGNITION_ENABLE;
-				}else if(ignitionQueueLength == 0){
-					// load timer register
-					PITLD1 = ((advance + injectorMainPulseWidthsRealtime[fuelChannel]) - PITCNT1);
-
-					// increment to 1
-					ignitionQueueLength++;
-				}else if(ignitionQueueLength > fixedConfigs1.engineSettings.combustionEventsPerEngineCycle){ //TODO sensible figures here for array index OOBE
-					// do nothing, or increment a counter or something similar.
-				}else{
-					unsigned short sumOfIgnitions = PITLD1;
-					// add up the prequeued time periods
-
-					// queue = 1 pitld is all
-					// queue = 2 one from 0 index of array AND pitld
-
-
-					unsigned char index = 0;
-					while(index < (ignitionQueueLength - 1)){
-						sumOfIgnitions += queuedIgnitionOffsets[index];
-						index++;
-					}
-					//	for(index = 0;index < (ignitionQueueLength -1);index++){ // is this right?
-					// 		sumOfIgnitions += queuedIgnitionOffsets[index];
-					//	}
-
-					// store time offset in appropriate array location
-					queuedIgnitionOffsets[ignitionQueueLength - 1] = advance - (PITCNT1 + sumOfIgnitions);
-
-					// increment from 1 or more
-					ignitionQueueLength++;
-				}*/
-
-
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		PORTJ &= 0x7F;
@@ -336,9 +217,6 @@ void PrimaryRPMISR(){
 
 	Counters.primaryTeethSeen++;
 	// suss out rpm and accurate TDC reference
-
-	// if you say it quick, it doesn't sound like much :
-	// schedule fuel and ign based on spark cut and fuel cut and timing vars and status vars config vars
 }
 
 

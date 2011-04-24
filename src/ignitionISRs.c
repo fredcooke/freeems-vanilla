@@ -29,6 +29,8 @@
  *
  * @brief Turn ignition channels on and off
  *
+ * As of 6am 25/4/11 nzst this file has been stripped and de-commissioned.
+ *
  * This currently semi-working but broken code is intended to one day provide
  * multi-channel ignition capabilities. The basic method will be to turn a pin
  * or set of pins on or another pin or set of pins off during each run of the
@@ -74,41 +76,6 @@ void IgnitionDwellISR(void)
 {
 	// clear flag
 	PITTF = DWELL_ENABLE;
-
-	// start dwelling asap
-//	PO-xgate-handles-this-RTS_BA |= dwellStartMasks[nextDwellChannel];
-
-	if(dwellQueueLength == 0){
-		// turn off the int
-		PITINTE &= DWELL_DISABLE;
-
-		// disable channels
-		PITCE &= DWELL_DISABLE;
-	}else{
-		// reduce queue length by one
-		dwellQueueLength--;
-
-		// increment channel counter to next channel
-		if(nextDwellChannel < (fixedConfigs1.engineSettings.combustionEventsPerEngineCycle - 1)){
-			nextDwellChannel++; // if not the last channel, increment
-		}else{
-			nextDwellChannel = 0; // if the last channel, reset to zero
-		}
-
-		// if the queue length after decrement is greater than 0 then we need to load the timer, if it is zero and we decremented, the timer was already loaded.
-		if(dwellQueueLength > 0){
-			if(dwellQueueLength > 8){ // TODO ???? why 8 ???? 12 or combustion events per... or ?
-				//throw a nasty error of some sort for index out of range issue that should never occur (for now just light a LED)
-				PORTS |= 0x20;
-			}else{
-				// load the timer if the index is good
-				PITLD0 = queuedDwellOffsets[dwellQueueLength - 1];
-			}
-		}
-	}
-
-	// blink a led
-	PORTS ^= 0x80;
 }
 
 
@@ -124,39 +91,4 @@ void IgnitionFireISR(void)
 {
 	// clear flag
 	PITTF = IGNITION_ENABLE;
-
-	// fire the coil asap
-//	PO-xgate-handles-this-RTS_BA &= ignitionMasks[nextIgnitionChannel];
-
-	if(ignitionQueueLength == 0){
-		// turn off the int
-		PITINTE &= IGNITION_DISABLE;
-
-		// disable channels
-		PITCE &= IGNITION_DISABLE ;
-	}else{
-		// reduce queue length by one
-		ignitionQueueLength--;
-
-		// increment channel counter to next channel
-		if(nextIgnitionChannel < (fixedConfigs1.engineSettings.combustionEventsPerEngineCycle - 1)){
-			nextIgnitionChannel++; // if not the last channel, increment
-		}else{
-			nextIgnitionChannel = 0; // if the last channel, reset to zero
-		}
-
-		// if the queue length after decrement is greater than 0 then we need to load the timer, if it is zero and we decremented, the timer was already loaded.
-		if(ignitionQueueLength > 0){
-			if(ignitionQueueLength > fixedConfigs1.engineSettings.combustionEventsPerEngineCycle){ // TODO as above!!!!!!!!!!
-				//throw a nasty error of some sort for index out of range issue that should never occur (for now just light a LED)
-				PORTS |= 0x10;
-			}else{
-				// load the timer if the index is good
-				PITLD0 = queuedIgnitionOffsets[ignitionQueueLength - 1];
-			}
-		}
-	}
-
-	// blink a led
-	PORTS ^= 0x40;
 }

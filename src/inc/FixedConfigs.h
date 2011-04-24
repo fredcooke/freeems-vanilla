@@ -111,28 +111,17 @@ typedef struct {
 
 
 typedef struct {
-	/* Fuel injection settings TODO duplication from original temp code below!! */
+	/* Fuel injection settings */
 	unsigned short perCylinderVolume;	/* 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
 	unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
 	unsigned short injectorFlow;		/* Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
 	unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
-	/* Setting variables (must be inited with useful values) */
-	unsigned short capacityOfAirPerCombustionEvent;		/* How much air it swallows per power producing event	*/
-	unsigned short perPrimaryInjectorChannelFlowRate;	/* How much fuel flows per minute per channel			*/
-	unsigned short perSecondaryInjectorChannelFlowRate;	/* How much fuel flows per minute per channel			*/
-	unsigned char ports;								/* How many groups of injectors we are firing			*/
-	unsigned char coils;								/* How many coils we are firing							*/
-	unsigned char combustionEventsPerEngineCycle;		/* How many power producing events per engine cycle		*/
-	unsigned char revolutionsPerEngineCycle;			/* Rotary = 1, 2 Stroke = 1, 4 Stroke = 2				*/
-	unsigned char primaryTeeth;							/* How many teeth are on the crank signal including the missing ones if any (eg. 36-1 primary = 36 not 35) */
-	unsigned char missingTeeth;							/* Number sequentially removed from primary teeth (eg. 36-1 missing = 1) */
 } engineSetting;
 
 
 typedef struct {
 	/* Serial settings */
 	unsigned short baudDivisor;							/* 22 = (40MHz / (16*115.2kHz)) = 21.7013889 */
-	unsigned char networkAddress;						/* Default = 1, Default for PC = 10 */
 } serialSetting;
 
 
