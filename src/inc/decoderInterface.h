@@ -137,6 +137,8 @@ EXTERN unsigned char currentEvent;
 EXTERN unsigned char decoderFlags;
 EXTERN unsigned long skipEventFlags;
 EXTERN unsigned long engineCyclePeriod;
+EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
+
 /// @todo Introduce the concept of sync level to schedule for if NOT synced
 /// @todo and a way of deciding what to do in different sync states
 /// @todo and proper dividers for pulsewidths
@@ -174,6 +176,30 @@ EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the prima
 
 
 #ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
+
+/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+#define SCHEDULE_ECT_OUTPUTS() \
+numberScheduled = 0; \
+unsigned char outputEventNumber;\
+for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){\
+	if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){\
+		skipEventFlags &= ~(1UL << outputEventNumber);\
+		schedulePortTPin(outputEventNumber, timeStamp);\
+		numberScheduled++;\
+	}else if(skipEventFlags & (1UL << outputEventNumber)){\
+		unsigned char eventBeforeCurrent = 0;\
+		if(currentEvent == 0){\
+			eventBeforeCurrent = numberOfRealEvents - 1;\
+		}else{\
+			eventBeforeCurrent = currentEvent - 1;\
+		}\
+\
+		if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){\
+			schedulePortTPin(outputEventNumber, timeStamp);\
+			numberScheduled++;\
+		}\
+	}\
+}
 
 // These give a warning in eclipse because they aren't defined in this file, they are defined per decoder and enforced here.
 #ifndef DECODER_MAX_CODE_TIME

@@ -220,7 +220,7 @@ Real readings from truck cranking test:
 14580 - start of fourth outer slot (goes low at CPU, goes high outside)
 14625 - end of fourth outer slot (goes high at CPU, goes low outside)
 14665 - end of inner slot (goes high at CPU, goes low outside)
-14698 - start of first outer on next cycleÉ.
+14698 - start of first outer on next cycleï¿½.
 
 remove 14k from each:
 
@@ -234,7 +234,7 @@ remove 14k from each:
 580 - start of fourth outer slot (goes low at CPU, goes high outside)
 625 - end of fourth outer slot (goes high at CPU, goes low outside)
 665 - end of inner slot (goes high at CPU, goes low outside)
-698 - start of first outer on next cycleÉ.
+698 - start of first outer on next cycleï¿½.
 
 remove 213 from each:
 
@@ -248,7 +248,7 @@ remove 213 from each:
 367 start of fourth outer slot (goes low at CPU, goes high outside)
 412 end of fourth outer slot (goes high at CPU, goes low outside)
 452 end of inner slot (goes high at CPU, goes low outside)
-485 start of first outer on next cycleÉ.
+485 start of first outer on next cycleï¿½.
 
 scale for degrees: (720/485) * num = degrees
 
@@ -262,7 +262,7 @@ scale for degrees: (720/485) * num = degrees
 544.824742 start of fourth outer slot (goes low at CPU, goes high outside)
 611.628866 end of fourth outer slot (goes high at CPU, goes low outside)
 671.010309 end of inner slot (goes high at CPU, goes low outside)
-720/0 start of first outer on next cycleÉ.
+720/0 start of first outer on next cycleï¿½.
 
 Broken into widths:
 
@@ -494,27 +494,7 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
-	if(decoderFlags & CAM_SYNC){
-		unsigned char outputEventNumber;
-		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){ /// @todo TODO this should only iterate through what is necessary, based on config...
-			if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
-				skipEventFlags &= injectorMainOffMasks[0];
-				schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
-			}else if(skipEventFlags & injectorMainOnMasks[outputEventNumber]){
-				unsigned char eventBeforeCurrent = 0;
-				if(currentEvent == 0){
-					eventBeforeCurrent = numberOfRealEvents - 1;
-				}else{
-					eventBeforeCurrent = currentEvent - 1;
-				}
-
-				if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){
-					schedulePortTPin(outputEventPinNumbers[outputEventNumber], timeStamp);
-				}
-			}
-		}
-	}
+	SCHEDULE_ECT_OUTPUTS();
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
