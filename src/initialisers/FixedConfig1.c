@@ -52,9 +52,23 @@
 /** @copydoc fixedConfig1 */
 const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	engineSettings:{
+#ifdef TRUCK
+		perCylinderVolume:  cylinderSize500cc,
+		injectorFlow:       injector550cc,
+#elif PRESTO
 		perCylinderVolume:  cylinderSize400cc,
-		stoichiometricAFR:  stoichiometricAFRGasoline,
 		injectorFlow:       injector213cc,
+#elif SEANKLT1
+		perCylinderVolume:  cylinderSize727cc,
+		injectorFlow:       injector525cc,
+#elif SEANKR1
+		perCylinderVolume:  cylinderSize250cc,
+		injectorFlow:       injector230cc,
+#else
+		perCylinderVolume:  cylinderSize500cc,
+		injectorFlow:       injector550cc,
+#endif
+		stoichiometricAFR:  stoichiometricAFRGasoline,
 		densityOfFuelAtSTP: densityOfPetrol
 	},
 	serialSettings:{

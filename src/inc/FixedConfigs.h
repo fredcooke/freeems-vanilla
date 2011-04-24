@@ -113,8 +113,8 @@ typedef struct {
 typedef struct {
 	/* Fuel injection settings */
 	unsigned short perCylinderVolume;	/* 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
-	unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
 	unsigned short injectorFlow;		/* Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
+	unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
 	unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
 } engineSetting;
 
