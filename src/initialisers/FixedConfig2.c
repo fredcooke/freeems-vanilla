@@ -66,8 +66,13 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	sensorRanges:{
 		TPSClosedMAP:  offIdleMAP,
 		TPSOpenMAP:    nearlyWOTMAP,
+#ifdef HOTEL
+		MAPMinimum:    Toyota3BarMin,
+		MAPRange:      Toyota3BarRange,
+#else
 		MAPMinimum:    MPX4250AMin,
 		MAPRange:      MPX4250ARange,
+#endif
 		AAPMinimum:    MPX4100AMin,
 		AAPRange:      MPX4100ARange,
 		EGOMinimum:    LC1LambdaMin,
