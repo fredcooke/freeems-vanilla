@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -223,13 +223,18 @@
  */
 
 
+/* Toyota 3bar found on some Toyota Cynos 5E-FE cars (and probably many others), em_knaps and Lev8n are responsible for this data! */
+#define Toyota3BarMin                600       /* Pressure read at lowest ADC reading */
+#define Toyota3BarMax              30000       /* Pressure read at highest ADC reading */
+#define Toyota3BarRange            29400       /* Pressure difference between lowest and highest ADC readings */
+
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4100A.pdf */
 #define MPX4100AMin               1400       /* Pressure read at lowest ADC reading */
 #define MPX4100AMax              10750       /* Pressure read at highest ADC reading */
 #define MPX4100ARange             9350       /* Pressure difference between lowest and highest ADC readings */
 
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4250A.pdf */
-#define MPX4250AMin                800           /* Pressure read at lowest ADC reading */
+#define MPX4250AMin                800       /* Pressure read at lowest ADC reading */
 #define MPX4250AMax              26000       /* Pressure read at highest ADC reading */
 #define MPX4250ARange            25200       /* Pressure difference between lowest and highest ADC readings */
 
@@ -241,14 +246,14 @@
 #define MPXH6400AMax             42000       /* Pressure read at highest ADC reading */
 #define MPXH6400ARange           40800       /* Pressure difference between lowest and highest ADC readings */
 
-#define TPSDefaultMin              255           /* ADC reading at lowest throttle position */
-#define TPSDefaultMax              767           /* ADC reading at highest throttle position */
+#define TPSDefaultMin              255       /* ADC reading at lowest throttle position */
+#define TPSDefaultMax              767       /* ADC reading at highest throttle position */
 
 #define offIdleMAP                3000       /* 30kPa just above where MAP would be with closed throttle at idle */
 #define nearlyWOTMAP              9500       /* 95kPa just below where MAP would be at WOT */
 
-#define ticksPerCycleAtOneRPMx2  300000000    /* twice how many 0.8us ticks there are in between engine cycles at 1 RPM */
-#define ticksPerCycleAtOneRPM    150000000    /* how many 0.8us ticks there are in between engine cycles at 1 RPM */
+#define ticksPerCycleAtOneRPMx2  300000000   /* twice how many 0.8us ticks there are in between engine cycles at 1 RPM */
+#define ticksPerCycleAtOneRPM    150000000   /* how many 0.8us ticks there are in between engine cycles at 1 RPM */
 //#define ticksForFiftyRPM         3000000       /* ticksPerCycleAtOneRPM / 50 */
 #define tachoTickFactor4at50     6           /* Provides for a 4 cylinder down to 50 RPM  */
 /*efine tachoEdgesPerCycle4at50  8           /  8 events per cycle for a typical 4 cylinder tacho, 4 on, 4 off */
