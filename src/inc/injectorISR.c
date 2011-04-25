@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke, Jared Harvey
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke, Jared Harvey
  *
  * This file is part of the FreeEMS project.
  *
@@ -66,9 +66,6 @@ void InjectorXISR(){
 	/* Record the edge time stamp from the IC register */
 	unsigned short edgeTimeStamp = *injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER];
 
-	/* Calculate and store the latency based on compare time and start time */
-	injectorCodeLatencies[INJECTOR_CHANNEL_NUMBER] = TCNTStart - edgeTimeStamp;
-
 	/* If rising edge triggered this */
 	if(PTIT & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){ // Stuff for switch on time
 
@@ -126,4 +123,6 @@ void InjectorXISR(){
 		/* Calculate and store code run time */
 		injectorCodeCloseRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
 	}
+	/* Calculate and store the latency based on compare time and start time */
+	injectorCodeLatencies[INJECTOR_CHANNEL_NUMBER] = TCNTStart - edgeTimeStamp;
 }
