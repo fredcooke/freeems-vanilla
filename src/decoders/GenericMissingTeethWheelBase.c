@@ -160,7 +160,7 @@ void PrimaryRPMISR(void) {
  *
  * @todo TODO Docs here!
  */
-void SecondaryRPMISR(void) {
+void SecondaryRPMISR(void) { // migrate this to its own file for this decoder type such that various types of secondary sync can be handled with missing tooth main sync, thanks Abe for arguing and whinging.
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 
