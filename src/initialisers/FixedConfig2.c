@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -49,39 +49,36 @@
 
 /** @copydoc fixedConfig1 */
 const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
-		{
-		roomTemperature,        	/* presetIAT */
-		runningTemperature,     	/* presetCHT */
-		halfThrottle,           	/* presetTPS */
-		stoichiometricLambda,   	/* presetEGO */
-		runningVoltage,         	/* presetBRV */
-		idleManifoldPressure,   	/* presetMAP */
-		seaLevelKPa,            	/* presetAAP */
-		roomTemperature,        	/* presetMAT */
-		stoichiometricLambda,   	/* presetEGO2 */
-		maxExpectedBoost,       	/* presetIAP */
-		idlePulseWidth,         	/* presetBPW */
-		idleAirFlow          		/* presetAF */
-		},
-
-		{
-		offIdleMAP,         		/* TPSClosedMAP */
-		nearlyWOTMAP,       		/* TPSOpenMAP */
-		MPX4250AMin,        		/* MAPMinimum */
-		MPX4250ARange,      		/* MAPRange */
-		MPX4100AMin,        		/* AAPMinimum */
-		MPX4100ARange,      		/* AAPRange */
-		LC1LambdaMin,       		/* EGOMinimum */
-		LC1LambdaRange,     		/* EGORange */
-		batteryVoltageMin,  		/* BRVMinimum */
-		batteryVoltageRange,		/* BRVRange */
-		TPSDefaultMin,      		/* TPSMinimumADC */
-		TPSDefaultMax       		/* TPSMaximumADC */
-		},
-
-		{ // Warning, until the following mods are made to ADC use, setting this lower than your cranking rpm will result in a pulsing fuel pump.
-		250,                  	/* readingTimeout */ /** Default to 0.25 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
-		},
-
-		{"Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but not more"}
+	sensorPresets:{
+		presetIAT:  roomTemperature,
+		presetCHT:  runningTemperature,
+		presetTPS:  halfThrottle,
+		presetEGO:  stoichiometricLambda,
+		presetBRV:  runningVoltage,
+		presetMAP:  idleManifoldPressure,
+		presetAAP:  seaLevelKPa,
+		presetMAT:  roomTemperature,
+		presetEGO2: stoichiometricLambda,
+		presetIAP:  maxExpectedBoost,
+		presetBPW:  idlePulseWidth,
+		presetAF:   idleAirFlow
+	},
+	sensorRanges:{
+		TPSClosedMAP:  offIdleMAP,
+		TPSOpenMAP:    nearlyWOTMAP,
+		MAPMinimum:    MPX4250AMin,
+		MAPRange:      MPX4250ARange,
+		AAPMinimum:    MPX4100AMin,
+		AAPRange:      MPX4100ARange,
+		EGOMinimum:    LC1LambdaMin,
+		EGORange:      LC1LambdaRange,
+		BRVMinimum:    batteryVoltageMin,
+		BRVRange:      batteryVoltageRange,
+		TPSMinimumADC: TPSDefaultMin,
+		TPSMaximumADC: TPSDefaultMax
+	},
+	sensorSettings:{ // Warning, until the following mods are made to ADC use, setting this lower than your cranking rpm will result in a pulsing fuel pump.
+		readingTimeout: 250, /** Default to 0.25 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
+	},
+	userTextField2:        "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but not more"
 };
