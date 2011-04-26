@@ -57,7 +57,7 @@ void RTIISR(){
 	CRGFLG = 0x80;
 
 	/* Record time stamp for code run time reporting */
-	unsigned short startTimeRTI = TCNT;
+	unsigned short codeStartTimeStamp = TCNT;
 
 	/* Increment the counter */
 	Clocks.realTimeClockMain++;
@@ -155,7 +155,7 @@ void RTIISR(){
 			}
 		}
 	}
-	RuntimeVars.RTCRuntime = TCNT - startTimeRTI;
+	RuntimeVars.RTCRuntime = TCNT - codeStartTimeStamp;
 }
 
 
