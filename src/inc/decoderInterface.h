@@ -174,32 +174,51 @@ EXTERN const unsigned char eventValidForCrankSync[SIZE_OF_EVENT_ARRAYS]; // For 
 EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360 for a two stroke, ? for a rotary. move this to code with a single setting for engine type and generate transformations based on that? All decoders will be 720 for now and only support 4 strokes without hackage.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
+#define SCHEDULE_ONE_ECT_OUTPUT() \
+if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                                                      \
+	*injectorMainControlRegisters[pin] &= injectorMainDisableMasks[pin];                                          \
+	outputEventExtendNumberOfRepeatsRealtime[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];          \
+	outputEventExtendNumberOfRepeatsRealtime[pin]--;                                                              \
+	outputEventExtendRepeatPeriodRealtime[pin] = outputEventExtendRepeatPeriod[outputEventNumber];                \
+	outputEventExtendFinalPeriodRealtime[pin] = outputEventExtendFinalPeriod[outputEventNumber];                  \
+	*injectorMainTimeRegisters[pin] = timeStamp.timeShorts[1] + outputEventExtendRepeatPeriod[outputEventNumber]; \
+}else{                                                                                                            \
+	*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];                                           \
+	*injectorMainTimeRegisters[pin] = startTime;                                                                  \
+}                                                                                                                 \
+TIE |= injectorMainOnMasks[pin];                                                                                  \
+TFLG = injectorMainOnMasks[pin];                                                                                  \
+injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[outputEventNumber];                            \
+selfSetTimer &= injectorMainOffMasks[pin];                                                                        // End of macro block!
+
 
 #ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
 
 /// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
 #define SCHEDULE_ECT_OUTPUTS() \
-numberScheduled = 0; \
-unsigned char outputEventNumber;\
-for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){\
-	if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){\
-		skipEventFlags &= ~(1UL << outputEventNumber);\
-		schedulePortTPin(outputEventNumber, timeStamp);\
-		numberScheduled++;\
-	}else if(skipEventFlags & (1UL << outputEventNumber)){\
-		unsigned char eventBeforeCurrent = 0;\
-		if(currentEvent == 0){\
-			eventBeforeCurrent = numberOfRealEvents - 1;\
-		}else{\
-			eventBeforeCurrent = currentEvent - 1;\
-		}\
-\
-		if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){\
-			schedulePortTPin(outputEventNumber, timeStamp);\
-			numberScheduled++;\
-		}\
-	}\
-}
+numberScheduled = 0;                                                                        \
+unsigned char outputEventNumber;                                                            \
+for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){ \
+	if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){                    \
+		skipEventFlags &= ~(1UL << outputEventNumber);                                      \
+		schedulePortTPin(outputEventNumber, timeStamp);                                     \
+		numberScheduled++;                                                                  \
+	}else if(skipEventFlags & (1UL << outputEventNumber)){                                  \
+		unsigned char eventBeforeCurrent = 0;                                               \
+		if(currentEvent == 0){                                                              \
+			eventBeforeCurrent = numberOfRealEvents - 1;                                    \
+		}else{                                                                              \
+			eventBeforeCurrent = currentEvent - 1;                                          \
+		}                                                                                   \
+                                                                                            \
+		if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){          \
+			schedulePortTPin(outputEventNumber, timeStamp);                                 \
+			numberScheduled++;                                                              \
+		}                                                                                   \
+	}                                                                                       \
+}                                                                                           // End of macro block!
+
+
 
 // These give a warning in eclipse because they aren't defined in this file, they are defined per decoder and enforced here.
 #ifndef DECODER_MAX_CODE_TIME
@@ -239,12 +258,21 @@ EXTERN unsigned char unknownEdges; // here so can be reset with sync loss generi
 //
 //// Live vars for subprocess intercommunication
 #define MAX_NUMBER_OF_OUTPUT_EVENTS 24
+EXTERN unsigned char outputEventExtendNumberOfRepeats[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned short outputEventExtendRepeatPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned short outputEventExtendFinalPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned char outputEventExtendNumberOfRepeatsHolding[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventExtendRepeatPeriodHolding[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventExtendFinalPeriodHolding[INJECTION_CHANNELS];
+EXTERN unsigned char outputEventExtendNumberOfRepeatsRealtime[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventExtendFinalPeriodRealtime[INJECTION_CHANNELS];
 EXTERN unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];            // 0xFF (disabled) by default, populated to actual pin numbers by the scheduler
 EXTERN unsigned char outputEventInputEventNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
-//EXTERN unsigned short outputEventDurations[MAX_NUMBER_OF_OUTPUT_EVENTS];            // Unused if above are not configured, set from either dwell (stretched or not) or pulsewidth (scaled for number of shots or not)
-//EXTERN unsigned short outputEventPostInputEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS]; // Unused if above are not configured, set either fixed or from angle calculations (always the latter for ignition)
+// see injectorMainPulseWidthsMath below, rename to this? EXTERN unsigned short outputEventDurations[MAX_NUMBER_OF_OUTPUT_EVENTS];            // Unused if above are not configured, set from either dwell (stretched or not) or pulsewidth (scaled for number of shots or not)
+// older array immediately below used, rename to this? EXTERN unsigned short outputEventPostInputEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS]; // Unused if above are not configured, set either fixed or from angle calculations (always the latter for ignition)
 EXTERN unsigned short postReferenceEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS];
-//EXTERN unsigned char pinEventDurations[6];                 // Set from decoder when setting timer registers etc, set from outputEventDurations, along with other data from there.
+// old, remove it... EXTERN unsigned char pinEventDurations[6];                 // Set from decoder when setting timer registers etc, set from outputEventDurations, along with other data from there.
 /// @todo TODO back this ^ array with flags saying set, and then clear them when fired, check the flag before setting, and if required buffer in a secondary array, maybe mimic that to several levels such that a queue is formed, and shuffle them through the queue as we go, or move a pointer around or somthing like that.
 
 /// @todo TODO Perhaps use some of the space freed by shrinking all timing tables for this:
@@ -252,14 +280,14 @@ EXTERN unsigned short postReferenceEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS];
 
 
 
-/* Injection stuff */
+/* WAS injector stuff, now GP output stuff, and soon to be ign stuff, maybe, refactor all names... */
 
 /* Register addresses */
 EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS];
 EXTERN volatile unsigned char * volatile injectorMainControlRegisters[INJECTION_CHANNELS];
 
 /* Timer holding vars (init not required) */
-EXTERN unsigned short injectorMainStartTimesHolding[INJECTION_CHANNELS];
+EXTERN unsigned short injectorMainStartOffsetHolding[INJECTION_CHANNELS];
 EXTERN unsigned long injectorMainEndTimes[INJECTION_CHANNELS];
 
 // TODO make these names consistent

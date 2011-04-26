@@ -106,19 +106,37 @@ void InjectorXISR(){
 
 		/* Calculate and store code run time */
 		injectorCodeOpenRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
-	}else{ // Stuff for switch off time
-		/* Set the action for compare to switch on and the time to next start time, clear the self timer flag */
-		if(selfSetTimer & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){
-			*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
-			*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] = injectorMainStartTimesHolding[INJECTOR_CHANNEL_NUMBER];
-			injectorMainPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER] = injectorMainPulseWidthsHolding[INJECTOR_CHANNEL_NUMBER];
-			selfSetTimer &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
-			Counters.testCounter5++;
-		}else{
-			// Disable interrupts and actions incase the period from this end to the next start is long (saves cpu)
-			TIE &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
-			*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= injectorMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
-			Counters.testCounter6++;
+	}else{ // Stuff for switch off time and repeat timer time.
+		if(!(*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] & injectorMainEnableMasks[INJECTOR_CHANNEL_NUMBER])){ // set to no action
+			if(outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER] > 0){
+				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventExtendRepeatPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
+				outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER]--;
+			}else{
+				*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
+				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventExtendFinalPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
+				// this is already set from the decoder, we're just delaying use of it: injectorMainPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER]
+			}
+		}else{ // if set to off action (implicit)
+			/* Set the action for compare to switch on and the time to next start time, clear the self timer flag */
+			if(selfSetTimer & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){
+				if(outputEventExtendNumberOfRepeatsHolding[INJECTOR_CHANNEL_NUMBER] > 0){
+					*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= injectorMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
+					outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventExtendNumberOfRepeatsHolding[INJECTOR_CHANNEL_NUMBER];
+					outputEventExtendRepeatPeriodRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventExtendRepeatPeriodHolding[INJECTOR_CHANNEL_NUMBER];
+					outputEventExtendFinalPeriodRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventExtendFinalPeriodHolding[INJECTOR_CHANNEL_NUMBER];
+				}else{
+					*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
+				}
+				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += injectorMainStartOffsetHolding[INJECTOR_CHANNEL_NUMBER];
+				injectorMainPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER] = injectorMainPulseWidthsHolding[INJECTOR_CHANNEL_NUMBER];
+				selfSetTimer &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
+				Counters.testCounter5++;
+			}else{
+				// Disable interrupts and actions incase the period from this end to the next start is long (saves cpu)
+				TIE &= injectorMainOffMasks[INJECTOR_CHANNEL_NUMBER];
+				*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= injectorMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
+				Counters.testCounter6++;
+			}
 		}
 		/* Calculate and store code run time */
 		injectorCodeCloseRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;

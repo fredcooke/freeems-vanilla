@@ -107,7 +107,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
 
 /*
-	fresh code again, three states, 5 behaviours:
+	fresh code again, five states, 6 possible behaviours:
 
 	not enabled - sched!!! always
 	enabled and low, ready to turn on - if too close, do nothing, or if far enough away, resched
@@ -115,37 +115,45 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 */
 
 	// Is it enabled and about to do *something*?
-	if(*injectorMainControlRegisters[pin] & injectorMainActiveMasks[pin]){
-		// Is that something "go high" from a low state?
-		if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
-			Counters.testCounter0++;
-			// if too close, do nothing, or if far enough away, resched
-			// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
-		}else{ // ELSE "go low" from a high state!
-			// if too close, resched to turn, ie, stay on... , if far enough away, self sched
-			if(newStartIsAfterOutputEndTimeAndCanSelfSet){
-				// self sched
-				injectorMainStartTimesHolding[pin] = startTime;
-				injectorMainPulseWidthsHolding[pin] = injectorMainPulseWidthsMath[outputEventNumber];
-				selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
-				Counters.testCounter1++;
+	if(TIE & injectorMainOnMasks[pin]){
+		// If configured to do something specific
+		if(*injectorMainControlRegisters[pin] & injectorMainActiveMasks[pin]){
+			// If that something is go high
+			if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
+				// GO HIGH SHOULD DO NOTHING CEPT COUNTER
+				// if too close, do nothing, or if far enough away, resched
+				// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
+				Counters.testCounter0++;
+			}else{ // Otherwise it's go low
+				// if too close, resched to turn, ie, stay on... , if far enough away, self sched
+				if(newStartIsAfterOutputEndTimeAndCanSelfSet){
+					// self sched
+					injectorMainStartOffsetHolding[pin] = startTime - *injectorMainTimeRegisters[pin];
+					injectorMainPulseWidthsHolding[pin] = injectorMainPulseWidthsMath[outputEventNumber];
+					outputEventExtendNumberOfRepeatsHolding[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];
+					outputEventExtendRepeatPeriodHolding[pin] = outputEventExtendRepeatPeriod[outputEventNumber];
+					outputEventExtendFinalPeriodHolding[pin] = outputEventExtendFinalPeriod[outputEventNumber];
+					selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+					Counters.testCounter1++;
+				}else{
+					SCHEDULE_ONE_ECT_OUTPUT();
+					Counters.testCounter2++;
+				}
+			}
+		}else{ // Configured to do nothing, or toggle
+			if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
+				// TOGGLE SHOULD EARN SOME SORT OF ERROR CONDITION/COUNTER
+				// do nothing
 			}else{
-				*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
-				*injectorMainTimeRegisters[pin] = startTime;
-				TIE |= injectorMainOnMasks[pin];
-				TFLG = injectorMainOnMasks[pin];
-				injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[outputEventNumber];
-				selfSetTimer &= injectorMainOffMasks[pin];
-				Counters.testCounter2++;
+				// DO NOTHING SHOULD DO THE SAME AS GO HIGH
+				// ie, do nothing
+				// if too close, do nothing, or if far enough away, resched
+				// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
+				Counters.testCounter0++; // migrate to new counter with specific name, move all counters to 8 bits.
 			}
 		}
-	}else{
-		*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];
-		*injectorMainTimeRegisters[pin] = startTime;
-		TIE |= injectorMainOnMasks[pin];
-		TFLG = injectorMainOnMasks[pin];
-		injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[outputEventNumber];
-		selfSetTimer &= injectorMainOffMasks[pin];
+	}else{ // not enabled, schedule as normal
+		SCHEDULE_ONE_ECT_OUTPUT();
 		Counters.testCounter3++;
 	}
 }
