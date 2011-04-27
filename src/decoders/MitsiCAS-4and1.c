@@ -29,6 +29,10 @@
 #include "../inc/MitsiCAS-4and1.h"
 
 void decoderInitPreliminary(){} // This decoder works with the defaults
+void perDecoderReset(){
+	unknownEdges = 0;
+}
+
 
 /**	@file MitsiCAS-4and1.c
  * @ingroup interruptHandlers

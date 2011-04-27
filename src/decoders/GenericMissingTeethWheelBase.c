@@ -53,6 +53,10 @@
 #endif
 
 
+void decoderInitPreliminary(){} // This decoder works with the defaults
+void perDecoderReset(){} // Nothing special to reset for this code
+
+
 /** Primary RPM ISR
  *
  * @todo TODO Docs here!

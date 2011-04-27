@@ -66,6 +66,10 @@ const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0}; // Unused in this decoder.
 
 
+void decoderInitPreliminary(){} // This decoder works with the defaults
+void perDecoderReset(){} // Nothing special to reset for this code
+
+
 /** Primary RPM ISR
  *
  * Take an ADC reading on one edge, and mimic the output on ign 1!

@@ -61,15 +61,13 @@ const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
 unsigned char lastPARegisterReading = 0xFF;
-unsigned char windowState = 0x00;
-unsigned char lastNumberOfRealEvents = 0x00;
-unsigned char accumulatorRegisterCount = 0x00;
-signed char cumulativeBastardTeeth = 0x00;
+unsigned char windowState = 0;
+unsigned char lastNumberOfRealEvents = 0;
+unsigned char accumulatorRegisterCount = 0;
+signed char cumulativeBastardTeeth = 0;
 
 
 /** Setup PT Capturing so that we can decode the LT1 pattern
- *  @todo TODO Put this in the correct place
- *
  */
 void decoderInitPreliminary(void){
 	/* set pt1 to capture on rising and falling */
@@ -82,6 +80,11 @@ void decoderInitPreliminary(void){
 	PACN1 = 0x00; // reset our count register
 	TCTL4 = 0xFF; /* Capture on both edges of pin 0 and only on the falling edges of pin 1, capture off for 2,3 */ // FRED why interrupt on the other one at all, there is no code and you're *causing* jitter in your primary rpm by doing this, along with eating CPU up.
 	//TIE = 0x01; // FRED necessary to do this too? I think so, but check the docs.
+}
+
+
+void perDecoderReset(){
+	cumulativeBastardTeeth = 0;
 }
 
 

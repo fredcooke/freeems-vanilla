@@ -49,6 +49,7 @@
 void decoderInitPreliminary(){
 	/// @todo TODO do the setup as required.
 }
+void perDecoderReset(){} // Nothing special to reset for this code
 
 
 const unsigned char decoderName[] = BENCH_TEST_NAME;

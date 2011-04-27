@@ -51,6 +51,7 @@
 #include "../inc/decoderInterface.h"
 
 void decoderInitPreliminary(){} // This decoder works with the defaults
+void perDecoderReset(){} // Nothing special to reset for this code
 
 const unsigned char decoderName[] = "EvenTeethOnCam-Nand1";
 const unsigned short eventAngles[] = {(0 * oneDegree), (30 * oneDegree), (60 * oneDegree), (90 * oneDegree), (120 * oneDegree), (150 * oneDegree), (180 * oneDegree), (210 * oneDegree), (240 * oneDegree), (270 * oneDegree), (300 * oneDegree), (330 * oneDegree), (360 * oneDegree), (390 * oneDegree), (420 * oneDegree), (450 * oneDegree), (480 * oneDegree), (510 * oneDegree), (540 * oneDegree), (570 * oneDegree), (600 * oneDegree), (630 * oneDegree), (660 * oneDegree), (690 * oneDegree)};

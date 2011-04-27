@@ -51,9 +51,6 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 	ticksPerDegree0 = 0;
 	ticksPerDegree1 = 0;
 
-	// Temporary from 4and1 :
-	unknownEdges = 0;
-
 	/* Ensure tacho reads lowest possible value */
 	engineCyclePeriod = ticksPerCycleAtOneRPM;
 
@@ -76,7 +73,7 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 
 	/* Clear all sync flags to lost state */
 	decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC & CLEAR_LAST_PERIOD_VALID & CLEAR_LAST_TIMESTAMP_VALID);
-
+	perDecoderReset();
 	// TODO more stuff needs resetting here, but only critical things.
 }
 

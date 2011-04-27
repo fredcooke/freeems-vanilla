@@ -51,6 +51,7 @@
 #include "../inc/decoderInterface.h"
 
 void decoderInitPreliminary(){} // This decoder works with the defaults
+void perDecoderReset(){} // Nothing special to reset for this code
 
 const unsigned char decoderName[] = "Listener";
 const unsigned short eventAngles[] = {0};           // no events really...

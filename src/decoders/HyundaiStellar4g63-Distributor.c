@@ -100,8 +100,6 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-void decoderInitPreliminary(){} // This decoder works with the defaults
-
 #define E1 (54 * oneDegree)
 
 const unsigned char decoderName[] = "HyundaiStellar4g63-Distributor";

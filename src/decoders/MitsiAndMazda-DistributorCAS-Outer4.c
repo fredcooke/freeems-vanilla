@@ -44,8 +44,6 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-void decoderInitPreliminary(){} // This decoder works with the defaults
-
 // 69 is a little too high, and 68 is more than a little too low (or inversed)
 #define E1 69 /// @todo TODO May need to be 111 instead, needs testing!
 

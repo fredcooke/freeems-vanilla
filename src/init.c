@@ -479,7 +479,6 @@ void initVariables(){
 	configuredBasicDatalogLength = maxBasicDatalogLength;
 
 	coreStatusA |= FUEL_PUMP_PRIME;
-	unknownEdges = 0;
 
 	// Initial state is NOT to fire... can be configured by scheduler if required.
 	outputEventInputEventNumbers[0] = 0xFF;

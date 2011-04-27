@@ -45,6 +45,4 @@
 #include "../inc/MissingTeeth.h"
 #include "GenericMissingTeethWheelBase.c"
 
-void decoderInitPreliminary(){} // This decoder works with the defaults
-
 const unsigned char decoderName[] = "MissingTeeth36-1-Crank-Only";
