@@ -268,7 +268,7 @@ outputEventPinNumbers[7] = 0;
 #define cliConfigredNumberOfIgnitionEvents 8
 #define numberOfInjectionEvents 8
 #define firstInjectionEvent 8
-#define cliConfiguredOffset 0
+#define cliConfiguredOffset (45 * oneDegree)
 #define numberOfInjectionsPerEngineCycle 2 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
 outputEventPinNumbers[ 8] = 2;
@@ -447,16 +447,16 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					mappedEvent = lastGoodEvent % numberOfRealEvents;
 				}
 
+				// Determine the eventBeforeCurrent outside the atomic block
+				unsigned char eventBeforeCurrent = 0;
+				if(outputEventInputEventNumbers[ignitionEvent] == 0){
+					eventBeforeCurrent = numberOfRealEvents - 1;
+				}else{
+					eventBeforeCurrent = outputEventInputEventNumbers[ignitionEvent] - 1;
+				}
+
 				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
-					// Determine the eventBeforeCurrent outside the atomic block
-					unsigned char eventBeforeCurrent = 0;
-					if(outputEventInputEventNumbers[ignitionEvent] == 0){
-						eventBeforeCurrent = numberOfRealEvents - 1;
-					}else{
-						eventBeforeCurrent = outputEventInputEventNumbers[ignitionEvent] - 1;
-					}
-
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 					/* For this block we need to provide a flag AFTER disabling the interrupts
@@ -483,25 +483,57 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-				}else if // do change starting here, already long, just add config first, and setup sean's to use it, and everyone else's to not use it, and we're good.
-				(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
-					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
-					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
+				}else{
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+
+					// See comment in above block
+					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
+						skipEventFlags |= (1UL << ignitionEvent);
+					}
+
 					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
-					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
-					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
-					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
+					unsigned char numberOfRepeats = potentialDelay / SHORTMAX;
+					unsigned short finalPeriod = potentialDelay % SHORTMAX;
+					if(finalPeriod > decoderMaxCodeTime){
+// refactor to use this for repeats as well... wasting memory right now:						postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
+						outputEventExtendFinalPeriod[ignitionEvent] = finalPeriod;
+						outputEventExtendRepeatPeriod[ignitionEvent] = SHORTMAX;
+						outputEventExtendNumberOfRepeats[ignitionEvent] = numberOfRepeats;
+					}else{
+						unsigned short shortagePerRepeat = (decoderMaxCodeTime - finalPeriod) / numberOfRepeats;
+						unsigned short repeatPeriod = (SHORTMAX - 1) - shortagePerRepeat;
+						finalPeriod += (shortagePerRepeat + 1) * numberOfRepeats;
+						outputEventExtendFinalPeriod[ignitionEvent] = finalPeriod;
+						outputEventExtendRepeatPeriod[ignitionEvent] = repeatPeriod;
+						outputEventExtendNumberOfRepeats[ignitionEvent] = numberOfRepeats;
+					}
+					// find number of max sized chunks and remainder
+					// check remainder for being big enough compared to code runtime
+					// if so, set repeat to max and final to remainder and number of iterations to divs
+					// if not, decrease repeat size in some optimal way and provide new left over to work with that, and same number of divs/its
+					// Always use dwell as requested
+					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-					Counters.DwellStretchedToSchedule++;
-				}else{ // type of scheduling config tested here too.
-					/* ELSE leave unscheduled rather than advance too much
-					 * This indicates that the output event is too far from the input event
-					 * This will only occur on input patterns with too few teeth, or bad alignment
-					 */
-					outputEventInputEventNumbers[ignitionEvent] = ONES; // unschedule this pin... lockout not required because the operation is naturally atomic
-					Counters.TooFarToSchedule++;
 				}
+//				}else if // do change starting here, already long, just add config first, and setup sean's to use it, and everyone else's to not use it, and we're good.
+//				(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
+//					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
+//					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
+//					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+//					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
+//					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
+//					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
+//					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
+//					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+//					Counters.DwellStretchedToSchedule++;
+//				}else{ // type of scheduling config tested here too.
+//					/* ELSE leave unscheduled rather than advance too much
+//					 * This indicates that the output event is too far from the input event
+//					 * This will only occur on input patterns with too few teeth, or bad alignment
+//					 */
+//					outputEventInputEventNumbers[ignitionEvent] = ONES; // unschedule this pin... lockout not required because the operation is naturally atomic
+//					Counters.TooFarToSchedule++;
+//				}
 				break;
 			}else{
 				if(lastGoodEvent > 0){

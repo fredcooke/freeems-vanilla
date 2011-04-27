@@ -112,7 +112,7 @@ void InjectorXISR(){
 				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventExtendRepeatPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
 				outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER]--;
 			}else{
-				*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
+				*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= injectorMainEnableMasks[INJECTOR_CHANNEL_NUMBER];
 				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventExtendFinalPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
 				// this is already set from the decoder, we're just delaying use of it: injectorMainPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER]
 			}
