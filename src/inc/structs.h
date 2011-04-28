@@ -42,27 +42,30 @@
 #define FILE_STRUCTS_H_SEEN
 
 
-/* For noobs	: http://www.space.unibe.ch/comp_doc/c_manual/C/SYNTAX/struct.html
- *				  http://en.wikipedia.org/wiki/Composite_type
- *				  http://www.cs.usfca.edu/~wolber/SoftwareDev/C/CStructs.htm
- *				  http://sandbox.mc.edu/~bennet/cs220/codeex/struct_c.html
+/** @section fornoobs Reading For Newcomers
+ * - http://www.space.unibe.ch/comp_doc/c_manual/C/SYNTAX/struct.html
+ * - http://en.wikipedia.org/wiki/Composite_type
+ * - http://www.cs.usfca.edu/~wolber/SoftwareDev/C/CStructs.htm
+ * - http://sandbox.mc.edu/~bennet/cs220/codeex/struct_c.html
  */
 
 
-/* Naming should be in the singular form such that the instantiation can be the plural */
+/* @section naming Naming
+ * Naming should be in the singular form such that the instantiation can be the plural
+ */
 
 
-/* Types summary
+/** @section typesumm Types summary
  *
  * BEWARE : Be explicit!!
  *
- * char			8 bit (defaults to unsigned, but always specify signed/unsigned anyway)
- * short		16 bit (defaults to signed, but always specify signed/unsigned anyway)
- * int			16 bit DO NOT USE! (current compile flags make this 16 bits, but a change of flags could will change your program if you use this because they will all be 32 bit all of a sudden)
- * long			32 bit (defaults to signed, but always specify signed/unsigned anyway)
- * long long	64 bit (inefficient, avoid these, if using : defaults to signed, but always specify signed/unsigned anyway)
- * float		32 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
- * double		64 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
+ * - char		8 bit (defaults to unsigned, but always specify signed/unsigned anyway)
+ * - short		16 bit (defaults to signed, but always specify signed/unsigned anyway)
+ * - int		16 bit DO NOT USE! (current compile flags make this 16 bits, but a change of flags could will change your program if you use this because they will all be 32 bit all of a sudden)
+ * - long		32 bit (defaults to signed, but always specify signed/unsigned anyway)
+ * - long long	64 bit (inefficient, avoid these, if using : defaults to signed, but always specify signed/unsigned anyway)
+ * - float		32 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
+ * - double		64 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
  */
 
 
@@ -73,7 +76,13 @@
 // Engine position struct
 // Validity flags, or they should be in the status struct?
 
-// Masks for the flag field in the blockDetails struct below
+/* @section blkmask blockDetails Masks
+ * block_ prefixed defines have Masks for the flag field in the blockDetails struct.
+ *
+ */
+// TODO: Get previous comment blocks (@section) associate correctly with content.
+
+/** Memory block has parent */
 #define block_has_parent           BIT0_16
 #define block_is_in_ram            BIT1_16
 #define block_is_in_flash          BIT2_16
@@ -91,46 +100,51 @@
 #define block_is_lookup_data       BIT14_16
 #define block_is_configuration     BIT15_16
 
-/**
- * Addressable memory block description. This structure holds
- * the size, RAM page and address and flash page and address.
+/** Addressable memory block description.
+ * This structure holds:
+ * - the size
+ * - RAM page and address
+ * - flash page and address
+ *
  * It is used for looking up the details of a memory block to
  * allow serial operations on RAM and flash data structures.
  */
 typedef struct {
-	unsigned short flags;
-	unsigned short parent;
-	unsigned char RAMPage;
-	unsigned char FlashPage;
-	void* RAMAddress;
-	void* FlashAddress;
-	unsigned short size;
+	unsigned short flags;    /**< Memory Blocks property flags (elaborate functionality) */
+	unsigned short parent;   /**< Parent blocks (?) */
+	unsigned char RAMPage;   /**< RAM Page */
+	unsigned char FlashPage; /**< Flash Page */
+	void* RAMAddress;        /**< RAM Address */
+	void* FlashAddress;      /**< Flash Address */
+	unsigned short size;     /**< Memory Block Size */
 } blockDetails;
 
 
-/* Use this block to make it easy to manage the derived variables */
+/** Use this block to make it easy to manage the derived variables.
+ * Calculated from core vars stored in CoreVar .
+ */
 typedef struct {
-	/* Calculated from core vars */
-	unsigned short LoadMain;		/* Configurable unit of load */
+	/*  */
+	unsigned short LoadMain;		/**< Configurable unit of load */
 //	unsigned short LoadSecondary;
 
-	unsigned short VEMain;			/* Divide by 512 to get % */
+	unsigned short VEMain;			/**< Divide by 512 to get % */
 //	unsigned short VESecondary;
 
-	unsigned short Lambda;			/* Divide by 32768 to get Lamda */
-	unsigned short AirFlow;			/* Top half of the equation */
-	unsigned short densityAndFuel;	/* Bottom half of the equation */
+	unsigned short Lambda;			/**< Divide by 32768 to get Lamda */
+	unsigned short AirFlow;			/**< Top half of the equation */
+	unsigned short densityAndFuel;	/**< Bottom half of the equation */
 
-	unsigned short BasePW;			/* Raw PW before corrections */
-	unsigned short ETE;				/* Additional PW for ETE correction */
-	signed short TFCTotal;			/* Transient fuel correction PW (+/-) */
+	unsigned short BasePW;			/**< Raw PW before corrections */
+	unsigned short ETE;				/**< Additional PW for ETE correction */
+	signed short TFCTotal;			/**< Transient fuel correction PW (+/-) */
 
-	unsigned short EffectivePW;		/* Actual PW of fuel delivery */
-	unsigned short IDT;				/* Minimum PW before fuel flow begins */
-	unsigned short RefPW;			/* Reference electrical PW */
+	unsigned short EffectivePW;		/**< Actual PW of fuel delivery */
+	unsigned short IDT;				/**< Minimum PW before fuel flow begins */
+	unsigned short RefPW;			/**< Reference electrical PW */
 
-	unsigned short Advance;  /*  */
-	unsigned short Dwell;  /*  */
+	unsigned short Advance;         /**< Ignition advance (units ...degrees  ? factor ? elaborate)  */
+	unsigned short Dwell;           /**< Dwell Angle (units ...degrees  ? factor ? elaborate) */
 
 	// replace highest first to avoid hassles for offset based dave/mtx...
 	unsigned short zsp19; /*  */
@@ -155,7 +169,8 @@ typedef struct {
 } DerivedVar;
 
 
-/* Use this block to manage the execution time of various functions loops and ISRs etc */
+/** Use this block to manage the execution time of various functions loops and ISRs etc
+ */
 typedef struct {
 	/* Engine position and RPM code runtimes */
 	unsigned short primaryInputLeadingRuntime;
@@ -179,7 +194,11 @@ typedef struct {
 } RuntimeVar;
 
 
-/* Use this block to manage the execution time of various functions loops and ISRs etc */
+/** Use this block to manage the execution time of various functions loops and ISRs etc.
+ * - Engine position and RPM code latencies
+ * - Injector latencies
+ *
+ */
 typedef struct {
 	/* Engine position and RPM code latencies */
 	unsigned short primaryInputLatency;
@@ -203,55 +222,58 @@ typedef struct {
 } ISRLatencyVar;
 
 
-/* Use this block to make it easy to manage the core variables */
+/** Use this block to make it easy to manage the core variables.
+ */
 typedef struct {
 	/* Calculated and averaged from ADC0 readings */
-	unsigned short IAT;			/* Inlet Air Temperature (MAT JS)			: 0.0	-    655.35		(0.01 Kelvin (/100))		*/
-	unsigned short CHT;			/* Coolant / Head Temperature (CLT JS)		: 0.0	-    655.35		(0.01 Kelvin (/100))		*/
-	unsigned short TPS;			/* Throttle Position Sensor (TPS JS)		: 0.0	-    102.39		(0.001? % (/640))			*/
-	unsigned short EGO;			/* Exhaust Gas Oxygen (O2 JS)				: 0.000	-      1.999999	(0.0001? lambda (/32768))	*/
-	unsigned short MAP;			/* Manifold Absolute Pressure (5euroh1)		: 0.0	-    655.35		(0.01 kPa (/100))			*/
-	unsigned short AAP;			/* Atmospheric Absolute Pressure (6euroh1)	: 0.0	-    655.35		(0.01 kPa (/100))			*/
-	unsigned short BRV;			/* Battery Reference Voltage (4euroh1)		: 0.000	-     65.535	(0.001 Volts (/1000))		*/
-	unsigned short MAT;			/* Manifold Air Temperature (Spare JS)		: 0.0	-    655.35		(0.01 Kelvin (/100))		*/
+	unsigned short IAT;			/**< Inlet Air Temperature (MAT JS)			: 0.0	-    655.35		(0.01 Kelvin (/100))		*/
+	unsigned short CHT;			/**< Coolant / Head Temperature (CLT JS)		: 0.0	-    655.35		(0.01 Kelvin (/100))		*/
+	unsigned short TPS;			/**< Throttle Position Sensor (TPS JS)		: 0.0	-    102.39		(0.001? % (/640))			*/
+	unsigned short EGO;			/**< Exhaust Gas Oxygen (O2 JS)				: 0.000	-      1.999999	(0.0001? lambda (/32768))	*/
+	unsigned short MAP;			/**< Manifold Absolute Pressure (5euroh1)		: 0.0	-    655.35		(0.01 kPa (/100))			*/
+	unsigned short AAP;			/**< Atmospheric Absolute Pressure (6euroh1)	: 0.0	-    655.35		(0.01 kPa (/100))			*/
+	unsigned short BRV;			/**< Battery Reference Voltage (4euroh1)		: 0.000	-     65.535	(0.001 Volts (/1000))		*/
+	unsigned short MAT;			/**< Manifold Air Temperature (Spare JS)		: 0.0	-    655.35		(0.01 Kelvin (/100))		*/
 
 	/* Calculated and averaged from ADC1 readings */
-	unsigned short EGO2;		/* Exhaust Gas Oxygen (NC)					: 0.000	-      1.999999	(0.0001? lambda (/32768))	*/
-	unsigned short IAP;			/* Intercooler Absolute Pressure (NC)		: 0.0	-    655.35		(0.01 kPa (/100))			*/
-	unsigned short MAF;			/* Mass Air Flow							: 0.0	-  65535.0		(raw units from lookup)		*/
+	unsigned short EGO2;		/**< Exhaust Gas Oxygen (NC)					: 0.000	-      1.999999	(0.0001? lambda (/32768))	*/
+	unsigned short IAP;			/**< Intercooler Absolute Pressure (NC)		: 0.0	-    655.35		(0.01 kPa (/100))			*/
+	unsigned short MAF;			/**< Mass Air Flow							: 0.0	-  65535.0		(raw units from lookup)		*/
 
 	/* Calculated from MAP and TPS history */
-	unsigned short DMAP;		/* Delta MAP kPa/second or similar */
-	unsigned short DTPS;		/* Delta TPS %/second or similar */
+	unsigned short DMAP;		/**< Delta MAP kPa/second or similar */
+	unsigned short DTPS;		/**< Delta TPS %/second or similar */
 
 	/* Calculated from engine position data */
-	unsigned short RPM;			/* Revolutions Per Minute (Calced)			: 0		-  32767.5		(0.5 RPM (/2))				*/
-	unsigned short DRPM;		/* Delta RPM (Calced)						: 0		-  32767.5		(0.5 RPM/Second (/2))		*/
-	unsigned short DDRPM;		/* Delta Delta RPM (Calced)					: 0		-  32767.5		(0.5 RPM/Second^2 (/2))		*/
+	unsigned short RPM;			/**< Revolutions Per Minute (Calced)			: 0		-  32767.5		(0.5 RPM (/2))				*/
+	unsigned short DRPM;		/**< Delta RPM (Calced)						: 0		-  32767.5		(0.5 RPM/Second (/2))		*/
+	unsigned short DDRPM;		/**< Delta Delta RPM (Calced)					: 0		-  32767.5		(0.5 RPM/Second^2 (/2))		*/
 } CoreVar;
 
 
-/* Use this block to ensure that the components are contiguous and we can then reference them via offsets and pointers */
+/** Use this block to ensure that the components are contiguous and we can then reference
+ * them via offsets and pointers (NC= Not (likely) connected).
+ */
 typedef struct {
 	/* ADC0 raw readings */
-	unsigned short IAT;			/* Inlet Air Temperature (MAT JS)			*/ /* COMPULSORY! */
-	unsigned short CHT;			/* Coolant / Head Temperature (CLT JS)		*/ /* COMPULSORY! */
-	unsigned short TPS;			/* Throttle Position Sensor (TPS JS)		*/ /* Reduced performance without */
-	unsigned short EGO;			/* Exhaust Gas Oxygen (O2 JS)				*/ /* Recommended */
-	unsigned short MAP;			/* Manifold Absolute Pressure (5euroh1)		*/ /* COMPULSORY OR TPS OR MAF */
-	unsigned short AAP;			/* Atmospheric Absolute Pressure (6euroh1)	*/ /* Recommended */
-	unsigned short BRV;			/* Battery Reference Voltage (4euroh1)		*/ /* COMPULSORY! */
-	unsigned short MAT;			/* Manifold Air Temperature (Spare JS)		*/ /* Could help heat soak issues */
+	unsigned short IAT;			/**< Inlet Air Temperature (MAT JS)		*/ /* COMPULSORY! */
+	unsigned short CHT;			/**< Coolant / Head Temperature (CLT JS) */ /* COMPULSORY! */
+	unsigned short TPS;			/**< Throttle Position Sensor (TPS JS)	*/ /* Reduced performance without */
+	unsigned short EGO;			/**< Exhaust Gas Oxygen (O2 JS)		*/ /* Recommended */
+	unsigned short MAP;			/**< Manifold Absolute Pressure (5euroh1)	*/ /* COMPULSORY OR TPS OR MAF */
+	unsigned short AAP;			/**< Atmospheric Absolute Pressure (6euroh1)*/ /* Recommended */
+	unsigned short BRV;			/**< Battery Reference Voltage (4euroh1)	*/ /* COMPULSORY! */
+	unsigned short MAT;			/**< Manifold Air Temperature (Spare JS)	*/ /* Could help heat soak issues */
 
 	/* ADC1 raw readings */
-	unsigned short EGO2;			/* Exhaust Gas Oxygen (NC)					*/ /* V engine option */
-	unsigned short IAP;			/* Intercooler Absolute Pressure (NC)		*/ /* Turbo engine option */
-	unsigned short MAF;			/* Mass Air Flow (NC)						*/ /* OEM engine option */
-	unsigned short SpareADC3;		/* Spare ADC1 port 3 (NC)					*/
-	unsigned short SpareADC4;		/* Spare ADC1 port 4 (NC)					*/
-	unsigned short SpareADC5;		/* Spare ADC1 port 5 (NC)					*/
-	unsigned short SpareADC6;		/* Spare ADC1 port 6 (NC)					*/
-	unsigned short SpareADC7;		/* Spare ADC1 port 7 (NC)					*/
+	unsigned short EGO2;		/**< Exhaust Gas Oxygen (NC)					*/ /* V engine option */
+	unsigned short IAP;			/**< Intercooler Absolute Pressure (NC)		*/ /* Turbo engine option */
+	unsigned short MAF;			/**< Mass Air Flow (NC)						*/ /* OEM engine option */
+	unsigned short SpareADC3;	/**< Spare ADC1 port 3 (NC)					*/
+	unsigned short SpareADC4;	/**< Spare ADC1 port 4 (NC)					*/
+	unsigned short SpareADC5;	/**< Spare ADC1 port 5 (NC)					*/
+	unsigned short SpareADC6;	/**< Spare ADC1 port 6 (NC)					*/
+	unsigned short SpareADC7;	/**< Spare ADC1 port 7 (NC)					*/
 } ADCArray;
 
 
@@ -283,19 +305,22 @@ typedef struct {
 #define _impl_CASSERT_LINE(predicate, line, file) typedef char _impl_PASTE(assertion_failed_##file##_,line)[2*!!(predicate)-1];
 
 
-#define MAINTABLE_RPM_LENGTH 16 //24			/* How many cells on the X axis */
-#define MAINTABLE_LOAD_LENGTH 16 //19		/* How many cells on the Y axis */
-#define MAINTABLE_MAX_RPM_LENGTH 27		/* How many cells on the X axis max */
-#define MAINTABLE_MAX_LOAD_LENGTH 21	/* How many cells on the Y axis max */
-#define MAINTABLE_MAX_MAIN_LENGTH 462	/* 924B 462 shorts maximum main table length */
+#define MAINTABLE_RPM_LENGTH 16 		/**< How many cells on the X axis */ //24
+#define MAINTABLE_LOAD_LENGTH 16 		/**< How many cells on the Y axis */ //19
+#define MAINTABLE_MAX_RPM_LENGTH 27		/**< How many cells on the X axis max */
+#define MAINTABLE_MAX_LOAD_LENGTH 21	/**< How many cells on the Y axis max */
+#define MAINTABLE_MAX_MAIN_LENGTH 462	/**< 924B 462 shorts maximum main table length */
 
+// @struct maintable
 
-/**	@struct maintable
+/**	Main Table Structure definition
  *
- * @brief Main Table Structure definition
+ * Use this table descriptor to manage the
+ * - main VE table
+ * - Lambda table
+ * - Timing tables
  *
- * Use this block to manage the main VE, Lambda and Timing tables. Tables can
- * be made any size from 1x1 to 27x17 or 22x21 provided that the multiple of
+ * Tables can be made any size from 1x1 to 27x17 or 22x21 provided that the multiple of
  * the two doesn't exceed the max main length and neither axis exceeds it's
  * specified maximum.
  *
@@ -324,17 +349,17 @@ typedef struct {
  * @author Fred Cooke
  */
 typedef struct {
-	unsigned short RPMLength;						/* The length of the RPM axis array */
-	unsigned short LoadLength;						/* The length of the Load axis array */
-	unsigned short RPM[MAINTABLE_MAX_RPM_LENGTH];		/* The array of RPM (X) axis values */
-	unsigned short Load[MAINTABLE_MAX_LOAD_LENGTH];		/* The array of Load (Y) axis values */
-	unsigned short Table[MAINTABLE_MAX_MAIN_LENGTH];	/* The table as an array of values */
+	unsigned short RPMLength;						/**< The length of the RPM axis array */
+	unsigned short LoadLength;						/**< The length of the Load axis array */
+	unsigned short RPM[MAINTABLE_MAX_RPM_LENGTH];		/**< The array of RPM (X) axis values */
+	unsigned short Load[MAINTABLE_MAX_LOAD_LENGTH];		/**< The array of Load (Y) axis values */
+	unsigned short Table[MAINTABLE_MAX_MAIN_LENGTH];	/**< The table as an array of values */
 } mainTable;
 CASSERT(sizeof(mainTable) == flashSectorSize, mainTable)
 
 
 #define TWODTABLEUS_LENGTH 16
-/* This block used for various curves */
+/** This block used for various curves */
 typedef struct {
 	unsigned short Axis[TWODTABLEUS_LENGTH];
 	unsigned short Values[TWODTABLEUS_LENGTH];
@@ -342,7 +367,7 @@ typedef struct {
 
 
 #define TWODTABLESS_LENGTH 16
-/* This block used for various curves */
+/** This block used for various curves */
 typedef struct {
 	signed short Axis[TWODTABLESS_LENGTH];
 	signed short Values[TWODTABLESS_LENGTH];
@@ -350,7 +375,7 @@ typedef struct {
 
 
 #define TWODTABLEMS_LENGTH 16
-/* This block used for various curves */
+/** This block used for various curves */
 typedef struct {
 	unsigned short Axis[TWODTABLEMS_LENGTH];
 	signed short Values[TWODTABLEMS_LENGTH];
@@ -358,26 +383,28 @@ typedef struct {
 
 
 #define TWODTABLEUC_LENGTH 8
-/* This block used for various curves */
+/** This block used for various curves */
 typedef struct {
 	unsigned char Axis[TWODTABLEUC_LENGTH];
 	unsigned char Values[TWODTABLEUC_LENGTH];
 } twoDTableUC;
 
 
-// Use this block to manage the execution count of various functions loops and ISRs etc
+/** Use this block to manage the execution count of various functions loops and ISRs etc.
+ *
+ */
 typedef struct {
-	unsigned short callsToUISRs;                        // to ensure we aren't accidentally triggering unused ISRs
-	unsigned short lowVoltageConditions;                // low voltage conditions
+	unsigned short callsToUISRs;                        /**< to ensure we aren't accidentally triggering unused ISRs */
+	unsigned short lowVoltageConditions;                /**< low voltage conditions */
 
-	unsigned short camSyncLosses;                       // lost cam syncs
-	unsigned short crankSyncLosses;                     // lost crank syncs
-	unsigned short combustionSyncLosses;                // lost comubustion syncs
-	unsigned short camSyncCorrections;                  // definite cam syncs found while already synced in a different position
-//	unsigned short RPMValidityLosses;                   // lost RPM validity events
-//	unsigned short primaryTeethDroppedFromLackOfSync;   // number of primary teeth dropped due to no primary sync
-	unsigned short TooFarToSchedule;                    // times sched wasnt done to prevent excess advance
-	unsigned short DwellStretchedToSchedule;            // times sched needed to extend dwell to prevent excess advance
+	unsigned short camSyncLosses;                       /**< lost cam syncs */
+	unsigned short crankSyncLosses;                     /**< lost crank syncs */
+	unsigned short combustionSyncLosses;                /**< lost comubustion syncs */
+	unsigned short camSyncCorrections;                  /**< definite cam syncs found while already synced in a different position */
+//	unsigned short RPMValidityLosses;                   /**< lost RPM validity events */
+//	unsigned short primaryTeethDroppedFromLackOfSync;   /**< number of primary teeth dropped due to no primary sync */
+	unsigned short TooFarToSchedule;                    /**< times sched wasnt done to prevent excess advance */
+	unsigned short DwellStretchedToSchedule;            /**< times sched needed to extend dwell to prevent excess advance */
 	unsigned short testCounter0;
 	unsigned short testCounter1;
 	unsigned short testCounter2;
@@ -387,46 +414,47 @@ typedef struct {
 	unsigned short testCounter6;
 // TODO remove the two commented out lines above this
 
-	unsigned short primaryTeethSeen;                    // Free running counters for number of teeth seen such that...
-	unsigned short secondaryTeethSeen;                  // ...tooth timing can be used to reconstruct the signal at lower rpm
+	unsigned short primaryTeethSeen;               /**< Free running counters for number of teeth seen such that... */
+	unsigned short secondaryTeethSeen;             /**< ...tooth timing can be used to reconstruct the signal at lower rpm */
 
-	unsigned short syncedADCreadings;                   // Incremented each time a synchronous ADC reading is taken
-	unsigned short timeoutADCreadings;                  // Incremented for each ADC reading in RTC because of timeout
+	unsigned short syncedADCreadings;              /**< Incremented each time a synchronous ADC reading is taken */
+	unsigned short timeoutADCreadings;             /**< Incremented for each ADC reading in RTC because of timeout */
 
-	unsigned short calculationsPerformed;               // Incremented for each time the fuel and ign calcs are done
-	unsigned short datalogsSent;                        // Incremented for each time we send out a log entry
+	unsigned short calculationsPerformed;          /**< Incremented for each time the fuel and ign calcs are done */
+	unsigned short datalogsSent;                   /**< Incremented for each time we send out a log entry */
 
 	// UART/serial specific counters
-	unsigned short serialStartsInsideAPacket;           // Incremented when a start byte is found inside a packet
-	unsigned short serialEscapePairMismatches;          // Incremented when an escape is found but not followed by an escapee
-	unsigned short serialPacketsOverLength;             // Incremented when the buffer fills up before the end
-	unsigned short serialNoiseErrors;                   // Incremented when noise is detected
-	unsigned short serialOverrunErrors;                 // Incremented when an overrun occurs
-	unsigned short serialFramingErrors;                 // Incremented when a framing error occurs
-	unsigned short serialParityErrors;                  // Incremented when a parity error occurs
+	unsigned short serialStartsInsideAPacket;      /**< Incremented when a start byte is found inside a packet */
+	unsigned short serialEscapePairMismatches;     /**< Incremented when an escape is found but not followed by an escapee */
+	unsigned short serialPacketsOverLength;        /**< Incremented when the buffer fills up before the end */
+	unsigned short serialNoiseErrors;              /**< Incremented when noise is detected */
+	unsigned short serialOverrunErrors;            /**< Incremented when an overrun occurs */
+	unsigned short serialFramingErrors;            /**< Incremented when a framing error occurs */
+	unsigned short serialParityErrors;             /**< Incremented when a parity error occurs */
 
 	// Generic com counters
-	unsigned short commsChecksumMismatches;             // Incremented when calculated checksum did not match the received one
-	unsigned short commsPacketsUnderMinLength;          // Incremented when a packet is found that is too short
-	unsigned short commsDebugMessagesNotSent;           // Incremented when a debug message can't be sent due to the TX buffer
-	unsigned short commsErrorMessagesNotSent;           // Incremented when an error message can't be sent due to the TX buffer
+	unsigned short commsChecksumMismatches;        /**< Incremented when calculated checksum did not match the received one */
+	unsigned short commsPacketsUnderMinLength;     /**< Incremented when a packet is found that is too short */
+	unsigned short commsDebugMessagesNotSent;      /**< Incremented when a debug message can't be sent due to the TX buffer */
+	unsigned short commsErrorMessagesNotSent;      /**< Incremented when an error message can't be sent due to the TX buffer */
 } Counter;
 
 
-/* Use this block to manage the various clocks kept */
+/** Use this block to manage the various clocks kept.
+ */
 typedef struct {
 	/* Real Time and other Clocks (all require init to zero) */
-	unsigned short realTimeClockMain;					/* Variable to count RTI executions, 0.125ms exactly	*/
-	unsigned short realTimeClockMillis;					/* Variable to count milliseconds exactly				*/
-	unsigned short realTimeClockTenths;					/* Variable to count tenths of a second exactly			*/
-	unsigned short realTimeClockSeconds;				/* Variable to count seconds exactly					*/
-	unsigned short realTimeClockMinutes;				/* Variable to count minutes exactly					*/
+	unsigned short realTimeClockMain;					/**< Variable to count RTI executions, 0.125ms exactly	*/
+	unsigned short realTimeClockMillis;					/**< Variable to count milliseconds exactly				*/
+	unsigned short realTimeClockTenths;					/**< Variable to count tenths of a second exactly		*/
+	unsigned short realTimeClockSeconds;				/**< Variable to count seconds exactly					*/
+	unsigned short realTimeClockMinutes;				/**< Variable to count minutes exactly					*/
 
-	unsigned short millisToTenths;						/* Roll-over variable for counting tenths				*/
-	unsigned short tenthsToSeconds;						/* Roll-over variable for counting seconds				*/
-	unsigned short secondsToMinutes;					/* Roll-over variable for counting minutes				*/
+	unsigned short millisToTenths;						/**< Roll-over variable for counting tenths				*/
+	unsigned short tenthsToSeconds;						/**< Roll-over variable for counting seconds				*/
+	unsigned short secondsToMinutes;					/**< Roll-over variable for counting minutes				*/
 
-	unsigned short timeoutADCreadingClock;				/* Timeout clock/counter for synced ADC readings		*/
+	unsigned short timeoutADCreadingClock;				/**< Timeout clock/counter for synced ADC readings		*/
 } Clock;
 
 
