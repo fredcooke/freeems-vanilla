@@ -62,16 +62,12 @@ const unsigned char eventValidForCrankSync[] = {0}; // no events really...
 unsigned short testCount; // move this to where it can be set from the comms switch
 
 
-/** Primary RPM ISR
- *
- * Fire from serial, then repeat X revolutions or seconds or whatever and trigger Z outputs of various types etc
+/* Fire from serial, then repeat X revolutions or seconds or whatever and trigger Z outputs of various types etc
  *
  * Possible modes of repetition:
  * - Iterations
  * - Revolutions
  * - Time units
- *
- * @author Fred Cooke
  */
 void PrimaryRPMISR(){
 	TFLG = 0x01;
@@ -121,10 +117,6 @@ void PrimaryRPMISR(){
 }
 
 
-/** Secondary RPM ISR
- *
- * Unused in this decoder.
- */
 void SecondaryRPMISR(){
 	TFLG = 0x02;
 }
