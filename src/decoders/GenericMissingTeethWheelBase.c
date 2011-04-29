@@ -57,10 +57,6 @@ void decoderInitPreliminary(){} // This decoder works with the defaults
 void perDecoderReset(){} // Nothing special to reset for this code
 
 
-/** Primary RPM ISR
- *
- * @todo TODO Docs here!
- */
 void PrimaryRPMISR(void) {
 	static LongTime thisHighLowTime = { 0 };
 	static LongTime lastHighLowTime = { 0 };
@@ -160,10 +156,6 @@ void PrimaryRPMISR(void) {
 }
 
 
-/** Secondary RPM ISR
- *
- * @todo TODO Docs here!
- */
 void SecondaryRPMISR(void) { // migrate this to its own file for this decoder type such that various types of secondary sync can be handled with missing tooth main sync, thanks Abe for arguing and whinging.
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;

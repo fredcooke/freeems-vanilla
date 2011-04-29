@@ -70,12 +70,6 @@ void decoderInitPreliminary(){} // This decoder works with the defaults
 void perDecoderReset(){} // Nothing special to reset for this code
 
 
-/** Primary RPM ISR
- *
- * Take an ADC reading on one edge, and mimic the output on ign 1!
- *
- * @author Fred Cooke
- */
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -156,12 +150,6 @@ void PrimaryRPMISR(){
 }
 
 
-/** Secondary RPM ISR
- *
- * Unused.
- *
- * @author Fred Cooke
- */
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;

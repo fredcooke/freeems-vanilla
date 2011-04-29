@@ -26,6 +26,8 @@
 
 /**	@file BenchTest.c
  *
+ * @ingroup enginePositionRPMDecoders
+ *
  * To facilitate testing of output circuits and physical hardware such as
  * injectors and coils on the bench or in the car.
  *

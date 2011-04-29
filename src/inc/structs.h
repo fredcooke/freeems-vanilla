@@ -101,6 +101,7 @@
 #define block_is_configuration     BIT15_16
 
 /** Addressable memory block description.
+ *
  * This structure holds:
  * - the size
  * - RAM page and address

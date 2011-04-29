@@ -63,22 +63,13 @@ const unsigned short eventAngles[] = {0,180,360,540};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0};
 
 
-/** Primary RPM ISR
+/* Blindly start fuel pulses for each and every input pulse.
  *
- * Schedule events :
- * Blindly start fuel pulses for each and every input pulse.
- *
- * Sample ADCs :
- * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
- * Set flag stating that New pulse, advance, etc should be calculated.
- *
- * @author Fred Cooke
- *
- * @warning These are for testing and demonstration only, not suitable for driving with just yet.
- *
- * @todo TODO make this code more general and robust such that it can be used for real simple applications
+ * Warning This is for testing and demonstration only, not suitable for driving with just yet.
  */
 void PrimaryRPMISR(){
+	/// @todo TODO make this code more general and robust such that it can be used for real simple applications
+
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 
@@ -147,10 +138,6 @@ void PrimaryRPMISR(){
 }
 
 
-/** Secondary RPM ISR
- *
- * Unused in this decoder.
- */
 void SecondaryRPMISR(){
 	TFLG = 0x02;
 }

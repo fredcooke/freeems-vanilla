@@ -359,17 +359,6 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
  */
 
 
-/** Primary RPM ISR
- *
- * Schedule events :
- * Fire off port T events based on whatever is scheduled in the main loop.
- *
- * Sample ADCs :
- * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
- * Set flag stating that New pulse, advance, etc should be calculated.
- *
- * @author Fred Cooke
- */
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -512,11 +501,9 @@ void PrimaryRPMISR(){
 }
 
 
-/** Secondary RPM ISR
- *
- * Reads the inner slot on the disk.
- */
 void SecondaryRPMISR(){
+	// Reads the inner slot on the disk.
+
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 

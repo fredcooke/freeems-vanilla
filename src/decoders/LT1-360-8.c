@@ -38,8 +38,8 @@
  *
  * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
  *
- * @todo TODO This file contains SFA but Sean Keys is going to fill it up with
- * @todo TODO wonderful goodness very soon ;-)
+ * @todo TODO config pulse accumulator to fire its own RPM interrupt to give the wheel more
+ * resoloution. Such as fire on every 10x.
  *
  * @author Sean Keys
  */
@@ -67,8 +67,7 @@ unsigned char accumulatorRegisterCount = 0;
 signed char cumulativeBastardTeeth = 0;
 
 
-/** Setup PT Capturing so that we can decode the LT1 pattern
- */
+// Setup PT Capturing so that we can decode the LT1 pattern
 void decoderInitPreliminary(void){
 	/* set pt1 to capture on rising and falling */
 
@@ -88,15 +87,11 @@ void perDecoderReset(){
 }
 
 
-/**
- * @brief Interrupt on rising and falling edges to count the number of teeth that have passed
+/* Interrupt on rising and falling edges to count the number of teeth that have passed
  * in that window. 4 of the windows on the 8 tooth channel have a unique width. The pulse
  * accumulator will hold that count so there is no need to interrupt on the 360 tooth channel.
  *
- * @notes Primary LT1 Optispark Interrupt wired to the 8x channel.
- * @todo TODO Docs here!
- * @todo TODO config pulse accumulator to fire its own RPM interrupt to give the wheel more
- * resoloution. Such as fire on every 10x.
+ * Note: Primary LT1 Optispark Interrupt wired to the 8x channel.
  */
 void PrimaryRPMISR(void){
 	/* Clear the interrupt flag for this input compare channel */
@@ -242,14 +237,10 @@ void PrimaryRPMISR(void){
 }
 
 
-/** Secondary RPM ISR
- *
- * @brief Update the scheduler every time 5 teeth are counted by the pulse accumulator
- *
- * @todo TODO Change the accumulator mode to overflow every 5 inputs on PT0 making our 360 tooth wheel interrupt like a 72 tooth wheel
- * @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
- */
+/* Update the scheduler every time 5 teeth are counted by the pulse accumulator. */
 void SecondaryRPMISR(void){
+	/// @todo TODO Change the accumulator mode to overflow every 5 inputs on PT0 making our 360 tooth wheel interrupt like a 72 tooth wheel
+	/// @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 }

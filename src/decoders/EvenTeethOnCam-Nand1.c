@@ -58,10 +58,6 @@ const unsigned short eventAngles[] = {(0 * oneDegree), (30 * oneDegree), (60 * o
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
 
 
-/** Primary RPM ISR
- *
- * @author Fred Cooke
- */
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -174,10 +170,6 @@ void PrimaryRPMISR(){
 }
 
 
-/** Secondary RPM ISR
- *
- * Reads the inner slot on the disk.
- */
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;

@@ -62,7 +62,6 @@
  * - <a href="https://www.ohloh.net/p/freeems">FreeEMS code statistics by ohloh.net</a>
  * - <a href="http://issues.freeems.org">MantisBT issue tracking for FreeEMS and related projects</a>
  * - <a href="http://wiki.freeems.org">DokuWiki Wiki for FreeEMS user documentation</a>
- * - <a href="https://sourceforge.net/projects/freeems/">FreeEMS SourceForge project index</a>
  * - <a href="http://downloads.freeems.org">FreeEMS Downloads</a>
  * - <a href="http://docs.freeems.org">The online version of this documentation and more</a>
  *

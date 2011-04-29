@@ -58,12 +58,7 @@ const unsigned short eventAngles[] = {0};           // no events really...
 const unsigned char eventValidForCrankSync[] = {0}; // no events really...
 
 
-/** Primary RPM ISR
- *
- * Keep disabling calcs as often as we can.
- *
- * @author Fred Cooke
- */
+/* Keep disabling calcs as often as we can. */
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -72,12 +67,7 @@ void PrimaryRPMISR(){
 }
 
 
-/** Secondary RPM ISR
- *
- * Keep disabling calcs as often as we can.
- *
- * @author Fred Cooke
- */
+/* Keep disabling calcs as often as we can. */
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;

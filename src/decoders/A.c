@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2010 Fred Cooke
+ * Copyright 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -23,31 +23,24 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/** @page unlisted Unlisted Files
+
+/**	@file A.c
  *
- * There are a few important files that Doxygen can not parse and produce html
- * for. This page is here to list and describe those in a reasonable level of
- * detail as they are integral to the operation of the code.
+ * This exists to stop some other decoder from becoming the default in doxygen.
  *
- * @b Key @b Files:
- * - Flash dump script
- * - Flash delete script
- * - Processor hcs12mem defintion
- * - Makefiles
- * - Doxygen specific headers
- * - Assembly files
- * - Binary test packets
- * - Interface definition files
- * - Loadable s19 firmware file
- *
- * @todo TODO add a description for each item with an anchor above it. Reference the anchor from the above list.
- *
- * Contributed work welcome! By email, post, instant message or git push!
- *
+ * @author Fred Cooke
  */
 
-/** @file unlisted.h
- *
- * @ingroup doxygenDocFiles
- * @brief Doxygen Unlisted Files page definition
- */
+void PrimaryRPMISR(){
+	TFLG = 0x01;
+	// See the decoders directory in the source for real examples of this ISR.
+	// Also see the Makefile for how decoder files are handled differently.
+	/// @see enginePositionRPMDecoders
+}
+
+void SecondaryRPMISR(){
+	TFLG = 0x02;
+	// See the decoders directory in the source for real examples of this ISR.
+	// Also see the Makefile for how decoder files are handled differently.
+	/// @see enginePositionRPMDecoders
+}

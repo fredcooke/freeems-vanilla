@@ -66,21 +66,27 @@ extern void _start(void);
 
 /* Interrupt sub-routine prototypes - assigned to text1 region in linear space */
 void UISR(void) INT TEXT1;				/* Unimplemented Interrupt Sub Routine */
-/** @brief Injector1ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
-void Injector1ISR(void) INT TEXT1;		/* OC timer for injector channel 1 */
-/** @brief Injector2ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
-void Injector2ISR(void) INT TEXT1;		/* OC timer for injector channel 2 */
-/** @brief Injector3ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
-void Injector3ISR(void) INT TEXT1;		/* OC timer for injector channel 3 */
-/** @brief Injector4ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
-void Injector4ISR(void) INT TEXT1;		/* OC timer for injector channel 4 */
-/** @brief Injector5ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
-void Injector5ISR(void) INT TEXT1;		/* OC timer for injector channel 5 */
-/** @brief Injector6ISR is expanded from InjectorXISR via include statement, and macro definition(s) */
-void Injector6ISR(void) INT TEXT1;		/* OC timer for injector channel 6 */
+/** This ISR is expanded from InjectorXISR via include statement, and macro definitions. */
+void Injector1ISR(void) INT TEXT1;
+void Injector2ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
+void Injector3ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
+void Injector4ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
+void Injector5ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
+void Injector6ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
 
-void PrimaryRPMISR(void) INT TEXT1;		/* IC timer for primary engine position and RPM */
-void SecondaryRPMISR(void) INT TEXT1;		/* IC timer for secondary engine position and RPM */
+/** RPM ISRs, IC timer for engine position and RPM.
+ *
+ * There are multiple copies of this interrupt handler, each is linked with the
+ * rest of the code once such that if there are N decoder implementations and/or
+ * variants, then there are N loadable binaries produced after a full build.
+ *
+ * For details on any specific decoder implementation, see the documentation for
+ * that specific file.
+ *
+ * @author Various
+ */
+void PrimaryRPMISR(void) INT TEXT1;
+void SecondaryRPMISR(void) INT TEXT1; ///< @copydoc PrimaryRPMISR
 
 void TimerOverflow(void) INT TEXT1;		/* IC/OC timer overflow handling */
 void ModDownCtrISR(void) INT TEXT1;		/* Modulus Down Counter */

@@ -66,33 +66,9 @@
 
 const unsigned char decoderName[] = "NipponDenso";
 const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690};
-const unsigned char eventValidForCrankSync[] = {?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?}; // Needs some thought.
+//const unsigned char eventValidForCrankSync[] = {?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?}; // Needs some thought.
 
 
-/** Primary RPM ISR
- *
- * Summary of intended engine position capture scheme (out of date as at 3/1/09)
- *
- * Position/RPM signal interpretation :
- * Discard edges that have arrived too soon (lose sync here?)
- * Check to ensure we haven't lost sync (pulse arrives too late)
- * Compare time stamps of successive edges and calculate RPM
- * Store RPM and position in globals
- *
- * Schedule events :
- * loop through all events (spark and fuel), schedule those that fall sufficiently after this tooth and before the next one we expect.
- *
- * Sample ADCs :
- * Grab a unified set of ADC readings at one time in a consistent crank location to eliminate engine cycle dependent noise.
- * Set flag stating that New pulse, advance, etc should be calculated.
- *
- * @author Fred Cooke
- *
- * @warning These are for testing and demonstration only, not suitable for driving with just yet.
- *
- * @todo TODO bring the above docs up to date with reality
- * @todo TODO finish this off to a usable standard
- */
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -209,13 +185,6 @@ void PrimaryRPMISR(){
 }
 
 
-/** Secondary RPM ISR
- *
- * Similar to the primary one.
- *
- * @todo TODO bring this documentation up to date.
- * @todo TODO finish this off to a usable standard.
- */
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
