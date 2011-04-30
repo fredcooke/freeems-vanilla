@@ -49,7 +49,7 @@
 
 const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 #if SEANKLT1
-		{ARRAY_OF_16_VOLTAGES, {5000, 5000, 5000, 5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000,  5000}},
+		{ARRAY_OF_16_VOLTAGES, {2500, 2500, 2500, 2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500}},
 #else
 		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},        // dwellDesiredVersusVoltageTable
 #endif
