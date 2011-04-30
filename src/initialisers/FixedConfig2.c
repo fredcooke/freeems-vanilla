@@ -69,6 +69,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #ifdef HOTEL
 		MAPMinimum:    Toyota3BarMin,
 		MAPRange:      Toyota3BarRange,
+#elif SEANKLT1
+		MAPMinimum:    GM2BarMin,
+		MAPRange:      GM2BarRange,
 #else
 		MAPMinimum:    MPX4250AMin,
 		MAPRange:      MPX4250ARange,

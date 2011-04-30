@@ -228,6 +228,11 @@
 #define Toyota3BarMax              30000       /* Pressure read at highest ADC reading */
 #define Toyota3BarRange            29400       /* Pressure difference between lowest and highest ADC readings */
 
+/* GM 2bar found on Cyclone Turbo V6 and probably other cars too. TODO These numbers are probably not that accurate... */
+#define GM2BarMin                    150       /* Pressure read at lowest ADC reading */
+#define GM2BarMax                  20000       /* Pressure read at highest ADC reading */
+#define GM2BarRange                20150       /* Pressure difference between lowest and highest ADC readings */
+
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4100A.pdf */
 #define MPX4100AMin               1400       /* Pressure read at lowest ADC reading */
 #define MPX4100AMax              10750       /* Pressure read at highest ADC reading */
