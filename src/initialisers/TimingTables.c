@@ -57,7 +57,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 #elif PRESTO
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif SEANKLT1
-#include "../data/tables/axis/FredsTruck-RPM.h"
+#include "../data/tables/axis/SeansLT1-RPM.h"
 #elif SEANKR1
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #else
@@ -90,7 +90,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 #elif PRESTO
 #include "../data/tables/ign/flat15degrees.h"
 #elif SEANKLT1
-#include "../data/tables/ign/flat0degrees.h"
+#include "../data/tables/ign/SeansLT1IgnitionTiming.h"
 #elif SEANKR1
 #include "../data/tables/ign/flat0degrees.h"
 #else

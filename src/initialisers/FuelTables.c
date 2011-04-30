@@ -48,15 +48,51 @@ const volatile mainTable VETableMainFlash FUELTABLESD = {
 	MAINTABLE_LOAD_LENGTH,		/* VETableMain.LoadLength */
 	/* VETableMain.RPM */
 	{
-		#include "../data/tables/axis/FredsTruck-RPM.h"
+#ifdef TRUCK
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#elif HOTEL
+#include "../data/tables/axis/HotelHyundai-RPM.h"
+#elif PRESTO
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#elif SEANKLT1
+#include "../data/tables/axis/SeansLT1-RPM.h"
+#elif SEANKR1
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#else
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#endif
 	},
 	/* VETableMain.Load */
 	{
-		#include "../data/tables/axis/FredsTruck-Load.h"
+#ifdef TRUCK
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif HOTEL
+#include "../data/tables/axis/HotelHyundai-Load.h"
+#elif PRESTO
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif SEANKLT1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif SEANKR1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#else
+#include "../data/tables/axis/FredsTruck-Load.h"
+#endif
 	},
 	/* VETableMain.Table */
 	{
-		#include "../data/tables/ve/FredsTruckVE.h"
+#ifdef TRUCK
+#include "../data/tables/ve/FredsTruckVE.h"
+#elif HOTEL
+#include "../data/tables/ve/FredsTruckVE.h"
+#elif PRESTO
+#include "../data/tables/ve/FredsTruckVE.h" // should put something else here, but this is what it was using, so...
+#elif SEANKLT1
+#include "../data/tables/ve/flat80Percent.h"
+#elif SEANKR1
+#include "../data/tables/ve/flat80Percent.h"
+#else
+#include "../data/tables/ve/flat80Percent.h"
+#endif
 	}
 };
 
@@ -102,14 +138,38 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 	MAINTABLE_LOAD_LENGTH,		/* LambdaTable.LoadLength */
 	/* LambdaTable.RPM */
 	{
-		#include "../data/tables/axis/FredsTruck-RPM.h"
+#ifdef TRUCK
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#elif HOTEL
+#include "../data/tables/axis/HotelHyundai-RPM.h"
+#elif PRESTO
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#elif SEANKLT1
+#include "../data/tables/axis/SeansLT1-RPM.h"
+#elif SEANKR1
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#else
+#include "../data/tables/axis/FredsTruck-RPM.h"
+#endif
 	},
 	/* LambdaTable.Load */
 	{
-		#include "../data/tables/axis/FredsTruck-Load.h"
+#ifdef TRUCK
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif HOTEL
+#include "../data/tables/axis/HotelHyundai-Load.h"
+#elif PRESTO
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif SEANKLT1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif SEANKR1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#else
+#include "../data/tables/axis/FredsTruck-Load.h"
+#endif
 	},
 	/* LambdaTable.Table */
 	{
-		#include "../data/tables/lambda/FredsTruckLambda.h"
+		#include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
 	}
 };

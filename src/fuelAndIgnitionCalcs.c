@@ -268,7 +268,7 @@ outputEventPinNumbers[7] = 0;
 #define cliConfigredNumberOfIgnitionEvents 8
 #define numberOfInjectionEvents 8
 #define firstInjectionEvent 8
-#define cliConfiguredOffset (45 * oneDegree)
+#define cliConfiguredOffset (0 * oneDegree)
 #define numberOfInjectionsPerEngineCycle 2 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
 // The internet says that the firing order is: 1,8,4,3,6,5,7,2
