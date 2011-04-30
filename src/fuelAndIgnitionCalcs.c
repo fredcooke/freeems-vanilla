@@ -271,14 +271,17 @@ outputEventPinNumbers[7] = 0;
 #define cliConfiguredOffset (45 * oneDegree)
 #define numberOfInjectionsPerEngineCycle 2 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
-outputEventPinNumbers[ 8] = 2;
-outputEventPinNumbers[ 9] = 3;
-outputEventPinNumbers[10] = 4;
-outputEventPinNumbers[11] = 5;
-outputEventPinNumbers[12] = 2;
-outputEventPinNumbers[13] = 3;
-outputEventPinNumbers[14] = 4;
-outputEventPinNumbers[15] = 5;
+// The internet says that the firing order is: 1,8,4,3,6,5,7,2
+
+//         Output Channel =    // Fuel Channel | Cylinders
+outputEventPinNumbers[ 8] = 2; //      1       |  1 and 6
+outputEventPinNumbers[ 9] = 3; //      2       |  8 and 5
+outputEventPinNumbers[10] = 4; //      3       |  4 and 7
+outputEventPinNumbers[11] = 5; //      4       |  3 and 2
+outputEventPinNumbers[12] = 2; // See above
+outputEventPinNumbers[13] = 3; // See above
+outputEventPinNumbers[14] = 4; // See above
+outputEventPinNumbers[15] = 5; // See above
 outputEventInputEventNumbers[ 8] =  1;
 outputEventInputEventNumbers[ 9] =  3;
 outputEventInputEventNumbers[10] =  5;
