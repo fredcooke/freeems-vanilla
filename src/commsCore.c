@@ -1200,7 +1200,7 @@ void sendErrorIfClear(unsigned short errorID){
  * @todo TODO clean up the mess of commented out crap in here!
  * @todo TODO decide on errorCode or errorID and consistencise it everywhere.
  *
- * @param errorCode is the error ID to be passed out to listening devices.
+ * @param errorID is the error ID to be passed out to listening devices.
  */
 void sendErrorInternal(unsigned short errorID){
 //	set buffer in use, consider blocking interrupts to do this cleanly

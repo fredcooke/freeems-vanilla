@@ -42,7 +42,7 @@
  * - ?
  */
 
-/** @page releaseNotes_0_1_0 FreeEMS 0.1.0 UltraJizz
+/** @page releaseNotes_0_1_1 FreeEMS 0.1.1 XGATED
  *
  * This release comes to you mostly courtesy of Sean Keys who has done an outstanding job producing an
  * XGATE assembler and linker for us to use! Sean's work can not be valued enough, it will be absolutely

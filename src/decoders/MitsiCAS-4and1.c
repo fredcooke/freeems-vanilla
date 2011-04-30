@@ -126,7 +126,7 @@ figures for inner above are wrong due to offset LEDs in CAS body!!!! Find offset
 
 34 cam degrees or slightly less (inner degrees earlier than on disk.
 
-use #define and let the compiler take care of the math so that its easier to change.
+use hash define and let the compiler take care of the math so that its easier to change.
 
 Logic:
 

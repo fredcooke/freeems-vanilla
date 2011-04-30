@@ -103,10 +103,13 @@ signed char lookup8Bit3D( */
  *
  * @author Fred Cooke
  *
- * @param Table is a pointer to the table to read from.
  * @param realRPM is the current RPM for which a table value is required.
  * @param realLoad is the current load for which a table value is required.
- * @param RAMPage is the RAM page that the table is stored in.
+ * @param locationID the ID to use to get the memory information to look up the table.
+ *
+ * May go back to these:
+ * old param RAMPage is the RAM page that the table is stored in.
+ * old param Table is a pointer to the table to read from.
  *
  * @return The interpolated value for the location specified.
  */

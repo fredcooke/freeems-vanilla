@@ -24,7 +24,7 @@
  */
 
 
-/**	@file Generic4CylinderHallOrOptical.c
+/**	@file Generic4Cylinder-HallOrOptical.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
