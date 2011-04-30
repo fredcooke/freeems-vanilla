@@ -31,6 +31,8 @@
  * To facilitate testing of output circuits and physical hardware such as
  * injectors and coils on the bench or in the car.
  *
+ * @todo TODO setup the timer registers as required.
+ *
  * @author Fred Cooke
  */
 
@@ -48,9 +50,7 @@
 
 
 // Setup the timer interrupts as internal timers only triggered by a serial call that returns if this isn't the decoder.
-void decoderInitPreliminary(){
-	/// @todo TODO do the setup as required.
-}
+void decoderInitPreliminary(){}
 void perDecoderReset(){} // Nothing special to reset for this code
 
 
@@ -113,7 +113,7 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	/// todo do i check in decoders for outputs that have gone off recently? ie, are off, with interrupt set? if so, what do i do? i can just take control of such pins again at that point. i may just check for pins that aren't on, and not look at flags, etc.
+	// TODO do i check in decoders for outputs that have gone off recently? ie, are off, with interrupt set? if so, what do i do? i can just take control of such pins again at that point. i may just check for pins that aren't on, and not look at flags, etc.
 }
 
 

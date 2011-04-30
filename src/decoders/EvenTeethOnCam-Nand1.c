@@ -69,7 +69,7 @@ void PrimaryRPMISR(){
 
 	// Prevent main from clearing values before sync is obtained!
 	Clocks.timeoutADCreadingClock = 0;
-	/// @todo TODO integrate this into all decoders, and integrate with the fuel pump stuff too, this can be a flag that says "we've received an RPM signal of SOME sort recently"
+	// TODO integrate this into all decoders, and integrate with the fuel pump stuff too, this can be a flag that says "we've received an RPM signal of SOME sort recently"
 
 	if(!(PTITCurrentState & 0x01)){
 		/* Calculate the latency in ticks */
@@ -118,16 +118,16 @@ void PrimaryRPMISR(){
 		if(decoderFlags & CAM_SYNC){
 			if(decoderFlags & LAST_PERIOD_VALID){
 				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
-				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 					resetToNonRunningState(2);
 				}else{
 					if(PTITCurrentState & 0x01){
-						/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
+						// TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
 					}else{
-						/// @todo TODO Calculate RPM from last primaryTrailingEdgeTimeStamp
+						// TODO Calculate RPM from last primaryTrailingEdgeTimeStamp
 					}
 				}
-			}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
+			}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ // TODO temp for testing just do rpm this way, fill above out later.
 				*ticksPerDegreeRecord = thisTicksPerDegree;
 				sampleEachADC(ADCArrays);
 				Counters.syncedADCreadings++;
@@ -179,7 +179,7 @@ void SecondaryRPMISR(){
 	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
 
-	if(!(PTITCurrentState & 0x02)){ /// @todo TODO Remove this once the configuration can be adjusted to only fire on one edge!
+	if(!(PTITCurrentState & 0x02)){ // TODO Remove this once the configuration can be adjusted to only fire on one edge!
 		/* Calculate the latency in ticks */
 		ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
@@ -213,9 +213,9 @@ void SecondaryRPMISR(){
 			decoderFlags |= CAM_SYNC;
 			syncCaughtOnThisEvent = numberOfRealEvents; // Always caught here!
 		}
-		currentEvent = 0xFF; /// @todo TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
+		currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 
-		/// Check that it's within reason on a per engine cycle basis TODO : @todo (wider tolerance? if not, then generic settings will need to be less aggresive than they could be and detect less noise than they could) perhaps have 2 or 3 or ? different settings for tolerance that can be used within a specific decoder in any way that the author thinks is appropriate? Defaults set from each decoder and configurable by the user later too.
+		// Check that it's within reason on a per engine cycle basis TODO (wider tolerance? if not, then generic settings will need to be less aggresive than they could be and detect less noise than they could) perhaps have 2 or 3 or ? different settings for tolerance that can be used within a specific decoder in any way that the author thinks is appropriate? Defaults set from each decoder and configurable by the user later too.
 //		unsigned short thisTicksPerDegree = 0;
 //		if(decoderFlags & CAM_SYNC){
 //			unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
@@ -224,7 +224,7 @@ void SecondaryRPMISR(){
 //
 //			if(decoderFlags & LAST_PERIOD_VALID){
 //				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-//				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+//				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 //					resetToNonRunningState();
 //				}
 //			}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){

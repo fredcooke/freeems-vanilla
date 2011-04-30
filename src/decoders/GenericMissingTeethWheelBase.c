@@ -34,11 +34,10 @@
  * it doesn't work well or at all. It's just being pulled in because it's the
  * closest thing we have.
  *
+ * @todo TODO make the below code generic and bullet proof and dependent upon data from above to function.
+ *
  * @author Philip Johnson
  */
-
-
-/// @todo TODO make the below code generic and bullet proof and dependent upon data from above to function.
 
 
 // Some simple checks here, more thorough checks where the arrays are generated, if not using that code, this will still complain.

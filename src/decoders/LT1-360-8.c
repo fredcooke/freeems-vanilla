@@ -111,7 +111,7 @@ void PrimaryRPMISR(void){
 
 	Counters.primaryTeethSeen++;
 	Counters.secondaryTeethSeen += accumulatorCount;
-//	Counters.testCounter5 = accumulatorCount; /// @todo TODO remove DEBUG
+//	Counters.testCounter5 = accumulatorCount; // TODO remove DEBUG
 
 	/* always make sure you have two good counts(there are a few windows that share counts) */
 	if(!(decoderFlags & CAM_SYNC)){
@@ -129,7 +129,7 @@ void PrimaryRPMISR(void){
 						lastEvent = i - 1;
 						currentEvent = lastEvent; // Will be rolled up to current
 					}
-					PORTB |= 0x01; /// @todo TODO remove DEBUG found count
+					PORTB |= 0x01; // TODO remove DEBUG found count
 					break;
 				}
 			}
@@ -140,19 +140,19 @@ void PrimaryRPMISR(void){
 				decoderFlags |= CAM_SYNC;
 				PORTB = 0x0F; /* light the board DEBUG */
 			}else{
-				/// @todo TODO missedsync opportunity ++ or something
+				// TODO missedsync opportunity ++ or something
 			}
 
 			lastAccumulatorCount = accumulatorCount;
 
-			/// @todo TODO put fuzzy initial sync in place, maybe.
+			// TODO put fuzzy initial sync in place, maybe.
 			//		// If still not synced, try to do fuzzy sync
 			//		if(!(decoderFlags & CAM_SYNC)){
 			//			// loop with +1 and -1
 			//			// count fuzzy syncs, if genuine, should only be one + and one -
 			//			// if not, give up and clear all state
 			//		}
-			//		return; /// @todo TODO remove and continue on down the thread
+			//		return; // TODO remove and continue on down the thread
 		}
 	}
 
@@ -172,9 +172,9 @@ void PrimaryRPMISR(void){
 		signed char bastardTeeth = accumulatorCount - windowCounts[currentEvent];
 		cumulativeBastardTeeth += bastardTeeth;
 
-		Counters.testCounter4 = cumulativeBastardTeeth; /// @todo TODO remove DEBUG
+		Counters.testCounter4 = cumulativeBastardTeeth; // TODO remove DEBUG
 		Counters.testCounter5 = bastardTeeth;
-		Counters.testCounter6 = windowCounts[currentEvent]; /// @todo TODO remove DEBUG
+		Counters.testCounter6 = windowCounts[currentEvent]; // TODO remove DEBUG
 
 		/* if we are in-sync continue checking and perform required decoder calcs */
 		LongTime timeStamp;
@@ -190,11 +190,11 @@ void PrimaryRPMISR(void){
 
 		if((bastardTeeth > MAX_BASTARD_TEETH) || (bastardTeeth < -MAX_BASTARD_TEETH)){
 			resetToNonRunningState(BASTARD_SYNC_LOSS_ID_BASE + bastardTeeth);
-			PORTB = 0xAA; /// @todo TODO remove DEBUG
+			PORTB = 0xAA; // TODO remove DEBUG
 			return;
 		}else if((cumulativeBastardTeeth > MAX_CUMULATIVE_BASTARD_TEETH) || (cumulativeBastardTeeth < -MAX_CUMULATIVE_BASTARD_TEETH)){
 			resetToNonRunningState(BASTARD_CUMULATIVE_SYNC_LOSS_ID_BASE + cumulativeBastardTeeth);
-			PORTB = 0xFF; /// @todo TODO remove DEBUG
+			PORTB = 0xFF; // TODO remove DEBUG
 			return;
 		}else{
 			/* TODO all required calcs etc as shown in other working decoders */
@@ -224,7 +224,7 @@ void PrimaryRPMISR(void){
 				/* Reset the clock for reading timeout */
 				Clocks.timeoutADCreadingClock = 0;
 				RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-				PORTB = 0x00; /// @todo TODO remove DEBUG
+				PORTB = 0x00; // TODO remove DEBUG
 			}
 		}
 
@@ -239,8 +239,8 @@ void PrimaryRPMISR(void){
 
 /* Update the scheduler every time 5 teeth are counted by the pulse accumulator. */
 void SecondaryRPMISR(void){
-	/// @todo TODO Change the accumulator mode to overflow every 5 inputs on PT0 making our 360 tooth wheel interrupt like a 72 tooth wheel
-	/// @todo TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
+	// TODO Change the accumulator mode to overflow every 5 inputs on PT0 making our 360 tooth wheel interrupt like a 72 tooth wheel
+	// TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 }

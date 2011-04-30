@@ -36,8 +36,8 @@
 
 #define DECODER_IMPLEMENTATION_C
 #define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
-#define NUMBER_OF_REAL_EVENTS      2 /// @todo TODO  All three of these should migrate to a generic 4 cyl header...
-#define NUMBER_OF_VIRTUAL_EVENTS   8 /// @todo TODO  All three of these should migrate to a generic 4 cyl header...
+#define NUMBER_OF_REAL_EVENTS      2 // TODO  All three of these should migrate to a generic 4 cyl header...
+#define NUMBER_OF_VIRTUAL_EVENTS   8 // TODO  All three of these should migrate to a generic 4 cyl header...
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
@@ -45,7 +45,7 @@
 #include "../inc/utils.h"
 
 // 69 is a little too high, and 68 is more than a little too low (or inversed)
-#define E1 69 /// @todo TODO May need to be 111 instead, needs testing!
+#define E1 69 // TODO May need to be 111 instead, needs testing!
 
 const unsigned char decoderName[] = "MitsiAndMazda-DistributorCAS-Outer4";
 

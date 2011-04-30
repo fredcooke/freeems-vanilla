@@ -130,7 +130,7 @@ void PrimaryRPMISR(){
 
 		*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessiveSecondaryPulses) / angleOfSingleIteration);
 
-		/// @todo TODO make this stuff behave correctly, this one will only run at startup, and the other will always run, but do it by generic config and split this stuff out into a shared function, soon.
+		// TODO make this stuff behave correctly, this one will only run at startup, and the other will always run, but do it by generic config and split this stuff out into a shared function, soon.
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
 		*mathSampleTimeStampRecord = TCNT;

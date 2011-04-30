@@ -68,7 +68,7 @@ const unsigned char eventValidForCrankSync[] = {0,0,0,0};
  * Warning This is for testing and demonstration only, not suitable for driving with just yet.
  */
 void PrimaryRPMISR(){
-	/// @todo TODO make this code more general and robust such that it can be used for real simple applications
+	// TODO make this code more general and robust such that it can be used for real simple applications
 
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -120,7 +120,7 @@ void PrimaryRPMISR(){
 		/* Reset the clock for reading timeout */
 		Clocks.timeoutADCreadingClock = 0;
 
-		/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic?
+		// TODO behave differently depending upon sync level? Genericise this loop/logic?
 //		if(decoderFlags & COMBUSTION_SYNC){
 //			unsigned char pin;
 //			for(pin=0;pin<6;pin++){

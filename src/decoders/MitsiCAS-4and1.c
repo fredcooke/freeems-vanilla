@@ -366,7 +366,7 @@ void PrimaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = ~PTIT;	/// @todo TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = ~PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -473,16 +473,16 @@ void PrimaryRPMISR(){
 
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 				resetToNonRunningState(1);
 			}else{
 				if(PTITCurrentState & 0x01){
-					/// @todo TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
+					// TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
 				}else{
-					/// @todo TODO Calculate RPM from last primaryTrailingEdgeTimeStamp
+					// TODO Calculate RPM from last primaryTrailingEdgeTimeStamp
 				}
 			}
-		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ /// @todo TODO temp for testing just do rpm this way, fill above out later.
+		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ // TODO temp for testing just do rpm this way, fill above out later.
 			*ticksPerDegreeRecord = thisTicksPerDegree;
 		}
 	}
@@ -510,7 +510,7 @@ void SecondaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = ~PTIT;	/// @todo TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = ~PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -596,7 +596,7 @@ void SecondaryRPMISR(){
 
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ /// @todo TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 				resetToNonRunningState(2);
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
@@ -604,7 +604,7 @@ void SecondaryRPMISR(){
 		}
 	}
 
-	/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+	// TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
 	if(decoderFlags & CAM_SYNC){
 		unsigned char outputEventNumber;
 		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){
