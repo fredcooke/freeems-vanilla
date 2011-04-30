@@ -81,7 +81,7 @@ void PrimaryRPMISR(){
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
-	/** @todo TODO discard narrow ones! test for tooth width and tooth period
+	/* TODO discard narrow ones! test for tooth width and tooth period
 	 * the width should be based on how the hardware is setup. IE the LM1815
 	 * is adjusted to have a pulse output of a particular width. This noise
 	 * filter should be matched to that width as should the hardware filter.
@@ -197,7 +197,7 @@ void SecondaryRPMISR(){
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
-	/** @todo TODO discard narrow ones! test for tooth width and tooth period
+	/* TODO discard narrow ones! test for tooth width and tooth period
 	 * the width should be based on how the hardware is setup. IE the LM1815
 	 * is adjusted to have a pulse output of a particular width. This noise
 	 * filter should be matched to that width as should the hardware filter.
