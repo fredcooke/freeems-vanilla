@@ -67,6 +67,24 @@ unsigned char accumulatorRegisterCount = 0;
 signed char cumulativeBastardTeeth = 0;
 
 
+// Rolling tolerance to cumulative noise issues feature.
+//
+// This rolling tolerance for cumulative bastard teeth count is available to
+// allow users to tune the system such that mild noise on the fine pitch input
+// doesn't cause loss of sync over a period of seconds, minutes or hours. This
+// feature should be tuned to the most conservative level possible and actually
+// used to improve the quality of the wiring, not to mask bad noise issues.
+// Default will always be off, hard coded on for now with only one user, Sean.
+// ----------------------------------------------------------------------------
+// 0 is disabled, this is the default such that you find out that your system is noisy quickly
+// 1 means you can have one extra/missing tooth per window continuously without loss of sync
+// 2 means you can have one extra/missing tooth per 2 windows continuously without loss of sync etc
+// 65535 is max and the most conservative possible with this feature enabled.
+#define windowsPerAllowedCumulativeBastardTooth 32
+// TODO future enhancement allow fractional stuff by having N extra/missing per M windows
+unsigned short cumulativeBastardTeethEroderCounter = 0;
+
+
 // Setup PT Capturing so that we can decode the LT1 pattern
 void decoderInitPreliminary(void){
 	/* set pt1 to capture on rising and falling */
@@ -84,6 +102,7 @@ void decoderInitPreliminary(void){
 
 void perDecoderReset(){
 	cumulativeBastardTeeth = 0;
+	cumulativeBastardTeethEroderCounter = 0;
 }
 
 
@@ -175,6 +194,23 @@ void PrimaryRPMISR(void){
 		Counters.testCounter4 = cumulativeBastardTeeth; // TODO remove DEBUG
 		Counters.testCounter5 = bastardTeeth;
 		Counters.testCounter6 = windowCounts[currentEvent]; // TODO remove DEBUG
+
+		// Cumulative Tolerance Code TODO add counters to monitor aggressiveness of this
+		if(windowsPerAllowedCumulativeBastardTooth){
+			cumulativeBastardTeethEroderCounter++;
+			if(cumulativeBastardTeethEroderCounter == windowsPerAllowedCumulativeBastardTooth){
+				cumulativeBastardTeethEroderCounter = 0;
+				if(cumulativeBastardTeeth > 0){
+					cumulativeBastardTeeth--;
+					// counter for decrement
+				}else if(cumulativeBastardTeeth < 0){
+					cumulativeBastardTeeth++;
+					// counter for increment
+				}else{
+					// counter for does nothing
+				}
+			}
+		}
 
 		/* if we are in-sync continue checking and perform required decoder calcs */
 		LongTime timeStamp;
