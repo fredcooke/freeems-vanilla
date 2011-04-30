@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -87,7 +87,7 @@ const volatile mainTable VETableMainFlash FUELTABLESD = {
 #elif PRESTO
 #include "../data/tables/ve/FredsTruckVE.h" // should put something else here, but this is what it was using, so...
 #elif SEANKLT1
-#include "../data/tables/ve/flat80Percent.h"
+#include "../data/tables/ve/SeansLT1VE.h"
 #elif SEANKR1
 #include "../data/tables/ve/flat80Percent.h"
 #else
