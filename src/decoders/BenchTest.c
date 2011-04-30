@@ -31,6 +31,11 @@
  * To facilitate testing of output circuits and physical hardware such as
  * injectors and coils on the bench or in the car.
  *
+ * This "decoder" is intended to generate an output pattern that allows various
+ * testing to occur without any external stimulus. This is useful for scheduler
+ * testing, injector testing, output hardware testing, coil testing, etc. This
+ * will be the only decoder that will be usable with just a cpu and comms interface.
+ *
  * @todo TODO setup the timer registers as required.
  *
  * @author Fred Cooke
