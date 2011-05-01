@@ -170,6 +170,18 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 	},
 	/* LambdaTable.Table */
 	{
-		#include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
+#ifdef TRUCK
+#include "../data/tables/lambda/FredsTruckLambda.h"
+#elif HOTEL
+#include "../data/tables/lambda/FredsTruckLambda.h"
+#elif PRESTO
+#include "../data/tables/lambda/FredsTruckLambda.h"
+#elif SEANKLT1
+#include "../data/tables/lambda/SeansLT1Lambda.h"
+#elif SEANKR1
+#include "../data/tables/lambda/FredsTruckLambda.h"
+#else
+#include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
+#endif
 	}
 };

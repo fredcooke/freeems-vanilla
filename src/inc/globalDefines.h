@@ -201,13 +201,15 @@
 #define batteryVoltageMin               0       /* Voltage read at lowest ADC reading */
 #define batteryVoltageRange         24500       /* Voltage difference between lowest and highest ADC reading */
 
+// 0.5 - 1.5 Lambda
 #define LC1LambdaMin                16384       /* Lambda read at lowest ADC reading */
 #define LC1LambdaMax                49152       /* Lambda read at highest ADC reading */
 #define LC1LambdaRange              32768       /* Lambda difference between lowest and highest ADC reading */
 
-#define AFR1020LambdaMin            16384       /* Lambda read at lowest ADC reading */
-#define AFR1020LambdaMax            49152       /* Lambda read at highest ADC reading */
-#define AFR1020LambdaRange          32768       /* Lambda difference between lowest and highest ADC reading */
+// 0.68 - 1.36 Lambda
+#define AFR1020LambdaMin            22282       /* Lambda read at lowest ADC reading */
+#define AFR1020LambdaMax            44564       /* Lambda read at highest ADC reading */
+#define AFR1020LambdaRange          22282       /* Lambda difference between lowest and highest ADC reading */
 
 
 /* MAP Sensor Data Explanation

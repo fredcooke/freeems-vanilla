@@ -78,8 +78,13 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #endif
 		AAPMinimum:    MPX4100AMin,
 		AAPRange:      MPX4100ARange,
+#ifdef SEANKLT1
+		EGOMinimum:    AFR1020LambdaMin,
+		EGORange:      AFR1020LambdaRange,
+#else
 		EGOMinimum:    LC1LambdaMin,
 		EGORange:      LC1LambdaRange,
+#endif
 		BRVMinimum:    batteryVoltageMin,
 		BRVRange:      batteryVoltageRange,
 		TPSMinimumADC: TPSDefaultMin,
