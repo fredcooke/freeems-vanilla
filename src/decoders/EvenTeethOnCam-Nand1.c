@@ -88,38 +88,26 @@ void PrimaryRPMISR(){
 		}
 		unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
-		unsigned char lastEvent = currentEvent;
-		currentEvent++;
-		if(currentEvent == 0){
-			lastEvent = numberOfRealEvents - 1;
-		}
-
 		unsigned long thisInterEventPeriod = 0;
 		unsigned short thisTicksPerDegree = 0;
 		if(decoderFlags & LAST_TIMESTAMP_VALID){
-			unsigned short thisAngle = 0;
-			if(currentEvent == 0){
-				thisAngle = totalEventAngleRange - eventAngles[lastEvent];
-			}else{
-				thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
-			}
-
 			thisInterEventPeriod = thisEventTimeStamp - lastPrimaryEventTimeStamp;
-			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / (30 * oneDegree)); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 		}
 
-		if(currentEvent == numberOfRealEvents){
-			resetToNonRunningState(1);
-			RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-			return;
-		}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
-
-
 		if(decoderFlags & CAM_SYNC){
+			currentEvent++;
+			if(currentEvent == numberOfRealEvents){
+				resetToNonRunningState(1);
+				RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+				return;
+			}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
+
 			if(decoderFlags & LAST_PERIOD_VALID){
 				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
 				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
 					resetToNonRunningState(2);
+					return;
 				}else{
 					if(PTITCurrentState & 0x01){
 						// TODO Calculate RPM from last primaryLeadingEdgeTimeStamp
@@ -139,22 +127,22 @@ void PrimaryRPMISR(){
 				// Reset the clock for reading timeout
 				Clocks.timeoutADCreadingClock = 0;
 			}
+
+			// for now, sample always and see what we get result wise...
+//			if((currentEvent % 6) == 0){
+//				sampleEachADC(ADCArrays);
+//				Counters.syncedADCreadings++;
+//				*mathSampleTimeStampRecord = TCNT;
+//
+//				// Set flag to say calc required
+//				coreStatusA |= CALC_FUEL_IGN;
+//
+//				// Reset the clock for reading timeout
+//				Clocks.timeoutADCreadingClock = 0;
+//			}
+
+			SCHEDULE_ECT_OUTPUTS();
 		}
-
-		// for now, sample always and see what we get result wise...
-//		if((currentEvent % 6) == 0){
-//			sampleEachADC(ADCArrays);
-//			Counters.syncedADCreadings++;
-//			*mathSampleTimeStampRecord = TCNT;
-//
-//			// Set flag to say calc required
-//			coreStatusA |= CALC_FUEL_IGN;
-//
-//			// Reset the clock for reading timeout
-//			Clocks.timeoutADCreadingClock = 0;
-//		}
-
-		SCHEDULE_ECT_OUTPUTS();
 
 		// do these always at first, and use them with a single 30 degree angle for the first cut
 		if(decoderFlags & LAST_TIMESTAMP_VALID){
@@ -214,23 +202,6 @@ void SecondaryRPMISR(){
 			syncCaughtOnThisEvent = numberOfRealEvents; // Always caught here!
 		}
 		currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
-
-		// Check that it's within reason on a per engine cycle basis TODO (wider tolerance? if not, then generic settings will need to be less aggresive than they could be and detect less noise than they could) perhaps have 2 or 3 or ? different settings for tolerance that can be used within a specific decoder in any way that the author thinks is appropriate? Defaults set from each decoder and configurable by the user later too.
-//		unsigned short thisTicksPerDegree = 0;
-//		if(decoderFlags & CAM_SYNC){
-//			unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
-//
-//			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
-//
-//			if(decoderFlags & LAST_PERIOD_VALID){
-//				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-//				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
-//					resetToNonRunningState();
-//				}
-//			}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
-//				*ticksPerDegreeRecord = thisTicksPerDegree;
-//			}
-//		}
 
 		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}
