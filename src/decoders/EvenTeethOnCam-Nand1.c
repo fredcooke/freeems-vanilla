@@ -105,8 +105,11 @@ void PrimaryRPMISR(){
 
 			if(decoderFlags & LAST_PERIOD_VALID){
 				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
-				if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				if(ratioBetweenThisAndLast > 1500){
 					resetToNonRunningState(2);
+					return;
+				}else if(ratioBetweenThisAndLast < 667){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+					resetToNonRunningState(3);
 					return;
 				}else{
 					if(PTITCurrentState & 0x01){
