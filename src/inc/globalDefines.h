@@ -169,12 +169,14 @@
 
 // Cylinder volumes, value = (cc / 2000) * 65536
 #define cylinderSize727cc           23828       /* 727cc per cylinder for Sean's 355ci LT1 */
+#define cylinderSize575cc           18842       /* 575cc per cylinder for B230FT */
 #define cylinderSize500cc           16384       /* 500cc per cylinder for my FE-DOHC */
 #define cylinderSize450cc           14746       /* 450cc per cylinder for my F8-DOHC */
 #define cylinderSize400cc           13107       /* 400cc per cylinder for the Toyota 4age */
 #define cylinderSize250cc            8176       /* 250cc per cylinder for Sean's 998cc R1 */
 
 // Injector flows, value = (cc/min / 60) * 1024
+#define injector1600cc              27307       /* 1600cc per minute for some random Bosch injectors :-p */
 #define injector550cc                9387       /* 550cc per minute for my RX7 injectors */
 #define injector525cc                8960       /* 42lb/hr with higher pressure, 50lb/hr, 10.5 conversion from RC, Sean's LT1 */
 #define injector230cc                3925       /* 230cc per minute for Yamaha R1 injectors http://www.witchhunter.com/flowdatapix/bcdh210.jpg */
