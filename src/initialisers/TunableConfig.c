@@ -48,12 +48,23 @@
 
 
 const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
+
+// dwellDesiredVersusVoltageTable
 #if SEANKLT1
-		{ARRAY_OF_16_VOLTAGES, {2500, 2500, 2500, 2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500}},
+		{ARRAY_OF_16_VOLTAGES, SEANKLT1_16_DWELLS},
+#elif JOSHBROWN
+		{ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DWELLS},
 #else
-		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},        // dwellDesiredVersusVoltageTable
+		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},
 #endif
-		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},     // injectorDeadTimeTable
+
+// injectorDeadTimeTable
+#if JOSHBROWN
+		{ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DEADTIMES},
+#else
+		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},
+#endif
+
 		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_BASE_PERCENTS}, // postStartEnrichmentTable
 		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_TIMES},         // postStartTaperTimeTable
 		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_ZEROS},         // engineTempEnrichmentTableFixed - currently unused

@@ -191,7 +191,8 @@ void calculateFuelAndIgnition(){
 // IE, if you have 10btdc in your table, flat, and a timing light shows 5btdc on the engine, then increase this number by 5 degrees.
 #define Mitsi4and1OffsetOnTruck ( 90.00 * oneDegree) // FE-DOHC, CAS approximately centre
 #define HyundaiHackOffset       ( 30.00 * oneDegree) // Distributor fully retarded
-#define SilverTop4age           (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
+#define SilverTop4ageOffset     (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
+#define BrownVolvoOffset        (570.00 * oneDegree) // Stockish Volvo B230FT with DSM/Miata CAS + 24+1 disk.
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK
@@ -228,18 +229,18 @@ outputEventPinNumbers[0] = 0;
 
 // Preston's silver-top-on-a-stand http://forum.diyefi.org/viewtopic.php?f=55&t=1101
 #elif PRESTO
-anglesOfTDC[0] =   0 * oneDegree;   // 1 and 4, hack converts this to 360 as well
-anglesOfTDC[1] = 180 * oneDegree; // 2 and 3, hack converts this to 540 as well
-anglesOfTDC[2] = 360 * oneDegree;   // 1 and 4, hack converts this to 360 as well
-anglesOfTDC[3] = 540 * oneDegree; // 2 and 3, hack converts this to 540 as well
+anglesOfTDC[0] =   0 * oneDegree; // 1 and 4
+anglesOfTDC[1] = 180 * oneDegree; // 2 and 3
+anglesOfTDC[2] = 360 * oneDegree; // 1 and 4
+anglesOfTDC[3] = 540 * oneDegree; // 2 and 3
 outputEventPinNumbers[0] = 0;
 outputEventPinNumbers[1] = 1;
 outputEventPinNumbers[2] = 0;
 outputEventPinNumbers[3] = 1;
-#define cliConfigredNumberOfIgnitionEvents 2
+#define cliConfigredNumberOfIgnitionEvents 4
 #define numberOfInjectionEvents 2
 #define firstInjectionEvent 4
-#define cliConfiguredOffset SilverTop4age
+#define cliConfiguredOffset SilverTop4ageOffset
 #define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 /// @todo TODO migrate this to sequential with above = 1 OR to two shots with above = 2 and 2 pins only.
 outputEventPinNumbers[4] = 4;
@@ -302,6 +303,31 @@ outputEventInputEventNumbers[15] = 15;
 #define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 //outputEventInputEventNumbers[?] = ?;
 //outputEventPinNumbers[?] = ?;
+
+// Josh's 2.3 turbo volvo with 1600cc injectors making shit loads of power etc.
+#elif JOSHBROWN
+anglesOfTDC[0] =   0 * oneDegree;   // 1 and 4, hack converts this to 360 as well
+anglesOfTDC[1] = 180 * oneDegree; // 2 and 3, hack converts this to 540 as well
+anglesOfTDC[2] = 360 * oneDegree;   // 1 and 4, hack converts this to 360 as well
+anglesOfTDC[3] = 540 * oneDegree; // 2 and 3, hack converts this to 540 as well
+outputEventPinNumbers[0] = 0;
+outputEventPinNumbers[1] = 1;
+outputEventPinNumbers[2] = 0;
+outputEventPinNumbers[3] = 1;
+#define cliConfigredNumberOfIgnitionEvents 4
+#define numberOfInjectionEvents 4
+#define firstInjectionEvent 4
+#define cliConfiguredOffset BrownVolvoOffset
+#define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+/// @todo TODO migrate this to sequential with above = 1 OR to two shots with above = 2 and 2 pins only.
+outputEventPinNumbers[4] = 2; // 1
+outputEventPinNumbers[5] = 3; // 2
+outputEventPinNumbers[6] = 4; // 3
+outputEventPinNumbers[7] = 5; // 4
+outputEventInputEventNumbers[4] = 12;
+outputEventInputEventNumbers[5] = 18;
+outputEventInputEventNumbers[6] = 0;
+outputEventInputEventNumbers[7] = 6;
 
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 #else

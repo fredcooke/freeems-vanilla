@@ -93,6 +93,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 #include "../data/tables/ign/SeansLT1IgnitionTiming.h"
 #elif SEANKR1
 #include "../data/tables/ign/flat0degrees.h"
+#elif JOSHBROWN
+#include "../data/tables/ign/HotelHyundaiIgnitionTiming.h"
 #else
 #include "../data/tables/ign/flat0degrees.h"
 #endif

@@ -58,6 +58,8 @@ const volatile mainTable VETableMainFlash FUELTABLESD = {
 #include "../data/tables/axis/SeansLT1-RPM.h"
 #elif SEANKR1
 #include "../data/tables/axis/FredsTruck-RPM.h"
+#elif JOSHBROWN
+#include "../data/tables/axis/SeansLT1-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -73,6 +75,8 @@ const volatile mainTable VETableMainFlash FUELTABLESD = {
 #elif SEANKLT1
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif SEANKR1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif JOSHBROWN
 #include "../data/tables/axis/FredsTruck-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
@@ -90,6 +94,8 @@ const volatile mainTable VETableMainFlash FUELTABLESD = {
 #include "../data/tables/ve/SeansLT1VE.h"
 #elif SEANKR1
 #include "../data/tables/ve/flat80Percent.h"
+#elif JOSHBROWN
+#include "../data/tables/ve/flat60Percent.h"
 #else
 #include "../data/tables/ve/flat80Percent.h"
 #endif
@@ -148,6 +154,8 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 #include "../data/tables/axis/SeansLT1-RPM.h"
 #elif SEANKR1
 #include "../data/tables/axis/FredsTruck-RPM.h"
+#elif JOSHBROWN
+#include "../data/tables/axis/SeansLT1-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -163,6 +171,8 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 #elif SEANKLT1
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif SEANKR1
+#include "../data/tables/axis/FredsTruck-Load.h"
+#elif JOSHBROWN
 #include "../data/tables/axis/FredsTruck-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
@@ -180,6 +190,8 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 #include "../data/tables/lambda/SeansLT1Lambda.h"
 #elif SEANKR1
 #include "../data/tables/lambda/FredsTruckLambda.h"
+#elif JOSHBROWN
+#include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
 #else
 #include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
 #endif
