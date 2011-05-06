@@ -130,7 +130,7 @@ void PrimaryRPMISR(void){
 
 	Counters.primaryTeethSeen++;
 	Counters.secondaryTeethSeen += accumulatorCount;
-//	Counters.testCounter5 = accumulatorCount; // TODO remove DEBUG
+//	Counters.testUS5 = accumulatorCount; // TODO remove DEBUG
 
 	/* always make sure you have two good counts(there are a few windows that share counts) */
 	if(!(decoderFlags & CAM_SYNC)){
@@ -191,9 +191,9 @@ void PrimaryRPMISR(void){
 		signed char bastardTeeth = accumulatorCount - windowCounts[currentEvent];
 		cumulativeBastardTeeth += bastardTeeth;
 
-		Counters.testCounter4 = cumulativeBastardTeeth; // TODO remove DEBUG
-		Counters.testCounter5 = bastardTeeth;
-//		Counters.testCounter6 = windowCounts[currentEvent]; // TODO remove DEBUG
+		Counters.testUS4 = cumulativeBastardTeeth; // TODO remove DEBUG
+		Counters.testUS5 = bastardTeeth;
+//		Counters.testUS6 = windowCounts[currentEvent]; // TODO remove DEBUG
 
 		// Cumulative Tolerance Code TODO add counters to monitor aggressiveness of this
 		if(windowsPerAllowedCumulativeBastardTooth){
@@ -202,7 +202,7 @@ void PrimaryRPMISR(void){
 				cumulativeBastardTeethEroderCounter = 0;
 				if(cumulativeBastardTeeth > 0){
 					cumulativeBastardTeeth--;
-					Counters.testCounter6++;
+					Counters.testUS6++;
 					// counter for decrement
 				}else if(cumulativeBastardTeeth < 0){
 					cumulativeBastardTeeth++;

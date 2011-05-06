@@ -407,13 +407,13 @@ typedef struct {
 	unsigned short TooFarToSchedule;                    /**< times sched wasnt done to prevent excess advance */
 	unsigned short DwellStretchedToSchedule;            /**< times sched needed to extend dwell to prevent excess advance */
 	unsigned short TimerStretchedToSchedule;            ///< times timer needed to be extended to prevent not scheduling.
-	unsigned short testCounter0;
-	unsigned short testCounter1;
-	unsigned short testCounter2;
-	unsigned short testCounter3;
-	unsigned short testCounter4;
-	unsigned short testCounter5;
-	unsigned short testCounter6;
+	unsigned short testUS0;
+	unsigned short testUS1;
+	unsigned short testUS2;
+	unsigned short testUS3;
+	unsigned short testUS4;
+	unsigned short testUS5;
+	unsigned short testUS6;
 // TODO remove the two commented out lines above this
 
 	unsigned short primaryTeethSeen;               /**< Free running counters for number of teeth seen such that... */
