@@ -197,7 +197,7 @@ void SecondaryRPMISR(){
 		if(decoderFlags & CAM_SYNC){
 			if(currentEvent != (numberOfRealEvents - 1)){
 				// Record that we had to reset position...
-				Counters.camSyncCorrections++;
+				Counters.decoderSyncCorrections++;
 				syncLostOnThisEvent = currentEvent;				// Should never happen, or should be caught by timing checks below
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.

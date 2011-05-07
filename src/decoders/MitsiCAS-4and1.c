@@ -449,7 +449,7 @@ void PrimaryRPMISR(){
 			lastEvent = currentEvent - 1;
 
 			// Record that we had to reset position...
-			Counters.camSyncCorrections++;
+			Counters.decoderSyncCorrections++;
 			syncCaughtOnThisEvent = currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}
@@ -577,7 +577,7 @@ void SecondaryRPMISR(){
 			lastEvent = currentEvent - 1;
 
 			// Record that we had to reset position...
-			Counters.camSyncCorrections++;
+			Counters.decoderSyncCorrections++;
 			syncCaughtOnThisEvent = currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}

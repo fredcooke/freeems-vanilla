@@ -55,14 +55,8 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 	engineCyclePeriod = ticksPerCycleAtOneRPM;
 
 	// Keep track of lost sync in counters
-	if(decoderFlags & CAM_SYNC){
-		Counters.camSyncLosses++;
-	}
-	if(decoderFlags & CRANK_SYNC){
-		Counters.crankSyncLosses++;
-	}
-	if(decoderFlags & COMBUSTION_SYNC){
-		Counters.combustionSyncLosses++;
+	if(decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
+		Counters.decoderSyncLosses++;
 	}
 
 	// record unique loss ID
@@ -120,7 +114,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 				// GO HIGH SHOULD DO NOTHING CEPT COUNTER
 				// if too close, do nothing, or if far enough away, resched
 				// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
-				Counters.testUS0++;
+				Counters.pinScheduledToGoHigh++;
 			}else{ // Otherwise it's go low
 				// if too close, resched to turn, ie, stay on... , if far enough away, self sched
 				if(newStartIsAfterOutputEndTimeAndCanSelfSet){
@@ -131,26 +125,26 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 					outputEventExtendRepeatPeriodHolding[pin] = outputEventExtendRepeatPeriod[outputEventNumber];
 					outputEventExtendFinalPeriodHolding[pin] = outputEventExtendFinalPeriod[outputEventNumber];
 					selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
-					Counters.testUS1++;
+					Counters.pinScheduledToSelfSchedule++;
 				}else{
 					SCHEDULE_ONE_ECT_OUTPUT();
-					Counters.testUS2++;
+					Counters.pinScheduledAgainToStayOn++;
 				}
 			}
 		}else{ // Configured to do nothing, or toggle
 			if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
 				// TOGGLE SHOULD EARN SOME SORT OF ERROR CONDITION/COUNTER
-				// do nothing
+				Counters.pinScheduledToToggleError++;
 			}else{
 				// DO NOTHING SHOULD DO THE SAME AS GO HIGH
 				// ie, do nothing
 				// if too close, do nothing, or if far enough away, resched
 				// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
-				Counters.testUS0++; // migrate to new counter with specific name, move all counters to 8 bits.
+				Counters.pinScheduledToDoNothing++;
 			}
 		}
 	}else{ // not enabled, schedule as normal
 		SCHEDULE_ONE_ECT_OUTPUT();
-		Counters.testUS3++;
+		Counters.pinScheduledFromCold++;
 	}
 }

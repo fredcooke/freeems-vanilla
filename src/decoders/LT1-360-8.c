@@ -193,7 +193,7 @@ void PrimaryRPMISR(void){
 
 		Counters.testUS4 = cumulativeBastardTeeth; // TODO remove DEBUG
 		Counters.testUS5 = bastardTeeth;
-//		Counters.testUS6 = windowCounts[currentEvent]; // TODO remove DEBUG
+//		Counters.testUS0 = windowCounts[currentEvent]; // TODO remove DEBUG
 
 		// Cumulative Tolerance Code TODO add counters to monitor aggressiveness of this
 		if(windowsPerAllowedCumulativeBastardTooth){
@@ -202,7 +202,7 @@ void PrimaryRPMISR(void){
 				cumulativeBastardTeethEroderCounter = 0;
 				if(cumulativeBastardTeeth > 0){
 					cumulativeBastardTeeth--;
-					Counters.testUS6++;
+					Counters.testUS0++;
 					// counter for decrement
 				}else if(cumulativeBastardTeeth < 0){
 					cumulativeBastardTeeth++;

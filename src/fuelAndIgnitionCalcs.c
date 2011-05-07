@@ -543,7 +543,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					// Always use dwell as requested
 					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-					Counters.TimerStretchedToSchedule++;
+					Counters.timerStretchedToSchedule++;
 				}
 //				}else if // do change starting here, already long, just add config first, and setup sean's to use it, and everyone else's to not use it, and we're good.
 //				(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
