@@ -21,10 +21,10 @@ void populateCustomDatalog(){
 	DerivedVars->zsp12 = Counters.primaryTeethSeen;
 	DerivedVars->zsp13 = Counters.secondaryTeethSeen;
 	DerivedVars->zsp14 = *ticksPerDegree;
-	DerivedVars->zsp15 = Counters.camSyncLosses;
-	DerivedVars->zsp16 = Counters.crankSyncLosses;
-	DerivedVars->zsp17 = Counters.combustionSyncLosses;
-	DerivedVars->zsp18 = Counters.camSyncCorrections;
+	DerivedVars->zsp15 = Counters.decoderSyncLosses;
+//	DerivedVars->zsp16 = Counters.
+//	DerivedVars->zsp17 = Counters.
+	DerivedVars->zsp18 = Counters.decoderSyncCorrections;
 	DerivedVars->zsp19 = syncLostWithThisID;
 //	DerivedVars->zsp18 = Counters.DwellStretchedToSchedule;
 //	DerivedVars->zsp19 = Counters.TooFarToSchedule;
