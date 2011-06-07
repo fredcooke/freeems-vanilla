@@ -182,9 +182,11 @@ if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                    
 	outputEventExtendRepeatPeriodRealtime[pin] = outputEventExtendRepeatPeriod[outputEventNumber];                \
 	outputEventExtendFinalPeriodRealtime[pin] = outputEventExtendFinalPeriod[outputEventNumber];                  \
 	*injectorMainTimeRegisters[pin] = timeStamp.timeShorts[1] + outputEventExtendRepeatPeriod[outputEventNumber]; \
+	Counters.pinScheduledWithTimerExtension++;                                                                    \
 }else{                                                                                                            \
 	*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];                                           \
 	*injectorMainTimeRegisters[pin] = startTime;                                                                  \
+	Counters.pinScheduledToGoHigh++;                                                                              \
 }                                                                                                                 \
 TIE |= injectorMainOnMasks[pin];                                                                                  \
 TFLG = injectorMainOnMasks[pin];                                                                                  \

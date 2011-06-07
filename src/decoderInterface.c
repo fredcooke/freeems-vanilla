@@ -114,7 +114,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 				// GO HIGH SHOULD DO NOTHING CEPT COUNTER
 				// if too close, do nothing, or if far enough away, resched
 				// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
-				Counters.pinScheduledToGoHigh++;
+				Counters.pinScheduledAlready++;
 			}else{ // Otherwise it's go low
 				// if too close, resched to turn, ie, stay on... , if far enough away, self sched
 				if(newStartIsAfterOutputEndTimeAndCanSelfSet){

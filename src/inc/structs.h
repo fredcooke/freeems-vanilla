@@ -412,11 +412,13 @@ typedef struct {
 
 	// Decoder scheduling
 	unsigned char pinScheduledToGoHigh;            ///< Behaviour chosen from decoder based on register and pin state.
+	unsigned char pinScheduledAlready;             ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledToSelfSchedule;      ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledAgainToStayOn;       ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledToToggleError;       ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledToDoNothing;         ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledFromCold;            ///< @copydoc pinScheduledToGoHigh
+	unsigned char pinScheduledWithTimerExtension;  ///< @copydoc pinScheduledToGoHigh
 
 	// Outputs, refactor to not say "injector" later.
 	unsigned char injectorSwitchOns;               ///< number of times the injector switched on
