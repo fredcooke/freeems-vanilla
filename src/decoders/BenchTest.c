@@ -55,16 +55,27 @@
 
 
 // Setup the timer interrupts as internal timers only triggered by a serial call that returns if this isn't the decoder.
-void decoderInitPreliminary(){}
+void decoderInitPreliminary(){
+	// Configure 0 and 1 as outputs, but decouple them from the interrupts
+	TIOS = 0xFF; // All outputs
+
+	// Disable capture when in IC mode.
+	TCTL4 = 0x00; // TODO Unrequired, remove.
+
+	// Leave configured to not toggle the pin at all (0,0)
+	// Std behaviour, no change required
+
+	// Disable interrupts, to be enabled by a serial trigger
+	TIE = 0x00;
+}
+
+
 void perDecoderReset(){} // Nothing special to reset for this code
 
 
 const unsigned char decoderName[] = BENCH_TEST_NAME;
 const unsigned short eventAngles[] = {0};           // no events really...
 const unsigned char eventValidForCrankSync[] = {0}; // no events really...
-
-
-unsigned short testCount; // move this to where it can be set from the comms switch
 
 
 /* Fire from serial, then repeat X revolutions or seconds or whatever and trigger Z outputs of various types etc
@@ -77,48 +88,77 @@ unsigned short testCount; // move this to where it can be set from the comms swi
 void PrimaryRPMISR(){
 	TFLG = 0x01;
 
+	/* Reset the clock for reading timeout */
+	Clocks.timeoutADCreadingClock = 0;
+
+	/// @todo TODO Migrate this to the decoder itself once the necessary configuration has been setup.
+	unsigned short edgeTimeStamp = TC0;
+
+	// call sched output with args
+	LongTime timeStamp;
+	/* Install the low word */
+	timeStamp.timeShorts[1] = edgeTimeStamp;
+	/* Find out what our timer value means and put it in the high word */
+	if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
+		timeStamp.timeShorts[0] = timerExtensionClock + 1;
+	}else{
+		timeStamp.timeShorts[0] = timerExtensionClock;
+	}
+
 	unsigned char shouldFire = 0;
 //	unsigned long localPeriod = 0; // mutlifire or busy wait, if doing this, check last period for some min, and if too small, shrink second to last and increase last
-	unsigned short localPeriod = 0; // normal mode
+//	unsigned short localPeriod = 0; // normal mode
 	if(testMode == TEST_MODE_ITERATIONS){
-		testCount--;
-		if(testCount == 0){
-			//TIE = disable;
-		}else{
-			//localPeriod = decoderPeriod;
+		currentEvent++;
+		if(currentEvent == testEventsPerCycle){
+			currentEvent = 0;
+			testNumberOfCycles--;
+			if(testNumberOfCycles == 0){
+				// Disable the interrupt again, to be enabled by a serial trigger
+				TIE &= NBIT0;
+			}else{
+				shouldFire = 1;
+			}
 		}
+
+		// TODO make this more sophisticated
+		TC0 += testTicksPerEvent;
+
 		shouldFire = ONES;
-	// no else just yet, refactor for more advanced testing such as
 	}else if(testMode == TEST_MODE_REVOLUTIONS){
 		// sub modes of different patterns, use scheduler for this by setting the ADC array up and probing/triggering/touching/poking/starting/
 		// switch statement for selecting different const arrays of angles, use busy wait, or multiple interrupt to do larger gaps for lower rpms/coarse events
 		// perhaps accept the pattern in the input packet and busy wait on some "run completed" flag before returning and freeing the buffer.
+		// TEMP de-configure timers and leave shouldFire zeroed.
+		TIE &= NBIT0;
 	}else if(testMode == TEST_MODE_TIME_UNITS_SECONDS){
 		// reset all timer modes for first time around, then check for timer >= requested value, check appropriate units of time, obviously...
+		// TEMP de-configure timers and leave shouldFire zeroed.
+		TIE &= NBIT0;
 	}else if(testMode == TEST_MODE_TIME_UNITS_MINUTES){
 		// ditto
+		// TEMP de-configure timers and leave shouldFire zeroed.
+		TIE &= NBIT0;
 	}else if(testMode == TEST_MODE_TIME_UNITS_HOURS){
 		// ditto again
+		// TEMP de-configure timers and leave shouldFire zeroed.
+		TIE &= NBIT0;
 	}else{
 		// de-configure timers and leave shouldFire zeroed.
+		TIE &= NBIT0;
 	}
 
-	if(TRUE /*TIE == enabled*/){
-		TC0 += localPeriod;
-		// configuration for multiple periods setup here.
+	if(shouldFire){
+		// configuration for multiple periods setup here?
 
 		// fire outputs here
 		unsigned char channel;
-		for(channel = 3;channel<(3+6);channel++){
-			if(shouldFire & (1 << channel)){
-				//TCTL? = ?; // setup to switch on outputs as required
-				//TCX = future value;
-				//TIE = ?; // turn on interrupts for configured channels
+		for(channel = 0;channel < 6;channel++){
+			if(currentEvent == outputEventInputEventNumbers[channel]){
+				schedulePortTPin(channel, timeStamp);
 			}
 		}
 	}
-
-	// TODO do i check in decoders for outputs that have gone off recently? ie, are off, with interrupt set? if so, what do i do? i can just take control of such pins again at that point. i may just check for pins that aren't on, and not look at flags, etc.
 }
 
 

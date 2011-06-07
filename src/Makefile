@@ -124,7 +124,7 @@ XGAS = $(XGPREFIX)as
 # dependency set for a C source file, maybe we should use that?
 MAINH = main.h
 INITH = init.h xgateVectors.h
-UTILH = utils.h
+UTILH = utils.h BenchTest.h
 MFILE = Makefile
 ISRH = interrupts.h
 CINCS = injectorISR.c
@@ -183,7 +183,7 @@ DATARAW = $(FIXEDCLASSES) $(LOOKUPCLASSES1) $(LOOKUPCLASSES2) $(FUELCLASSES) $(T
 DATA = $(patsubst %.c,$(DATADIR)/%.c,$(DATARAW))
 
 # Source code files
-UTILCLASSES = tableLookup.c init.c utils.c globalConstants.c
+UTILCLASSES = tableLookup.c init.c utils.c globalConstants.c StaticBenchTest.c
 MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c decoderInterface.c
 COMCLASSES = flashWrite.c commsCore.c blockDetailsLookup.c
 ISRCLASSES = interrupts.c injectionISRs.c ignitionISRs.c commsISRs.c realtimeISRs.c miscISRs.c xgateVectors.c

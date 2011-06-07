@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008, 2009, 2010, 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -54,6 +54,7 @@
 #include "inc/init.h"
 #include <string.h> /// @todo TODO this is pulling in the system string.h not the m68hc1x version, and functions other than memcpy do not work because they are not in crt1.o or other included-by-default libs
 #include <datalogPopulator.c>
+#include "inc/BenchTest.h"
 
 
 /** @brief Populate a basic datalog packet
@@ -1109,11 +1110,155 @@ void decodePacketAndRespond(){
 		case startBenchTestSequence:
 		{
 			// see TODO on include at top and modify this line appropriately
-			if(compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME))){
-				// check packet structure, size, contents
-				// configure data to be as required
-				// fire decoder interrupt to do the work
-				errorID = unimplementedFunction;
+			if(!(compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME)))){
+				if(RXCalculatedPayloadLength != 24){
+					errorID = payloadLengthTypeMismatch;
+					break;
+				}
+
+				testMode = *((unsigned char*)RXBufferCurrentPosition); //1; // The only mode, for now.
+				RXBufferCurrentPosition++;
+				if(testMode != 1){
+					errorID = unimplementedTestMode;
+					break;
+				}
+
+				testEventsPerCycle = *((unsigned char*)RXBufferCurrentPosition); //100;  // @ 10ms  =  1s
+				RXBufferCurrentPosition++;
+				if(testEventsPerCycle == 0){
+					errorID = invalidEventsPerCycle;
+					break;
+				}
+
+				testNumberOfCycles = *((unsigned short*)RXBufferCurrentPosition); //20;   // @ 1s    = 20s
+				RXBufferCurrentPosition += 2;
+				if(testNumberOfCycles == 0){
+					errorID = invalidNumberOfCycles;
+					break;
+				}
+
+				testTicksPerEvent = *((unsigned short*)RXBufferCurrentPosition); //12500; // @ 0.8us = 10ms
+				RXBufferCurrentPosition += 2;
+				if(testTicksPerEvent < decoderMaxCodeTime){
+					errorID = tooShortOfAnEventPeriod;
+					break;
+				}
+
+				// Pluck the arrays out of the packet for the loop below
+				unsigned char* testEventNumbers = RXBufferCurrentPosition;
+				RXBufferCurrentPosition += 6;
+				unsigned short* testPulseWidths = (unsigned short*)RXBufferCurrentPosition;
+				RXBufferCurrentPosition += 12;
+
+				// Reset the clock for reading timeout
+				Clocks.timeoutADCreadingClock = 0; // make this optional, such that we can use real inputs to determine pw and/or dwell.
+
+				// Validate and transfer the per-channel data
+				unsigned char channel;
+				unsigned char configuredChannels = 6;
+				for(channel = 0;channel < 6;channel++){
+					if(testPulseWidths[channel] > injectorSwitchOnCodeTime){ // See next block for warning.
+						// use as-is
+						outputEventPinNumbers[channel] = channel;
+						postReferenceEventDelays[channel] = decoderMaxCodeTime;
+						injectorMainPulseWidthsMath[channel] = testPulseWidths[channel];
+						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
+					}else if(testPulseWidths[channel] > 2){
+						// less than the code time, and not special, error!
+						errorID = tooShortOfAPulseWidthToTest;
+						// Warning, PWs close to this could be slightly longer than requested, that will change in later revisions.
+						break;
+					}else if(testPulseWidths[channel] == 2){
+						// use the dwell from the core maths and input vars.
+						outputEventPinNumbers[channel] = channel;
+						postReferenceEventDelays[channel] = decoderMaxCodeTime;
+						injectorMainPulseWidthsMath[channel] = DerivedVars->Dwell;
+						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
+					}else if(testPulseWidths[channel] == 1){
+						// use the reference pulse width from the core maths and input vars.
+						outputEventPinNumbers[channel] = channel;
+						postReferenceEventDelays[channel] = decoderMaxCodeTime;
+						injectorMainPulseWidthsMath[channel] = DerivedVars->RefPW;
+						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
+					}else{ // is zero
+						// Set this channel to zero for and therefore off, don't set this channel.
+						outputEventInputEventNumbers[channel] = 0xFF; // Off.
+						configuredChannels--;
+					}
+				}
+
+				if(configuredChannels == 0){
+					errorID = noChannelsConfiguredToTest;
+					break;
+				}
+
+				if(errorID == 0){
+					// Let the first iteration roll it over to zero.
+					currentEvent = 0xFF; // Needs to be here in case of multiple runs, init is not sufficient
+
+					// Trigger decoder interrupt to fire thus starting the loop!
+					TIE = 0x01; // The ISR does the rest!
+				}else{
+					break;
+				}
+
+
+/* The following block has been left in, as I still do not know why it won't work as intended:
+ *
+ * - It should fire all 6 output pins with a 52ms duration pulse, exactly once.
+ * - The SAME code run from anywhere else (pre main loop, in main loop, in rtc, in decoder) works fine, just not here in commsCore.c
+ * - The interrupts run, but the pin doesn't change state, despite the registers being configured correctly
+ *
+ * I've tried quite a bit:
+ *
+ * - Moving this code around
+ * - Checking memory definitions
+ * - Completely rewriting the output ISR
+ * - Adding significant debug to output ISR
+ * - Checking for register contents in output ISR
+ * - Checking for key things modified in this file
+ * - General head scratching and confused searching
+ */
+
+//				outputEventPinNumbers[0] = 0; // 1 ign
+//				outputEventPinNumbers[1] = 1; // 2 ign
+//				outputEventPinNumbers[2] = 2; // 3 ign/1 fuel
+//				outputEventPinNumbers[3] = 3; // 4 ign/2 fuel
+//				outputEventPinNumbers[4] = 4; // 3 fuel
+//				outputEventPinNumbers[5] = 5; // 4 fuel
+//				postReferenceEventDelays[0] = decoderMaxCodeTime;
+//				postReferenceEventDelays[1] = decoderMaxCodeTime;
+//				postReferenceEventDelays[2] = decoderMaxCodeTime;
+//				postReferenceEventDelays[3] = decoderMaxCodeTime;
+//				postReferenceEventDelays[4] = decoderMaxCodeTime;
+//				postReferenceEventDelays[5] = decoderMaxCodeTime;
+//				injectorMainPulseWidthsMath[0] = SHORTMAX;
+//				injectorMainPulseWidthsMath[1] = SHORTMAX;
+//				injectorMainPulseWidthsMath[2] = SHORTMAX;
+//				injectorMainPulseWidthsMath[3] = SHORTMAX;
+//				injectorMainPulseWidthsMath[4] = SHORTMAX;
+//				injectorMainPulseWidthsMath[5] = SHORTMAX;
+//
+//				unsigned short edgeTimeStamp = TCNT;
+//				// call sched output with args
+//				LongTime timeStamp;
+//				/* Install the low word */
+//				timeStamp.timeShorts[1] = edgeTimeStamp;
+//				/* Find out what our timer value means and put it in the high word */
+//				if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
+//					timeStamp.timeShorts[0] = timerExtensionClock + 1;
+//				}else{
+//					timeStamp.timeShorts[0] = timerExtensionClock;
+//				}
+//
+//				schedulePortTPin(0, timeStamp);
+//				schedulePortTPin(1, timeStamp);
+//				schedulePortTPin(2, timeStamp);
+//				schedulePortTPin(3, timeStamp);
+//				schedulePortTPin(4, timeStamp);
+//				schedulePortTPin(5, timeStamp);
+//
+//				sleep(1000);
 			}else{
 				errorID = thisIsNotTheBenchTestDecoder;
 			}

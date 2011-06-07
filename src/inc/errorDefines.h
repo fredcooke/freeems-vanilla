@@ -131,6 +131,12 @@
 #define invalidTwoDTableIndex			0x6012
 
 #define thisIsNotTheBenchTestDecoder    0x7777
+#define tooShortOfAPulseWidthToTest     0x7778
+#define unimplementedTestMode           0x7779
+#define invalidEventsPerCycle           0x777A
+#define invalidNumberOfCycles           0x777B
+#define tooShortOfAnEventPeriod         0x777C
+#define noChannelsConfiguredToTest      0x777D
 
 
 #else
