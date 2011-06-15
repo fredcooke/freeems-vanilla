@@ -2,7 +2,7 @@
 
 FreeEMS - The open source engine management system!
 
-Please see [FreeEMS.org[(http://freeems.org) for the most up to date inforamation and links!
+Please see [FreeEMS.org](http://freeems.org) for the most up to date inforamation and links!
 
 Before using FreeEMS read the [disclaimer](http://www.diyefi.org/disclaimer.htm)!
 
@@ -14,7 +14,7 @@ Setting up the tuning application is described in the [this thread](http://forum
 
 ### Loading the firmware S19 file to the device
 
-Please note: hcs12mem is no longer capable of loading the firmare unassisted.
+*Please note*: hcs12mem is no longer capable of loading the firmare unassisted.
 
 You need either FreeEMS Loader or mtxloader. The former is a standalone app,
 and the latter is packaged with MTX.
