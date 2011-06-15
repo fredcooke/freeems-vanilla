@@ -1073,6 +1073,8 @@ void decodePacketAndRespond(){
 
 					break;
 				}
+				// http://issues.freeems.org/view.php?id=156
+				//
 				/// TODO @todo test all things listed below:
 				// lookupPagedMainTableCellValue - pass this RPAGE so that it remains unchanged
 				// validateMainTable
@@ -1203,7 +1205,9 @@ void decodePacketAndRespond(){
 				}
 
 
-/* The following block has been left in, as I still do not know why it won't work as intended:
+/* http://issues.freeems.org/view.php?id=155
+ *
+ * The following block has been left in, as I still do not know why it won't work as intended:
  *
  * - It should fire all 6 output pins with a 52ms duration pulse, exactly once.
  * - The SAME code run from anywhere else (pre main loop, in main loop, in rtc, in decoder) works fine, just not here in commsCore.c

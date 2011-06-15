@@ -1,10 +1,5 @@
 Stu's "stretchy ints", make the protocol more extensible by not limiting various fields. look for standardised way of doing this, and name for it.
 
-move checksum out of rec interrupt if its there
-implement 16bit crc instead of simple checksum
-
 IP/UDP header wrapping, for CAN vs UART why have addresses in the UART packets when CAN can handle that aspect in a physical way. Interoperability with Jean's extender board? New FreeEMS specific firmware for it?
 
 Review and possibly remove multiple interface sending scheme. Why send the same shit over two UARTs, if you want to listen with a logger, just tap the ecuoutput line and do so. Keep possibility of exposing the same interface on two different UARTs, how will this work with one buffer?
-
-async exception like errors and/or debug, how?
