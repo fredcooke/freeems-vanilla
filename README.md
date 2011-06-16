@@ -4,7 +4,7 @@
 
 FreeEMS - The open source engine management system!
 
-Please see [FreeEMS.org](http://freeems.org) for the most up to date inforamation and links!
+Please see [FreeEMS.org](http://freeems.org) for the most up to date information and links!
 
 Before using FreeEMS read the [disclaimer](http://www.diyefi.org/disclaimer.htm)!
 
@@ -16,7 +16,7 @@ To build this firmware you need the latest build environment from the [tools sit
 
 ### Loading the firmware
 
-**Please note**: hcs12mem is no longer capable of loading the firmare unassisted.
+**Please note**: hcs12mem is no longer capable of loading the firmware unassisted.
 
 You need either FreeEMS Loader or mtxloader. The former is a standalone app,
 and the latter is packaged with MTX.
