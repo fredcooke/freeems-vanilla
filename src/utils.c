@@ -299,15 +299,15 @@ unsigned char checksum(unsigned char *block, unsigned short length){
  * @param dest where to copy the null terminated string to.
  * @param source where to copy the null terminated string from.
  *
- * @return the length of the string copied.
+ * @return the length of the string copied, including the zero byte terminator.
  */
 unsigned short stringCopy(unsigned char* dest, unsigned char* source){
-	short length = -1;
+	unsigned short length = 0;
 	do {
 		*dest++ = *source++;
 		length++;
 	} while(*(source-1) != 0);
-	return (unsigned short) length;
+	return length;
 }
 
 /**
