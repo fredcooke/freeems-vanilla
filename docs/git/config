@@ -29,6 +29,9 @@
 	push = refs/heads/master:refs/heads/master
 
 # Others forks
+[remote "olli"]
+	url = git://github.com/ohollmen/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/olli/*
 [remote "seansrepo"]
         url = git://github.com/seank/freeems-vanilla.git
         fetch = +refs/heads/*:refs/remotes/seansrepo/*
@@ -68,3 +71,7 @@
 [branch "jharvey"]
 	remote = jaredh
 	merge = refs/heads/master
+[branch "ollis"]
+	remote = olli
+	merge = refs/heads/master
+
