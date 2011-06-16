@@ -21,7 +21,7 @@
 [remote "raptor"]
 	url = git:freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/raptor/*
-	push = refs/heads/*i:refs/heads/*
+	push = refs/heads/*:refs/heads/*
 [remote "freeems"]
 	url = git@github.com:freeems/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/freeems/*
