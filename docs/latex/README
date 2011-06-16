@@ -1,4 +1,4 @@
-Executing the following should procuce a .pdf;
+Executing the following should produce a PDF file.
 
  $ latex file.tex && latex file.tex && dvipdfm file.dvi
 
