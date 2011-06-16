@@ -1,3 +1,14 @@
+# Potential FreeEMS Contributors:
+#
+# This is my .git/config file!
+#
+# It is included here for several reasons:
+#
+# 1) So that I can easily update it on different machines that I use.
+# 2) So that you can learn from it and setup your remotes as required.
+#
+# Further help is available here: http://forum.diyefi.org/viewtopic.php?f=41&t=547
+
 [core]
 	repositoryformatversion = 0
 	filemode = true
