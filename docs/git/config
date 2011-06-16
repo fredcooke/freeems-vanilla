@@ -10,7 +10,11 @@
 [remote "raptor"]
 	url = git:freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/raptor/*
-	push = refs/heads/*:refs/heads/*
+	push = refs/heads/*i:refs/heads/*
+[remote "freeems"]
+	url = git@github.com:freeems/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/freeems/*
+	push = refs/heads/master:refs/heads/master
 [remote "alternate"]
 	url = git@gitorious.org:freeems-vanilla/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/alternate/*
@@ -23,10 +27,6 @@
 	url = ssh://repo.or.cz/srv/git/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/repoorcz/*
 	push = refs/heads/master:refs/heads/master
-[remote "unfuddle"]
-	url = git@freeems.unfuddle.com:freeems/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/unfudddle/*
-	push = refs/heads/master:refs/heads/master
 
 # Others forks
 [remote "olli"]
@@ -35,9 +35,6 @@
 [remote "seansrepo"]
         url = git://github.com/seank/freeems-vanilla.git
         fetch = +refs/heads/*:refs/remotes/seansrepo/*
-[remote "aaronsrepo"]
-        url = git://github.com/srynot4sale/freeems-vanilla.git
-        fetch = +refs/heads/*:refs/remotes/aaronsrepo/*
 [remote "philj"]
 	url = git://github.com/johnsop1/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/johnsop1/*
@@ -53,6 +50,8 @@
 [remote "johnhowe"]
 	url = git://github.com/johnhowe/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/johnhowe/*
+
+# Local inspection branches
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
@@ -61,9 +60,6 @@
 	merge = refs/heads/master
 [branch "seank"]
 	remote = seansrepo
-	merge = refs/heads/master
-[branch "aaronb"]
-	remote = aaronsrepo
 	merge = refs/heads/master
 [branch "philsmaster"]
 	remote = philj
