@@ -1,22 +1,7 @@
-Short term TODO:
-* Generate tables for 2.2k + ND CHT and 2.2k + GM IAT with freetherm
-* check output code vs 0.0.12 code and maybe make some changes to make it stable
-
 Small items:
-* Add more testable functions to test interface
-* Refactor some functions to allow testing
 * Do header hiding to avoid excess globals and make specific includes necessary for various things - remove core/derived vars from visibility inside calc functions, pass pointers as params. remove from general freeems header too. keep more stuff private
-* Check configuration at boot time and send back async errors
 * Apply YAGNI principal to code base
 * After serial testing is in place by EssEss refactor comms receive to do checksum and length calcs in non-ISR time
-
-Big items:
-* create data definition file format, file itself, code generation tools and restructure code to allow use of this code
-* finish decoder interface - shared functions, init, ADC reading, map, RPM calcs - consider fake decoder and data injection (fake decoder can just not call the ADC sample routine and we can therefore just inject ADC values! Likewise we can read from the RPM var instead of writing to it.
-* create bit bang injection code, perhaps all output events? Consider usage with rotaries, staged injection, multispark
-
-First features to add, in order:
-* Transient fuel correction - can live without this for now
 
 Big low priority items:
 * create task scheduler - keep main loop time consistent and low
