@@ -1281,7 +1281,6 @@ void decodePacketAndRespond(){
 
 	/* Switch reception back on now that we are done with the received data */
 	resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-	PORTK |= BIT0;
 }
 
 

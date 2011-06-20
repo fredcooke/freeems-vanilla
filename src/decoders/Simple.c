@@ -85,9 +85,6 @@ void PrimaryRPMISR(){
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
 	if(PTITCurrentState & 0x01){
-		/* Echo input condition on J7 */
-		PORTJ |= 0x80;
-
 		Counters.primaryTeethSeen++;
 
 		LongTime timeStamp;
@@ -132,7 +129,6 @@ void PrimaryRPMISR(){
 
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
-		PORTJ &= 0x7F;
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 }

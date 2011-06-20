@@ -94,9 +94,6 @@ void PrimaryRPMISR(){
 	 * for us to schedule from, hence the trailing edge code is very simple.
 	 */
 	if(PTITCurrentState & 0x01){
-		/* Echo input condition on J7 */
-		PORTJ |= 0x80;
-
 		// increment crank pulses TODO this needs to be wrapped in tooth period and width checking
 		primaryPulsesPerSecondaryPulse++;
 
@@ -176,7 +173,6 @@ void PrimaryRPMISR(){
 
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
-		PORTJ &= 0x7F;
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 
@@ -210,12 +206,6 @@ void SecondaryRPMISR(){
 	 * for us to schedule from, hence the trailing edge code is very simple.
 	 */
 	if(PTITCurrentState & 0x02){
-		// echo input condition
-		PORTJ |= 0x40;
-
-		// display the crank pulses
-		PORTM = (char)primaryPulsesPerSecondaryPulse;
-
 // was this code like this because of a good reason?
 //		primaryPulsesPerSecondaryPulseBuffer = primaryPulsesPerSecondaryPulse;
 		primaryPulsesPerSecondaryPulse = 0;
@@ -245,7 +235,6 @@ void SecondaryRPMISR(){
 		decoderFlags |= CRANK_SYNC;
 		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
-		PORTJ &= 0xBF;
 		RuntimeVars.secondaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 

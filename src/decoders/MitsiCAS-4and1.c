@@ -391,8 +391,6 @@ void PrimaryRPMISR(){
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent = 0;
 	if(PTITCurrentState & 0x01){
-		PORTJ |= 0x80;
-
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
@@ -414,9 +412,6 @@ void PrimaryRPMISR(){
 			}
 		}
 	}else{
-		PORTJ &= 0x7F;
-
-
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);

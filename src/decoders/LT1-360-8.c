@@ -148,7 +148,6 @@ void PrimaryRPMISR(void){
 						lastEvent = i - 1;
 						currentEvent = lastEvent; // Will be rolled up to current
 					}
-					PORTB |= 0x01; // TODO remove DEBUG found count
 					break;
 				}
 			}
@@ -157,7 +156,6 @@ void PrimaryRPMISR(void){
 				return;
 			}else if(windowCounts[lastEvent] == lastAccumulatorCount){ /* if true we are in sync! */
 				decoderFlags |= CAM_SYNC;
-				PORTB = 0x0F; /* light the board DEBUG */
 			}else{
 				// TODO missedsync opportunity ++ or something
 			}
@@ -227,11 +225,9 @@ void PrimaryRPMISR(void){
 
 		if((bastardTeeth > MAX_BASTARD_TEETH) || (bastardTeeth < -MAX_BASTARD_TEETH)){
 			resetToNonRunningState(BASTARD_SYNC_LOSS_ID_BASE + bastardTeeth);
-			PORTB = 0xAA; // TODO remove DEBUG
 			return;
 		}else if((cumulativeBastardTeeth > MAX_CUMULATIVE_BASTARD_TEETH) || (cumulativeBastardTeeth < -MAX_CUMULATIVE_BASTARD_TEETH)){
 			resetToNonRunningState(BASTARD_CUMULATIVE_SYNC_LOSS_ID_BASE + cumulativeBastardTeeth);
-			PORTB = 0xFF; // TODO remove DEBUG
 			return;
 		}else{
 			/* TODO all required calcs etc as shown in other working decoders */
@@ -261,7 +257,6 @@ void PrimaryRPMISR(void){
 				/* Reset the clock for reading timeout */
 				Clocks.timeoutADCreadingClock = 0;
 				RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-				PORTB = 0x00; // TODO remove DEBUG
 			}
 		}
 

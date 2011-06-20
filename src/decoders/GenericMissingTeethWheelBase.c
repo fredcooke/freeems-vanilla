@@ -113,12 +113,10 @@ void PrimaryRPMISR(void) {
 					// this is totally broken, fix at some point in some way...
 					*ticksPerDegreeRecord = (unsigned short)timeBetweenSuccessivePrimaryPulses;
 					// We have sync
-					PORTP |= 0x80;
 					count = 1;
 				} else {
 					//We have lost sync
 					count = 0;
-					PORTP &= 0x7F;
 				}
 			}else if (count == 2 || (count%2 == 0 &&
 					thisHighLowTime.timeLong > (lastHighLowTime.timeLong>>1) &&
@@ -127,11 +125,8 @@ void PrimaryRPMISR(void) {
 			} else {
 				//We have lost sync
 				count = 0;
-				PORTP &= 0x7F;
 			}
 
-			/* Echo input condition on J7 */
-			PORTJ |= 0x80;
 			// increment crank pulses TODO this needs to be wrapped in tooth period and width checking
 			lastHighLowTime.timeLong = thisHighLowTime.timeLong;
 //			primaryPulsesPerSecondaryPulse++; unused elsewhere in this file, thus unused, alltogether!
@@ -142,10 +137,7 @@ void PrimaryRPMISR(void) {
 			} else {
 				//We have lost sync
 				count = 0;
-				PORTP &= 0x7F;
 			}
-			/* Echo input condition on J7 */
-			PORTJ &= 0x7F;
 			RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 			lowTime.timeLong = thisPeriod.timeLong;
 		}
@@ -178,9 +170,6 @@ void SecondaryRPMISR(void) { // migrate this to its own file for this decoder ty
 	}
 
 	if (risingEdge) {
-		// echo input condition
-		PORTJ |= 0x40;
-
 		LongTime timeStamp;
 
 		/* Install the low word */
@@ -194,7 +183,6 @@ void SecondaryRPMISR(void) { // migrate this to its own file for this decoder ty
 
 		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	} else {
-		PORTJ &= 0xBF;
 		RuntimeVars.secondaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 
