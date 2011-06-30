@@ -23,14 +23,15 @@ The format should be something like "UniqueName-Location-Pattern.c" with a
 matching header.
 
  - UniqueName = Manufacturer, vehicle model, engine model, vehicle trim level, year of manufacture, style of sensor, etc.
- - Location = Cam/Crank/Both
+ - Location = Cam/Crank/Both/Distributor
  - Pattern = A combination of digits and letters that describes the pattern adequately, usually edge counts, but can be angles.
 
 The following conventions are used for pattern descriptor strings
 
  - m = minus, used for "Base minus Missing", possibly repeated, eg 36m1 or 60m2 etc. Base counts are assumed to be evenly spaced.
- - a = and, used as "Crank and Cam" or "Outer and Inner", eg 4a1
  - t = then, used for more complex patterns, eg 36m2m2t13m2 (RX8) reads as 36 minus 2 [then 1] minus 2 then 13 minus 2 [then 16] with implicit teeth in square brackets. At least one implicit tooth must seperate any missing groups. More than one should be specified explicity. Left overs are also implicit.
+ - To describe dual patterns, use "and" as in "Crank and Cam" or "Outer and Inner", eg 4and1
+ - Generic Hall or Optical distributor code variants use the keyword "of" as in "4 of 66 degrees" eg 4of66
  - Note, the ordering of such complex patterns is important as there are pairs of similar patterns that need to be differentiated such as RX8 (above) and EZ30: 36m2m2t19m2 which reads as 36 minus 2 [then 1] minus 2 then 19 minus 2 [then 10].
  - Just use "Unique" for patterns that are too difficult to describe and suitably unique
 
