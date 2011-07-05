@@ -257,24 +257,24 @@ typedef struct {
  */
 typedef struct {
 	/* ADC0 raw readings */
-	unsigned short IAT;			///< Inlet Air Temperature (MAT JS)		*/ /* COMPULSORY! */
-	unsigned short CHT;			///< Coolant / Head Temperature (CLT JS) */ /* COMPULSORY! */
-	unsigned short TPS;			///< Throttle Position Sensor (TPS JS)	*/ /* Reduced performance without */
-	unsigned short EGO;			///< Exhaust Gas Oxygen (O2 JS)		*/ /* Recommended */
-	unsigned short MAP;			///< Manifold Absolute Pressure (5euroh1)	*/ /* COMPULSORY OR TPS OR MAF */
-	unsigned short AAP;			///< Atmospheric Absolute Pressure (6euroh1)*/ /* Recommended */
-	unsigned short BRV;			///< Battery Reference Voltage (4euroh1)	*/ /* COMPULSORY! */
-	unsigned short MAT;			///< Manifold Air Temperature (Spare JS)	*/ /* Could help heat soak issues */
+	unsigned short IAT;       ///< Inlet Air Temperature (MAT JS)          */ /* COMPULSORY!                 */
+	unsigned short CHT;       ///< Coolant / Head Temperature (CLT JS)     */ /* COMPULSORY!                 */
+	unsigned short TPS;       ///< Throttle Position Sensor (TPS JS)       */ /* Reduced performance without */
+	unsigned short EGO;       ///< Exhaust Gas Oxygen (O2 JS)              */ /* Recommended                 */
+	unsigned short MAP;       ///< Manifold Absolute Pressure (5euroh1)    */ /* COMPULSORY OR TPS OR MAF    */
+	unsigned short AAP;       ///< Atmospheric Absolute Pressure (6euroh1) */ /* Recommended                 */
+	unsigned short BRV;       ///< Battery Reference Voltage (4euroh1)     */ /* COMPULSORY!                 */
+	unsigned short MAT;       ///< Manifold Air Temperature (Spare JS)     */ /* Could help heat soak issues */
 
 	/* ADC1 raw readings */
-	unsigned short EGO2;		///< Exhaust Gas Oxygen (NC)					*/ /* V engine option */
-	unsigned short IAP;			///< Intercooler Absolute Pressure (NC)		*/ /* Turbo engine option */
-	unsigned short MAF;			///< Mass Air Flow (NC)						*/ /* OEM engine option */
-	unsigned short SpareADC3;	///< Spare ADC1 port 3 (NC)					*/
-	unsigned short SpareADC4;	///< Spare ADC1 port 4 (NC)					*/
-	unsigned short SpareADC5;	///< Spare ADC1 port 5 (NC)					*/
-	unsigned short SpareADC6;	///< Spare ADC1 port 6 (NC)					*/
-	unsigned short SpareADC7;	///< Spare ADC1 port 7 (NC)					*/
+	unsigned short EGO2;      ///< Exhaust Gas Oxygen (NC)                 */ /* Option for V/boxer engines  */
+	unsigned short IAP;       ///< Intercooler Absolute Pressure (NC)      */ /* Option for turbo engines    */
+	unsigned short MAF;       ///< Mass Air Flow (NC)                      */ /* Option for OEM engines      */
+	unsigned short SpareADC3; ///< Spare ADC1 port 3 (NC)                  */
+	unsigned short SpareADC4; ///< Spare ADC1 port 4 (NC)                  */
+	unsigned short SpareADC5; ///< Spare ADC1 port 5 (NC)                  */
+	unsigned short SpareADC6; ///< Spare ADC1 port 6 (NC)                  */
+	unsigned short SpareADC7; ///< Spare ADC1 port 7 (NC)                  */
 } ADCArray;
 
 
