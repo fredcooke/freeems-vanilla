@@ -24,7 +24,7 @@
  */
 
 
-/**	@file HyundaiStellar4g63-Distributor.c
+/**	@file HyundaiStellar4g63-Distributor-4of54.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

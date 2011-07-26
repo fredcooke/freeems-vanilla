@@ -24,7 +24,7 @@
  */
 
 
-/**	@file EvenTeethOnCam-Nand1.c
+/**	@file EvenTeeth-Both-12and1.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

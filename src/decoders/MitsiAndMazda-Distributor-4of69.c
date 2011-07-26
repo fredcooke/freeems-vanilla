@@ -24,7 +24,7 @@
  */
 
 
-/**	@file MitsiAndMazda-DistributorCAS-Outer4.c
+/**	@file MitsiAndMazda-Distributor-4of69.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
