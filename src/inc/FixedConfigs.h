@@ -84,7 +84,7 @@ typedef struct {
 	/* These are used to calculate MAP, EGO and TPS from ADC readings. */
 
 	/* For MAP, default to MPX4250A 260kPa - 8kPa = 252kPa See the link for the transfer function*/
-	unsigned short MAPMinimum;							/* 0 kPa usually. */
+	signed short MAPMinimum;							/* 0 kPa usually. */
 	unsigned short MAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
 
 	/* For AAP, default to MPX4100A 107.5kPa - 14kPa = 93.5kPa See the link for the transfer function */
