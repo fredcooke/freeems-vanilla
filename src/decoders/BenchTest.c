@@ -105,7 +105,7 @@ void PrimaryRPMISR(){
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
 
-	unsigned char shouldFire = 0;
+	unsigned char shouldFire = 1;
 //	unsigned long localPeriod = 0; // mutlifire or busy wait, if doing this, check last period for some min, and if too small, shrink second to last and increase last
 //	unsigned short localPeriod = 0; // normal mode
 	if(testMode == TEST_MODE_ITERATIONS){
@@ -116,15 +116,12 @@ void PrimaryRPMISR(){
 			if(testNumberOfCycles == 0){
 				// Disable the interrupt again, to be enabled by a serial trigger
 				TIE &= NBIT0;
-			}else{
-				shouldFire = 1;
+				shouldFire = 0;
 			}
 		}
 
 		// TODO make this more sophisticated
 		TC0 += testTicksPerEvent;
-
-		shouldFire = ONES;
 	}else if(testMode == TEST_MODE_REVOLUTIONS){
 		// sub modes of different patterns, use scheduler for this by setting the ADC array up and probing/triggering/touching/poking/starting/
 		// switch statement for selecting different const arrays of angles, use busy wait, or multiple interrupt to do larger gaps for lower rpms/coarse events
