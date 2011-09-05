@@ -29,6 +29,7 @@
  * @ingroup dataInitialisers
  *
  * @brief A timing table for a Volvo B21A.
+ *
  * Under development
  *
  * This file only contains the data to be hash included into some timing tables
@@ -46,7 +47,7 @@
 /* Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size. */
 
 // Low RPM                                                                                                           High RPM
-//250     700    1000    1600    2200    2800    3400    4000    4600    5200    5800    6400    7000    7600    8000    8001 // Vacuum
+//250     700    1000    1600    2200    2800    3400    4000    4600    5200    5800    6500  6500.5    7600    8000    8001 // Vacuum
 12288,  12288,  12288,  14336,  18432,  20480,  27648,  30720,  32768,  33792,  32768,  32768,      0,      0,      0,      0, //  15
 12288,  12288,  24576,  26624,  30720,  32768,  39936,  43008,  45056,  47104,  45056,  45056,      0,      0,      0,      0, //  30
 12288,  27648,  27648,  29696,  33792,  35840,  44032,  46080,  48128,  50176,  32768,  48128,      0,      0,      0,      0, //  45

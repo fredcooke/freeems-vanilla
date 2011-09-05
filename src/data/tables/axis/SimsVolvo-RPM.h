@@ -28,7 +28,7 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief A default set of RPMs for a typical jap engine.
+ * @brief A default set of RPMs for a B21A engine.
  *
  * This file only contains the data to be hash included into all mainTable RPM sections
  *
@@ -40,7 +40,7 @@
   500,  1400,  2000,  3200,
  4400,  5600,  6800,  8000,
  9200, 10400, 11600, 13000,
-13002, 15200, 16000,  16001,
+13001, 15200, 16000,  16001,
 
 // spare:
 20000,  20001,  20002,  20003,
