@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -66,9 +66,13 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	sensorRanges:{
 		TPSClosedMAP:  offIdleMAP,
 		TPSOpenMAP:    nearlyWOTMAP,
+// MAP Sensor Configuration
 #ifdef HOTEL
-		MAPMinimum:    Toyota3BarMin,
-		MAPRange:      Toyota3BarRange,
+		MAPMinimum:    ToyotaNA227kPaMin,
+		MAPRange:      ToyotaNA227kPaRange,
+#elif SNOTROCKET
+		MAPMinimum:    HondaDenso183kPaMin,
+		MAPRange:      HondaDenso183kPaRange,
 #elif SEANKLT1
 		MAPMinimum:    GM2BarMin,
 		MAPRange:      GM2BarRange,
@@ -79,8 +83,14 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		MAPMinimum:    MPX4250AMin,
 		MAPRange:      MPX4250ARange,
 #endif
+// AAP Sensor Configuration
+#ifdef SNOTROCKET
+		AAPMinimum:    HondaDenso183kPaMin,
+		AAPRange:      HondaDenso183kPaRange,
+#else
 		AAPMinimum:    MPX4100AMin,
 		AAPRange:      MPX4100ARange,
+#endif
 #ifdef SEANKLT1
 		EGOMinimum:    AFR1020LambdaMin,
 		EGORange:      AFR1020LambdaRange,
