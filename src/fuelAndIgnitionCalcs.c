@@ -193,6 +193,7 @@ void calculateFuelAndIgnition(){
 #define HyundaiHackOffset       ( 30.00 * oneDegree) // Distributor fully retarded
 #define SilverTop4ageOffset     (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
 #define BrownVolvoOffset        (570.00 * oneDegree) // Stockish Volvo B230FT with DSM/Miata CAS + 24+1 disk.
+#define SnotRocketOffset        (0.00 * oneDegree) // Volvo B21A with DSM/Miata CAS + 24+1 disk and LS1 coils.
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK
@@ -328,6 +329,26 @@ outputEventInputEventNumbers[4] = 12;
 outputEventInputEventNumbers[5] = 18;
 outputEventInputEventNumbers[6] = 0;
 outputEventInputEventNumbers[7] = 6;
+
+
+// sim's 2.1 Volvo, carbed with Mitsu CAS with 24and1 disk and LS1 coils.
+// http://forum.diyefi.org/viewtopic.php?f=3&t=1263
+#elif SNOTROCKET
+// Firing order: 1-3-4-2 set up in loom
+// Ignition, sequential, COP:
+anglesOfTDC[0] =   0 * oneDegree; // 1 
+anglesOfTDC[1] = 180 * oneDegree; // 2 
+anglesOfTDC[2] = 360 * oneDegree; // 3
+anglesOfTDC[3] = 540 * oneDegree; // 4
+outputEventPinNumbers[0] = 0;
+outputEventPinNumbers[1] = 1;
+outputEventPinNumbers[2] = 2;
+outputEventPinNumbers[3] = 3;
+#define cliConfigredNumberOfIgnitionEvents 4
+#define numberOfInjectionEvents 0
+#define cliConfiguredOffset SnotRocketOffset
+#define firstInjectionEvent 1
+#define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 #else
