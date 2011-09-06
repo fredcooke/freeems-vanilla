@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -54,6 +54,8 @@ const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 		{ARRAY_OF_16_VOLTAGES, SEANKLT1_16_DWELLS},
 #elif JOSHBROWN
 		{ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DWELLS},
+#elif SNOTROCKET
+		{ARRAY_OF_16_VOLTAGES, LS1COILS_16_DWELLS},
 #else
 		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},
 #endif
