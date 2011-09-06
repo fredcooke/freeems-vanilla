@@ -61,24 +61,15 @@
 [remote "johnhowe"]
 	url = git://github.com/johnhowe/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/johnhowe/*
+[remote "simis"]
+	url = git://github.com/simeonveldstra/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/simis/*
 
 # Local inspection branches
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
-[branch "daves"]
-	remote = mtxman
-	merge = refs/heads/master
 [branch "seank"]
 	remote = seansrepo
-	merge = refs/heads/master
-[branch "philsmaster"]
-	remote = philj
-	merge = refs/heads/master
-[branch "jharvey"]
-	remote = jaredh
-	merge = refs/heads/master
-[branch "ollis"]
-	remote = olli
 	merge = refs/heads/master
 
