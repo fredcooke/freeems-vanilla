@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -47,5 +47,19 @@
  * @author FreeTherm
  */
 const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
+#ifdef TRUCK
 #include "../data/thermistors/Bosch.h"
+#elif PRESTO
+#include "../data/thermistors/Bosch.h"
+#elif SEANKLT1
+#include "../data/thermistors/Bosch.h"
+#elif SEANKR1
+#include "../data/thermistors/Bosch.h"
+#elif JOSHBROWN
+#include "../data/thermistors/Bosch.h"
+#elif SNOTROCKET
+#include "../data/thermistors/BoschM12H-2k7Bias.h"
+#else // Default to correctly biased Jap sensor.
+#include "../data/thermistors/Denso-2k7Bias.h"
+#endif
 };

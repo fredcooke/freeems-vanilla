@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -336,8 +336,8 @@ outputEventInputEventNumbers[7] = 6;
 #elif SNOTROCKET
 // Firing order: 1-3-4-2 set up in loom
 // Ignition, sequential, COP:
-anglesOfTDC[0] =   0 * oneDegree; // 1 
-anglesOfTDC[1] = 180 * oneDegree; // 2 
+anglesOfTDC[0] =   0 * oneDegree; // 1
+anglesOfTDC[1] = 180 * oneDegree; // 2
 anglesOfTDC[2] = 360 * oneDegree; // 3
 anglesOfTDC[3] = 540 * oneDegree; // 4
 outputEventPinNumbers[0] = 0;

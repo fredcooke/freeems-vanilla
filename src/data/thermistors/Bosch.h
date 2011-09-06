@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -24,10 +24,12 @@
  */
 
 
-/**	@file Bosch.h
+/** @file Bosch.h
  * @ingroup dataInitialisers
  *
  * @brief Bosch Coolant/Head / Inlet Air Temperature Transfer Table Data
+ *
+ * @deprecated Replaced by known data!
  *
  * This file only contains the data to be hash included into the thermistor
  * table files for car specific builds.

@@ -2,7 +2,7 @@
 #
 #	Makefile
 #
-#	Copyright 2008, 2009, 2010, 2011 Fred Cooke
+#	Copyright 2008-2011 Fred Cooke
 #
 #	This Makefile is part of the FreeEMS project.
 #
@@ -144,7 +144,12 @@ DATATABLESAXIS = FredsTruck-Load.h FredsTruck-RPM.h mainTable-Load.h mainTable-R
 DATATABLESIGN = FE-DOHC.h flat15degrees.h flat0degrees.h FredsTruckIgnitionTiming.h
 DATATABLESLAMBDA = flatStoichiometric.h FredsTruckLambda.h originalCurve.h
 DATATABLESVE = flat80Percent.h FredsTruckVE.h
-DATATHERMISTORS = Bosch.h Denso.h GM.h
+DATATHERMISTORS = $(DATAOLDTHERMISTORS) $(DATAGMTHERMISTORS) $(DATADENSOTHERMISTORS) $(DATABOSCHTHERMISTORS)
+DATAOLDTHERMISTORS = Bosch.h
+DATAGMTHERMISTORS = GM-2k0Bias.h GM-2k2Bias.h GM-2k49Bias.h GM-2k4Bias.h GM-2k6Bias.h GM-2k7Bias.h
+DATADENSOTHERMISTORS = Denso-2k0Bias.h Denso-2k2Bias.h Denso-2k49Bias.h Denso-2k4Bias.h Denso-2k6Bias.h Denso-2k7Bias.h
+DATABOSCHTHERMISTORS = BoschM12H-2k0Bias.h BoschM12H-2k2Bias.h BoschM12H-2k49Bias.h BoschM12H-2k4Bias.h BoschM12H-2k6Bias.h BoschM12H-2k7Bias.h
+
 
 # Let's keep this to a bare minimum! If you write ASM code
 # please provide an matching alternate C implementation too.
