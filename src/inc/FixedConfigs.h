@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -50,7 +50,7 @@
 
 
 
-/** @brief Preset values for inputs
+/** @brief Preset values for inputs and other variables
  *
  * In some cases you may want to ignore input readings and just use some
  * configured value for a particular sensor. These are the values used when you
@@ -59,105 +59,83 @@
  * @author Fred Cooke
  */
 typedef struct {
-	/* Pre configured value settings for the sensor inputs */
-	unsigned short presetIAT;
-	unsigned short presetCHT;
-	unsigned short presetTPS;
-	unsigned short presetEGO;
-	unsigned short presetBRV;
-	unsigned short presetMAP;
-	unsigned short presetAAP;
-	unsigned short presetMAT;
-	unsigned short presetEGO2;
-	unsigned short presetIAP;
-	unsigned short presetBPW; /* Base Pulse Width */
-	unsigned short presetAF; /* Air Flow */
+	unsigned short presetIAT;  ///< Preset variable value to override calculated values.
+	unsigned short presetCHT;  ///< @copydoc presetIAT
+	unsigned short presetTPS;  ///< @copydoc presetIAT
+	unsigned short presetEGO;  ///< @copydoc presetIAT
+	unsigned short presetBRV;  ///< @copydoc presetIAT
+	unsigned short presetMAP;  ///< @copydoc presetIAT
+	unsigned short presetAAP;  ///< @copydoc presetIAT
+	unsigned short presetMAT;  ///< @copydoc presetIAT
+	unsigned short presetEGO2; ///< @copydoc presetIAT
+	unsigned short presetIAP;  ///< @copydoc presetIAT
+	unsigned short presetBPW;  ///< @copydoc presetIAT
+	unsigned short presetAF;   ///< @copydoc presetIAT
 } sensorPreset;
 
 
+/// Ranges for sensors with linear config
 typedef struct {
-	/* Sensor related settings */
-	unsigned short TPSClosedMAP;
-	unsigned short TPSOpenMAP;
-
-	/* Sensor input conditioning settings */
-	/* These are used to calculate MAP, EGO and TPS from ADC readings. */
-
-	/* For MAP, default to MPX4250A 260kPa - 8kPa = 252kPa See the link for the transfer function*/
-	signed short MAPMinimum;							/* 0 kPa usually. */
-	unsigned short MAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
-
-	/* For AAP, default to MPX4100A 107.5kPa - 14kPa = 93.5kPa See the link for the transfer function */
-	unsigned short AAPMinimum;							/* 0 kPa usually. */
-	unsigned short AAPRange;							/* 10000, 11500, 25000, 30000, 40000 etc (/100 for kPa) */
-
-	/* Default to Innovate LC-1 on lambda 0.5 - 1.5 for 0-5V range (lambda range = 1.0) */
-	unsigned short EGOMinimum;							/* 0.5 lambda ? (0.5 x 32768 = 16384) */
-	unsigned short EGORange;							/* 1.5 lambda ? ((1.5 - 0.5) x 32768 = 32768 (max 49152)) */
-
-	/* 0 - 24.5 Volt measurement with 10k and 39k resistors */
-	/* http://www.google.com/search?hl=en&safe=off&q=5+*+(39000+%2B+10000)+%2F+10000&btnG=Search */
-	unsigned short BRVMinimum;							/* 0 Volts usually. */
-	unsigned short BRVRange;							/* 24.5 Volts for 10k and 39k resistors on a 12v vehicle */
-
-	/* Default to 25% of voltage = closed (0%) */
-	/* 75% of voltage = open (100%) */
-	unsigned short TPSMinimumADC;						/* *should* be zero, but often isn't, this value corresponds to 0% TPS */
-	unsigned short TPSMaximumADC;						/*  */
-	// unsigned short TPSADCRange;						// ?? 100% = how many ADCs ?
-/*efine TPS_MINIMUM 0								** = 0.00%		For clarity ONLY, always zero.	*/
-#define TPS_RANGE_MAX 64000							/* = 100.00%									*/
+	unsigned short TPSClosedMAP;  ///< Unused at this time.
+	unsigned short TPSOpenMAP;    ///< Unused at this time.
+	signed short   MAPMinimum;    ///< Vacuum required to make the sensor reach 0 Volt output. Theoretical only, most do not rail.
+	unsigned short MAPRange;      ///< Number of kPa between 0 Volts and 5 Volts.
+	unsigned short AAPMinimum;    ///< @copydoc MAPMinimum
+	unsigned short AAPRange;      ///< @copydoc MAPRange
+	unsigned short EGOMinimum;    ///< Lambda that 0 Volt input corresponds to.
+	unsigned short EGORange;      ///< Lambda that 5 Volt input corresponds to.
+	unsigned short BRVMinimum;    ///< Battery Voltage that 0 Volt input means. 0 Volts usually.
+	unsigned short BRVRange;      ///< Battery Voltage range between 0 Volt and 5 Volt input. FreeEMS standard is 24.5 Volts for 1k and 3k9 resistors on a 12v vehicle.
+	unsigned short TPSMinimumADC; ///< This should be zero, but often isn't, this value is what the TPS input reads with the throttle fully closed.
+	unsigned short TPSMaximumADC; ///< This should be 1023, but often isn't, this value is what the TPS input reads with the throttle fully open.
+/*efine TPS_MINIMUM 0             ///< = 0.00%   For clarity ONLY, always zero. */
+#define TPS_RANGE_MAX 64000       ///< = 100.00%
 } sensorRange;
 
 
+/// Fuel injection settings
 typedef struct {
-	/* Fuel injection settings */
-	unsigned short perCylinderVolume;	/* 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
-	unsigned short injectorFlow;		/* Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
-	unsigned short stoichiometricAFR;	/* 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
-	unsigned short densityOfFuelAtSTP; /* 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
+	unsigned short perCylinderVolume;  ///< 500cc = 0.5l 0.5 * 32768 = pcv, so divide by 32768 go get litres */
+	unsigned short injectorFlow;       ///< Injector flow of 240cc/min / 60 is 4ml/second is multiplied by 1024, so divide by 1024 for ml/second, divide by 1000 for litres/second */
+	unsigned short stoichiometricAFR;  ///< 34 for hydrogen, all others less, figure is 14.7 * 1024, divide by 1024 to get AFR */
+	unsigned short densityOfFuelAtSTP; ///< 703gm/litre for Octane. 32 * fuel density = number, divide by 32 for the real figure */
 } engineSetting;
 
 
+/// Settings related to serial communications
 typedef struct {
-	/* Serial settings */
-	unsigned short baudDivisor;							/* 22 = (40MHz / (16*115.2kHz)) = 21.7013889 */
+	unsigned short baudDivisor; ///< The number used to set the data rate. 22 = (40MHz / (16*115.2kHz)) = 21.7013889
 } serialSetting;
 
 
+/// Settings related to tacho output
 typedef struct {
-	/* Tacho settings */
-	unsigned char tachoTickFactor;
-	unsigned short tachoTotalFactor;
+	unsigned char tachoTickFactor;   ///< Unused at this time.
+	unsigned short tachoTotalFactor; ///< Unused at this time.
 } tachoSetting;
 
 
+/// Settings related to sensor reading
 typedef struct {
-	unsigned short readingTimeout;						/* How often an ADC reading MUST occur					*/
+	unsigned short readingTimeout; ///< How often an ADC reading MUST occur.
 } sensorSetting;
 
 
 #define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(tachoSetting) + 2))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
+ *
  * If you add something here, please ensure you update all of the following :
  * - Default values in the initial definitions in FixedConfig1.c and FixedConfig2.c
  * - The lookupBlockDetails() function in blockDetailsLookup.c
  * - The JSON data map and other related firmware interface definition files
- *
- * @todo TODO add doxy comments for each element of the struct
  */
 typedef struct {
-
-	engineSetting engineSettings;
-
-	serialSetting serialSettings;
-
-	tachoSetting tachoSettings;
-
-	/* Settings variables : 0 = false */
-	unsigned short coreSettingsA;	/* Each bit represents the state of some core setting, masks below and above where the same one is used */
-	/* Bit masks for coreSettingsA */ // TODO needs a rename, as does coreStatusA
+	engineSetting engineSettings; ///< @see engineSetting
+	serialSetting serialSettings; ///< @see serialSetting
+	tachoSetting tachoSettings;   ///< @see tachoSetting
+	unsigned short coreSettingsA; ///< Each bit represents the state of some core setting, masks below and above where the same one is used. @todo TODO needs a rename, as does coreStatusA
+	/* Bit masks for coreSettingsA */
 	//#define COREA1			BIT1_16		/*  1 */
 	#define PRIMARY_POLARITY	BIT2_16		/*  2 1 = high teeth 0 = low teeth */
 	#define SECONDARY_POLARITY	BIT3_16		/*  3 1 = high teeth 0 = low teeth */
@@ -183,15 +161,10 @@ CASSERT((sizeof(fixedConfig1) == flashSectorSize), fixedConfig1)
 #define userTextFieldArrayLength2 (flashSectorSize - (sizeof(sensorPreset) + sizeof(sensorRange) + sizeof(sensorSetting)))
 /** @copydoc fixedConfig1 */
 typedef struct {
-
-	sensorPreset sensorPresets;
-
-	sensorRange sensorRanges;
-
-	sensorSetting sensorSettings;
-
-	/* User text field for noting which installation the unit is from etc. */
-	unsigned char userTextField2[userTextFieldArrayLength2]; /* "Place your personal notes here!!" */
+	sensorPreset sensorPresets;                              ///< @see sensorPreset
+	sensorRange sensorRanges;                                ///< @see sensorRange
+	sensorSetting sensorSettings;                            ///< @see sensorSetting
+	unsigned char userTextField2[userTextFieldArrayLength2]; ///< For on-board meta data such as which vehicle the unit is from, put your personal notes here!
 } fixedConfig2;
 CASSERT((sizeof(fixedConfig2) == flashSectorSize), fixedConfig2)
 
