@@ -190,7 +190,7 @@ void calculateFuelAndIgnition(){
 // make this number larger to advance the base timing, make it smaller to retard it.
 // IE, if you have 10btdc in your table, flat, and a timing light shows 5btdc on the engine, then increase this number by 5 degrees.
 #define Mitsi4and1OffsetOnTruck ( 90.00 * oneDegree) // FE-DOHC, CAS approximately centre
-#define HyundaiHackOffset       ( 30.00 * oneDegree) // Distributor fully retarded
+#define HyundaiHackOffset       ( 20.00 * oneDegree) // Distributor fully retarded
 #define SilverTop4ageOffset     (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
 #define BrownVolvoOffset        (570.00 * oneDegree) // Stockish Volvo B230FT with DSM/Miata CAS + 24+1 disk.
 #define SnotRocketOffset        (482.00 * oneDegree) // Volvo B21A with DSM/Miata CAS + 24+1 disk and LS1 coils.
