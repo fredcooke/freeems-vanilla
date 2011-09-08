@@ -8,6 +8,12 @@
 # 2) So that you can learn from it and setup your remotes as required.
 #
 # Further help is available here: http://forum.diyefi.org/viewtopic.php?f=41&t=547
+#
+# Note: downstreams of this repo should add rebase = true to their master branch config
+#
+# More information is available here: http://forum.diyefi.org/viewtopic.php?f=41&t=1103
+#
+# Please talk to the lead developer of any repo which you plan to work on before doing so!
 
 [core]
 	repositoryformatversion = 0
