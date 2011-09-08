@@ -193,7 +193,7 @@ void calculateFuelAndIgnition(){
 #define HyundaiHackOffset       ( 30.00 * oneDegree) // Distributor fully retarded
 #define SilverTop4ageOffset     (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
 #define BrownVolvoOffset        (570.00 * oneDegree) // Stockish Volvo B230FT with DSM/Miata CAS + 24+1 disk.
-#define SnotRocketOffset        (0.00 * oneDegree) // Volvo B21A with DSM/Miata CAS + 24+1 disk and LS1 coils.
+#define SnotRocketOffset        (482.00 * oneDegree) // Volvo B21A with DSM/Miata CAS + 24+1 disk and LS1 coils.
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK
