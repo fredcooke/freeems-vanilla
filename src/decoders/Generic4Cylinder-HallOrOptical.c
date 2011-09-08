@@ -79,9 +79,6 @@ void PrimaryRPMISR(){
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
 
-	// set as synced for volvo always as loss of sync not actually possible
-	decoderFlags |= COMBUSTION_SYNC;
-
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
 
@@ -97,7 +94,9 @@ void PrimaryRPMISR(){
 	}else{
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
+	unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
+	unsigned short thisTicksPerDegree = 0;
 	if(PTITCurrentState & 0x01){
 		// temporary data from inputs
 		unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
@@ -105,7 +104,8 @@ void PrimaryRPMISR(){
 		lastPrimaryEventTimeStamp = primaryLeadingEdgeTimeStamp;
 
 
-		*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / angleOfSingleIteration);
+		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / angleOfSingleIteration);
+		*ticksPerDegreeRecord = thisTicksPerDegree;
 
 		// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 		sampleEachADC(ADCArrays);
@@ -128,7 +128,8 @@ void PrimaryRPMISR(){
 		lastSecondaryEventTimeStamp = secondaryLeadingEdgeTimeStamp;
 
 
-		*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessiveSecondaryPulses) / angleOfSingleIteration);
+		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessiveSecondaryPulses) / angleOfSingleIteration);
+		*ticksPerDegreeRecord = thisTicksPerDegree;
 
 		// TODO make this stuff behave correctly, this one will only run at startup, and the other will always run, but do it by generic config and split this stuff out into a shared function, soon.
 		sampleEachADC(ADCArrays);
@@ -146,7 +147,29 @@ void PrimaryRPMISR(){
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 
-	SCHEDULE_ECT_OUTPUTS();
+	if(decoderFlags & COMBUSTION_SYNC){
+		SCHEDULE_ECT_OUTPUTS();
+	}
+
+	/* TODO this delays outputs until the fourth ISR execution, but we could
+	 * get them one execution or 1/8 of a rev sooner if we did a preliminary
+	 * calc from the previous edge instead of the previous same edge now, and
+	 *
+	 * The proper way to do this is set sync when we have it and not set data
+	 * as having been recorded until we know the data is good. That way the
+	 * scheduler can keep things unscheduled until the time is right.
+	 */
+	if(decoderFlags & LAST_PERIOD_VALID){
+		decoderFlags |= COMBUSTION_SYNC;
+	}
+
+	if(decoderFlags & LAST_TIMESTAMP_VALID){
+		lastTicksPerDegree = thisTicksPerDegree;
+		decoderFlags |= LAST_PERIOD_VALID;
+	}
+	// Always
+	lastEventTimeStamp = thisEventTimeStamp;
+	decoderFlags |= LAST_TIMESTAMP_VALID;
 }
 
 
