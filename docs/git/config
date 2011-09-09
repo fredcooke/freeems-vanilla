@@ -32,9 +32,9 @@
 	url = git@github.com:FreeEMS/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/freeems/*
 	push = refs/heads/master:refs/heads/master
-[remote "alternate"]
+[remote "gitorious"]
 	url = git@gitorious.org:freeems-vanilla/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/alternate/*
+	fetch = +refs/heads/*:refs/remotes/gitorious/*
 	push = refs/heads/master:refs/heads/master
 [remote "sourceforge"]
 	url = ssh://fredcooke@freeems.git.sourceforge.net/gitroot/freeems/freeems-vanilla
