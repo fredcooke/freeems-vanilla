@@ -261,8 +261,8 @@
 #define MPXH6400AMax             42000       /* Pressure read at highest ADC reading */
 #define MPXH6400ARange           40800       /* Pressure difference between lowest and highest ADC readings */
 
-#define TPSDefaultMin              255       /* ADC reading at lowest throttle position */
-#define TPSDefaultMax              767       /* ADC reading at highest throttle position */
+#define TPSDefaultMin                0       /* ADC reading at lowest throttle position */
+#define TPSDefaultMax             1023       /* ADC reading at highest throttle position */
 
 #define offIdleMAP                3000       /* 30kPa just above where MAP would be with closed throttle at idle */
 #define nearlyWOTMAP              9500       /* 95kPa just below where MAP would be at WOT */
