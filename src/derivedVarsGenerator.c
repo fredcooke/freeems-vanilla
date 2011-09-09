@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -83,7 +83,9 @@ void generateDerivedVars(){
 
 	// temp dwell and advance vars...
 	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
-	DerivedVars->Advance = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID) / 20/* should be 1024/oneDegree, for now, but this is close enough (5% error or so) */; // move this magic number to an appropriate place and/or refactor timing calcs/values/etc
+	unsigned long tempAdvance = oneDegree * lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID);
+	DerivedVars->Advance = (unsigned short)(tempAdvance / 1024); // This calculation will change when the timing tables get shrunk to a more reasonable 8 bit size with appropriate scaling
+	// Move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
 /// @todo TODO make generic!!!!
 // to go generic we need:
@@ -132,28 +134,6 @@ void generateDerivedVars(){
 		DerivedVars->TFCTotal = 0;
 		/* Don't throw error as correction may not be required */
 	}
-
-	// debug
-
-//	LongTime breakout2, breakout4;
-//	breakout.timeLong = timeBetweenSuccessivePrimaryPulsesBuffer;
-//	breakout2.timeLong = timeBetweenSuccessivePrimaryPulses;
-//	breakout3.timeLong = lengthOfSecondaryHighPulses;
-//	breakout4.timeLong = lengthOfSecondaryLowPulses;
-
-//	DerivedVars->sp1 = Counters.primaryTeethSeen;
-//	DerivedVars->sp2 = Counters.secondaryTeethSeen;
-
-//	DerivedVars->sp3 = breakout4.timeShorts[0];
-//	DerivedVars->sp1 = breakout4.timeShorts[1];
-
-//	DerivedVars->TFCTotal = *RPMRecord;
-
-//	CoreVars->DMAP = breakout3.timeShorts[0];
-//	CoreVars->DTPS = breakout3.timeShorts[1];
-
-//	CoreVars->DRPM = breakout2.timeShorts[0];
-//	CoreVars->DDRPM = breakout2.timeShorts[1];
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 }

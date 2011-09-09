@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -74,6 +74,10 @@ void populateBasicDatalog(){
 
 	// By default, default values are populated, but if you drop code into the custom directory, that replaces the defaults.
 	populateCustomDatalog();
+	// Done here to overwrite cheeky custom users data:
+	DerivedVars->coreStatusA = coreStatusA;
+	DerivedVars->decoderFlags = decoderFlags;
+	DerivedVars->tempClock++;
 
 	/* Get core vars */
 	memcpy(TXBufferCurrentPositionHandler, CoreVars, sizeof(CoreVar));

@@ -134,7 +134,7 @@ typedef struct {
 	unsigned short densityAndFuel; ///< Bottom half of the equation
 
 	unsigned short BasePW;         ///< Raw PW before corrections
-	unsigned short ETE;            ///< Additional PW for ETE correction
+	unsigned short ETE;            ///< Engine Temperature Enrichment percentage correction
 	signed short TFCTotal;         ///< Transient fuel correction PW (+/-)
 
 	unsigned short EffectivePW;    ///< Actual PW of fuel delivery
@@ -144,9 +144,14 @@ typedef struct {
 	unsigned short Advance;        ///< Ignition advance (scaled degrees / oneDegree(currently 50) = degrees)
 	unsigned short Dwell;          ///< Dwell Angle (ticks / 1250 = ms)
 
+	// To be improved MAJORLY:
+	unsigned short tempClock;      ///< Incremented once per log sent
+
+	// All flags! Pair keeps things sane for hacky apps that think everything is 16 bit.
+	unsigned char coreStatusA;
+	unsigned char decoderFlags;
+
 	// replace highest first to avoid hassles for offset based dave/mtx...
-	unsigned short zsp19;          ///< Spare US variable
-	unsigned short zsp18;          ///< Spare US variable
 	unsigned short zsp17;          ///< Spare US variable
 	unsigned short zsp16;          ///< Spare US variable
 	unsigned short zsp15;          ///< Spare US variable
