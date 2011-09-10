@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -102,7 +102,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 #elif SNOTROCKET
 #include "../data/tables/ign/SimsVolvoIgnitionTiming.h"
 #else
-#include "../data/tables/ign/flat0degrees.h"
+#include "../data/tables/ign/flat10degrees.h"
 #endif
 	}
 };

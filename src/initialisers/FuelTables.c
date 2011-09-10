@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -97,7 +97,7 @@ const volatile mainTable VETableMainFlash FUELTABLESD = {
 #elif JOSHBROWN
 #include "../data/tables/ve/flat60Percent.h"
 #else
-#include "../data/tables/ve/flat80Percent.h"
+#include "../data/tables/ve/flat60Percent.h"
 #endif
 	}
 };
@@ -193,7 +193,7 @@ const volatile mainTable LambdaTableFlash FUELTABLESD = {
 #elif JOSHBROWN
 #include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
 #else
-#include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
+#include "../data/tables/lambda/SeansLT1Lambda.h" // Reasonable starting point
 #endif
 	}
 };
