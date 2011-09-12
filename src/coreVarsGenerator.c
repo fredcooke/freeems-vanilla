@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -76,7 +76,12 @@ void generateCoreVars(){
 	/* Get BRV from ADC using transfer variables (all installations need this) */
 	unsigned short localBRV;
 	if(TRUE){ /* If BRV connected  */
+/// @todo TODO WARNING: HACK!!! Remove ASAP!!! IE, As Soon As Preston (get's a new cpu on the TA card!)
+#ifdef HOTEL
+		localBRV = (((unsigned long)ADCArrays->MAT * fixedConfigs2.sensorRanges.BRVRange) / ADC_DIVISIONS) + fixedConfigs2.sensorRanges.BRVMinimum;
+#else
 		localBRV = (((unsigned long)ADCArrays->BRV * fixedConfigs2.sensorRanges.BRVRange) / ADC_DIVISIONS) + fixedConfigs2.sensorRanges.BRVMinimum;
+#endif
 	}else if(FALSE){ /* Configured to be fixed value */
 		/* Get the preferred BRV figure from configuration settings */
 		localBRV = fixedConfigs2.sensorPresets.presetBRV;
