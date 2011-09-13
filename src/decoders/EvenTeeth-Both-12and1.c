@@ -195,10 +195,26 @@ void SecondaryRPMISR(){
 
 		// This sets currentEvent to 255 such that when the primary ISR runs it is rolled over to zero!
 		if(decoderFlags & CAM_SYNC){
-			if(currentEvent != (numberOfRealEvents - 1)){
+			/* If the count is less than 23, then we know that the electrical pulse that triggered
+			 * this ISR execution was almost certainly in error and it is NOT valid to stay in sync.
+			 * 
+			 * This begs the question, if we got noise on our 24 edge, who is to say that when this
+			 * runs and the count is too high, that this isn't also in error? It is likely that the
+			 * pulse that caused this execution is genuine, but certainly not guaranteed. Roll with
+			 * it for now, but improve even more later.
+			 *
+			 * There is zero point adding relative timing checks to this ISR because by nature, the
+			 * other N teeth have already checked out good timing wise and therefore the average also
+			 * does. Thus if we did check, for it to ever fail it would need to be tighter, and in
+			 * reality it must be more loose due to the larger possible variation over the much much
+			 * larger time frame.
+			 */
+			if(currentEvent < (numberOfRealEvents - 1)){
+				resetToNonRunningState(4);
+			}else if(currentEvent > (numberOfRealEvents -1)){
 				// Record that we had to reset position...
 				Counters.decoderSyncCorrections++;
-				syncLostOnThisEvent = currentEvent;				// Should never happen, or should be caught by timing checks below
+				syncLostOnThisEvent = currentEvent;				// Should never happen, or should be caught by timing checks in primary ISR
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.
 			decoderFlags |= CAM_SYNC;
