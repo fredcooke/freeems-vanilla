@@ -96,6 +96,7 @@ void PrimaryRPMISR(){
 	}
 	unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
+	unsigned char lastEvent = 0;
 	unsigned short thisTicksPerDegree = 0;
 	if(PTITCurrentState & 0x01){
 		// temporary data from inputs
@@ -119,6 +120,7 @@ void PrimaryRPMISR(){
 		Clocks.timeoutADCreadingClock = 0;
 
 		currentEvent = 1;
+		lastEvent = 0;
 
 		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
@@ -143,8 +145,35 @@ void PrimaryRPMISR(){
 		Clocks.timeoutADCreadingClock = 0;
 
 		currentEvent = 0;
+		lastEvent = 1;
 
 		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
+	}
+
+	unsigned long thisInterEventPeriod = 0;
+	if(decoderFlags & LAST_TIMESTAMP_VALID){
+		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
+	}
+
+	// This should check during gain of sync too and prevent gaining sync if the numbers aren't right, however this is a step up for the Hotel at this time.
+	if(decoderFlags & COMBUSTION_SYNC){
+		unsigned short thisAngle = 0;
+		if(currentEvent == 0){
+			// Fix this to work for all:
+//			thisAngle = eventAngles[currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+			thisAngle = eventAngles[currentEvent] + angleOfSingleIteration - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+		}else{
+			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+		}
+
+		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+
+		if(decoderFlags & LAST_PERIOD_VALID){
+			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+				resetToNonRunningState(1);
+			}
+		}
 	}
 
 	if(decoderFlags & COMBUSTION_SYNC){
