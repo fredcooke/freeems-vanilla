@@ -366,7 +366,7 @@ void PrimaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = ~PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -402,14 +402,8 @@ void PrimaryRPMISR(){
 		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
 
-		if(PTITCurrentState & 0x02){
-			correctEvent = 7;
-			unknownEdges = 0;
-		}else{
-			unknownEdges++;
-			if(unknownEdges == 3){
-				correctEvent = 4;
-			}
+		if(!(PTITCurrentState & 0x02)){
+			correctEvent = 8;
 		}
 	}else{
 		//temp
@@ -425,7 +419,13 @@ void PrimaryRPMISR(){
 		Clocks.timeoutADCreadingClock = 0;
 
 		if(PTITCurrentState & 0x02){
-			correctEvent = 8;
+			unknownEdges++;
+			if(unknownEdges == 3){
+				correctEvent = 4;
+			}
+		}else{
+			correctEvent = 7;
+			unknownEdges = 0;
 		}
 	}
 
@@ -507,7 +507,7 @@ void SecondaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = ~PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -545,7 +545,7 @@ void SecondaryRPMISR(){
 		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
 
-		correctEvent = 6;
+		correctEvent = 9;
 	}else{
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
@@ -559,7 +559,7 @@ void SecondaryRPMISR(){
 		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
 
-		correctEvent = 9;
+		correctEvent = 6;
 	}
 
 	unsigned char lastEvent = 0;
