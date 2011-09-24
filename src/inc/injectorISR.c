@@ -55,10 +55,12 @@
  * @author Fred Cooke
  */
 
+// Courtesy of Dave Cramer
+#define INJECTOR_MAIN_ON_MASK (BIT2<<INJECTOR_CHANNEL_NUMBER)
 
 void InjectorXISR(){
 	/* Clear the interrupt flag for this channel */
-	TFLG = injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER];
+	TFLG = INJECTOR_MAIN_ON_MASK;
 
 	/* Record the current time as start time */
 	unsigned short TCNTStart = TCNT;
@@ -67,7 +69,7 @@ void InjectorXISR(){
 	unsigned short edgeTimeStamp = *injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER];
 
 	/* If rising edge triggered this */
-	if(PTIT & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){ // Stuff for switch on time
+	if(PTIT & INJECTOR_MAIN_ON_MASK){ // Stuff for switch on time
 
 		/* Find out what max and min for pulse width are */
 		unsigned short localPulseWidth = injectorMainPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER];
@@ -120,7 +122,7 @@ void InjectorXISR(){
 			}
 		}else{ // if set to off action (implicit)
 			/* Set the action for compare to switch on and the time to next start time, clear the self timer flag */
-			if(selfSetTimer & injectorMainOnMasks[INJECTOR_CHANNEL_NUMBER]){
+			if(selfSetTimer & INJECTOR_MAIN_ON_MASK){
 				if(outputEventExtendNumberOfRepeatsHolding[INJECTOR_CHANNEL_NUMBER] > 0){
 					*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= injectorMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
 					outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventExtendNumberOfRepeatsHolding[INJECTOR_CHANNEL_NUMBER];
