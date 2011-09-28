@@ -480,7 +480,7 @@ slow: sizes size
 # Multi stage compilation with garbage collection
 slowgc: gcsizes size
 # Clean all except release
-clean: cleandep cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
+clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
 # Generate all debug
 alldebug: maps rees elfdmps objdmps
 # Load the s19 of your choice
