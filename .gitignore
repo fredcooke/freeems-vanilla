@@ -14,6 +14,7 @@ docs/latex/*.pdf
 docs/latex/*.ps
 docs/latex/*.toc
 
+src/dependencies/
 src/firmware/
 src/output/
 src/preprocessedc/
