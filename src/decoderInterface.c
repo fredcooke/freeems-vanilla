@@ -44,6 +44,7 @@
  *
  * @todo TODO bring this up to date and/or find a better way to do it.
  *
+ * @param uniqueLossID 0 is reserved for system use, within your decoder never use the same value twice.
  * @author Fred Cooke
  */
 void resetToNonRunningState(unsigned char uniqueLossID){

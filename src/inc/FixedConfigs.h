@@ -49,14 +49,18 @@
 #define FILE_FIXED_CONFIGS_H_SEEN
 
 
+/// Decoder and scheduling settings
+typedef struct {
+	unsigned short accelerationInputEventTimeTolerance; ///< This will be replaced: http://issues.freeems.org/view.php?id=118
+	unsigned short decelerationInputEventTimeTolerance; ///< This will be replaced: http://issues.freeems.org/view.php?id=118
+} decoderSetting;
+
 
 /** @brief Preset values for inputs and other variables
  *
  * In some cases you may want to ignore input readings and just use some
  * configured value for a particular sensor. These are the values used when you
  * choose to use a fixed reading instead of the real thing.
- *
- * @author Fred Cooke
  */
 typedef struct {
 	unsigned short presetIAT;  ///< Preset variable value to override calculated values.
@@ -153,18 +157,19 @@ typedef struct {
 	//#define COREA15			BIT15_16	/* 15 */
 	//#define COREA16			BIT16_16	/* 16 */
 
-	unsigned char userTextField[userTextFieldArrayLength1]; /* "Place your personal notes here!!" */
+	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
 CASSERT((sizeof(fixedConfig1) == flashSectorSize), fixedConfig1)
 
 
-#define userTextFieldArrayLength2 (flashSectorSize - (sizeof(sensorPreset) + sizeof(sensorRange) + sizeof(sensorSetting)))
+#define userTextFieldArrayLength2 (flashSectorSize - (sizeof(sensorPreset) + sizeof(sensorRange) + sizeof(sensorSetting) + sizeof(decoderSetting)))
 /** @copydoc fixedConfig1 */
 typedef struct {
 	sensorPreset sensorPresets;                              ///< @see sensorPreset
 	sensorRange sensorRanges;                                ///< @see sensorRange
 	sensorSetting sensorSettings;                            ///< @see sensorSetting
-	unsigned char userTextField2[userTextFieldArrayLength2]; ///< For on-board meta data such as which vehicle the unit is from, put your personal notes here!
+	decoderSetting decoderSettings;                          ///< @see decoderSetting
+	unsigned char userTextField2[userTextFieldArrayLength2]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig2;
 CASSERT((sizeof(fixedConfig2) == flashSectorSize), fixedConfig2)
 
