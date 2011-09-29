@@ -92,7 +92,7 @@ void PrimaryRPMISR(){
 		unsigned short thisTicksPerDegree = 0;
 		if(decoderFlags & LAST_TIMESTAMP_VALID){
 			thisInterEventPeriod = thisEventTimeStamp - lastPrimaryEventTimeStamp;
-			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / (30 * oneDegree)); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / eventAngles[1]); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 		}
 
 		if(decoderFlags & CAM_SYNC){
