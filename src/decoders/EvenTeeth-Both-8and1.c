@@ -24,15 +24,15 @@
  */
 
 
-/**	@file EvenTeeth-Both-12and1.c
+/**	@file EvenTeeth-Both-8and1.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
  * @brief For evenly spaced teeth on the camshaft with a single second input.
  *
- * This is suitable for engines with 24 evenly spaced teeth on the cam shaft which
- * is equivalent to 12 on the crank shaft. Sync is provided by the second input
- * allowing a sequential and/or COP/CNP setup to be used.
+ * This is suitable for engines such as the Yamaha R1 with 8 teeth on the crank
+ * and equally for something with 16 on the cam. Sync is provided by the second
+ * input allowing a sequential and/or COP/CNP setup to be used.
  *
  * @see EvenTeeth-Both-Nand1.c
  *
@@ -42,17 +42,17 @@
 
 #define DECODER_IMPLEMENTATION_C
 #define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
-#define NUMBER_OF_REAL_EVENTS     24
-#define NUMBER_OF_VIRTUAL_EVENTS  24
+#define NUMBER_OF_REAL_EVENTS     16
+#define NUMBER_OF_VIRTUAL_EVENTS  16
 
 #include "../inc/freeEMS.h"
 #include "../inc/utils.h"
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
 
-const unsigned char decoderName[] = "EvenTeethOnCam-12and1";
-const unsigned short eventAngles[] = {(0 * oneDegree), (30 * oneDegree), (60 * oneDegree), (90 * oneDegree), (120 * oneDegree), (150 * oneDegree), (180 * oneDegree), (210 * oneDegree), (240 * oneDegree), (270 * oneDegree), (300 * oneDegree), (330 * oneDegree), (360 * oneDegree), (390 * oneDegree), (420 * oneDegree), (450 * oneDegree), (480 * oneDegree), (510 * oneDegree), (540 * oneDegree), (570 * oneDegree), (600 * oneDegree), (630 * oneDegree), (660 * oneDegree), (690 * oneDegree)};
-const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
+const unsigned char decoderName[] = "EvenTeethOnCam-8and1";
+const unsigned short eventAngles[] = {(0 * oneDegree), (45 * oneDegree), (90 * oneDegree), (135 * oneDegree), (180 * oneDegree), (225 * oneDegree), (270 * oneDegree), (315 * oneDegree), (360 * oneDegree), (405 * oneDegree), (450 * oneDegree), (495 * oneDegree), (540 * oneDegree), (585 * oneDegree), (630 * oneDegree), (675 * oneDegree)};
+const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
 
 // Bring in the actual code.
 #include "EvenTeeth-Both-Nand1.c"
