@@ -35,21 +35,26 @@
  * @note At least one Doxygen bug prevents the data structures below being show
  *       correctly in the documentation for this file. Please see the source
  *       code itself for more information.
- *
- * @author Fred Cooke
  */
 
 
 #include "../inc/freeEMS.h"
 
 
+#ifndef IgnitionAdvanceTableMainFlashV
+#define IgnitionAdvanceTableMainFlashV IgnitionAdvanceTableMainFlash
+#define IgnitionAdvanceTableSecondaryFlashV IgnitionAdvanceTableSecondaryFlash
+#define InjectionAdvanceTableMainFlashV InjectionAdvanceTableMainFlash
+#define InjectionAdvanceTableSecondaryFlashV InjectionAdvanceTableSecondaryFlash
+#endif
+
+
 // See fuelAndIgnitionCalcs.c for more info about CLIFLAGS builds!
 /* The main Advance Table */
-const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* AdvanceTableMain.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* AdvanceTableMain.LoadLength */
-	/* AdvanceTableMain.RPM */
-	{
+const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
+	RPMLength:  MAINTABLE_RPM_LENGTH,
+	LoadLength: MAINTABLE_LOAD_LENGTH,
+	RPM:{
 #ifdef TRUCK
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif HOTEL
@@ -66,8 +71,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
 	},
-	/*AdvanceTableMain.Load */
-	{
+	Load: {
 #ifdef TRUCK
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif HOTEL
@@ -84,8 +88,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 #endif
 	},
-	/* AdvanceTableMain.Table */
-	{
+	Table: {
 // USE FLAT 0 DEGREE TIMING UNTIL YOU CAN VERIFY YOUR DECODER OFFSET!!
 #ifdef TRUCK
 #include "../data/tables/ign/FredsTruckIgnitionTiming.h"
@@ -109,57 +112,48 @@ const volatile mainTable IgnitionAdvanceTableMainFlash TIMETABLESD = {
 
 
 /* The secondary Advance Table */
-const volatile mainTable IgnitionAdvanceTableSecondaryFlash TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* AdvanceTableSecondary.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* AdvanceTableSecondary.LoadLength */
-	/* AdvanceTableSecondary.RPM */
-	{
+const volatile mainTable IgnitionAdvanceTableSecondaryFlashV TIMETABLESD = {
+	RPMLength:  MAINTABLE_RPM_LENGTH,
+	LoadLength: MAINTABLE_LOAD_LENGTH,
+	RPM:{
 		#include "../data/tables/axis/mainTable-RPM.h"
 	},
-	/*AdvanceTableSecondary.Load */
-	{
+	Load:{
 		#include "../data/tables/axis/mainTable-Load.h"
 	},
-	/* AdvanceTableSecondary.Table */
-	{
+	Table:{
 		#include "../data/tables/ign/flat15degrees.h"
 	}
 };
 
 
 /* The main Volumetric Efficiency Table */
-const volatile mainTable InjectionAdvanceTableMainFlash TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableMain.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableMain.LoadLength */
-	/* VETableMain.RPM */
-	{
+const volatile mainTable InjectionAdvanceTableMainFlashV TIMETABLESD = {
+	RPMLength:  MAINTABLE_RPM_LENGTH,
+	LoadLength: MAINTABLE_LOAD_LENGTH,
+	RPM:{
 		#include "../data/tables/axis/mainTable-RPM.h"
 	},
-	/*VETableMain.Load */
-	{
+	Load:{
 		#include "../data/tables/axis/mainTable-Load.h"
 	},
-	/* VETableMain.Table */
-	{
+	Table:{
 		#include "../data/tables/ign/flat15degrees.h"
 	}
 };
 
 
 /* The secondary Volumetric Efficiency Table */
-const volatile mainTable InjectionAdvanceTableSecondaryFlash TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableSecondary.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableSecondary.LoadLength */
-	/* VETableSecondary.RPM */
-	{
+const volatile mainTable InjectionAdvanceTableSecondaryFlashV TIMETABLESD = {
+	RPMLength:  MAINTABLE_RPM_LENGTH,
+	LoadLength: MAINTABLE_LOAD_LENGTH,
+	RPM:{
 		#include "../data/tables/axis/mainTable-RPM.h"
 	},
-	/*VETableSecondary.Load */
-	{
+	Load:{
 		#include "../data/tables/axis/mainTable-Load.h"
 	},
-	/* VETableSecondary.Table */
-	{
+	Table:{
 		#include "../data/tables/ign/flat15degrees.h"
 	}
 };

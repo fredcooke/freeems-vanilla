@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -35,81 +35,12 @@
  * @note At least one Doxygen bug prevents the data structures below being show
  *       correctly in the documentation for this file. Please see the source
  *       code itself for more information.
- *
- * @author Fred Cooke
  */
 
 
-#include "../inc/freeEMS.h"
+#define VETableMainFlashV VETableMainFlash2
+#define VETableSecondaryFlashV VETableSecondaryFlash2
+#define VETableTertiaryFlashV VETableTertiaryFlash2
+#define LambdaTableFlashV LambdaTableFlash2
 
-
-const volatile mainTable VETableMainFlash2 FUELTABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableMain.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableMain.LoadLength */
-	/* VETableMain.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/* VETableMain.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* VETableMain.Table */
-	{
-		#include "../data/tables/ve/flat80Percent.h"
-	}
-};
-
-
-const volatile mainTable VETableSecondaryFlash2 FUELTABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableSecondary.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableSecondary.LoadLength */
-	/* VETableSecondary.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/* VETableSecondary.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* VETableSecondary.Table */
-	{
-		#include "../data/tables/ve/flat80Percent.h"
-	}
-};
-
-
-const volatile mainTable VETableTertiaryFlash2 FUELTABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableTertiary.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableTertiary.LoadLength */
-	/* VETableTertiary.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/* VETableTertiary.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* VETableTertiary.Table */
-	{
-		#include "../data/tables/ve/flat80Percent.h"
-	}
-};
-
-
-const volatile mainTable LambdaTableFlash2 FUELTABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* LambdaTable.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* LambdaTable.LoadLength */
-	/* LambdaTable.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/* LambdaTable.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* LambdaTable.Table */
-	{
-		#include "../data/tables/lambda/flatStoichiometric.h"
-	}
-};
+#include "FuelTables.c"

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -35,85 +35,12 @@
  * @note At least one Doxygen bug prevents the data structures below being show
  *       correctly in the documentation for this file. Please see the source
  *       code itself for more information.
- *
- * @author Fred Cooke
  */
 
 
-#include "../inc/freeEMS.h"
+#define IgnitionAdvanceTableMainFlashV IgnitionAdvanceTableMainFlash2
+#define IgnitionAdvanceTableSecondaryFlashV IgnitionAdvanceTableSecondaryFlash2
+#define InjectionAdvanceTableMainFlashV InjectionAdvanceTableMainFlash2
+#define InjectionAdvanceTableSecondaryFlashV InjectionAdvanceTableSecondaryFlash2
 
-
-/* The main Advance Table */
-const volatile mainTable IgnitionAdvanceTableMainFlash2 TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* AdvanceTableMain.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* AdvanceTableMain.LoadLength */
-	/* AdvanceTableMain.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/*AdvanceTableMain.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* AdvanceTableMain.Table */
-	{
-		#include "../data/tables/ign/flat15degrees.h"
-	}
-};
-
-
-/* The secondary Advance Table */
-const volatile mainTable IgnitionAdvanceTableSecondaryFlash2 TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* AdvanceTableSecondary.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* AdvanceTableSecondary.LoadLength */
-	/* AdvanceTableSecondary.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/*AdvanceTableSecondary.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* AdvanceTableSecondary.Table */
-	{
-		#include "../data/tables/ign/flat15degrees.h"
-	}
-};
-
-
-/* The main Volumetric Efficiency Table */
-const volatile mainTable InjectionAdvanceTableMainFlash2 TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableMain.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableMain.LoadLength */
-	/* VETableMain.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/*VETableMain.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* VETableMain.Table */
-	{
-		#include "../data/tables/ign/flat15degrees.h"
-	}
-};
-
-
-/* The secondary Volumetric Efficiency Table */
-const volatile mainTable InjectionAdvanceTableSecondaryFlash2 TIMETABLESD = {
-	MAINTABLE_RPM_LENGTH,		/* VETableSecondary.RPMLength */
-	MAINTABLE_LOAD_LENGTH,		/* VETableSecondary.LoadLength */
-	/* VETableSecondary.RPM */
-	{
-		#include "../data/tables/axis/mainTable-RPM.h"
-	},
-	/*VETableSecondary.Load */
-	{
-		#include "../data/tables/axis/mainTable-Load.h"
-	},
-	/* VETableSecondary.Table */
-	{
-		#include "../data/tables/ign/flat15degrees.h"
-	}
-};
+#include "TimingTables.c"

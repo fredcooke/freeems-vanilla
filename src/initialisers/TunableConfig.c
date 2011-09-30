@@ -38,16 +38,26 @@
  * for SmallTables1 for more details.
  *
  * For more information, please see the @ref tuneSwitching page.
- *
- * @author Fred Cooke
  */
 
 
-#define TUNABLE_CONFIGS_C
 #include "../inc/freeEMS.h"
 
 
-const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
+
+#ifndef TUNETABLESDV1
+#define SmallTablesAFlashV SmallTablesAFlash
+#define SmallTablesBFlashV SmallTablesBFlash
+#define SmallTablesCFlashV SmallTablesCFlash
+#define SmallTablesDFlashV SmallTablesDFlash
+#define TUNETABLESDV1 TUNETABLESD1
+#define TUNETABLESDV2 TUNETABLESD2
+#define TUNETABLESDV3 TUNETABLESD3
+#define TUNETABLESDV4 TUNETABLESD4
+#endif
+
+
+const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 
 #if SEANKLT1
 		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, SEANKLT1_16_DWELLS},
@@ -82,7 +92,7 @@ const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 };
 
 
-const volatile SmallTables2 SmallTablesBFlash TUNETABLESD2 = {
+const volatile SmallTables2 SmallTablesBFlashV TUNETABLESDV2 = {
 		datalogHighSpeedSourceAddress: (void*)&ATD0DR4, // MAP sensor for default
 		perCylinderFuelTrims:          ARRAY_OF_6_FUEL_TRIMS,   /* perCylinderFuelTrims[] */
 		datalogStreamType:             asyncDatalogBasic,
@@ -105,7 +115,7 @@ const volatile SmallTables2 SmallTablesBFlash TUNETABLESD2 = {
 };
 
 
-const volatile SmallTables3 SmallTablesCFlash TUNETABLESD3 = {
+const volatile SmallTables3 SmallTablesCFlashV TUNETABLESDV3 = {
 		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -125,7 +135,7 @@ const volatile SmallTables3 SmallTablesCFlash TUNETABLESD3 = {
 };
 
 
-const volatile SmallTables4 SmallTablesDFlash TUNETABLESD4 = {
+const volatile SmallTables4 SmallTablesDFlashV TUNETABLESDV4 = {
 		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
