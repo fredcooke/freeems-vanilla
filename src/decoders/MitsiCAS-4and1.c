@@ -26,7 +26,7 @@
 
 #define DECODER_IMPLEMENTATION_C
 
-#include "../inc/MitsiCAS-4and1.h"
+#include "inc/MitsiCAS-4and1.h"
 
 void decoderInitPreliminary(){} // This decoder works with the defaults
 void perDecoderReset(){

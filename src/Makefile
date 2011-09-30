@@ -159,7 +159,7 @@ SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSE
 CLASSES = $(SOURCE) $(DATA)
 
 # Engine position/RPM here
-RPMCLASSESRAW = BenchTest.c MitsiCAS-4and1.c Simple.c GM-LT1-CAS-360and8.c MissingTeeth-36-1-Crank-Only.c Listener.c HyundaiStellar4g63-Distributor-4of54.c MitsiAndMazda-Distributor-4of69.c EvenTeeth-Both-12and1.c EvenTeeth-Both-8and1.c
+RPMCLASSESRAW = BenchTest.c MitsiCAS-4and1.c Simple.c GM-LT1-CAS-360and8.c MissingTeeth-36-1-Crank-Only.c Listener.c HallOptoDistributor-4of54-HyundaiStellar4g63.c HallOptoDistributor-4of69-MitsiAndMazda.c EvenTeeth-Both-12and1.c EvenTeeth-Both-8and1.c
 # Future decoders: MiataNB.c Subaru-36-2-2-2.c 
 RPMCLASSES = $(patsubst %.c,$(DECDIR)/%.c,$(RPMCLASSESRAW))
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!

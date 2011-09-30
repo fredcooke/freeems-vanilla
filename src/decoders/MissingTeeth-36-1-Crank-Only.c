@@ -42,7 +42,7 @@
 #define TOTAL_TEETH   36
 #define MISSING_TEETH  1
 
-#include "../inc/MissingTeeth.h"
-#include "GenericMissingTeethWheelBase.c"
+#include "inc/MissingTeeth.h"
+#include "code/GenericMissingTeethWheelBase.c"
 
 const unsigned char decoderName[] = "MissingTeeth36-1-Crank-Only";

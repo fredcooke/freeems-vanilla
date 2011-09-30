@@ -48,11 +48,11 @@
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
-#include "../inc/LT1-360-8.h"
+#include "inc/GM-LT1-CAS-360and8.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-const unsigned char decoderName[] = "LT1-360-8";
+const unsigned char decoderName[] = "GM-LT1-CAS-360and8";
 const unsigned short eventAngles[] = {(  0 * oneDegree), ( 86 * oneDegree), (130 * oneDegree), (176 * oneDegree),
                                       (180 * oneDegree), (266 * oneDegree), (280 * oneDegree), (356 * oneDegree),
                                       (360 * oneDegree), (446 * oneDegree), (470 * oneDegree), (536 * oneDegree),

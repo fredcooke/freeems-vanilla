@@ -55,4 +55,4 @@ const unsigned short eventAngles[] = {(0 * oneDegree), (45 * oneDegree), (90 * o
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
 
 // Bring in the actual code.
-#include "EvenTeeth-Both-Nand1.c"
+#include "code/EvenTeeth-Both-Nand1.c"

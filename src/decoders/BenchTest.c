@@ -51,7 +51,7 @@
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
-#include "../inc/BenchTest.h"
+#include "inc/BenchTest.h"
 
 
 // Setup the timer interrupts as internal timers only triggered by a serial call that returns if this isn't the decoder.

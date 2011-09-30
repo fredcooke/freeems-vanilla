@@ -39,8 +39,8 @@
 
 #define DECODER_MAX_CODE_TIME 100 // To be optimised (shortened)!
 
-#include "../inc/freeEMS.h"
-#include "../inc/interrupts.h"
+#include "../../inc/freeEMS.h"
+#include "../../inc/interrupts.h"
 // See bottom of file for decoderInterface.h include
 
 
@@ -101,7 +101,7 @@
 #endif
 
 
-#include "../inc/decoderInterface.h"
+#include "../../inc/decoderInterface.h"
 
 
 // For cam events, this is all that is used, for crank, this is the first half.

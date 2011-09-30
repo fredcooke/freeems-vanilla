@@ -39,10 +39,10 @@
 #define NUMBER_OF_VIRTUAL_EVENTS  10
 
 
-#include "../inc/freeEMS.h"
-#include "../inc/utils.h"
-#include "../inc/interrupts.h"
-#include "../inc/decoderInterface.h"
+#include "../../inc/freeEMS.h"
+#include "../../inc/utils.h"
+#include "../../inc/interrupts.h"
+#include "../../inc/decoderInterface.h"
 
 
 // Variables unique to this decoder, should be kept to a minimum!
