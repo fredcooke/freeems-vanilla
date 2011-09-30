@@ -24,13 +24,66 @@
  */
 
 
-/**	@file MitsiAndMazda-Distributor-4of69.c
+/**	@file HallOrOptical-Distributor-4of54.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief For simple use on distributor ignition engines with batch injection
+ * @brief Echos the input on the first ignition output
  *
- * @author Fred Cooke
+ * This decoder is for unlocked distributor cars such as the MIGHTY Hyundai
+ * that I've been living in for 6 months. The mechanical distributor continues
+ * to set the timing, the ECU just logs RPM and MAP and any other senors and/or
+ * solenoids you hook up and configure.
+ *
+ * No plugs cranking LA test results:
+ *
+
+17302
+17346
+17451
+17498
+17600
+17646
+17751
+17795
+17900
+
+0
+44
+149
+196
+298
+344
+449
+493
+598
+
+0
+52.98
+179.4
+235.99
+358.8
+414.18
+540.6
+593.58
+720
+
+52.98
+126.42
+56.59
+122.81
+55.38
+126.42
+52.98
+126.42
+
+54.48
+125.52
+
+54,126
+
+ *
+ * Approximately 1000 samples per second
  */
 
 
@@ -44,9 +97,8 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-// 69 is a little too high, and 68 is more than a little too low (or inversed)
-#define E1 69 // TODO May need to be 111 instead, needs testing!
+#define E1 (54 * oneDegree)
 
-const unsigned char decoderName[] = "MitsiAndMazda-DistributorCAS-Outer4";
+const unsigned char decoderName[] = "HallOrOptical-Distributor-4of54";
 
-#include "code/Generic4Cylinder-HallOrOptical.c"
+#include "code/HallOrOptical-Distributor-XofY.c"

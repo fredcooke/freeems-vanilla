@@ -159,10 +159,18 @@ SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSE
 CLASSES = $(SOURCE) $(DATA)
 
 # Engine position/RPM here
-RPMCLASSESRAW = BenchTest.c MitsiCAS-4and1.c Simple.c GM-LT1-CAS-360and8.c MissingTeeth-36-1-Crank-Only.c Listener.c HallOptoDistributor-4of54-HyundaiStellar4g63.c HallOptoDistributor-4of69-MitsiAndMazda.c EvenTeeth-Both-12and1.c EvenTeeth-Both-8and1.c
-# Future decoders: MiataNB.c Subaru-36-2-2-2.c 
+# Special decoders are not for use running an engine
+RPMSPECIAL = Listener.c BenchTest.c
+# TODO: Automate file naming for the following 4 lines
+RPMEVENTEETH = EvenTeeth-Both-12and1.c EvenTeeth-Both-8and1.c
+RPMMISSINGTEETH = 
+RPMHALLOROPTICAL = HallOrOptical-Distributor-4of54.c HallOrOptical-Distributor-4of69.c
+RPMVRDISTRIBUTOR = 
+# Specific purpose per engine stuff here
+RPMSPECIFICENGINE1 = MitsiAndMazda-CAS-4and1.c GM-LT1-CAS-360and8.c
+# Insert your file above and get coding!
+RPMCLASSESRAW = $(RPMSPECIAL) $(RPMEVENTEETH) $(RPMMISSINGTEETH) $(RPMHALLOROPTICAL) $(RPMVRDISTRIBUTOR) $(RPMSPECIFICENGINE1)
 RPMCLASSES = $(patsubst %.c,$(DECDIR)/%.c,$(RPMCLASSESRAW))
-# future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
 
 # XGATE stuff here!
 XGASMSRCS = xgate.s
@@ -1029,7 +1037,7 @@ cleandoxy:
 .PHONY: all fast slow slowgc single help dirs
 
 # Aggregators middle level
-.PHONY: preprocess compile assemble link gclink s19 gcs19 sizes gcsizes 
+.PHONY: dependencies preprocess compile assemble link gclink s19 gcs19 sizes gcsizes
 
 # Aggregators debug level
 .PHONY: alldebug maps rees objdmps elfdmps size

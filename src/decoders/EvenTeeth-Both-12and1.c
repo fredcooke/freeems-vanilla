@@ -50,9 +50,9 @@
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
 
-const unsigned char decoderName[] = "EvenTeethOnCam-12and1";
+const unsigned char decoderName[] = "EvenTeeth-Both-12and1";
 const unsigned short eventAngles[] = {(0 * oneDegree), (30 * oneDegree), (60 * oneDegree), (90 * oneDegree), (120 * oneDegree), (150 * oneDegree), (180 * oneDegree), (210 * oneDegree), (240 * oneDegree), (270 * oneDegree), (300 * oneDegree), (330 * oneDegree), (360 * oneDegree), (390 * oneDegree), (420 * oneDegree), (450 * oneDegree), (480 * oneDegree), (510 * oneDegree), (540 * oneDegree), (570 * oneDegree), (600 * oneDegree), (630 * oneDegree), (660 * oneDegree), (690 * oneDegree)};
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
 
 // Bring in the actual code.
-#include "code/EvenTeeth-Both-Nand1.c"
+#include "code/EvenTeeth-Both-Xand1.c"

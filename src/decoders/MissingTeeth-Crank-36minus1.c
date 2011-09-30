@@ -23,7 +23,7 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file MissingTeeth-36-1-Crank-Only.c
+/**	@file MissingTeeth-Crank-36minus1.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
@@ -32,8 +32,6 @@
  * This just defines the required flags and values and includes the base header and base code.
  *
  * @note The decoderInterface header is included from the MissingTeeth header.
- *
- * @author Fred Cooke
  */
 
 
@@ -43,6 +41,6 @@
 #define MISSING_TEETH  1
 
 #include "inc/MissingTeeth.h"
-#include "code/GenericMissingTeethWheelBase.c"
+#include "code/MissingTeeth-Either-XminusY.c"
 
-const unsigned char decoderName[] = "MissingTeeth36-1-Crank-Only";
+const unsigned char decoderName[] = "MissingTeeth-Crank-36minus1";

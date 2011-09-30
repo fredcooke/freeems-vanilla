@@ -24,7 +24,7 @@
  */
 
 
-/**	@file NipponDenso.c
+/**	@file NipponDenso-24and1and1.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
@@ -59,12 +59,12 @@
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
-#include "inc/NipponDenso.h"
+#include "inc/NipponDenso-24and1and1.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
 
-const unsigned char decoderName[] = "NipponDenso";
+const unsigned char decoderName[] = "NipponDenso-24and1and1";
 const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690};
 //const unsigned char eventValidForCrankSync[] = {?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?}; // Needs some thought.
 
