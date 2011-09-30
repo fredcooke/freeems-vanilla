@@ -103,11 +103,12 @@ typedef struct {
 CASSERT((sizeof(SmallTables1) == flashSectorSize), SmallTables1)
 
 
-#define SMALL_TABLES_2_FILLER_SIZE (flashSectorSize - (1 + 12)) // Update this if adding another table!
+#define SMALL_TABLES_2_FILLER_SIZE (flashSectorSize - (2 + 12 + 1)) // Update this if adding another table!
 /** @copydoc SmallTables1 */
 typedef struct {
-	unsigned char datalogStreamType;                         ///< Which type of datalog to pump out as fast as we can.
+	void* datalogHighSpeedSourceAddress;                     ///< Where to grab our data from.
 	unsigned short perCylinderFuelTrims[INJECTION_CHANNELS]; ///< Trims for injection, from 0% to 200% of base.
+	unsigned char datalogStreamType;                         ///< Which type of datalog to pump out as fast as we can.
 	unsigned char filler[SMALL_TABLES_2_FILLER_SIZE];        ///< Padding data.
 } SmallTables2;
 CASSERT((sizeof(SmallTables2) == flashSectorSize), SmallTables2)

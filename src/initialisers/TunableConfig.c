@@ -49,31 +49,29 @@
 
 const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 
-// dwellDesiredVersusVoltageTable
 #if SEANKLT1
-		{ARRAY_OF_16_VOLTAGES, SEANKLT1_16_DWELLS},
+		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, SEANKLT1_16_DWELLS},
 #elif JOSHBROWN
-		{ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DWELLS},
+		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DWELLS},
 #elif SNOTROCKET
-		{ARRAY_OF_16_VOLTAGES, LS1COILS_16_DWELLS},
+		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, LS1COILS_16_DWELLS},
 #else
-		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},
+		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},
 #endif
 
-// injectorDeadTimeTable
 #if JOSHBROWN
-		{ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DEADTIMES},
+		injectorDeadTimeTable: {ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DEADTIMES},
 #else
-		{ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},
+		injectorDeadTimeTable: {ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},
 #endif
 
-		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_BASE_PERCENTS}, // postStartEnrichmentTable
-		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_TIMES},         // postStartTaperTimeTable
-		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_ZEROS},         // engineTempEnrichmentTableFixed - currently unused
-		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_VOLUMES},       // primingVolumeTable
-		{ARRAY_OF_16_TEMPS,    ARRAY_OF_16_PERCENTS},      // engineTempEnrichmentTablePercent
-		{ARRAY_OF_16_RPMS,     ARRAY_OF_16_MAX_DWELLS},    // dwellMaxVersusRPMTable
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		postStartEnrichmentTable:         {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_BASE_PERCENTS},
+		postStartTaperTimeTable:          {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_TIMES},
+		engineTempEnrichmentTableFixed:   {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_ZEROS}, // currently unused
+		primingVolumeTable:               {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_VOLUMES},
+		engineTempEnrichmentTablePercent: {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_PERCENTS},
+		dwellMaxVersusRPMTable:           {ARRAY_OF_16_RPMS,     ARRAY_OF_16_MAX_DWELLS},
+		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -85,10 +83,10 @@ const volatile SmallTables1 SmallTablesAFlash  TUNETABLESD1 = {
 
 
 const volatile SmallTables2 SmallTablesBFlash TUNETABLESD2 = {
-		asyncDatalogBasic,
-//		asyncDatalogByteLA,
-		ARRAY_OF_6_FUEL_TRIMS,	/* perCylinderFuelTrims[] */
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		datalogHighSpeedSourceAddress: (void*)&ATD0DR4, // MAP sensor for default
+		perCylinderFuelTrims:          ARRAY_OF_6_FUEL_TRIMS,   /* perCylinderFuelTrims[] */
+		datalogStreamType:             asyncDatalogBasic,
+		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -108,7 +106,7 @@ const volatile SmallTables2 SmallTablesBFlash TUNETABLESD2 = {
 
 
 const volatile SmallTables3 SmallTablesCFlash TUNETABLESD3 = {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -128,7 +126,7 @@ const volatile SmallTables3 SmallTablesCFlash TUNETABLESD3 = {
 
 
 const volatile SmallTables4 SmallTablesDFlash TUNETABLESD4 = {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
