@@ -24,7 +24,7 @@
  */
 
 
-/**	@file EvenTeeth-Both-Nand1.c
+/**	@file EvenTeeth-Both-Xand1.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

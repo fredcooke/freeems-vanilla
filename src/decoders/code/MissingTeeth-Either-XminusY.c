@@ -23,7 +23,7 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file GenericMissingTeethWheelBase.c
+/**	@file MissingTeeth-Either-XminusY.c
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

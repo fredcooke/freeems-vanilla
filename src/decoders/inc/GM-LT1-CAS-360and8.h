@@ -24,7 +24,7 @@
  */
 
 
-/**	@file LT1-360-8.h
+/**	@file GM-LT1-CAS-360and8.h
  * @ingroup allHeaders
  */
 
@@ -62,6 +62,6 @@
 
 #else
 	/* let us know if we are being untidy with headers */
-	#warning "Header file LT1_360_8_H seen before, sort it out!"
+	#warning "Header file GM_LT1_CAS_360AND8_H seen before, sort it out!"
 /* end of the wrapper ifdef from the very top */
 #endif
