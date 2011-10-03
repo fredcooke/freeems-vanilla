@@ -65,8 +65,14 @@
 extern void _start(void);
 
 /* Interrupt sub-routine prototypes - assigned to text1 region in linear space */
-void UISR(void) INT TEXT1;				/* Unimplemented Interrupt Sub Routine */
-/** This ISR is expanded from InjectorXISR via include statement, and macro definitions. */
+void UISR(void) INT TEXT1; /* Unimplemented Interrupt Sub Routine */
+
+/** This ISR is expanded from @ref InjectorXISR via include
+ * statement, and macro definitions, so are the othe 5 below.
+ *
+ * @see injectorISR.c
+ * @see injectionISRs.c
+ */
 void Injector1ISR(void) INT TEXT1;
 void Injector2ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
 void Injector3ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
@@ -86,29 +92,29 @@ void Injector6ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
  * @author Various
  */
 void PrimaryRPMISR(void) INT TEXT1;
-void SecondaryRPMISR(void) INT TEXT1; ///< @copydoc PrimaryRPMISR
+void SecondaryRPMISR(void) INT TEXT1;  ///< @copydoc PrimaryRPMISR
 
-void TimerOverflow(void) INT TEXT1;		/* IC/OC timer overflow handling */
-void ModDownCtrISR(void) INT TEXT1;		/* Modulus Down Counter */
+void TimerOverflow(void) INT TEXT1;    /* IC/OC timer overflow handling */
+void ModDownCtrISR(void) INT TEXT1;    /* Modulus Down Counter */
 
-void IgnitionDwellISR(void) INT TEXT1;	/* PIT timer 0 for dwell start */
-void IgnitionFireISR(void) INT TEXT1;		/* PIT timer 1 for coil firing */
-void StagedOnISR(void) INT TEXT1;			/* PIT timer 2 for switching staged injectors on */
-void StagedOffISR(void) INT TEXT1;		/* PIT timer 3 for switching staged injectors off */
+void IgnitionDwellISR(void) INT TEXT1; /* PIT timer 0 for dwell start */
+void IgnitionFireISR(void) INT TEXT1;  /* PIT timer 1 for coil firing */
+void StagedOnISR(void) INT TEXT1;      /* PIT timer 2 for switching staged injectors on */
+void StagedOffISR(void) INT TEXT1;     /* PIT timer 3 for switching staged injectors off */
 
-void PortPISR(void) INT TEXT1;			/* Port P interrupt service routine */
-void PortHISR(void) INT TEXT1;			/* Port P interrupt service routine */
-void PortJISR(void) INT TEXT1;			/* Port P interrupt service routine */
+void PortPISR(void) INT TEXT1;         /* Port P interrupt service routine */
+void PortHISR(void) INT TEXT1;         /* Port P interrupt service routine */
+void PortJISR(void) INT TEXT1;         /* Port P interrupt service routine */
 
-void IRQISR(void) INT TEXT1;				/* IRQ/PE1 interrupt service routine */
-void XIRQISR(void) INT TEXT1;				/* XIRQ/PE0 interrupt service routine */
+void IRQISR(void) INT TEXT1;           /* IRQ/PE1 interrupt service routine */
+void XIRQISR(void) INT TEXT1;          /* XIRQ/PE0 interrupt service routine */
 
-void RTIISR(void) INT TEXT1;				/* Real Time interrupt service routine */
+void RTIISR(void) INT TEXT1;           /* Real Time interrupt service routine */
 
-void SCI0ISR(void) INT TEXT1;				/* Serial 0 interrupt service routine */
+void SCI0ISR(void) INT TEXT1;          /* Serial 0 interrupt service routine */
 
-void LowVoltageISR(void) INT TEXT1;		/* Low voltage counter ISR */
-void VRegAPIISR(void) INT TEXT1;			/* VReg periodic interrupt ISR */
+void LowVoltageISR(void) INT TEXT1;    /* Low voltage counter ISR */
+void VRegAPIISR(void) INT TEXT1;       /* VReg periodic interrupt ISR */
 
 typedef void (* interruptTable)(void);
 

@@ -52,12 +52,20 @@
  * - 6	Calculate and record code run time
  * - 7	Return
  *
- * @author Fred Cooke
+ * @see injectionISRs.c
  */
+
 
 // Courtesy of Dave Cramer
 #define INJECTOR_MAIN_ON_MASK (BIT2<<INJECTOR_CHANNEL_NUMBER)
 
+/** A template function for ECT injector/coil operation.
+ *
+ * Note, this function does not exist in the binary, only in source and the
+ * Doxygen docs. In contrast the 6 real ones only exist in binary and not the
+ * source or Doxygen docs, hence if you want to look at the source, this is the
+ * place to do so.
+ */
 void InjectorXISR(){
 	/* Clear the interrupt flag for this channel */
 	TFLG = INJECTOR_MAIN_ON_MASK;
