@@ -117,8 +117,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	decoderSettings:{
 // Should macro these, 45.00,50.00 and 100.00 are percentages
 #ifdef HOTEL
-		accelerationInputEventTimeTolerance: ((100/(100 + 45.00)) * 1000),
-		decelerationInputEventTimeTolerance: (((100 + 45.00)/100) * 1000)
+		accelerationInputEventTimeTolerance: ((100/(100 + 100.00)) * 1000), // once started this needs a lot less...
+		decelerationInputEventTimeTolerance: (((100 + 100.00)/100) * 1000)
 #elif SNOTROCKET
 		accelerationInputEventTimeTolerance: ((100/(100 + 100.00)) * 1000),
 		decelerationInputEventTimeTolerance: (((100 + 100.00)/100) * 1000)
