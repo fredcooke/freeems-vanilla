@@ -78,6 +78,10 @@
 // ADC
 
 
+/* Self set flags for starting from ECT out ISR code. */
+EXTERN unsigned char selfSetTimer;			/* Set the start time of injection at the end of the last one in the channels ISR instead of the input ISR */
+
+
 // RPM - need some sort of state to say not to use these first time through...
 EXTERN unsigned short ticksPerDegree0; // to be replaced with logging scheme for teeth.
 EXTERN unsigned short ticksPerDegree1; // to be replaced with logging scheme for teeth.

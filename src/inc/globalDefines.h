@@ -289,7 +289,6 @@
 /* Not 1024, the number of gaps between them */
 #define ADC_DIVISIONS 1023
 
-#define IGNITION_CHANNELS  12    /* How many ignition channels the code should support */
 #define INJECTION_CHANNELS  6    /* How many injection channels the code should support */
 
 /* Ignition defines */

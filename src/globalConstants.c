@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -128,10 +128,6 @@ const unsigned short injectorMinimumPulseWidth = 100;
 /* Masks for setting ignition status bits and turning on the channels themselves */
 /* Masks for clearing ignition status bits and turning off the channels themselves */
 
-
-/* Dwell masks                                            { CYL1 B0, CYL2 B1, CYL3  B2, CYL4  B3, CYL5  B4, CYL6  B5, CYL7  B6, CYL8  B7, CYL9 A0,CYL10 A1,CYL11 A2,CYL12 A3}; */
-const unsigned short dwellStartMasks[IGNITION_CHANNELS] = { BIT8_16, BIT9_16, BIT10_16, BIT11_16, BIT12_16, BIT13_16, BIT14_16, BIT15_16, BIT0_16, BIT1_16, BIT2_16, BIT3_16};		/* Set of masks such that a cylinder can be dwelled with a single line of code */
-const unsigned short ignitionMasks[IGNITION_CHANNELS]   = {NBIT8_16,NBIT9_16,NBIT10_16,NBIT11_16,NBIT12_16,NBIT13_16,NBIT14_16,NBIT15_16,NBIT0_16,NBIT1_16,NBIT2_16,NBIT3_16};		/* Set of masks such that a cylinder can be fired with a single line of code */
 
 /* Injection masks */
 

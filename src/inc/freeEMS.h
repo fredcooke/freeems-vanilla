@@ -323,30 +323,6 @@ typedef union { /* Declare Union http://www.esacademy.com/faq/docs/cpointers/str
 } LongTime;
 
 
-/* Flag registers, init to zero required */
-EXTERN unsigned char mainOn;				/* Keep track of where we are at for possible use as multi interrupt per injection */
-EXTERN unsigned short dwellOn;				/* Keep track of ignition output state */
-EXTERN unsigned char stagedOn;				/* Ensure we turn an injector off again if we turn it on. */
-EXTERN unsigned char selfSetTimer;			/* Set the start time of injection at the end of the last one in the channels ISR instead of the input ISR */
-EXTERN unsigned char rescheduleFuelFlags;	/* Pulse width is probably longer than engine cycle so schedule a restart at the next start time */
-
-
-
-
-EXTERN unsigned short primaryTeethDroppedFromLackOfSync;
-
-/* Ignition stuff */
-
-// ignition experimentation stuff
-EXTERN unsigned char dwellQueueLength;				/* 0 = no dwell pending start, 1 = single event scheduled, 2 = one scheduled, and one in the queue, etc */
-EXTERN unsigned char ignitionQueueLength;			/* 0 = no spark event pending, 1 = single event scheduled, 2 = one scheduled, and one in the queue, etc */
-EXTERN unsigned char nextDwellChannel;				/* Which one to bang off next */
-EXTERN unsigned char nextIgnitionChannel;			/* Which one to bang off next */
-EXTERN unsigned short ignitionAdvances[IGNITION_CHANNELS * 2]; // Uses channel + offset to have two values at any time
-EXTERN unsigned short queuedDwellOffsets[IGNITION_CHANNELS]; // Uses next channel as index
-EXTERN unsigned short queuedIgnitionOffsets[IGNITION_CHANNELS]; // Uses next channel as index
-
-
 #undef EXTERN
 
 

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -83,11 +83,7 @@ EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 EXTERN const unsigned char interfaceVersionAndType[20];
 EXTERN const unsigned char firmwareVersion[31];
 
-/* Ignition */
-EXTERN const unsigned short dwellStartMasks[IGNITION_CHANNELS];
-EXTERN const unsigned short ignitionMasks[IGNITION_CHANNELS];
-
-/* Injection */
+/* Injection (currently used for both inj and ign) */
 EXTERN const unsigned char injectorMainOnMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainOffMasks[INJECTION_CHANNELS];
 EXTERN const unsigned char injectorMainActiveMasks[INJECTION_CHANNELS];
