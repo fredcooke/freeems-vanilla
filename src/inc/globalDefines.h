@@ -58,9 +58,9 @@
 #define ALWAYS_INLINE __attribute__((always_inline))
 
 /* Common macro definitions across the project */
-/* Boolean */
-#define FALSE 0
-#define TRUE !FALSE /* http://c2.com/cgi/wiki?CeePreprocessorStatements */
+/* Booleans from http://c2.com/cgi/wiki?CeePreprocessorStatements */
+#define FALSE (0!=0) // Note, this evaluates to 0 on this platform
+#define TRUE  !FALSE // Note, this evaluates to 1 on this platform
 
 /* 8 bit values */
 #define ZEROS 0x00
