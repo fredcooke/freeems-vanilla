@@ -155,11 +155,13 @@ EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
 #define CAM_SYNC             BIT2 // COP/CNP/Sequential
 #define LAST_TIMESTAMP_VALID BIT3
 #define LAST_PERIOD_VALID    BIT4
+#define LAST_MATCH_VALID     BIT5
 #define CLEAR_COMBUSTION_SYNC      NBIT0
 #define CLEAR_CRANK_SYNC           NBIT1
 #define CLEAR_CAM_SYNC             NBIT2
 #define CLEAR_LAST_TIMESTAMP_VALID NBIT3
 #define CLEAR_LAST_PERIOD_VALID    NBIT4
+#define CLEAR_LAST_MATCH_VALID     NBIT5
 
 
 #define ARBITRARY_DECODER_NAME_MAX_LENGTH 64

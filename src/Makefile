@@ -163,7 +163,7 @@ CLASSES = $(SOURCE) $(DATA)
 RPMSPECIAL = Listener.c BenchTest.c
 # TODO: Automate file naming for the following 4 lines
 RPMEVENTEETH = EvenTeeth-Both-12and1.c EvenTeeth-Both-8and1.c
-RPMMISSINGTEETH = 
+RPMMISSINGTEETH = MissingTeeth-TestFile.c MissingTeeth-Crank-12minus1.c MissingTeeth-Crank-36minus1.c MissingTeeth-Crank-60minus2.c
 RPMHALLOROPTICAL = HallOrOptical-Distributor-4of54.c HallOrOptical-Distributor-4of69.c
 RPMVRDISTRIBUTOR = 
 # Specific purpose per engine stuff here
