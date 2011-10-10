@@ -113,6 +113,9 @@ void PrimaryRPMISR(void) {
 		// perhaps provide some options for different tolerance on different types of expected widths
 		// the wide one on larger missing counts has more time to get to a higher RPM and needs a wider tolerance
 		// possible options: different percent of smaller for each type, different percent and based on ideal w/b instead of smaller
+		// Another option that keeps the 25% tolerance as the correct amount for any missing count is to simply take the percentage of
+		// the smaller component and multiply by the number of missing teeth! This can be a flash config flag option or possibly rpm thresholded
+		// it could be done on a per level basis too.
 		unsigned long idealWide = smaller * (MISSING_TEETH + 1); // Do this first because it's used twice.
 		// Ideal backward is dynamic because it's failing anyway...
 		if(larger < (smaller + tolerance)){ // has to be first to be most efficient
@@ -143,28 +146,29 @@ void PrimaryRPMISR(void) {
 		unsigned char lastEvent = 0;
 		// This all needs a little more complexity for cam only/crank only/crank + cam sync use, hard coded to crank only for now
 		if(!(decoderFlags & CRANK_SYNC) && (decoderFlags & LAST_MATCH_VALID)){ // If we aren't synced and have enough data
-			if(matches.pattern == MatchedPairMatchedPair){ // small small small - All periods match
+			if(matches.pattern == MatchedPairMatchedPair){      //         | small | small | small | - All periods match, could be anywhere, unless...
 				NumberOfTwinMatchedPairs++;
-				if(NumberOfTwinMatchedPairs == (NUMBER_OF_WHEEL_EVENTS - 3)){ // This can't find a match until it's on it's fourth execution
+				// Because this method REQUIRES 4 evenly spaced teeth to work, it's only available to 5-1 or greater wheels.
+				if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs == (NUMBER_OF_WHEEL_EVENTS - 3))){ // This can't find a match until it's on it's fourth execution
 					// This will match repeatedly then un-sync on next cycle if tolerance is set too high
 					currentEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
-					decoderFlags |= CRANK_SYNC;
+					decoderFlags |= CRANK_SYNC; // Probability of this = (N + 1) / M
 					// Sample RPM and ADCs here on the basis of cylinders and revolutions
 					// IE, sample RPM once (total teeth (inc missing) per engine cycle / cyls) events have passed
 					// And, do it from the last matching tooth, and do that on every tooth
 					// So have a buffer of time stamps, which would take a LOT of RAM, hmmm, perhaps just wait.
 					// Missing teeth users are clearly not fussed about fast starting anyway
 					// And once sync is gained good readings can be taken without excess memory usage
-				}else if(NumberOfTwinMatchedPairs > (NUMBER_OF_WHEEL_EVENTS - 3)){ // More matched pairs than possible with config
+				}else if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs > (NUMBER_OF_WHEEL_EVENTS - 3))){ // More matched pairs than possible with config
 					resetToNonRunningState(yourSyncToleranceIsLooserThanAWellYouGetTheIdea);
 				} // else fall through to wait.
-			}else if(matches.pattern == MatchedPairNarrowWide){ // small small big - First tooth after missing
+			}else if(matches.pattern == MatchedPairNarrowWide){ // | small | small |      BIG      | Last tooth is first tooth after missing  - ((M-N)-3)/M = common
 				currentEvent = 0;
 				decoderFlags |= CRANK_SYNC;
-			}else if(matches.pattern == NarrowWideWideNarrow){ // small big small - Second tooth after missing, the strongest and most certain sync
+			}else if(matches.pattern == NarrowWideWideNarrow){  // | small |      BIG      | small | Last tooth is second tooth after missing - 1/M
 				currentEvent = 1;
 				decoderFlags |= CRANK_SYNC;
-			}else if(matches.pattern == WideNarrowMatchedPair){ // big small small - Third tooth after missing
+			}else if(matches.pattern == WideNarrowMatchedPair){ // |      BIG      | small | small | Last tooth is third tooth after missing  - 1/M
 				currentEvent = 2;
 				decoderFlags |= CRANK_SYNC;
 			}else{
