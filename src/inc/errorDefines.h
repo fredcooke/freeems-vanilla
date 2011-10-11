@@ -112,6 +112,7 @@
 #define noSuchLocationIDListType                0x4015
 #define payloadShorterThanRequiredForTest       0x4016
 #define noSuchUnitTestID                        0x4017
+#define attemptToWriteToReadOnlyBlock           0x4018
 
 #define invalidAxisOrder				1 /* prevent parsing */
 #define invalidAxisIndex				2 /* prevent parsing */

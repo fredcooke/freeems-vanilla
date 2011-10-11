@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -148,6 +148,17 @@
 #define sensorPresetsLocationID                        0xC006
 #define sensorSettingsLocationID                       0xC007
 #define userTextField2LocationID                       0xC008
+
+#ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
+#define FixedConfigSubBlocks_Border_ReadOnlyVarBlocks  0xF000
+#endif
+
+// Internal blocks of variables that are sometimes useful to read out
+#define ADCRegistersLocationID                         0xF000
+#define coreVarsLocationID                             0xF001
+#define DerivedVarsLocationID                          0xF002
+#define CountersLocationID                             0xF003
+#define ClocksLocationID                               0xF004
 
 
 #else
