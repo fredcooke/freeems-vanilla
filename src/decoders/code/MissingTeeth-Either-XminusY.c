@@ -202,7 +202,7 @@ void PrimaryRPMISR(void) {
 			}
 
 			*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
-			sampleEachADC(ADCArrays);
+			sampleEachADC(ADCBuffers);
 			Counters.syncedADCreadings++;
 
 			// Set flag to say calc required

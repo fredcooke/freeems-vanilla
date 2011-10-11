@@ -77,8 +77,8 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 			/* Check to ensure that a reading wasn't take before we entered a non interruptable state */
 			if(coreStatusA & FORCE_READING){ // do we still need to do this TODO ?
 
-				sampleEachADC(ADCArraysRecord); // TODO still need to do a pair of loops and clock these two functions for performance.
-				//sampleLoopADC(&ADCArrays);
+				sampleEachADC(ADCBuffersRecord); // TODO still need to do a pair of loops and clock these two functions for performance.
+				//sampleLoopADC(&ADCBuffers);
 				resetToNonRunningState(0);
 				Counters.timeoutADCreadings++;
 
@@ -98,16 +98,16 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 			/* Atomic block to ensure that we don't clear the flag for the next data set when things are tight */
 
 			/* Switch input bank so that we have a stable set of the latest data */
-			if(ADCArrays == &ADCArrays1){
+			if(ADCBuffers == &ADCBuffers1){
 				ticksPerDegree = &ticksPerDegree0; // TODO temp, remove, maybe
 				ticksPerDegreeRecord = &ticksPerDegree1; // TODO temp, remove, maybe
-				ADCArrays = &ADCArrays0;
-				ADCArraysRecord = &ADCArrays1;
+				ADCBuffers = &ADCBuffers0;
+				ADCBuffersRecord = &ADCBuffers1;
 			}else{
 				ticksPerDegree = &ticksPerDegree1; // TODO temp, remove, maybe
 				ticksPerDegreeRecord = &ticksPerDegree0; // TODO temp, remove, maybe
-				ADCArrays = &ADCArrays1;
-				ADCArraysRecord = &ADCArrays0;
+				ADCBuffers = &ADCBuffers1;
+				ADCBuffersRecord = &ADCBuffers0;
 			}
 
 			/* Clear the calc required flag */

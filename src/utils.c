@@ -164,9 +164,9 @@ void adjustPWM(){
  *
  * @author Fred Cooke
  *
- * @param Arrays a pointer to an ADCArray struct to store ADC values in.
+ * @param Arrays a pointer to an ADCBuffer struct to store ADC values in.
  */
-void sampleEachADC(ADCArray *Arrays){
+void sampleEachADC(ADCBuffer *Arrays){
 	/* ATD0 */
 	Arrays->IAT = ATD0DR0;
 	Arrays->CHT = ATD0DR1;
@@ -195,15 +195,15 @@ void sampleEachADC(ADCArray *Arrays){
  *
  * @author Fred Cooke
  *
- * @param Arrays a pointer to an ADCArray struct to store ADC values in.
+ * @param Arrays a pointer to an ADCBuffer struct to store ADC values in.
  */
-void sampleLoopADC(ADCArray *Arrays){
+void sampleLoopADC(ADCBuffer *Arrays){
 	// get the address of the ADC array
 	unsigned short addr = (unsigned short)Arrays;
 
 	//sendUS(addr);
 	unsigned char loop;
-	/* (value of((address of ADCArrays struct) + (offset to start of bank(0 or half struct length)) + (offset to particular ADC (loopcounter * 4)) + (offset to correct element(0 or 2)))) =
+	/* (value of((address of ADCBuffers struct) + (offset to start of bank(0 or half struct length)) + (offset to particular ADC (loopcounter * 4)) + (offset to correct element(0 or 2)))) =
 	 * (value of((address of ARRAY block) + (loop counter * 2))) */
 
 	for(loop=0;loop<16;loop += 2){
@@ -223,12 +223,12 @@ void sampleLoopADC(ADCArray *Arrays){
  *
  * @author Fred Cooke
  *
- * @param Arrays a pointer to an ADCArray struct to store ADC values in.
+ * @param Arrays a pointer to an ADCBuffer struct to store ADC values in.
  *
  * @warning this will corrupt your comms if you use it... don't use it
  * @bug this will corrupt your comms if you use it... don't use it
  *
-void sampleBlockADC(ADCArray *Arrays){
+void sampleBlockADC(ADCBuffer *Arrays){
 	memcpy(Arrays, (void*)ATD0_BASE, 16);
 	memcpy(Arrays+16, (void*)ATD1_BASE, 16);
 }*/

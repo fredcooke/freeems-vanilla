@@ -250,7 +250,7 @@ void PrimaryRPMISR(void){
 				// tpd would still need to be calculated for scheduling reasons, and the different scalings would need to be checked for overflow there.
 
 				// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
-				sampleEachADC(ADCArrays);
+				sampleEachADC(ADCBuffers);
 				Counters.syncedADCreadings++;
 				/* Set flag to say calc required */
 				coreStatusA |= CALC_FUEL_IGN;

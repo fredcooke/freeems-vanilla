@@ -100,7 +100,7 @@ void PrimaryRPMISR(){
 				}
 			}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ // TODO temp for testing just do rpm this way, fill above out later.
 				*ticksPerDegreeRecord = thisTicksPerDegree;
-				sampleEachADC(ADCArrays);
+				sampleEachADC(ADCBuffers);
 				Counters.syncedADCreadings++;
 
 				// Set flag to say calc required
@@ -112,7 +112,7 @@ void PrimaryRPMISR(){
 
 			// for now, sample always and see what we get result wise...
 //			if((currentEvent % 6) == 0){
-//				sampleEachADC(ADCArrays);
+//				sampleEachADC(ADCBuffers);
 //				Counters.syncedADCreadings++;
 //
 //				// Set flag to say calc required

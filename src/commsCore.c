@@ -86,8 +86,8 @@ void populateBasicDatalog(){
 	memcpy(TXBufferCurrentPositionHandler, DerivedVars, sizeof(DerivedVar));
 	TXBufferCurrentPositionHandler += sizeof(DerivedVar);
 	/* Get raw adc counts */
-//	memcpy(TXBufferCurrentPositionHandler, ADCArrays, sizeof(ADCArray));
-//	TXBufferCurrentPositionHandler += sizeof(ADCArray);
+//	memcpy(TXBufferCurrentPositionHandler, ADCBuffers, sizeof(ADCBuffer));
+//	TXBufferCurrentPositionHandler += sizeof(ADCBuffer);
 
 	/* Set/Truncate the log to the specified length */
 	TXBufferCurrentPositionHandler = position + configuredBasicDatalogLength;
@@ -140,7 +140,7 @@ void populateBasicDatalog(){
 // /* Just dump the ADC channels as fast as possible */
 //void populateScopeLogADCAll(){
 //	sampleBlockADC(TXBufferCurrentPositionHandler);
-//	TXBufferCurrentPositionHandler += sizeof(ADCArray);
+//	TXBufferCurrentPositionHandler += sizeof(ADCBuffer);
 //}
 
 

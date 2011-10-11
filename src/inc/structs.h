@@ -141,7 +141,7 @@ typedef struct {
 	unsigned short SpareADC5; ///< Spare ADC1 port 5
 	unsigned short SpareADC6; ///< Spare ADC1 port 6
 	unsigned short SpareADC7; ///< Spare ADC1 port 7
-} ADCArray;
+} ADCBuffer;
 
 
 /// Use this block to make it easy to manage the core variables.

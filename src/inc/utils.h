@@ -57,9 +57,9 @@ EXTERN void sleepMicro(unsigned short) FPAGE_FE;
 EXTERN void adjustPWM(void) FPAGE_FE;
 EXTERN void setupPagedRAM(unsigned char) FPAGE_F8;
 
-EXTERN void sampleEachADC(ADCArray*) FPAGE_F8;
-EXTERN void sampleLoopADC(ADCArray*) FPAGE_F8;
-//EXTERN void sampleBlockADC(ADCArray*) FPAGE_F8; broken, do not use
+EXTERN void sampleEachADC(ADCBuffer*) FPAGE_F8;
+EXTERN void sampleLoopADC(ADCBuffer*) FPAGE_F8;
+//EXTERN void sampleBlockADC(ADCBuffer*) FPAGE_F8; broken, do not use
 
 EXTERN unsigned char checksum(unsigned char *, unsigned short) FPAGE_F8;
 EXTERN unsigned short stringCopy(unsigned char*, unsigned char*) FPAGE_F8;

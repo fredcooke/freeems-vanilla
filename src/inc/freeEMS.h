@@ -169,15 +169,10 @@ EXTERN DerivedVar* DerivedVars;		/** Pointer to the secondary running variables 
 EXTERN DerivedVar DerivedVars0;		/** Bank 0 secondary running variables */
 /* If we move to xgate or isr driven logging, add bank 1 back in */
 
-EXTERN ADCArray* ADCArrays;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
-EXTERN ADCArray* ADCArraysRecord;	/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
-EXTERN ADCArray ADCArrays0;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
-EXTERN ADCArray ADCArrays1;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
-
-EXTERN ADCArray* asyncADCArrays;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
-EXTERN ADCArray* asyncADCArraysRecord;	/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
-EXTERN ADCArray asyncADCArrays0;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
-EXTERN ADCArray asyncADCArrays1;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
+EXTERN ADCBuffer* ADCBuffers;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
+EXTERN ADCBuffer* ADCBuffersRecord;	/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
+EXTERN ADCBuffer ADCBuffers0;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
+EXTERN ADCBuffer ADCBuffers1;			/** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
 
 /*break this on purpose so i fix it later
 #define VETablereference (*((volatile mainTable*)(0x1000)))

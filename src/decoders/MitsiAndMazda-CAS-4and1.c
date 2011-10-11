@@ -390,7 +390,7 @@ void PrimaryRPMISR(){
 	unsigned char correctEvent = 0;
 	if(PTITCurrentState & 0x01){
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
-		sampleEachADC(ADCArrays);
+		sampleEachADC(ADCBuffers);
 		Counters.syncedADCreadings++;
 
 		// Set flag to say calc required
@@ -405,7 +405,7 @@ void PrimaryRPMISR(){
 	}else{
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
-		sampleEachADC(ADCArrays);
+		sampleEachADC(ADCBuffers);
 		Counters.syncedADCreadings++;
 
 		// Set flag to say calc required
@@ -532,7 +532,7 @@ void SecondaryRPMISR(){
 	if(PTITCurrentState & 0x02){
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
-		sampleEachADC(ADCArrays);
+		sampleEachADC(ADCBuffers);
 		Counters.syncedADCreadings++;
 
 		// Set flag to say calc required
@@ -545,7 +545,7 @@ void SecondaryRPMISR(){
 	}else{
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
-		sampleEachADC(ADCArrays);
+		sampleEachADC(ADCBuffers);
 		Counters.syncedADCreadings++;
 
 		// Set flag to say calc required

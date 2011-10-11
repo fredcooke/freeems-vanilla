@@ -107,7 +107,7 @@ void PrimaryRPMISR(){
 		*ticksPerDegreeRecord = thisTicksPerDegree;
 
 		// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
-		sampleEachADC(ADCArrays);
+		sampleEachADC(ADCBuffers);
 		Counters.syncedADCreadings++;
 
 		/* Set flag to say calc required */
@@ -129,7 +129,7 @@ void PrimaryRPMISR(){
 		*ticksPerDegreeRecord = thisTicksPerDegree;
 
 		// TODO make this stuff behave correctly, this one will only run at startup, and the other will always run, but do it by generic config and split this stuff out into a shared function, soon.
-		sampleEachADC(ADCArrays);
+		sampleEachADC(ADCBuffers);
 		Counters.syncedADCreadings++;
 
 		/* Set flag to say calc required */
