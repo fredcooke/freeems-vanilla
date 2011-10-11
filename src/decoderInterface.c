@@ -58,6 +58,8 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 	// Keep track of lost sync in counters
 	if(decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
 		Counters.decoderSyncLosses++;
+	}else{
+		Counters.decoderSyncStateClears++;
 	}
 
 	// record unique loss ID

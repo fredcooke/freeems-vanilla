@@ -200,8 +200,7 @@ void SecondaryRPMISR(){
 				syncLostOnThisEvent = currentEvent;				// Should never happen, or should be caught by timing checks in primary ISR
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.
-			decoderFlags |= CAM_SYNC;
-			syncCaughtOnThisEvent = numberOfRealEvents; // Always caught here!
+			SET_SYNC_LEVEL_TO(CAM_SYNC);
 		}
 		currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 

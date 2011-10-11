@@ -152,7 +152,7 @@ void PrimaryRPMISR(void) {
 				if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs == (NUMBER_OF_WHEEL_EVENTS - 3))){ // This can't find a match until it's on it's fourth execution
 					// This will match repeatedly then un-sync on next cycle if tolerance is set too high
 					currentEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
-					decoderFlags |= CRANK_SYNC; // Probability of this = (N + 1) / M
+					SET_SYNC_LEVEL_TO(CRANK_SYNC); // Probability of this = (N + 1) / M
 					// Sample RPM and ADCs here on the basis of cylinders and revolutions
 					// IE, sample RPM once (total teeth (inc missing) per engine cycle / cyls) events have passed
 					// And, do it from the last matching tooth, and do that on every tooth
@@ -164,13 +164,13 @@ void PrimaryRPMISR(void) {
 				} // else fall through to wait.
 			}else if(matches.pattern == MatchedPairNarrowWide){ // | small | small |      BIG      | Last tooth is first tooth after missing  - ((M-N)-3)/M = common
 				currentEvent = 0;
-				decoderFlags |= CRANK_SYNC;
+				SET_SYNC_LEVEL_TO(CRANK_SYNC);
 			}else if(matches.pattern == NarrowWideWideNarrow){  // | small |      BIG      | small | Last tooth is second tooth after missing - 1/M
 				currentEvent = 1;
-				decoderFlags |= CRANK_SYNC;
+				SET_SYNC_LEVEL_TO(CRANK_SYNC);
 			}else if(matches.pattern == WideNarrowMatchedPair){ // |      BIG      | small | small | Last tooth is third tooth after missing  - 1/M
 				currentEvent = 2;
-				decoderFlags |= CRANK_SYNC;
+				SET_SYNC_LEVEL_TO(CRANK_SYNC);
 			}else{
 				resetToNonRunningState(matches.pattern); // Where they are defined individually in the error file! Beautiful!!
 			}

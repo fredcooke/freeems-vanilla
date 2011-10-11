@@ -180,6 +180,13 @@ EXTERN const unsigned char eventValidForCrankSync[SIZE_OF_EVENT_ARRAYS]; // For 
 EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360 for a two stroke, ? for a rotary. move this to code with a single setting for engine type and generate transformations based on that? All decoders will be 720 for now and only support 4 strokes without hackage.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
+
+#define SET_SYNC_LEVEL_TO(SYNC_LEVEL) \
+decoderFlags |= SYNC_LEVEL;           \
+syncCaughtOnThisEvent = currentEvent; \
+// End of macro.
+
+
 #define SCHEDULE_ONE_ECT_OUTPUT() \
 if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                                                      \
 	*injectorMainControlRegisters[pin] &= injectorMainDisableMasks[pin];                                          \

@@ -399,6 +399,7 @@ typedef struct {
 	// RPM/Position input
 	unsigned char decoderSyncLosses;               ///< lost decoder syncs.
 	unsigned char decoderSyncCorrections;          ///< definite decoder syncs found while already synced in a different position.
+	unsigned char decoderSyncStateClears;          ///< sync loss called when not synced yet, thus discarding data and preventing sync
 //	unsigned short RPMValidityLosses;              ///< lost RPM validity events.
 
 	// Scheduling

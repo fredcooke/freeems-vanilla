@@ -449,10 +449,9 @@ void PrimaryRPMISR(){
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else if(correctEvent != 0){
-		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
 		lastEvent = currentEvent - 1;
-		syncCaughtOnThisEvent = correctEvent;
+		SET_SYNC_LEVEL_TO(CAM_SYNC);
 	}
 
 	unsigned short thisTicksPerDegree = 0;
@@ -583,10 +582,9 @@ void SecondaryRPMISR(){
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
-		decoderFlags |= CAM_SYNC;
 		currentEvent = correctEvent;
 		lastEvent = currentEvent - 1;
-		syncCaughtOnThisEvent = correctEvent;
+		SET_SYNC_LEVEL_TO(CAM_SYNC);
 	}
 
 	unsigned short thisTicksPerDegree = 0;

@@ -193,7 +193,7 @@ void PrimaryRPMISR(){
 	 * scheduler can keep things unscheduled until the time is right.
 	 */
 	if(decoderFlags & LAST_PERIOD_VALID){
-		decoderFlags |= COMBUSTION_SYNC;
+		SET_SYNC_LEVEL_TO(COMBUSTION_SYNC);
 	}
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){

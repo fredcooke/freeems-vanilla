@@ -155,7 +155,7 @@ void PrimaryRPMISR(void){
 			if(lastEvent == 0xFF){ // Indicates that we didn't find a match, previously uncaught, would have occasionally matched last event with i = max and no match found on THIS event
 				return;
 			}else if(windowCounts[lastEvent] == lastAccumulatorCount){ /* if true we are in sync! */
-				decoderFlags |= CAM_SYNC;
+				SET_SYNC_LEVEL_TO(CAM_SYNC);
 			}else{
 				// TODO missedsync opportunity ++ or something
 			}
