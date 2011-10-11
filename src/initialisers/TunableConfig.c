@@ -42,7 +42,7 @@
 
 
 #include "../inc/freeEMS.h"
-
+#include "../inc/commsCore.h"
 
 
 #ifndef TUNETABLESDV1

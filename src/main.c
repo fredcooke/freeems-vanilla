@@ -183,37 +183,31 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 						finaliseAndSend(0);
 						break;
 					}
-					case asyncDatalogConfig:
+					case asyncDatalogScratchPad:
 					{
-						/// TODO @todo
 						break;
 					}
-					case asyncDatalogTrigger:
+					case asyncDatalogStructs:
 					{
-						/// TODO @todo
 						break;
 					}
-					case asyncDatalogADC:
+					case asyncDatalogPosition:
 					{
-						/// TODO @todo
 						break;
 					}
-					case asyncDatalogCircBuf:
+					case asyncDatalogBlockBytes:
 					{
-						/// TODO @todo
 						break;
 					}
-					case asyncDatalogCircCAS:
+					case asyncDatalogBlockWords:
 					{
-						/// TODO @todo
 						break;
 					}
-					case asyncDatalogLogic:
+					case asyncDatalogBlockLongs:
 					{
-						/// TODO @todo
 						break;
 					}
-					case asyncDatalogByteLA:
+					case asyncDatalogStreamByte:
 					{
 						/* Flag that we are transmitting! */
 						TXBufferInUseFlags |= COM_SET_SCI0_INTERFACE_ID;
@@ -239,6 +233,14 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 						TXBufferCurrentPositionHandler++;
 
 						finaliseAndSend(0);
+						break;
+					}
+					case asyncDatalogStreamWord:
+					{
+						break;
+					}
+					case asyncDatalogStreamLong:
+					{
 						break;
 					}
 				}
