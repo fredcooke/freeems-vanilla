@@ -82,6 +82,8 @@ EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 /* Version strings */
 EXTERN const unsigned char interfaceVersionAndType[20];
 EXTERN const unsigned char firmwareVersion[31];
+EXTERN const unsigned char firmwareBuildDate[12];
+
 
 /* Injection (currently used for both inj and ign) */
 EXTERN const unsigned char injectorMainOnMasks[INJECTION_CHANNELS];

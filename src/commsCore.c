@@ -426,6 +426,21 @@ void decodePacketAndRespond(){
 			TXBufferCurrentPositionHandler += 2 + *((unsigned short*)TXBufferCurrentPositionHandler);
 			break;
 		}
+		case requestFirmwareBuildDate:
+		{
+			/// @todo TODO add this call to the documentation, John maybe?
+			if(RXCalculatedPayloadLength != 0){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
+			/* This type must have a length field, set that up and load the body into place at the same time */
+			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), (unsigned char*)firmwareBuildDate);
+			*TXHeaderFlags |= HEADER_HAS_LENGTH;
+			// Update with length field and string length.
+			TXBufferCurrentPositionHandler += 2 + *((unsigned short*)TXBufferCurrentPositionHandler);
+			break;
+		}
 		case updateBlockInRAM:
 		{
 			// Subtract six to allow for the locationID, size, offset

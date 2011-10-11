@@ -76,6 +76,12 @@ const unsigned char interfaceVersionAndType[20] = {0,0,0,'I','F','r','e','e','E'
  */
 const unsigned char firmwareVersion[31] = {"FreeEMS Vanilla 0.1.2 SNAPSHOT"};
 
+/** GCC supplied build date
+ *
+ * @todo TODO Might change this to include a time and timezone later
+ */
+const unsigned char firmwareBuildDate[12] = { __DATE__ }; // Expands to include double quotes
+
 /** Divisors and untunable physical constants combined into a single master fuel constant
  *
  * const unsigned short molarMassOfAir = 2897; // in grams per 100 moles, so divide by 100 to get gm/mol
