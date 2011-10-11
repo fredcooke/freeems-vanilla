@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -153,8 +153,7 @@ void SCI0ISR(){
 	unsigned char flags = SCI0SR1;
 	/* Note: Combined with reading or writing the data register this also clears the flags. */
 
-	/* Start counting */
-	unsigned short start = TCNT;
+	// TODO DEBUG/TUNING MACRO HERE!
 
 	/* If the RX interrupt is enabled check RX related flags */
 	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE){
@@ -303,6 +302,5 @@ void SCI0ISR(){
 		}
 	}
 
-	/* Record how long the operation took */
-	RuntimeVars.serialISRRuntime = TCNT - start;
+	// TODO DEBUG/TUNING MACRO HERE!
 }

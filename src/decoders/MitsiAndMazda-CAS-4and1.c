@@ -364,12 +364,10 @@ void PrimaryRPMISR(){
 	TFLG = 0x01;
 
 	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
 
-	/* Calculate the latency in ticks */
-	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
+	// TODO DEBUG/TUNING MACRO HERE!
 
 	Counters.primaryTeethSeen++;
 
@@ -394,7 +392,6 @@ void PrimaryRPMISR(){
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
 
 		// Set flag to say calc required
 		coreStatusA |= CALC_FUEL_IGN;
@@ -410,7 +407,6 @@ void PrimaryRPMISR(){
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
 
 		// Set flag to say calc required
 		coreStatusA |= CALC_FUEL_IGN;
@@ -497,7 +493,7 @@ void PrimaryRPMISR(){
 	lastEventTimeStamp = thisEventTimeStamp;
 	decoderFlags |= LAST_TIMESTAMP_VALID;
 
-	RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+	// TODO DEBUG/TUNING MACRO HERE!
 }
 
 
@@ -508,12 +504,10 @@ void SecondaryRPMISR(){
 	TFLG = 0x02;
 
 	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
 	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
 
-	/* Calculate the latency in ticks */
-	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
+	// TODO DEBUG/TUNING MACRO HERE!
 
 	Counters.secondaryTeethSeen++;
 	// remember that this is both edges, though... 8 per cycle, 4 per rev for the outter wheel, 2/1 for this wheel.
@@ -540,7 +534,6 @@ void SecondaryRPMISR(){
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
 
 		// Set flag to say calc required
 		coreStatusA |= CALC_FUEL_IGN;
@@ -554,7 +547,6 @@ void SecondaryRPMISR(){
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
 
 		// Set flag to say calc required
 		coreStatusA |= CALC_FUEL_IGN;
@@ -619,5 +611,5 @@ void SecondaryRPMISR(){
 	lastEventTimeStamp = thisEventTimeStamp;
 	decoderFlags |= LAST_TIMESTAMP_VALID;
 
-	RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
+	// TODO DEBUG/TUNING MACRO HERE!
 }

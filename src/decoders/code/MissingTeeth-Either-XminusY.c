@@ -69,12 +69,10 @@ void PrimaryRPMISR(void) {
 	TFLG = 0x1;
 
 	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
 
-	/* Calculate the latency in ticks */
-	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
+	// TODO DEBUG/TUNING MACRO HERE!
 
 	Counters.primaryTeethSeen++;
 
@@ -206,7 +204,6 @@ void PrimaryRPMISR(void) {
 			*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 			sampleEachADC(ADCArrays);
 			Counters.syncedADCreadings++;
-			*mathSampleTimeStampRecord = TCNT;
 
 			// Set flag to say calc required
 			coreStatusA |= CALC_FUEL_IGN;
@@ -230,6 +227,7 @@ void PrimaryRPMISR(void) {
 	}else{
 		// do checking for width variance too, perhaps optionally.
 	}
+	// TODO DEBUG/TUNING MACRO HERE!
 }
 
 

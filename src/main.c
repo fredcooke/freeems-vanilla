@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -103,15 +103,11 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 				ticksPerDegreeRecord = &ticksPerDegree1; // TODO temp, remove, maybe
 				ADCArrays = &ADCArrays0;
 				ADCArraysRecord = &ADCArrays1;
-				mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp0; // TODO temp, remove
-				mathSampleTimeStampRecord = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove
 			}else{
 				ticksPerDegree = &ticksPerDegree1; // TODO temp, remove, maybe
 				ticksPerDegreeRecord = &ticksPerDegree0; // TODO temp, remove, maybe
 				ADCArrays = &ADCArrays1;
 				ADCArraysRecord = &ADCArrays0;
-				mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove
-				mathSampleTimeStampRecord = &ISRLatencyVars.mathSampleTimeStamp0; // TODO temp, remove
 			}
 
 			/* Clear the calc required flag */
@@ -119,36 +115,24 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 
 			ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
-			/* Store the latency from sample time to runtime */
-			ISRLatencyVars.mathLatency = TCNT - *mathSampleTimeStamp;
+			// TODO DEBUG/TUNING MACRO HERE!
 			/* Keep track of how many calcs we are managing per second... */
 			Counters.calculationsPerformed++;
-			/* ...and how long they take each */
-			unsigned short mathStartTime = TCNT;
 
 			/* Generate the core variables from sensor input and recorded tooth timings */
 			generateCoreVars();
-
-			RuntimeVars.genCoreVarsRuntime = TCNT - mathStartTime;
-			unsigned short derivedStartTime = TCNT;
+			// TODO DEBUG/TUNING MACRO HERE!
 
 			/* Generate the derived variables from the core variables based on settings */
 			generateDerivedVars();
-
-			RuntimeVars.genDerivedVarsRuntime = TCNT - derivedStartTime;
-			unsigned short calcsStartTime = TCNT;
+			// TODO DEBUG/TUNING MACRO HERE!
 
 			/* Perform the calculations TODO possibly move this to the software interrupt if it makes sense to do so */
 			calculateFuelAndIgnition();
-
-			RuntimeVars.calcsRuntime = TCNT - calcsStartTime;
-			/* Record the runtime of all the math total */
-			RuntimeVars.mathTotalRuntime = TCNT - mathStartTime;
-
-			RuntimeVars.mathSumRuntime = RuntimeVars.calcsRuntime + RuntimeVars.genCoreVarsRuntime + RuntimeVars.genDerivedVarsRuntime;
+			// TODO DEBUG/TUNING MACRO HERE!
 		}else{
 			/* In the event that no calcs are required, sleep a little before returning to retry. */
-			sleepMicro(RuntimeVars.mathTotalRuntime); // not doing this will cause the ISR lockouts to run for too high a proportion of the time
+			sleepMicro(3000); // TODO tune this, and then replace it completely. not doing this will cause the ISR lockouts to run for too high a proportion of the time
 			/* Using 0.8 ticks as micros so it will run for a little longer than the math did */
 		}
 

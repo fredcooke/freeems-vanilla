@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -126,8 +126,6 @@ EXTERN unsigned char ShouldSendLog;
 /* Declare instances of variable structs for use */
 EXTERN Clock Clocks;					/* Timer Clocks for various functions */
 EXTERN Counter Counters;				/* Execution count for various blocks of code */
-EXTERN RuntimeVar RuntimeVars;			/* Execution times for various blocks of code */
-EXTERN ISRLatencyVar ISRLatencyVars;	/* Delay in execution start for various blocks of code */
 
 
 /** @page bankedRunningVariables Banked Running Variables
@@ -180,9 +178,6 @@ EXTERN ADCArray* asyncADCArrays;		/** secondary adc storage area for asynchronou
 EXTERN ADCArray* asyncADCArraysRecord;	/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
 EXTERN ADCArray asyncADCArrays0;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
 EXTERN ADCArray asyncADCArrays1;		/** secondary adc storage area for asynchronously sampling in the RTC/RTI ISR */
-
-EXTERN unsigned short* mathSampleTimeStamp; // TODO temp, remove
-EXTERN unsigned short* mathSampleTimeStampRecord; // TODO temp, remove
 
 /*break this on purpose so i fix it later
 #define VETablereference (*((volatile mainTable*)(0x1000)))

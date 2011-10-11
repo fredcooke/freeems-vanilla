@@ -118,6 +118,60 @@ typedef struct {
 } blockDetails;
 
 
+/** Use this block to ensure that the components are contiguous and we can then reference
+ * them via offsets and pointers (NC= Not (likely) connected).
+ */
+typedef struct {
+	/* ADC0 raw readings */
+	unsigned short IAT;       ///< Inlet Air Temperature
+	unsigned short CHT;       ///< Coolant / Head Temperature
+	unsigned short TPS;       ///< Throttle Position Sensor
+	unsigned short EGO;       ///< Exhaust Gas Oxygen
+	unsigned short MAP;       ///< Manifold Absolute Pressure
+	unsigned short AAP;       ///< Atmospheric Absolute Pressure
+	unsigned short BRV;       ///< Battery Reference Voltage
+	unsigned short MAT;       ///< Manifold Air Temperature
+
+	/* ADC1 raw readings (Subject to change! http://issues.freeems.org/view.php?id=190) */
+	unsigned short EGO2;      ///< Exhaust Gas Oxygen
+	unsigned short IAP;       ///< Intercooler Absolute Pressure
+	unsigned short MAF;       ///< Mass Air Flow
+	unsigned short SpareADC3; ///< Spare ADC1 port 3
+	unsigned short SpareADC4; ///< Spare ADC1 port 4
+	unsigned short SpareADC5; ///< Spare ADC1 port 5
+	unsigned short SpareADC6; ///< Spare ADC1 port 6
+	unsigned short SpareADC7; ///< Spare ADC1 port 7
+} ADCArray;
+
+
+/// Use this block to make it easy to manage the core variables.
+typedef struct {
+	/* Calculated and averaged from ADC0 readings */
+	unsigned short IAT;   ///< Inlet Air Temperature           : 0.0 -   655.35       (0.01 Kelvin (/100))
+	unsigned short CHT;   ///< Coolant / Head Temperature      : 0.0 -   655.35       (0.01 Kelvin (/100))
+	unsigned short TPS;   ///< Throttle Position Sensor        : 0.0 -   102.398438   (0.0015625 % (/640))
+	unsigned short EGO;   ///< Exhaust Gas Oxygen              : 0.0 -     1.99996948 (0.0000305175781 lambda (/32768))
+	unsigned short MAP;   ///< Manifold Absolute Pressure      : 0.0 -   655.35       (0.01 kPa (/100))
+	unsigned short AAP;   ///< Atmospheric Absolute Pressure   : 0.0 -   655.35       (0.01 kPa (/100))
+	unsigned short BRV;   ///< Battery Reference Voltage       : 0.0 -    65.535      (0.001 Volts (/1000))
+	unsigned short MAT;   ///< Manifold Air Temperature        : 0.0 -   655.35       (0.01 Kelvin (/100))
+
+	/* Calculated and averaged from ADC1 readings (Subject to change! http://issues.freeems.org/view.php?id=190) */
+	unsigned short EGO2;  ///< Exhaust Gas Oxygen              : 0.0 -     1.99996948 (0.0000305175781 lambda (/32768))
+	unsigned short IAP;   ///< Intercooler Absolute Pressure   : 0.0 -   655.35       (0.01 kPa (/100))
+	unsigned short MAF;   ///< Mass Air Flow                   : 0.0 - 65535.0        (raw units from lookup)
+
+	/* Calculated from MAP and TPS history */
+	unsigned short DMAP;  ///< Delta MAP kPa/second or similar
+	unsigned short DTPS;  ///< Delta TPS %/second or similar
+
+	/* Calculated from engine position data */
+	unsigned short RPM;   ///< Revolutions Per Minute (Calced) : 0.0 - 32767.5        (0.5 RPM (/2))
+	unsigned short DRPM;  ///< Delta RPM (Calced)              : 0.0 - 32767.5        (0.5 RPM/Second (/2))
+	unsigned short DDRPM; ///< Delta Delta RPM (Calced)        : 0.0 - 32767.5        (0.5 RPM/Second^2 (/2))
+} CoreVar;
+
+
 /** Use this block to make it easy to manage the derived variables.
  * Calculated from core vars stored in CoreVar .
  */
@@ -170,112 +224,6 @@ typedef struct {
 	unsigned short zsp2;           ///< Spare US variable
 	unsigned short zsp1;           ///< Spare US variable
 } DerivedVar;
-
-
-/// Use this block to manage the execution time of various functions loops and ISRs etc
-typedef struct {
-	/* Engine position and RPM code runtimes */
-	unsigned short primaryInputLeadingRuntime;
-	unsigned short primaryInputTrailingRuntime;
-	unsigned short secondaryInputLeadingRuntime;
-	unsigned short secondaryInputTrailingRuntime;
-
-	/* Mathematics runtimes */
-	unsigned short calcsRuntime;
-	unsigned short genCoreVarsRuntime;
-	unsigned short genDerivedVarsRuntime;
-	unsigned short mathTotalRuntime;
-	unsigned short mathSumRuntime;
-
-	unsigned short RTCRuntime;
-
-	/*  */
-	unsigned short mainLoopRuntime;
-	unsigned short logSendingRuntime;
-	unsigned short serialISRRuntime;
-} RuntimeVar;
-
-
-/** Use this block to manage the execution time of various functions loops and ISRs etc.
- * - Engine position and RPM code latencies
- * - Injector latencies
- *
- */
-typedef struct {
-	/* Engine position and RPM code latencies */
-	unsigned short primaryInputLatency;
-	unsigned short secondaryInputLatency;
-
-	/* Injector latencies */
-	unsigned short Injector1Latency;
-	unsigned short Injector2Latency;
-	unsigned short Injector3Latency;
-	unsigned short Injector4Latency;
-	unsigned short Injector5Latency;
-	unsigned short Injector6Latency;
-
-	unsigned short DwellLatency;
-	unsigned short IgniteLatency;
-
-	/* Not an ISR, but important none the less */
-	unsigned short mathLatency;
-	unsigned short mathSampleTimeStamp0;
-	unsigned short mathSampleTimeStamp1;
-} ISRLatencyVar;
-
-
-/// Use this block to make it easy to manage the core variables.
-typedef struct {
-	/* Calculated and averaged from ADC0 readings */
-	unsigned short IAT;   ///< Inlet Air Temperature           : 0.0 -   655.35       (0.01 Kelvin (/100))
-	unsigned short CHT;   ///< Coolant / Head Temperature      : 0.0 -   655.35       (0.01 Kelvin (/100))
-	unsigned short TPS;   ///< Throttle Position Sensor        : 0.0 -   102.398438   (0.0015625 % (/640))
-	unsigned short EGO;   ///< Exhaust Gas Oxygen              : 0.0 -     1.99996948 (0.0000305175781 lambda (/32768))
-	unsigned short MAP;   ///< Manifold Absolute Pressure      : 0.0 -   655.35       (0.01 kPa (/100))
-	unsigned short AAP;   ///< Atmospheric Absolute Pressure   : 0.0 -   655.35       (0.01 kPa (/100))
-	unsigned short BRV;   ///< Battery Reference Voltage       : 0.0 -    65.535      (0.001 Volts (/1000))
-	unsigned short MAT;   ///< Manifold Air Temperature        : 0.0 -   655.35       (0.01 Kelvin (/100))
-
-	/* Calculated and averaged from ADC1 readings (Subject to change! http://issues.freeems.org/view.php?id=190) */
-	unsigned short EGO2;  ///< Exhaust Gas Oxygen              : 0.0 -     1.99996948 (0.0000305175781 lambda (/32768))
-	unsigned short IAP;   ///< Intercooler Absolute Pressure   : 0.0 -   655.35       (0.01 kPa (/100))
-	unsigned short MAF;   ///< Mass Air Flow                   : 0.0 - 65535.0        (raw units from lookup)
-
-	/* Calculated from MAP and TPS history */
-	unsigned short DMAP;  ///< Delta MAP kPa/second or similar
-	unsigned short DTPS;  ///< Delta TPS %/second or similar
-
-	/* Calculated from engine position data */
-	unsigned short RPM;   ///< Revolutions Per Minute (Calced) : 0.0 - 32767.5        (0.5 RPM (/2))
-	unsigned short DRPM;  ///< Delta RPM (Calced)              : 0.0 - 32767.5        (0.5 RPM/Second (/2))
-	unsigned short DDRPM; ///< Delta Delta RPM (Calced)        : 0.0 - 32767.5        (0.5 RPM/Second^2 (/2))
-} CoreVar;
-
-
-/** Use this block to ensure that the components are contiguous and we can then reference
- * them via offsets and pointers (NC= Not (likely) connected).
- */
-typedef struct {
-	/* ADC0 raw readings */
-	unsigned short IAT;       ///< Inlet Air Temperature
-	unsigned short CHT;       ///< Coolant / Head Temperature
-	unsigned short TPS;       ///< Throttle Position Sensor
-	unsigned short EGO;       ///< Exhaust Gas Oxygen
-	unsigned short MAP;       ///< Manifold Absolute Pressure
-	unsigned short AAP;       ///< Atmospheric Absolute Pressure
-	unsigned short BRV;       ///< Battery Reference Voltage
-	unsigned short MAT;       ///< Manifold Air Temperature
-
-	/* ADC1 raw readings (Subject to change! http://issues.freeems.org/view.php?id=190) */
-	unsigned short EGO2;      ///< Exhaust Gas Oxygen
-	unsigned short IAP;       ///< Intercooler Absolute Pressure
-	unsigned short MAF;       ///< Mass Air Flow
-	unsigned short SpareADC3; ///< Spare ADC1 port 3
-	unsigned short SpareADC4; ///< Spare ADC1 port 4
-	unsigned short SpareADC5; ///< Spare ADC1 port 5
-	unsigned short SpareADC6; ///< Spare ADC1 port 6
-	unsigned short SpareADC7; ///< Spare ADC1 port 7
-} ADCArray;
 
 
 /** A compile time assertion check.
@@ -390,7 +338,7 @@ typedef struct {
 } twoDTableUC;
 
 
-/// Use this block to manage the execution count of various functions loops and ISRs etc.
+/// Use this block to manage the execution count of various functions loops and ISRs etc. TODO break this up into smaller chunks
 typedef struct {
 	// Error conditions
 	unsigned char callsToUISRs;                    ///< to ensure we aren't accidentally triggering unused ISRs.

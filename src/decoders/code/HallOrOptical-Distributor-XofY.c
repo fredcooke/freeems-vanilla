@@ -75,12 +75,10 @@ void PrimaryRPMISR(){
 	TFLG = 0x01;
 
 	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
 
-	/* Calculate the latency in ticks */
-	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
+	// TODO DEBUG/TUNING MACRO HERE!
 
 	Counters.primaryTeethSeen++;
 
@@ -111,7 +109,6 @@ void PrimaryRPMISR(){
 		// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
 
 		/* Set flag to say calc required */
 		coreStatusA |= CALC_FUEL_IGN;
@@ -121,8 +118,6 @@ void PrimaryRPMISR(){
 
 		currentEvent = 1;
 		lastEvent = 0;
-
-		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}else{
 		// temporary data from inputs
 		unsigned long secondaryLeadingEdgeTimeStamp = timeStamp.timeLong;
@@ -136,7 +131,6 @@ void PrimaryRPMISR(){
 		// TODO make this stuff behave correctly, this one will only run at startup, and the other will always run, but do it by generic config and split this stuff out into a shared function, soon.
 		sampleEachADC(ADCArrays);
 		Counters.syncedADCreadings++;
-		*mathSampleTimeStampRecord = TCNT;
 
 		/* Set flag to say calc required */
 		coreStatusA |= CALC_FUEL_IGN;
@@ -146,8 +140,6 @@ void PrimaryRPMISR(){
 
 		currentEvent = 0;
 		lastEvent = 1;
-
-		RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
 	}
 
 	unsigned long thisInterEventPeriod = 0;
@@ -203,6 +195,7 @@ void PrimaryRPMISR(){
 	// Always
 	lastEventTimeStamp = thisEventTimeStamp;
 	decoderFlags |= LAST_TIMESTAMP_VALID;
+	// TODO DEBUG/TUNING MACRO HERE!
 }
 
 

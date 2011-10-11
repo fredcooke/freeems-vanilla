@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009, 2010, 2011 Sean Keys, Fred Cooke
+ * Copyright 2009-2011 Sean Keys, Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -120,10 +120,11 @@ void PrimaryRPMISR(void){
 
 	/* Save all relevant available data here */
 	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
-	unsigned short codeStartTimeStamp = TCNT; /* Save the current timer count */
 	unsigned short edgeTimeStamp = TC0; /* Save the edge time stamp */
+
+	// TODO DEBUG/TUNING MACRO HERE!
+
 	windowState = PTITCurrentState & 0x01; /* Save the high/low state of the port, HIGH PRIORITY some windows are only 2deg wide */
-	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp; /* Calculate the latency in ticks */
 	unsigned char accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
 	lastPARegisterReading = accumulatorRegisterCount;
 	unsigned char i; /* temp loop var */
@@ -251,21 +252,16 @@ void PrimaryRPMISR(void){
 				// TODO Once sampling/RPM is configurable, use this tooth for a lower MAP reading.
 				sampleEachADC(ADCArrays);
 				Counters.syncedADCreadings++;
-				*mathSampleTimeStampRecord = TCNT;
 				/* Set flag to say calc required */
 				coreStatusA |= CALC_FUEL_IGN;
 				/* Reset the clock for reading timeout */
 				Clocks.timeoutADCreadingClock = 0;
-				RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 			}
 		}
-
-		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
-
 		SCHEDULE_ECT_OUTPUTS();
 	}
-	RuntimeVars.secondaryInputTrailingRuntime = numberScheduled;
-	RuntimeVars.primaryInputTrailingRuntime = TCNT - codeStartTimeStamp;
+
+	// TODO DEBUG/TUNING MACRO HERE!
 }
 
 

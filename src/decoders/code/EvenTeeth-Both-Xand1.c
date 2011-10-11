@@ -45,8 +45,9 @@ void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 
+	// TODO DEBUG/TUNING MACRO HERE!
+
 	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
 
@@ -55,9 +56,6 @@ void PrimaryRPMISR(){
 	// TODO integrate this into all decoders, and integrate with the fuel pump stuff too, this can be a flag that says "we've received an RPM signal of SOME sort recently"
 
 	if(!(PTITCurrentState & 0x01)){
-		/* Calculate the latency in ticks */
-		ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
-
 		Counters.primaryTeethSeen++;
 
 		LongTime timeStamp;
@@ -82,7 +80,6 @@ void PrimaryRPMISR(){
 			currentEvent++;
 			if(currentEvent == numberOfRealEvents){
 				resetToNonRunningState(1);
-				RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 				return;
 			}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
 
@@ -105,7 +102,6 @@ void PrimaryRPMISR(){
 				*ticksPerDegreeRecord = thisTicksPerDegree;
 				sampleEachADC(ADCArrays);
 				Counters.syncedADCreadings++;
-				*mathSampleTimeStampRecord = TCNT;
 
 				// Set flag to say calc required
 				coreStatusA |= CALC_FUEL_IGN;
@@ -118,7 +114,6 @@ void PrimaryRPMISR(){
 //			if((currentEvent % 6) == 0){
 //				sampleEachADC(ADCArrays);
 //				Counters.syncedADCreadings++;
-//				*mathSampleTimeStampRecord = TCNT;
 //
 //				// Set flag to say calc required
 //				coreStatusA |= CALC_FUEL_IGN;
@@ -138,9 +133,8 @@ void PrimaryRPMISR(){
 		// Always
 		lastPrimaryEventTimeStamp = thisEventTimeStamp;
 		decoderFlags |= LAST_TIMESTAMP_VALID;
-
-		RuntimeVars.primaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}
+	// TODO DEBUG/TUNING MACRO HERE!
 }
 
 
@@ -148,15 +142,13 @@ void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 
+	// TODO DEBUG/TUNING MACRO HERE!
+
 	/* Save all relevant available data here */
-	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
 
 	if(!(PTITCurrentState & 0x02)){ // TODO Remove this once the configuration can be adjusted to only fire on one edge!
-		/* Calculate the latency in ticks */
-		ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
-
 		// Only count one edge, the other is irrelevant, and this comment will be two once the above todo is completed.
 		Counters.secondaryTeethSeen++;
 
@@ -203,7 +195,6 @@ void SecondaryRPMISR(){
 			SET_SYNC_LEVEL_TO(CAM_SYNC);
 		}
 		currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
-
-		RuntimeVars.secondaryInputLeadingRuntime = TCNT - codeStartTimeStamp;
 	}
+	// TODO DEBUG/TUNING MACRO HERE!
 }

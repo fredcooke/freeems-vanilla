@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke, Sean Keys
+ * Copyright 2008-2011 Fred Cooke, Sean Keys
  *
  * This file is part of the FreeEMS project.
  *
@@ -32,8 +32,6 @@
  * This file contains real time interrupt handlers. Mainly it holds the RTI
  * handler itself, however the modulus down counter and ETC timer overflow
  * functions are here too.
- *
- * @author Fred Cooke
  */
 
 
@@ -56,8 +54,7 @@ void RTIISR(){
 	/* Clear the RTI flag */
 	CRGFLG = 0x80;
 
-	/* Record time stamp for code run time reporting */
-	unsigned short codeStartTimeStamp = TCNT;
+	// TODO DEBUG/TUNING MACRO HERE!
 
 	/* Increment the counter */
 	Clocks.realTimeClockMain++;
@@ -155,7 +152,7 @@ void RTIISR(){
 			}
 		}
 	}
-	RuntimeVars.RTCRuntime = TCNT - codeStartTimeStamp;
+	// TODO DEBUG/TUNING MACRO HERE!
 }
 
 

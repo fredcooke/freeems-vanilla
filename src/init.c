@@ -457,8 +457,6 @@ void initVariables(){
 	asyncADCArrays = &asyncADCArrays0;
 	asyncADCArraysRecord = &asyncADCArrays1;
 
-	mathSampleTimeStamp = &ISRLatencyVars.mathSampleTimeStamp0; // TODO temp, remove
-	mathSampleTimeStampRecord = &ISRLatencyVars.mathSampleTimeStamp1; // TODO temp, remove
 	ticksPerDegree = &ticksPerDegree0; // TODO temp, remove, maybe
 	ticksPerDegreeRecord = &ticksPerDegree1; // TODO temp, remove, maybe
 
