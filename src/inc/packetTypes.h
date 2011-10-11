@@ -110,6 +110,7 @@
 #define retrieveLocationIDDetails   0xF8E0 // Idea is Fred's, impl is Fred's
 #define requestDecoderName          0xEEEE // Ensure interogation knows everything about this firmware
 #define requestFirmwareBuildDate    0xEEEF // Ensure interogation knows everything about this firmware
+#define clearCountersAndFlagsToZero 0xEEF0 // Clean slate to perform tests of any type. Clears various flags too, should not affect running
 
 
 #else

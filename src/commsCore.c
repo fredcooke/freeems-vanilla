@@ -411,6 +411,16 @@ void decodePacketAndRespond(){
 			break;
 		}
 	// FreeEMS Vanilla Firmware Specific cases
+		case clearCountersAndFlagsToZero:
+		{
+			unsigned char* counterPointer = (char*) &Counters;
+			unsigned short counterCounter;
+			for(counterCounter = 0;counterCounter < sizeof(Counter);counterCounter++){
+				*counterPointer = 0;
+				counterPointer++;
+			}
+			break;
+		}
 		case requestDecoderName:
 		{
 			/// @todo TODO add this call to the documentation, John maybe?
