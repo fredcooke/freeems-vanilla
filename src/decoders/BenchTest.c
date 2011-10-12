@@ -109,9 +109,9 @@ void PrimaryRPMISR(){
 //	unsigned long localPeriod = 0; // mutlifire or busy wait, if doing this, check last period for some min, and if too small, shrink second to last and increase last
 //	unsigned short localPeriod = 0; // normal mode
 	if(testMode == TEST_MODE_ITERATIONS){
-		currentEvent++;
-		if(currentEvent == testEventsPerCycle){
-			currentEvent = 0;
+		KeyUserDebugs.currentEvent++;
+		if(KeyUserDebugs.currentEvent == testEventsPerCycle){
+			KeyUserDebugs.currentEvent = 0;
 			testNumberOfCycles--;
 			if(testNumberOfCycles == 0){
 				// Disable the interrupt again, to be enabled by a serial trigger
@@ -151,7 +151,7 @@ void PrimaryRPMISR(){
 		// fire outputs here
 		unsigned char channel;
 		for(channel = 0;channel < 6;channel++){
-			if(currentEvent == outputEventInputEventNumbers[channel]){
+			if(KeyUserDebugs.currentEvent == outputEventInputEventNumbers[channel]){
 				schedulePortTPin(channel, timeStamp);
 			}
 		}

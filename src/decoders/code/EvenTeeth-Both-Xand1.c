@@ -56,7 +56,7 @@ void PrimaryRPMISR(){
 	// TODO integrate this into all decoders, and integrate with the fuel pump stuff too, this can be a flag that says "we've received an RPM signal of SOME sort recently"
 
 	if(!(PTITCurrentState & 0x01)){
-		Counters.primaryTeethSeen++;
+		KeyUserDebugs.primaryTeethSeen++;
 
 		LongTime timeStamp;
 		/* Install the low word */
@@ -71,20 +71,21 @@ void PrimaryRPMISR(){
 
 		unsigned long thisInterEventPeriod = 0;
 		unsigned short thisTicksPerDegree = 0;
-		if(decoderFlags & LAST_TIMESTAMP_VALID){
+		if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 			thisInterEventPeriod = thisEventTimeStamp - lastPrimaryEventTimeStamp;
 			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / eventAngles[1]); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 		}
 
-		if(decoderFlags & CAM_SYNC){
-			currentEvent++;
-			if(currentEvent == numberOfRealEvents){
+		if(KeyUserDebugs.decoderFlags & CAM_SYNC){
+			KeyUserDebugs.currentEvent++;
+			if(KeyUserDebugs.currentEvent == numberOfRealEvents){
 				resetToNonRunningState(1);
 				return;
 			}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
 
-			if(decoderFlags & LAST_PERIOD_VALID){
+			if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
 				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
+				KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
 				if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
 					resetToNonRunningState(2);
 					return;
@@ -98,7 +99,7 @@ void PrimaryRPMISR(){
 						// TODO Calculate RPM from last primaryTrailingEdgeTimeStamp
 					}
 				}
-			}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ // TODO temp for testing just do rpm this way, fill above out later.
+			}/*else*/ if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){ // TODO temp for testing just do rpm this way, fill above out later.
 				*ticksPerDegreeRecord = thisTicksPerDegree;
 				sampleEachADC(ADCBuffers);
 				Counters.syncedADCreadings++;
@@ -126,13 +127,13 @@ void PrimaryRPMISR(){
 		}
 
 		// do these always at first, and use them with a single 30 degree angle for the first cut
-		if(decoderFlags & LAST_TIMESTAMP_VALID){
+		if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 			lastPrimaryTicksPerDegree = thisTicksPerDegree;
-			decoderFlags |= LAST_PERIOD_VALID;
+			KeyUserDebugs.decoderFlags |= LAST_PERIOD_VALID;
 		}
 		// Always
 		lastPrimaryEventTimeStamp = thisEventTimeStamp;
-		decoderFlags |= LAST_TIMESTAMP_VALID;
+		KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 	}
 	// TODO DEBUG/TUNING MACRO HERE!
 }
@@ -150,7 +151,7 @@ void SecondaryRPMISR(){
 
 	if(!(PTITCurrentState & 0x02)){ // TODO Remove this once the configuration can be adjusted to only fire on one edge!
 		// Only count one edge, the other is irrelevant, and this comment will be two once the above todo is completed.
-		Counters.secondaryTeethSeen++;
+		KeyUserDebugs.secondaryTeethSeen++;
 
 		LongTime timeStamp;
 		/* Install the low word */
@@ -164,12 +165,12 @@ void SecondaryRPMISR(){
 		unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
 		unsigned long thisInterEventPeriod = 0;
-		if(decoderFlags & LAST_TIMESTAMP_VALID){
+		if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 			thisInterEventPeriod = thisEventTimeStamp - lastSecondaryEventTimeStamp;
 		}
 
 		// This sets currentEvent to 255 such that when the primary ISR runs it is rolled over to zero!
-		if(decoderFlags & CAM_SYNC){
+		if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 			/* If the count is less than 23, then we know that the electrical pulse that triggered
 			 * this ISR execution was almost certainly in error and it is NOT valid to stay in sync.
 			 * 
@@ -184,17 +185,17 @@ void SecondaryRPMISR(){
 			 * reality it must be more loose due to the larger possible variation over the much much
 			 * larger time frame.
 			 */
-			if(currentEvent < (numberOfRealEvents - 1)){
+			if(KeyUserDebugs.currentEvent < (numberOfRealEvents - 1)){
 				resetToNonRunningState(4);
-			}else if(currentEvent > (numberOfRealEvents -1)){
+			}else if(KeyUserDebugs.currentEvent > (numberOfRealEvents -1)){
 				// Record that we had to reset position...
 				Counters.decoderSyncCorrections++;
-				syncLostOnThisEvent = currentEvent;				// Should never happen, or should be caught by timing checks in primary ISR
+				KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;				// Should never happen, or should be caught by timing checks in primary ISR
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.
 			SET_SYNC_LEVEL_TO(CAM_SYNC);
 		}
-		currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
+		KeyUserDebugs.currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 	}
 	// TODO DEBUG/TUNING MACRO HERE!
 }

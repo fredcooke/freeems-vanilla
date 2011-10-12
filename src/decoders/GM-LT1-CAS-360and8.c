@@ -129,12 +129,12 @@ void PrimaryRPMISR(void){
 	lastPARegisterReading = accumulatorRegisterCount;
 	unsigned char i; /* temp loop var */
 
-	Counters.primaryTeethSeen++;
-	Counters.secondaryTeethSeen += accumulatorCount;
-//	Counters.testUS5 = accumulatorCount; // TODO remove DEBUG
+	KeyUserDebugs.primaryTeethSeen++;
+	KeyUserDebugs.secondaryTeethSeen += accumulatorCount;
+//	DEBUG = accumulatorCount; // TODO remove DEBUG
 
 	/* always make sure you have two good counts(there are a few windows that share counts) */
-	if(!(decoderFlags & CAM_SYNC)){
+	if(!(KeyUserDebugs.decoderFlags & CAM_SYNC)){
 		// FRED do this on a per edge basis to lower chances of false match with +/- 1 counts
 		if(accumulatorCount == AMBIGUOUS_COUNT){
 			return;
@@ -143,11 +143,11 @@ void PrimaryRPMISR(void){
 			for(i = 0; numberOfRealEvents > i; i++){
 				if(windowCounts[i] == accumulatorCount){
 					if(i == 0){ /* keep our counter from going out of range */
-						currentEvent = 0xFF; // Will be rolled over to 0
+						KeyUserDebugs.currentEvent = 0xFF; // Will be rolled over to 0
 						lastEvent = NUMBER_OF_REAL_EVENTS - 1;
 					}else{
 						lastEvent = i - 1;
-						currentEvent = lastEvent; // Will be rolled up to current
+						KeyUserDebugs.currentEvent = lastEvent; // Will be rolled up to current
 					}
 					break;
 				}
@@ -174,10 +174,10 @@ void PrimaryRPMISR(void){
 		}
 	}
 
-	if(decoderFlags & CAM_SYNC){
-		currentEvent++;
-		if(currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
-			currentEvent = 0;
+	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
+		KeyUserDebugs.currentEvent++;
+		if(KeyUserDebugs.currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
+			KeyUserDebugs.currentEvent = 0;
 		}
 
 		/*
@@ -187,12 +187,12 @@ void PrimaryRPMISR(void){
 		 * to keep a running track of past bastardTeeth too. TODO
 		 */
 
-		signed char bastardTeeth = accumulatorCount - windowCounts[currentEvent];
+		signed char bastardTeeth = accumulatorCount - windowCounts[KeyUserDebugs.currentEvent];
 		cumulativeBastardTeeth += bastardTeeth;
 
-		Counters.testUS4 = cumulativeBastardTeeth; // TODO remove DEBUG
-		Counters.testUS5 = bastardTeeth;
-//		Counters.testUS0 = windowCounts[currentEvent]; // TODO remove DEBUG
+//		DEBUG = cumulativeBastardTeeth; // TODO remove DEBUG
+//		DEBUG = bastardTeeth;
+//		DEBUG = windowCounts[currentEvent]; // TODO remove DEBUG
 
 		// Cumulative Tolerance Code TODO add counters to monitor aggressiveness of this
 		if(windowsPerAllowedCumulativeBastardTooth){
@@ -201,7 +201,7 @@ void PrimaryRPMISR(void){
 				cumulativeBastardTeethEroderCounter = 0;
 				if(cumulativeBastardTeeth > 0){
 					cumulativeBastardTeeth--;
-					Counters.testUS0++;
+					// DEBUG++;
 					// counter for decrement
 				}else if(cumulativeBastardTeeth < 0){
 					cumulativeBastardTeeth++;
@@ -232,7 +232,7 @@ void PrimaryRPMISR(void){
 			return;
 		}else{
 			/* TODO all required calcs etc as shown in other working decoders */
-			if((currentEvent % 2) == 1){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
+			if((KeyUserDebugs.currentEvent % 2) == 1){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
 				// temporary data from inputs
 				unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 				unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;

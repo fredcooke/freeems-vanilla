@@ -66,7 +66,7 @@ void perDecoderReset(){
 
 void PrimaryRPMISR(void) {
 	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x1;
+	TFLG = 0x01;
 
 	/* Save all relevant available data here */
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
@@ -74,7 +74,7 @@ void PrimaryRPMISR(void) {
 
 	// TODO DEBUG/TUNING MACRO HERE!
 
-	Counters.primaryTeethSeen++;
+	KeyUserDebugs.primaryTeethSeen++;
 
 	LongTime timeStamp;
 
@@ -143,13 +143,13 @@ void PrimaryRPMISR(void) {
 
 		unsigned char lastEvent = 0;
 		// This all needs a little more complexity for cam only/crank only/crank + cam sync use, hard coded to crank only for now
-		if(!(decoderFlags & CRANK_SYNC) && (decoderFlags & LAST_MATCH_VALID)){ // If we aren't synced and have enough data
+		if(!(KeyUserDebugs.decoderFlags & CRANK_SYNC) && (KeyUserDebugs.decoderFlags & LAST_MATCH_VALID)){ // If we aren't synced and have enough data
 			if(matches.pattern == MatchedPairMatchedPair){      //         | small | small | small | - All periods match, could be anywhere, unless...
 				NumberOfTwinMatchedPairs++;
 				// Because this method REQUIRES 4 evenly spaced teeth to work, it's only available to 5-1 or greater wheels.
 				if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs == (NUMBER_OF_WHEEL_EVENTS - 3))){ // This can't find a match until it's on it's fourth execution
 					// This will match repeatedly then un-sync on next cycle if tolerance is set too high
-					currentEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
+					KeyUserDebugs.currentEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
 					SET_SYNC_LEVEL_TO(CRANK_SYNC); // Probability of this = (N + 1) / M
 					// Sample RPM and ADCs here on the basis of cylinders and revolutions
 					// IE, sample RPM once (total teeth (inc missing) per engine cycle / cyls) events have passed
@@ -161,44 +161,44 @@ void PrimaryRPMISR(void) {
 					resetToNonRunningState(yourSyncToleranceIsLooserThanAWellYouGetTheIdea);
 				} // else fall through to wait.
 			}else if(matches.pattern == MatchedPairNarrowWide){ // | small | small |      BIG      | Last tooth is first tooth after missing  - ((M-N)-3)/M = common
-				currentEvent = 0;
+				KeyUserDebugs.currentEvent = 0;
 				SET_SYNC_LEVEL_TO(CRANK_SYNC);
 			}else if(matches.pattern == NarrowWideWideNarrow){  // | small |      BIG      | small | Last tooth is second tooth after missing - 1/M
-				currentEvent = 1;
+				KeyUserDebugs.currentEvent = 1;
 				SET_SYNC_LEVEL_TO(CRANK_SYNC);
 			}else if(matches.pattern == WideNarrowMatchedPair){ // |      BIG      | small | small | Last tooth is third tooth after missing  - 1/M
-				currentEvent = 2;
+				KeyUserDebugs.currentEvent = 2;
 				SET_SYNC_LEVEL_TO(CRANK_SYNC);
 			}else{
 				resetToNonRunningState(matches.pattern); // Where they are defined individually in the error file! Beautiful!!
 			}
-		}else if(decoderFlags & CRANK_SYNC){ // Make sure that we should stay in sync
-			lastEvent = currentEvent;
-			currentEvent++;
-			if(currentEvent == numberOfRealEvents){
-				currentEvent = 0;
+		}else if(KeyUserDebugs.decoderFlags & CRANK_SYNC){ // Make sure that we should stay in sync
+			lastEvent = KeyUserDebugs.currentEvent;
+			KeyUserDebugs.currentEvent++;
+			if(KeyUserDebugs.currentEvent == numberOfRealEvents){
+				KeyUserDebugs.currentEvent = 0;
 			}
 
-			if((currentEvent == 0) && (matches.pattern != MatchedPairNarrowWide)){ // First event after gap
+			if((KeyUserDebugs.currentEvent == 0) && (matches.pattern != MatchedPairNarrowWide)){ // First event after gap
 				resetToNonRunningState(matches.pattern);
-			}else if((currentEvent == 1) && (matches.pattern != NarrowWideWideNarrow)){ // Second event after gap
+			}else if((KeyUserDebugs.currentEvent == 1) && (matches.pattern != NarrowWideWideNarrow)){ // Second event after gap
 				resetToNonRunningState(matches.pattern);
-			}else if((currentEvent == 2) && (matches.pattern != WideNarrowMatchedPair)){ // Third event after gap
+			}else if((KeyUserDebugs.currentEvent == 2) && (matches.pattern != WideNarrowMatchedPair)){ // Third event after gap
 				resetToNonRunningState(matches.pattern);
 			}else if(matches.pattern != MatchedPairMatchedPair){ // All other events should be preceeded by two matched pairs
 				resetToNonRunningState(matches.pattern);
 			} // else carry on happily as always
 		}
 
-		if(decoderFlags & CRANK_SYNC){
+		if(KeyUserDebugs.decoderFlags & CRANK_SYNC){
 			SCHEDULE_ECT_OUTPUTS();
 
 			// sample adcs and record rpm here after scheduling
 			unsigned short thisAngle = 0;
-			if(currentEvent == 0){
-				thisAngle = eventAngles[currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+			if(KeyUserDebugs.currentEvent == 0){
+				thisAngle = eventAngles[KeyUserDebugs.currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
 			}else{
-				thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+				thisAngle = eventAngles[KeyUserDebugs.currentEvent] - eventAngles[lastEvent];
 			}
 
 			*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
@@ -212,18 +212,18 @@ void PrimaryRPMISR(void) {
 			Clocks.timeoutADCreadingClock = 0;
 		}
 
-		if(decoderFlags & LAST_TIMESTAMP_VALID){
-			if(decoderFlags & LAST_PERIOD_VALID){
-				decoderFlags |= LAST_MATCH_VALID;
+		if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
+			if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
+				KeyUserDebugs.decoderFlags |= LAST_MATCH_VALID;
 			}
 			matches.pairs.lastPair = matches.pairs.thisPair; // Stash var for next time
 			lastInterEventPeriod = thisInterEventPeriod;
 //			lastTicksPerDegree = thisTicksPerDegree;
-			decoderFlags |= LAST_PERIOD_VALID;
+			KeyUserDebugs.decoderFlags |= LAST_PERIOD_VALID;
 		}
 		// Always
 		lastEventTimeStamp = thisEventTimeStamp;
-		decoderFlags |= LAST_TIMESTAMP_VALID;
+		KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 	}else{
 		// do checking for width variance too, perhaps optionally.
 	}

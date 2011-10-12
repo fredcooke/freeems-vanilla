@@ -369,7 +369,7 @@ void PrimaryRPMISR(){
 
 	// TODO DEBUG/TUNING MACRO HERE!
 
-	Counters.primaryTeethSeen++;
+	KeyUserDebugs.primaryTeethSeen++;
 
 	/* Install the low word */
 	timeStamp.timeShorts[1] = edgeTimeStamp;
@@ -382,7 +382,7 @@ void PrimaryRPMISR(){
 	unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
 	unsigned long thisInterEventPeriod = 0;
-	if(decoderFlags & LAST_TIMESTAMP_VALID){
+	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
 	}
 
@@ -426,43 +426,44 @@ void PrimaryRPMISR(){
 	}
 
 	unsigned char lastEvent = 0;
-	if(decoderFlags & CAM_SYNC){
-		lastEvent = currentEvent;
-		currentEvent++;
-		if(currentEvent == numberOfRealEvents){
-			currentEvent = 0;
+	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
+		lastEvent = KeyUserDebugs.currentEvent;
+		KeyUserDebugs.currentEvent++;
+		if(KeyUserDebugs.currentEvent == numberOfRealEvents){
+			KeyUserDebugs.currentEvent = 0;
 		}
 
 		// ...and check that it's correct
-		if((correctEvent != 0) && (currentEvent != correctEvent)){
-			syncLostOnThisEvent = currentEvent;
-			currentEvent = correctEvent;
-			lastEvent = currentEvent - 1;
+		if((correctEvent != 0) && (KeyUserDebugs.currentEvent != correctEvent)){
+			KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;
+			KeyUserDebugs.currentEvent = correctEvent;
+			lastEvent = KeyUserDebugs.currentEvent - 1;
 
 			// Record that we had to reset position...
 			Counters.decoderSyncCorrections++;
-			syncCaughtOnThisEvent = currentEvent;
+			KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else if(correctEvent != 0){
-		currentEvent = correctEvent;
-		lastEvent = currentEvent - 1;
+		KeyUserDebugs.currentEvent = correctEvent;
+		lastEvent = KeyUserDebugs.currentEvent - 1;
 		SET_SYNC_LEVEL_TO(CAM_SYNC);
 	}
 
 	unsigned short thisTicksPerDegree = 0;
-	if(decoderFlags & CAM_SYNC){
+	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 		unsigned short thisAngle = 0;
-		if(currentEvent == 0){
-			thisAngle = eventAngles[currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+		if(KeyUserDebugs.currentEvent == 0){
+			thisAngle = eventAngles[KeyUserDebugs.currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
 		}else{
-			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+			thisAngle = eventAngles[KeyUserDebugs.currentEvent] - eventAngles[lastEvent];
 		}
 
 		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
-		if(decoderFlags & LAST_PERIOD_VALID){
+		if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
 			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
 				resetToNonRunningState(1);
 				return;
@@ -476,22 +477,22 @@ void PrimaryRPMISR(){
 					// TODO Calculate RPM from last primaryTrailingEdgeTimeStamp
 				}
 			}
-		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){ // TODO temp for testing just do rpm this way, fill above out later.
+		}/*else*/ if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){ // TODO temp for testing just do rpm this way, fill above out later.
 			*ticksPerDegreeRecord = thisTicksPerDegree;
 		}
 	}
 
-	if(decoderFlags & CAM_SYNC){
+	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 		SCHEDULE_ECT_OUTPUTS();
 	}
 
-	if(decoderFlags & LAST_TIMESTAMP_VALID){
+	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
-		decoderFlags |= LAST_PERIOD_VALID;
+		KeyUserDebugs.decoderFlags |= LAST_PERIOD_VALID;
 	}
 	// Always
 	lastEventTimeStamp = thisEventTimeStamp;
-	decoderFlags |= LAST_TIMESTAMP_VALID;
+	KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 
 	// TODO DEBUG/TUNING MACRO HERE!
 }
@@ -509,7 +510,7 @@ void SecondaryRPMISR(){
 
 	// TODO DEBUG/TUNING MACRO HERE!
 
-	Counters.secondaryTeethSeen++;
+	KeyUserDebugs.secondaryTeethSeen++;
 	// remember that this is both edges, though... 8 per cycle, 4 per rev for the outter wheel, 2/1 for this wheel.
 
 	/* Install the low word */
@@ -523,7 +524,7 @@ void SecondaryRPMISR(){
 	unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
 	unsigned long thisInterEventPeriod = 0;
-	if(decoderFlags & LAST_TIMESTAMP_VALID){
+	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
 	}
 
@@ -558,35 +559,36 @@ void SecondaryRPMISR(){
 	}
 
 	unsigned char lastEvent = 0;
-	if(decoderFlags & CAM_SYNC){
-		lastEvent = currentEvent;
-		currentEvent++;
+	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
+		lastEvent = KeyUserDebugs.currentEvent;
+		KeyUserDebugs.currentEvent++;
 
 		// ...and check that it's correct
-		if(currentEvent != correctEvent){
-			syncLostOnThisEvent = currentEvent;
-			currentEvent = correctEvent;
-			lastEvent = currentEvent - 1;
+		if(KeyUserDebugs.currentEvent != correctEvent){
+			KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;
+			KeyUserDebugs.currentEvent = correctEvent;
+			lastEvent = KeyUserDebugs.currentEvent - 1;
 
 			// Record that we had to reset position...
 			Counters.decoderSyncCorrections++;
-			syncCaughtOnThisEvent = currentEvent;
+			KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
-		currentEvent = correctEvent;
-		lastEvent = currentEvent - 1;
+		KeyUserDebugs.currentEvent = correctEvent;
+		lastEvent = KeyUserDebugs.currentEvent - 1;
 		SET_SYNC_LEVEL_TO(CAM_SYNC);
 	}
 
 	unsigned short thisTicksPerDegree = 0;
-	if(decoderFlags & CAM_SYNC){
-		unsigned short thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
+		unsigned short thisAngle = eventAngles[KeyUserDebugs.currentEvent] - eventAngles[lastEvent];
 
 		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
-		if(decoderFlags & LAST_PERIOD_VALID){
+		if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
 			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
 				resetToNonRunningState(3);
 				return;
@@ -594,22 +596,22 @@ void SecondaryRPMISR(){
 				resetToNonRunningState(4);
 				return;
 			}
-		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
+		}/*else*/ if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 			*ticksPerDegreeRecord = thisTicksPerDegree;
 		}
 	}
 
-	if(decoderFlags & CAM_SYNC){
+	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 		SCHEDULE_ECT_OUTPUTS();
 	}
 
-	if(decoderFlags & LAST_TIMESTAMP_VALID){
+	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
-		decoderFlags |= LAST_PERIOD_VALID;
+		KeyUserDebugs.decoderFlags |= LAST_PERIOD_VALID;
 	}
 	// Always
 	lastEventTimeStamp = thisEventTimeStamp;
-	decoderFlags |= LAST_TIMESTAMP_VALID;
+	KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 
 	// TODO DEBUG/TUNING MACRO HERE!
 }

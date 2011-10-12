@@ -80,7 +80,7 @@ void PrimaryRPMISR(){
 
 	// TODO DEBUG/TUNING MACRO HERE!
 
-	Counters.primaryTeethSeen++;
+	KeyUserDebugs.primaryTeethSeen++;
 
 	LongTime timeStamp;
 
@@ -116,7 +116,7 @@ void PrimaryRPMISR(){
 		/* Reset the clock for reading timeout */
 		Clocks.timeoutADCreadingClock = 0;
 
-		currentEvent = 1;
+		KeyUserDebugs.currentEvent = 1;
 		lastEvent = 0;
 	}else{
 		// temporary data from inputs
@@ -138,30 +138,31 @@ void PrimaryRPMISR(){
 		/* Reset the clock for reading timeout */
 		Clocks.timeoutADCreadingClock = 0;
 
-		currentEvent = 0;
+		KeyUserDebugs.currentEvent = 0;
 		lastEvent = 1;
 	}
 
 	unsigned long thisInterEventPeriod = 0;
-	if(decoderFlags & LAST_TIMESTAMP_VALID){
+	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
 	}
 
 	// This should check during gain of sync too and prevent gaining sync if the numbers aren't right, however this is a step up for the Hotel at this time.
-	if(decoderFlags & COMBUSTION_SYNC){
+	if(KeyUserDebugs.decoderFlags & COMBUSTION_SYNC){
 		unsigned short thisAngle = 0;
-		if(currentEvent == 0){
+		if(KeyUserDebugs.currentEvent == 0){
 			// Fix this to work for all:
-//			thisAngle = eventAngles[currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
-			thisAngle = eventAngles[currentEvent] + angleOfSingleIteration - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+//			thisAngle = eventAngles[KeyUserDebugs.currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+			thisAngle = eventAngles[KeyUserDebugs.currentEvent] + angleOfSingleIteration - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
 		}else{
-			thisAngle = eventAngles[currentEvent] - eventAngles[lastEvent];
+			thisAngle = eventAngles[KeyUserDebugs.currentEvent] - eventAngles[lastEvent];
 		}
 
 		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 
-		if(decoderFlags & LAST_PERIOD_VALID){
+		if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
 			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
 				resetToNonRunningState(1);
 				return;
@@ -172,7 +173,7 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	if(decoderFlags & COMBUSTION_SYNC){
+	if(KeyUserDebugs.decoderFlags & COMBUSTION_SYNC){
 		SCHEDULE_ECT_OUTPUTS();
 	}
 
@@ -184,17 +185,17 @@ void PrimaryRPMISR(){
 	 * as having been recorded until we know the data is good. That way the
 	 * scheduler can keep things unscheduled until the time is right.
 	 */
-	if(decoderFlags & LAST_PERIOD_VALID){
+	if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
 		SET_SYNC_LEVEL_TO(COMBUSTION_SYNC);
 	}
 
-	if(decoderFlags & LAST_TIMESTAMP_VALID){
+	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
-		decoderFlags |= LAST_PERIOD_VALID;
+		KeyUserDebugs.decoderFlags |= LAST_PERIOD_VALID;
 	}
 	// Always
 	lastEventTimeStamp = thisEventTimeStamp;
-	decoderFlags |= LAST_TIMESTAMP_VALID;
+	KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 	// TODO DEBUG/TUNING MACRO HERE!
 }
 

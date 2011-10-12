@@ -75,9 +75,10 @@ void populateBasicDatalog(){
 	// By default, default values are populated, but if you drop code into the custom directory, that replaces the defaults.
 	populateCustomDatalog();
 	// Done here to overwrite cheeky custom users data:
-	DerivedVars->coreStatusA = coreStatusA;
-	DerivedVars->decoderFlags = decoderFlags;
-	DerivedVars->tempClock++;
+	KeyUserDebugs.coreStatusA = coreStatusA;
+	KeyUserDebugs.tempClock++;
+	KeyUserDebugs.clockIn8thsOfAMilli = Clocks.realTimeClockMain;
+	KeyUserDebugs.clockInMilliSeconds = Clocks.realTimeClockMillis;
 
 	/* Get core vars */
 	memcpy(TXBufferCurrentPositionHandler, CoreVars, sizeof(CoreVar));
@@ -86,20 +87,12 @@ void populateBasicDatalog(){
 	memcpy(TXBufferCurrentPositionHandler, DerivedVars, sizeof(DerivedVar));
 	TXBufferCurrentPositionHandler += sizeof(DerivedVar);
 	/* Get raw adc counts */
-//	memcpy(TXBufferCurrentPositionHandler, ADCBuffers, sizeof(ADCBuffer));
-//	TXBufferCurrentPositionHandler += sizeof(ADCBuffer);
+	memcpy(TXBufferCurrentPositionHandler, &KeyUserDebugs, sizeof(KeyUserDebug));
+	TXBufferCurrentPositionHandler += sizeof(KeyUserDebug);
 
 	/* Set/Truncate the log to the specified length */
 	TXBufferCurrentPositionHandler = position + configuredBasicDatalogLength;
 }
-
-
-//void populateLogicAnalyser(){
-//	// get portT rpm input and inj main
-//	// get portB ign
-//	// get portA ign
-//	// get portK inj staged
-//}
 
 
 // All of these require some range checking, eg only some registers, and all RAM, not flash, not other regs
@@ -1229,7 +1222,7 @@ void decodePacketAndRespond(){
 
 				if(errorID == 0){
 					// Let the first iteration roll it over to zero.
-					currentEvent = 0xFF; // Needs to be here in case of multiple runs, init is not sufficient
+					KeyUserDebugs.currentEvent = 0xFF; // Needs to be here in case of multiple runs, init is not sufficient
 
 					// Trigger decoder interrupt to fire thus starting the loop!
 					TIE = 0x01; // The ISR does the rest!

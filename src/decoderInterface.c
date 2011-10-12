@@ -48,6 +48,8 @@
  * @author Fred Cooke
  */
 void resetToNonRunningState(unsigned char uniqueLossID){
+	KeyUserDebugs.decoderSyncResetCalls++;
+
 	/* Reset RPM to zero */
 	ticksPerDegree0 = 0;
 	ticksPerDegree1 = 0;
@@ -56,20 +58,20 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 	engineCyclePeriod = ticksPerCycleAtOneRPM;
 
 	// Keep track of lost sync in counters
-	if(decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
+	if(KeyUserDebugs.decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
 		Counters.decoderSyncLosses++;
 	}else{
 		Counters.decoderSyncStateClears++;
 	}
 
 	// record unique loss ID
-	syncLostWithThisID = uniqueLossID;
+	KeyUserDebugs.syncLostWithThisID = uniqueLossID;
 
 	// record current event
-	syncLostOnThisEvent = currentEvent;
+	KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;
 
 	/* Clear all sync flags to lost state */
-	decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC & CLEAR_LAST_PERIOD_VALID & CLEAR_LAST_TIMESTAMP_VALID);
+	KeyUserDebugs.decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC & CLEAR_LAST_PERIOD_VALID & CLEAR_LAST_TIMESTAMP_VALID);
 	perDecoderReset();
 	// TODO more stuff needs resetting here, but only critical things.
 }

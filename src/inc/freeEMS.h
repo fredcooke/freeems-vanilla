@@ -156,6 +156,9 @@ EXTERN DerivedVar* DerivedVars; /** Pointer to the secondary running variables *
 EXTERN DerivedVar DerivedVars0; /** Bank 0 secondary running variables */
 /* If we move to xgate or isr driven logging, add bank 1 back in */
 
+// Formalised key logging vars in one place
+EXTERN KeyUserDebug KeyUserDebugs;
+
 EXTERN ADCBuffer* ADCBuffers;       /** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
 EXTERN ADCBuffer* ADCBuffersRecord; /** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
 EXTERN ADCBuffer ADCBuffers0;       /** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */

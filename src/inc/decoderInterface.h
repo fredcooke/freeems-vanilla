@@ -128,17 +128,12 @@ from the above we can check one gap+angle with the next gap+angle and ensure smo
 // unsigned long thisEventTimeStamp; recommended variable naming, may be enforced for/with macro use
 // unsigned long thisInterEventPeriod; ditto
 /// @todo TODO sync loss/gain semantics - how paranoid? under what circumstances? should we make it configurable whether a decoder that is in a situation where it would find sync if not synced, resets sync, or loses sync. Likewise, at initial sync gain time, should it go "prelim sync found" and only verify sync on the second lap around, or start firing events straight off the bat. Starting will suck if paranoid, but if there is noise at high load/rpm and events get mis-scheduled before sync is lost, that is serious. This is philosophical, and the reality is that you must assume that your signal is clean to some level and verified clean under lower risk conditions.
-EXTERN unsigned char syncLostWithThisID;
-EXTERN unsigned char syncLostOnThisEvent;
-EXTERN unsigned char syncCaughtOnThisEvent;
 EXTERN unsigned long lastEventTimeStamp;
 EXTERN unsigned long lastPrimaryEventTimeStamp;
 EXTERN unsigned long lastSecondaryEventTimeStamp;
 EXTERN unsigned short lastTicksPerDegree;
 EXTERN unsigned short lastPrimaryTicksPerDegree;
 EXTERN unsigned short lastSecondaryTicksPerDegree;
-EXTERN unsigned char currentEvent;
-EXTERN unsigned char decoderFlags;
 EXTERN unsigned long skipEventFlags;
 EXTERN unsigned long engineCyclePeriod;
 EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
@@ -181,10 +176,9 @@ EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
 
-#define SET_SYNC_LEVEL_TO(SYNC_LEVEL) \
-decoderFlags |= SYNC_LEVEL;           \
-syncCaughtOnThisEvent = currentEvent; \
-// End of macro.
+#define SET_SYNC_LEVEL_TO(SYNC_LEVEL)                             \
+KeyUserDebugs.decoderFlags |= SYNC_LEVEL;                         \
+KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent; // End of macro.
 
 
 #define SCHEDULE_ONE_ECT_OUTPUT() \
@@ -214,16 +208,16 @@ selfSetTimer &= injectorMainOffMasks[pin];                                      
 numberScheduled = 0;                                                                        \
 unsigned char outputEventNumber;                                                            \
 for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){ \
-	if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){                    \
+	if(outputEventInputEventNumbers[outputEventNumber] == KeyUserDebugs.currentEvent){      \
 		skipEventFlags &= ~(1UL << outputEventNumber);                                      \
 		schedulePortTPin(outputEventNumber, timeStamp);                                     \
 		numberScheduled++;                                                                  \
 	}else if(skipEventFlags & (1UL << outputEventNumber)){                                  \
 		unsigned char eventBeforeCurrent = 0;                                               \
-		if(currentEvent == 0){                                                              \
+		if(KeyUserDebugs.currentEvent == 0){                                                \
 			eventBeforeCurrent = numberOfRealEvents - 1;                                    \
 		}else{                                                                              \
-			eventBeforeCurrent = currentEvent - 1;                                          \
+			eventBeforeCurrent = KeyUserDebugs.currentEvent - 1;                            \
 		}                                                                                   \
                                                                                             \
 		if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){          \

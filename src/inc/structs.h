@@ -197,32 +197,6 @@ typedef struct {
 
 	unsigned short Advance;        ///< Ignition advance (scaled degrees / oneDegree(currently 50) = degrees)
 	unsigned short Dwell;          ///< Dwell Angle (ticks / 1250 = ms)
-
-	// To be improved MAJORLY:
-	unsigned short tempClock;      ///< Incremented once per log sent
-
-	// All flags! Pair keeps things sane for hacky apps that think everything is 16 bit.
-	unsigned char coreStatusA;
-	unsigned char decoderFlags;
-
-	// replace highest first to avoid hassles for offset based dave/mtx...
-	unsigned short zsp17;          ///< Spare US variable
-	unsigned short zsp16;          ///< Spare US variable
-	unsigned short zsp15;          ///< Spare US variable
-	unsigned short zsp14;          ///< Spare US variable
-	unsigned short zsp13;          ///< Spare US variable
-	unsigned short zsp12;          ///< Spare US variable
-	unsigned short zsp11;          ///< Spare US variable
-	unsigned short zsp10;          ///< Spare US variable
-	unsigned short zsp9;           ///< Spare US variable
-	unsigned short zsp8;           ///< Spare US variable
-	unsigned short zsp7;           ///< Spare US variable
-	unsigned short zsp6;           ///< Spare US variable
-	unsigned short zsp5;           ///< Spare US variable
-	unsigned short zsp4;           ///< Spare US variable
-	unsigned short zsp3;           ///< Spare US variable
-	unsigned short zsp2;           ///< Spare US variable
-	unsigned short zsp1;           ///< Spare US variable
 } DerivedVar;
 
 
@@ -348,7 +322,6 @@ typedef struct {
 	unsigned char decoderSyncLosses;               ///< lost decoder syncs.
 	unsigned char decoderSyncCorrections;          ///< definite decoder syncs found while already synced in a different position.
 	unsigned char decoderSyncStateClears;          ///< sync loss called when not synced yet, thus discarding data and preventing sync
-//	unsigned short RPMValidityLosses;              ///< lost RPM validity events.
 
 	// Scheduling
 	unsigned char normalSchedule;                  ///< times events were scheduled normally.
@@ -361,6 +334,7 @@ typedef struct {
 	unsigned char pinScheduledAlready;             ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledToSelfSchedule;      ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledAgainToStayOn;       ///< @copydoc pinScheduledToGoHigh
+
 	unsigned char pinScheduledToToggleError;       ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledToDoNothing;         ///< @copydoc pinScheduledToGoHigh
 	unsigned char pinScheduledFromCold;            ///< @copydoc pinScheduledToGoHigh
@@ -371,49 +345,33 @@ typedef struct {
 	unsigned char injectorSwitchOffs;              ///< number of times the injector switched off to stay off
 	unsigned char injectorTimerExtensions;         ///< number of times the injector ISR fired and rescheduled itself to fire and do nothing again
 	unsigned char injectorTimerExtensionFinals;    ///< number of times the injector ISR fired and scheduled the injector to switch on
+
 	unsigned char injectorSelfSchedules;           ///< number of times the injector switched off and scheduled itself again
 	unsigned char injectorSelfScheduleExtensions;  ///< number of times the injector switched off and scheduled itself again with timer extension
 
-	unsigned short primaryTeethSeen;               ///< Free running counters for number of teeth seen such that...
-	unsigned short secondaryTeethSeen;             ///< ...tooth timing can be used to reconstruct the signal at lower rpm
-
-	unsigned short syncedADCreadings;              ///< Incremented each time a synchronous ADC reading is taken
-	unsigned short timeoutADCreadings;             ///< Incremented for each ADC reading in RTC because of timeout
-
-	unsigned short calculationsPerformed;          ///< Incremented for each time the fuel and ign calcs are done
-	unsigned short datalogsSent;                   ///< Incremented for each time we send out a log entry
+	unsigned char syncedADCreadings;              ///< Incremented each time a synchronous ADC reading is taken
+	unsigned char timeoutADCreadings;             ///< Incremented for each ADC reading in RTC because of timeout
+	unsigned char calculationsPerformed;          ///< Incremented for each time the fuel and ign calcs are done
 
 	// UART/serial specific counters
-	unsigned char serialEscapePairMismatches;      ///< Incremented when an escape is found but not followed by an escapee
-	unsigned char serialStartsInsideAPacket;       ///< Incremented when a start byte is found inside a packet
-	unsigned char serialPacketsOverLength;         ///< Incremented when the buffer fills up before the end
+
+	// If you're getting these, then your hardware sucks
+	unsigned char serialOverrunErrors;             ///< Incremented when overrun occurs (duplicated in KeyUserDebug below)
 	unsigned char serialNoiseErrors;               ///< Incremented when noise is detected
-	unsigned char serialOverrunErrors;             ///< Incremented when an overrun occurs
 	unsigned char serialFramingErrors;             ///< Incremented when a framing error occurs
 	unsigned char serialParityErrors;              ///< Incremented when a parity error occurs
 
-	// Generic com counters
-	unsigned char commsChecksumMismatches;         ///< Incremented when calculated checksum did not match the received one
-	unsigned char commsPacketsUnderMinLength;      ///< Incremented when a packet is found that is too short
+	// These can be caused by noise, but if there is no noise, then it's a code issue with the PC side application
+	unsigned char serialEscapePairMismatches;      ///< Incremented when an escape is found but not followed by an escapee
+	unsigned char serialStartsInsideAPacket;       ///< Incremented when a start byte is found inside a packet
+	unsigned char serialPacketsOverLength;         ///< Incremented when the buffer fills up before the end
+	unsigned char serialChecksumMismatches;        ///< Incremented when calculated checksum did not match the received one
+	unsigned char serialPacketsUnderMinLength;     ///< Incremented when a packet is found that is too short
+
+	// Not currently used
+	unsigned char sparePadding;                    ///< Replace with something useful
 	unsigned char commsDebugMessagesNotSent;       ///< Incremented when a debug message can't be sent due to the TX buffer
 	unsigned char commsErrorMessagesNotSent;       ///< Incremented when an error message can't be sent due to the TX buffer
-
-	// GP use (pad the struct with the number of these)
-	unsigned char testUC0;                         ///< General purpose counter, 0 - 255 value, use for debugging new code or problem setups.
-	unsigned char testUC1;                         ///< @copydoc testUC0
-	unsigned char testUC2;                         ///< @copydoc testUC0
-	unsigned char testUC3;                         ///< @copydoc testUC0
-	unsigned char testUC4;                         ///< @copydoc testUC0
-	unsigned char testUC5;                         ///< @copydoc testUC0
-	unsigned char testUC6;                         ///< @copydoc testUC0
-
-	// GP use
-	unsigned short testUS0;                        ///< General purpose counter, 0 - 65535 value, use for debugging new code or problem setups.
-	unsigned short testUS1;                        ///< @copydoc testUS0
-	unsigned short testUS2;                        ///< @copydoc testUS0
-	unsigned short testUS3;                        ///< @copydoc testUS0
-	unsigned short testUS4;                        ///< @copydoc testUS0
-	unsigned short testUS5;                        ///< @copydoc testUS0
 } Counter;
 
 
@@ -432,6 +390,49 @@ typedef struct {
 
 	unsigned short timeoutADCreadingClock; ///< Timeout clock/counter for synced ADC readings
 } Clock;
+
+
+/// Important "always send" stuff for datalogging
+typedef struct {
+	// To be improved MAJORLY:
+	unsigned short tempClock;      ///< Incremented once per log sent, to be moved to a char TODO
+
+	// All flags! Pair keeps things sane for hacky apps that think everything is 16 bit.
+	unsigned char coreStatusA;  ///< Duplicated, migrate here, remove global var
+	unsigned char decoderFlags; ///< Various decoder state flags
+
+	// counter flags once counter mechanism implemented
+
+	// These things should only exist once in memory, and should be grouped in a struct, perhaps this one
+	unsigned char currentEvent;          ///< Which input event was last to come in
+	unsigned char syncLostWithThisID;    ///< A unique identifier for the reason behind a loss of sync
+	unsigned char syncLostOnThisEvent;   ///< Where in the input pattern it all went very badly wrong
+	unsigned char syncCaughtOnThisEvent; ///< Where in the input pattern that things started making sense
+	unsigned char decoderSyncResetCalls; ///< Sum of losses, corrections and state clears
+	unsigned char primaryTeethSeen;      ///< Free running counters for number of teeth seen such that...
+	unsigned char secondaryTeethSeen;    ///< ...tooth timing can be used to reconstruct the signal at lower rpm
+
+	// Likewise these too
+	unsigned char serialOverrunErrors;         ///< Incremented when an overrun occurs due to high interrupt load, not a fault, just a fact of life at high RPM
+	unsigned char serialHardwareErrorsSum;     ///< Sum of noise, parity, and framing errors
+	unsigned char serialAndCommsCodeErrorsSum; ///< Sum of checksum, escape mismatches, starts inside, and over/under length
+	unsigned short inputEventTimeTolerance;    ///< Required to tune noise rejection over RPM TODO add to LT1 and MissingTeeth
+
+	// replace highest first to avoid hassles for offset based dave/mtx...
+	unsigned short zsp11; ///< Spare US variable
+	unsigned short zsp10; ///< Spare US variable
+	unsigned short zsp9;  ///< Spare US variable
+
+	unsigned short zsp8;  ///< Spare US variable
+	unsigned short zsp7;  ///< Spare US variable
+	unsigned short zsp6;  ///< Spare US variable
+	unsigned short zsp5;  ///< Spare US variable
+	unsigned short zsp4;  ///< Spare US variable
+	unsigned short zsp3;  ///< Spare US variable
+	// Do we want these recorded at log assembly time, or at recording of ADC time, or at calculation of vars (core and/or deriv) or at enabling of scheduling, or all of the above?
+	unsigned short clockInMilliSeconds; ///< Migrate to start of all large datalogs once analysed
+	unsigned short clockIn8thsOfAMilli; ///< Migrate to start of all large datalogs once analysed
+} KeyUserDebug;
 
 
 #else
