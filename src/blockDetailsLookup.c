@@ -539,6 +539,11 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMPage = RPAGE_LINEAR;
 		details->RAMAddress = &Clocks;
 		break;
+	case FlaggablesLocationID:
+		details->size = sizeof(Flaggables);
+		details->RAMPage = RPAGE_LINEAR;
+		details->RAMAddress = &Flaggables;
+		break;
 
 	default:
 		/* Return early if locationID is not valid. */

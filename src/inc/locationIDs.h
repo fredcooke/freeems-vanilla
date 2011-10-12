@@ -159,6 +159,7 @@
 #define DerivedVarsLocationID                          0xF002
 #define CountersLocationID                             0xF003
 #define ClocksLocationID                               0xF004
+#define FlaggablesLocationID                           0xF005
 
 
 #else

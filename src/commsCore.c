@@ -406,11 +406,17 @@ void decodePacketAndRespond(){
 	// FreeEMS Vanilla Firmware Specific cases
 		case clearCountersAndFlagsToZero:
 		{
+			unsigned short zeroCounter;
 			unsigned char* counterPointer = (char*) &Counters;
-			unsigned short counterCounter;
-			for(counterCounter = 0;counterCounter < sizeof(Counter);counterCounter++){
+			for(zeroCounter = 0;zeroCounter < sizeof(Counter);zeroCounter++){
 				*counterPointer = 0;
 				counterPointer++;
+			}
+			KeyUserDebugs.flaggableFlags = 0;
+			unsigned char* flaggablePointer = (char*) &Flaggables;
+			for(zeroCounter = 0;zeroCounter < sizeof(Flaggable);zeroCounter++){
+				*flaggablePointer = 0;
+				flaggablePointer++;
 			}
 			break;
 		}
