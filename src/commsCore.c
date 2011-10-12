@@ -1139,8 +1139,55 @@ void decodePacketAndRespond(){
 		{
 			// see TODO on include at top and modify this line appropriately
 			if(!(compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME)))){
-				if(RXCalculatedPayloadLength != 24){
+				if(RXCalculatedPayloadLength < 1){
 					errorID = payloadLengthTypeMismatch;
+					break;
+				}
+
+				unsigned char localTestMode = *((unsigned char*)RXBufferCurrentPosition); //1; // The only mode, for now.
+				RXBufferCurrentPosition++;
+				if(localTestMode > TEST_MODE_BUMP_UP_CYCLES){
+					errorID = unimplementedTestMode;
+					break;
+				}else if((localTestMode == TEST_MODE_STOP) && (RXCalculatedPayloadLength == 1)){
+					if(!(coreStatusA & BENCH_TEST_ON)){
+						errorID = benchTestNotRunningToStop;
+						break;
+					}
+
+					// Ensure we succeed at stopping it as quickly as possible.
+					ATOMIC_START();
+					KeyUserDebugs.currentEvent = testEventsPerCycle - 1; // Gets incremented then compared with testEventsPerCycle
+					testNumberOfCycles = 1;                              // Gets decremented then compared with zero
+					ATOMIC_END();
+
+					// eventually save and return where it got to
+					break;
+				}else if((localTestMode == TEST_MODE_BUMP_UP_CYCLES) && (RXCalculatedPayloadLength == 2)){
+					if(!(coreStatusA & BENCH_TEST_ON)){
+						errorID = benchTestNotRunningToBump;
+						break;
+					}
+
+					// Get bump value from payload
+					unsigned char bumpCycles = *((unsigned char*)RXBufferCurrentPosition); //1; // The only mode, for now.
+					RXBufferCurrentPosition++;
+
+					if(bumpCycles == 0){
+						errorID = bumpingByZeroMakesNoSense;
+						break;
+					}
+
+					// Bump count by value from payload
+					testNumberOfCycles += bumpCycles;
+					// Given that this function is only for situations when A it's getting near to
+					// zero and B the user is watching, not checking for overflow is reasonable.
+					break;
+				}else if((localTestMode == TEST_MODE_ITERATIONS) && (RXCalculatedPayloadLength == 24)){
+					testMode = localTestMode;
+					// do nothing to fall through, or move other code into here
+				}else{
+					errorID = packetSizeWrongForTestMode;
 					break;
 				}
 
@@ -1149,13 +1196,6 @@ void decodePacketAndRespond(){
 					break;
 				}else{
 					coreStatusA |= BENCH_TEST_ON;
-				}
-
-				testMode = *((unsigned char*)RXBufferCurrentPosition); //1; // The only mode, for now.
-				RXBufferCurrentPosition++;
-				if(testMode != 1){
-					errorID = unimplementedTestMode;
-					break;
 				}
 
 				testEventsPerCycle = *((unsigned char*)RXBufferCurrentPosition); //100;  // @ 10ms  =  1s

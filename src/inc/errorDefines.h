@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -139,6 +139,10 @@
 #define tooShortOfAnEventPeriod         0x777C
 #define noChannelsConfiguredToTest      0x777D
 #define benchTestAlreadyRunning         0x777E
+#define packetSizeWrongForTestMode      0x777F
+#define bumpingByZeroMakesNoSense       0x7780
+#define benchTestNotRunningToStop       0x7781
+#define benchTestNotRunningToBump       0x7782
 
 
 #else
