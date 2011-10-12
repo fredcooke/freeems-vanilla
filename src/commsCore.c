@@ -1172,6 +1172,13 @@ void decodePacketAndRespond(){
 					break;
 				}
 
+				if(coreStatusA & BENCH_TEST_ON){
+					errorID = benchTestAlreadyRunning;
+					break;
+				}else{
+					coreStatusA |= BENCH_TEST_ON;
+				}
+
 				// Pluck the arrays out of the packet for the loop below
 				unsigned char* testEventNumbers = RXBufferCurrentPosition;
 				RXBufferCurrentPosition += 6;

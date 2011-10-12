@@ -138,6 +138,7 @@
 #define invalidNumberOfCycles           0x777B
 #define tooShortOfAnEventPeriod         0x777C
 #define noChannelsConfiguredToTest      0x777D
+#define benchTestAlreadyRunning         0x777E
 
 
 #else

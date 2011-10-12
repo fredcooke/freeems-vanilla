@@ -117,6 +117,8 @@ void PrimaryRPMISR(){
 				// Disable the interrupt again, to be enabled by a serial trigger
 				TIE &= NBIT0;
 				shouldFire = 0;
+				coreStatusA &= CLEAR_BENCH_TEST_ON;
+				return;
 			}
 		}
 

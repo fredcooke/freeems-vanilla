@@ -274,16 +274,17 @@ EXTERN unsigned char coreStatusA;	/* Each bit represents the state of some core 
 #define STAGED_REQUIRED BIT1 /* 1 Fire the staged injectors */
 #define CALC_FUEL_IGN   BIT2 /* 2 Fuel and ignition require calculation (i.e. variables have been updated) */
 #define FORCE_READING   BIT3 /* 3 Flag to force ADC sampling at low rpm/stall */
-#define COREA04         BIT4 /* 4 */
+#define BENCH_TEST_ON   BIT4 /* 4 Bench test running TEMPORARY */
 #define COREA05         BIT5 /* 5 */
 #define COREA06         BIT6 /* 6 */
 //#define COREA07         BIT7 /* 7 Currently used for dual stop byte hack... */
 
-#define CLEAR_FUEL_PUMP_PRIME NBIT0_16 /* */
-#define STAGED_NOT_REQUIRED   NBIT1_16 /*  9 Do not fire the staged injectors */
-#define CLEAR_CALC_FUEL_IGN   NBIT2_16 /* 10 Fuel and ignition don't require calculation */
-#define CLEAR_FORCE_READING   NBIT3_16 /* 11 Clear flag to force ADC sampling at low rpm/stall */
 
+#define CLEAR_FUEL_PUMP_PRIME NBIT0 /* */
+#define STAGED_NOT_REQUIRED   NBIT1 /*  9 Do not fire the staged injectors */
+#define CLEAR_CALC_FUEL_IGN   NBIT2 /* 10 Fuel and ignition don't require calculation */
+#define CLEAR_FORCE_READING   NBIT3 /* 11 Clear flag to force ADC sampling at low rpm/stall */
+#define CLEAR_BENCH_TEST_ON   NBIT4
 
 //TODO make this volatile?
 /* ECT IC extension variable (init not required, don't care where it is, only differences between figures) */
