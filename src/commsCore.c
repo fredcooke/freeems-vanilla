@@ -1144,6 +1144,13 @@ void decodePacketAndRespond(){
 					break;
 				}
 
+				if(coreStatusA & BENCH_TEST_ON){
+					errorID = benchTestAlreadyRunning;
+					break;
+				}else{
+					coreStatusA |= BENCH_TEST_ON;
+				}
+
 				testMode = *((unsigned char*)RXBufferCurrentPosition); //1; // The only mode, for now.
 				RXBufferCurrentPosition++;
 				if(testMode != 1){
@@ -1170,13 +1177,6 @@ void decodePacketAndRespond(){
 				if(testTicksPerEvent < decoderMaxCodeTime){
 					errorID = tooShortOfAnEventPeriod;
 					break;
-				}
-
-				if(coreStatusA & BENCH_TEST_ON){
-					errorID = benchTestAlreadyRunning;
-					break;
-				}else{
-					coreStatusA |= BENCH_TEST_ON;
 				}
 
 				// Pluck the arrays out of the packet for the loop below
