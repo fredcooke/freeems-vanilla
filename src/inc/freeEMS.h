@@ -111,9 +111,10 @@ EXTERN unsigned short configuredBasicDatalogLength; // Move this to a flash/ram 
 
 
 /* Declare instances of variable structs for use */
-EXTERN Clock Clocks;     /* Timer Clocks for various functions */
-EXTERN Counter Counters; /* Execution count for various blocks of code */
-
+EXTERN Clock Clocks;                  ///< Timer Clocks for various functions.
+EXTERN Counter Counters;              ///< Execution count for various blocks of code.
+EXTERN KeyUserDebug KeyUserDebugs;    ///< Formalised key logging vars in one place.
+EXTERN Flaggable Flaggables;          ///< The single instance of our flaggable struct.
 
 /** @page bankedRunningVariables Banked Running Variables
  *
@@ -155,9 +156,6 @@ EXTERN CoreVar CoreVars0; /** Bank 0 core running variables */
 EXTERN DerivedVar* DerivedVars; /** Pointer to the secondary running variables */
 EXTERN DerivedVar DerivedVars0; /** Bank 0 secondary running variables */
 /* If we move to xgate or isr driven logging, add bank 1 back in */
-
-// Formalised key logging vars in one place
-EXTERN KeyUserDebug KeyUserDebugs;
 
 EXTERN ADCBuffer* ADCBuffers;       /** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */
 EXTERN ADCBuffer* ADCBuffersRecord; /** main adc storage area for syncronous sampling in the engine position ISR or injection ISR or ignition ISR etc. */

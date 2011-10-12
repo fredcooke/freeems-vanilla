@@ -59,9 +59,9 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 
 	// Keep track of lost sync in counters
 	if(KeyUserDebugs.decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
-		Counters.decoderSyncLosses++;
+		FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_LOSSES_OFFSET);
 	}else{
-		Counters.decoderSyncStateClears++;
+		FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_STATE_CLEARS_OFFSET);
 	}
 
 	// record unique loss ID

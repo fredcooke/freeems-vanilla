@@ -312,17 +312,61 @@ typedef struct {
 } twoDTableUC;
 
 
-/// Use this block to manage the execution count of various functions loops and ISRs etc. TODO break this up into smaller chunks
+// Some Fred Cooke cunning inspired by EssEss
+#define FLAG_AND_INC_FLAGGABLE(OFFSET)         \
+(*((unsigned char*)(&Flaggables + OFFSET)))++; \
+KeyUserDebugs.flaggableFlags |= (1 << OFFSET);               // End of macro
+
+/// These should all stay at zero, thus they are incremented through a mechanism that also sets a flag in a special variable
 typedef struct {
 	// Error conditions
 	unsigned char callsToUISRs;                    ///< to ensure we aren't accidentally triggering unused ISRs.
 	unsigned char lowVoltageConditions;            ///< low voltage conditions.
+#define FLAG_CALLS_TO_UISRS_OFFSET                 0
+#define FLAG_LOW_VOLTATE_CONDITION_OFFSET          1
 
 	// RPM/Position input
-	unsigned char decoderSyncLosses;               ///< lost decoder syncs.
-	unsigned char decoderSyncCorrections;          ///< definite decoder syncs found while already synced in a different position.
-	unsigned char decoderSyncStateClears;          ///< sync loss called when not synced yet, thus discarding data and preventing sync
+	unsigned char decoderSyncLosses;               ///< Number of times cam, crank or combustion sync is lost.
+	unsigned char decoderSyncCorrections;          ///< Definite decoder syncs found while already synced in a different position.
+	unsigned char decoderSyncStateClears;          ///< Sync loss called when not synced yet, thus discarding data and preventing sync.
+#define FLAG_DECODER_SYNC_LOSSES_OFFSET            2
+#define FLAG_DECODER_SYNC_CORRECTIONS_OFFSET       3
+#define FLAG_DECODER_SYNC_STATE_CLEARS_OFFSET      4
 
+	// If you're getting these, then your serial hardware sucks
+	unsigned char serialNoiseErrors;               ///< Incremented when noise is detected
+	unsigned char serialFramingErrors;             ///< Incremented when a framing error occurs
+	unsigned char serialParityErrors;              ///< Incremented when a parity error occurs
+#define FLAG_SERIAL_NOISE_ERRORS_OFFSET            5
+#define FLAG_SERIAL_FRAMING_ERRORS_OFFSET          6
+#define FLAG_SERIAL_PARITY_ERRORS_OFFSET           7
+
+	// This is caused by heavy interrupt load delaying serial servicing, just a fact of life at high RPM.
+	unsigned char serialOverrunErrors;             ///< Incremented when overrun occurs (duplicated in KeyUserDebug below)
+#define FLAG_SERIAL_OVERRUN_ERRORS_OFFSET          8
+
+	// These can be caused by noise, but if there is no noise, then it's a code issue with the PC side application
+	unsigned char serialEscapePairMismatches;      ///< Incremented when an escape is found but not followed by an escapee
+	unsigned char serialStartsInsideAPacket;       ///< Incremented when a start byte is found inside a packet
+	unsigned char serialPacketsOverLength;         ///< Incremented when the buffer fills up before the end
+	unsigned char serialChecksumMismatches;        ///< Incremented when calculated checksum did not match the received one
+	unsigned char serialPacketsUnderLength;        ///< Incremented when a packet is found that is too short
+#define FLAG_SERIAL_ESCAPE_PAIR_MISMATCHES_OFFSET  9
+#define FLAG_SERIAL_STARTS_INSIDE_A_PACKET_OFFSET 10
+#define FLAG_SERIAL_PACKETS_OVER_LENGTH_OFFSET    11
+#define FLAG_SERIAL_CHECKSUM_MISMATCHES_OFFSET    12
+#define FLAG_SERIAL_PACKETS_UNDER_LENGTH_OFFSET   13
+
+	// Not currently used
+	unsigned char commsDebugMessagesNotSent;       ///< Incremented when a debug message can't be sent due to the TX buffer
+	unsigned char commsErrorMessagesNotSent;       ///< Incremented when an error message can't be sent due to the TX buffer
+#define FLAG_COMMS_DEBUG_MESSAGES_NOT_SENT_OFFSET 14
+#define FLAG_COMMS_ERROR_MESSAGES_NOT_SENT_OFFSET 15
+} Flaggable;
+
+
+/// Use this block to manage the execution count of various functions loops and ISRs etc. TODO break this up into smaller chunks
+typedef struct {
 	// Scheduling
 	unsigned char normalSchedule;                  ///< times events were scheduled normally.
 	unsigned char tooFarToSchedule;                ///< times sched wasnt done to prevent excess advance.
@@ -353,25 +397,7 @@ typedef struct {
 	unsigned char timeoutADCreadings;             ///< Incremented for each ADC reading in RTC because of timeout
 	unsigned char calculationsPerformed;          ///< Incremented for each time the fuel and ign calcs are done
 
-	// UART/serial specific counters
-
-	// If you're getting these, then your hardware sucks
-	unsigned char serialOverrunErrors;             ///< Incremented when overrun occurs (duplicated in KeyUserDebug below)
-	unsigned char serialNoiseErrors;               ///< Incremented when noise is detected
-	unsigned char serialFramingErrors;             ///< Incremented when a framing error occurs
-	unsigned char serialParityErrors;              ///< Incremented when a parity error occurs
-
-	// These can be caused by noise, but if there is no noise, then it's a code issue with the PC side application
-	unsigned char serialEscapePairMismatches;      ///< Incremented when an escape is found but not followed by an escapee
-	unsigned char serialStartsInsideAPacket;       ///< Incremented when a start byte is found inside a packet
-	unsigned char serialPacketsOverLength;         ///< Incremented when the buffer fills up before the end
-	unsigned char serialChecksumMismatches;        ///< Incremented when calculated checksum did not match the received one
-	unsigned char serialPacketsUnderMinLength;     ///< Incremented when a packet is found that is too short
-
-	// Not currently used
 	unsigned char sparePadding;                    ///< Replace with something useful
-	unsigned char commsDebugMessagesNotSent;       ///< Incremented when a debug message can't be sent due to the TX buffer
-	unsigned char commsErrorMessagesNotSent;       ///< Incremented when an error message can't be sent due to the TX buffer
 } Counter;
 
 
@@ -398,9 +424,9 @@ typedef struct {
 	unsigned short tempClock;      ///< Incremented once per log sent, to be moved to a char TODO
 
 	// All flags! Pair keeps things sane for hacky apps that think everything is 16 bit.
-	unsigned char coreStatusA;  ///< Duplicated, migrate here, remove global var
-	unsigned char decoderFlags; ///< Various decoder state flags
-
+	unsigned char coreStatusA;     ///< Duplicated, migrate here, remove global var
+	unsigned char decoderFlags;    ///< Various decoder state flags
+	unsigned short flaggableFlags; ///< Flags to go with our flaggables struct.
 	// counter flags once counter mechanism implemented
 
 	// These things should only exist once in memory, and should be grouped in a struct, perhaps this one
@@ -409,8 +435,8 @@ typedef struct {
 	unsigned char syncLostOnThisEvent;   ///< Where in the input pattern it all went very badly wrong
 	unsigned char syncCaughtOnThisEvent; ///< Where in the input pattern that things started making sense
 	unsigned char decoderSyncResetCalls; ///< Sum of losses, corrections and state clears
-	unsigned char primaryTeethSeen;      ///< Free running counters for number of teeth seen such that...
-	unsigned char secondaryTeethSeen;    ///< ...tooth timing can be used to reconstruct the signal at lower rpm
+	unsigned char primaryTeethSeen;      ///< Free running counters for number of input events, useful at lower RPM
+	unsigned char secondaryTeethSeen;    ///< @copydoc primaryTeethSeen
 
 	// Likewise these too
 	unsigned char serialOverrunErrors;         ///< Incremented when an overrun occurs due to high interrupt load, not a fault, just a fact of life at high RPM
@@ -419,7 +445,6 @@ typedef struct {
 	unsigned short inputEventTimeTolerance;    ///< Required to tune noise rejection over RPM TODO add to LT1 and MissingTeeth
 
 	// replace highest first to avoid hassles for offset based dave/mtx...
-	unsigned short zsp11; ///< Spare US variable
 	unsigned short zsp10; ///< Spare US variable
 	unsigned short zsp9;  ///< Spare US variable
 

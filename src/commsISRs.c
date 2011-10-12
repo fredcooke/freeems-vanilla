@@ -162,7 +162,7 @@ void SCI0ISR(){
 
 		/* If there is noise on the receive line record it */
 		if(flags & SCISR1_RX_NOISE){
-			Counters.serialNoiseErrors++;
+			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
 			KeyUserDebugs.serialHardwareErrorsSum++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
@@ -170,7 +170,7 @@ void SCI0ISR(){
 
 		/* If an overrun occurs record it */
 		if(flags & SCISR1_RX_OVERRUN){
-			Counters.serialOverrunErrors++;
+			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_OVERRUN_ERRORS_OFFSET);
 			KeyUserDebugs.serialOverrunErrors++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
@@ -178,7 +178,7 @@ void SCI0ISR(){
 
 		/* If a framing error occurs record it */
 		if(flags & SCISR1_RX_FRAMING){
-			Counters.serialFramingErrors++;
+			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
 			KeyUserDebugs.serialHardwareErrorsSum++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
@@ -186,7 +186,7 @@ void SCI0ISR(){
 
 		/* If a parity error occurs record it */
 		if(flags & SCISR1_RX_PARITY){
-			Counters.serialParityErrors++;
+			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
 			KeyUserDebugs.serialHardwareErrorsSum++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
@@ -205,7 +205,7 @@ void SCI0ISR(){
 					/* If we are using it */
 					if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
 						/* Increment the counter */
-						Counters.serialStartsInsideAPacket++;
+						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_STARTS_INSIDE_A_PACKET_OFFSET);
 						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
 					}
 					/* Reset to us using it unless someone else was */
@@ -213,7 +213,7 @@ void SCI0ISR(){
 				}
 			}else if(RXPacketLengthReceived >= RX_BUFFER_SIZE){
 				/* Buffer was full, record and reset */
-				Counters.serialPacketsOverLength++;
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_OVER_LENGTH_OFFSET);
 				KeyUserDebugs.serialAndCommsCodeErrorsSum++;
 				resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			}else if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
@@ -233,7 +233,7 @@ void SCI0ISR(){
 					}else{
 						/* Otherwise reset and record as data is bad */
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-						Counters.serialEscapePairMismatches++;
+						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_ESCAPE_PAIR_MISMATCHES_OFFSET);
 						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
 					}
 				}else if(rawByte == ESCAPE_BYTE){
@@ -251,7 +251,7 @@ void SCI0ISR(){
 					/* Check that the checksum matches and that the packet is big enough for header,ID,checksum */
 					if(RXPacketLengthReceived < 4){
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-						Counters.serialPacketsUnderMinLength++;
+						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_UNDER_LENGTH_OFFSET);
 						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
 					}else if(RXCalculatedChecksum == RXReceivedChecksum){
 						/* If it's OK set process flag */
@@ -259,7 +259,7 @@ void SCI0ISR(){
 					}else{
 						/* Otherwise reset the state and record it */
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-						Counters.serialChecksumMismatches++;
+						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_CHECKSUM_MISMATCHES_OFFSET);
 						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
 					}
 				}else{

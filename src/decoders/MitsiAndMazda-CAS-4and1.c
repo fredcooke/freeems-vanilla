@@ -440,7 +440,7 @@ void PrimaryRPMISR(){
 			lastEvent = KeyUserDebugs.currentEvent - 1;
 
 			// Record that we had to reset position...
-			Counters.decoderSyncCorrections++;
+			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_CORRECTIONS_OFFSET);
 			KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}
@@ -570,7 +570,7 @@ void SecondaryRPMISR(){
 			lastEvent = KeyUserDebugs.currentEvent - 1;
 
 			// Record that we had to reset position...
-			Counters.decoderSyncCorrections++;
+			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_CORRECTIONS_OFFSET);
 			KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent;
 			// Should never happen, or should be caught by timing checks below
 		}

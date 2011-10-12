@@ -189,7 +189,7 @@ void SecondaryRPMISR(){
 				resetToNonRunningState(4);
 			}else if(KeyUserDebugs.currentEvent > (numberOfRealEvents -1)){
 				// Record that we had to reset position...
-				Counters.decoderSyncCorrections++;
+				FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_CORRECTIONS_OFFSET);
 				KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;				// Should never happen, or should be caught by timing checks in primary ISR
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.

@@ -1331,7 +1331,7 @@ void sendErrorIfClear(unsigned short errorID){
 		TXBufferInUseFlags = ONES;
 		sendErrorInternal(errorID);
 	}else{
-		Counters.commsErrorMessagesNotSent++;
+		FLAG_AND_INC_FLAGGABLE(FLAG_COMMS_ERROR_MESSAGES_NOT_SENT_OFFSET);
 	}
 }
 
@@ -1427,7 +1427,7 @@ void sendDebugIfClear(unsigned char* message){
 		TXBufferInUseFlags = ONES;
 		sendDebugInternal(message);
 	}else{
-		Counters.commsDebugMessagesNotSent++;
+		FLAG_AND_INC_FLAGGABLE(FLAG_COMMS_DEBUG_MESSAGES_NOT_SENT_OFFSET);
 	}
 }
 
