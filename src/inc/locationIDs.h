@@ -122,7 +122,8 @@
 #define FlashLookupTables_SmallTableConfigs_Border     0x9000
 #endif
 
-#define liveTunableBlockNumeroUno                      0x9000 // rename when there is some reason to...
+#define loggingSettingsLocationID                      0x9000
+#define loggingSettings2LocationID                     0x9000
 
 #ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
 #define SmallTableConfigs_FixedConfigBlocks_Border     0xA000

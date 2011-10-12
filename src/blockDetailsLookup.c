@@ -373,15 +373,22 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		break;
 
 	/* TablesB small tables */
-	case liveTunableBlockNumeroUno:
-		details->size = 1;//sizeof(someSTruct);
+	case loggingSettingsLocationID:
+		details->size = sizeof(loggingSetting);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesB.SmallTablesB;
-		details->FlashAddress = SmallTablesBFlashLocation;
+		details->RAMAddress = (void*)&TablesB.SmallTablesB.loggingSettings;
+		details->FlashAddress = loggingSettingsLocation;
 		details->parent = SmallTablesBLocationID;
 		break;
-		// TODO add data chunks from TablesC when some are put in
+	case loggingSettings2LocationID:
+		details->size = sizeof(loggingSetting);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesB.SmallTablesB.loggingSettings;
+		details->FlashAddress = loggingSettings2Location;
+		details->parent = SmallTablesBLocationID;
+		break;
 
 	/* TablesC small tables */
 		// TODO add data chunks from TablesC when some are put in
