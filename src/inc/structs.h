@@ -459,6 +459,9 @@ typedef struct {
 	unsigned short clockIn8thsOfAMilli; ///< Migrate to start of all large datalogs once analysed
 } KeyUserDebug;
 
+// Any changes to the above that don't maintain the same size will change the packet size
+#define maxBasicDatalogLength (sizeof(CoreVar) + sizeof(DerivedVar) + sizeof(KeyUserDebug))
+
 
 #else
 	/* let us know if we are being untidy with headers */

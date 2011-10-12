@@ -472,8 +472,6 @@ void initVariables(){
 	injectorMainControlRegisters[4] = TCTL1_ADDR;
 	injectorMainControlRegisters[5] = TCTL1_ADDR;
 
-	configuredBasicDatalogLength = maxBasicDatalogLength;
-
 	coreStatusA |= FUEL_PUMP_PRIME;
 
 	// Initial state is NOT to fire... can be configured by scheduler if required.

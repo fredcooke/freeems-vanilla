@@ -107,9 +107,6 @@ extern unsigned short tachoPeriod;
 EXTERN unsigned char portHDebounce;
 
 
-EXTERN unsigned short configuredBasicDatalogLength; // Move this to a flash/ram config item too.
-
-
 /* Declare instances of variable structs for use */
 EXTERN Clock Clocks;                  ///< Timer Clocks for various functions.
 EXTERN Counter Counters;              ///< Execution count for various blocks of code.

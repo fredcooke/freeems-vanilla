@@ -84,9 +84,9 @@
 #define adjust2dTableCell           0x0134
 
 /* Datalog request packets */
-#define requestBasicDatalog         0x0190
+#define requestDatalogPacket        0x0190
 #define responseBasicDatalog        0x0191 /* Defined because it can be used both synchronously and asynchronously */
-#define requestConfigurableDatalog  0x0192
+#define unusedDatalogPacketIDUseMe  0x0192
 #define responseConfigurableDatalog 0x0193 /* Defined because it can be used both synchronously and asynchronously */
 #define setAsyncDatalogType         0x0194
 #define requestByteLADatalog        0x0196 // logic analyser

@@ -91,7 +91,7 @@ void populateBasicDatalog(){
 	TXBufferCurrentPositionHandler += sizeof(KeyUserDebug);
 
 	/* Set/Truncate the log to the specified length */
-	TXBufferCurrentPositionHandler = position + configuredBasicDatalogLength;
+	TXBufferCurrentPositionHandler = position + TablesB.SmallTablesB.loggingSettings.basicDatalogLength;
 }
 
 
@@ -854,7 +854,7 @@ void decodePacketAndRespond(){
 			errorID = writeBlock(&details, leftOverBuffer);
 			break;
 		}
-		case requestBasicDatalog:
+		case requestDatalogPacket: // Set type through standard configuration methods
 		{
 			if((RXCalculatedPayloadLength > 2) || (RXCalculatedPayloadLength == 1)){
 				errorID = payloadLengthTypeMismatch;
@@ -865,23 +865,17 @@ void decodePacketAndRespond(){
 					errorID = datalogLengthExceedsMax;
 					break;
 				}else{
-					configuredBasicDatalogLength = newConfiguredLength;
+					TablesB.SmallTablesB.loggingSettings.basicDatalogLength = newConfiguredLength;
 				}
 			}// fall through to use existing configured length
 
 			/* Set the length field up */
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
-			*(unsigned short*)TXBufferCurrentPositionHandler = configuredBasicDatalogLength;
+			*(unsigned short*)TXBufferCurrentPositionHandler = TablesB.SmallTablesB.loggingSettings.basicDatalogLength;
 			TXBufferCurrentPositionHandler += 2;
 
 			/* Fill out the log and send */
-			populateBasicDatalog();
-			break;
-		}
-		case requestConfigurableDatalog:
-		{
-			/// perform function TODO @todo REWORK review this
-			errorID = unimplementedFunction;
+			populateBasicDatalog(); // TODO change this to pull type from settings and call generic populator which populates with passed in type
 			break;
 		}
 		case setAsyncDatalogType:
@@ -892,12 +886,12 @@ void decodePacketAndRespond(){
 			}
 
 			unsigned char newDatalogType = *((unsigned char*)RXBufferCurrentPosition);
-			if(newDatalogType > 0x01){
+			if(newDatalogType > asyncDatalogLastType){
 				errorID = noSuchAsyncDatalogType;
 				break;
 			}
 
-			TablesB.SmallTablesB.datalogStreamType = newDatalogType;
+			TablesB.SmallTablesB.loggingSettings.datalogStreamType = newDatalogType;
 			break;
 		}
 		case forwardPacketOverCAN:

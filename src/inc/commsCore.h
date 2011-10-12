@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -170,6 +170,7 @@ EXTERN unsigned short	RXHeaderPayloadLength;
 #define asyncDatalogStreamByte 0x08 ///< Send out a single byte as often as possible, ~1kHz with occasional ~3ms gaps from math running instead
 #define asyncDatalogStreamWord 0x09 ///< Send out a single word as often as possible, ~1kHz with occasional ~3ms gaps from math running instead
 #define asyncDatalogStreamLong 0x0A ///< Send out a single long as often as possible, ~1kHz with occasional ~3ms gaps from math running instead
+#define asyncDatalogLastType   asyncDatalogStreamLong
 
 
 // Stuff that should only be found in this file.

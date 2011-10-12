@@ -54,9 +54,6 @@
  */
 
 
-const unsigned short maxBasicDatalogLength = sizeof(CoreVar) + sizeof(DerivedVar);
-
-
 /* Constants */
 /* &&&&&&&&&& WARNING &&&&&&&&&& These need to be changed if the timer period is changed at all!! &&&&&&&&&& WARNING &&&&&&&&&& */
 /* TODO It may be better to make these actual times and calculate the number of timer units such that a change in time base of the timer doesn't affect the code. */

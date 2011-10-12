@@ -148,7 +148,7 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 			}else{// if(lastCalcCount != Counters.calculationsPerformed){ // substitute true for full speed continuous stream test...
 
 				/* send asynchronous data log if required */
-				switch (TablesB.SmallTablesB.datalogStreamType) {
+				switch (TablesB.SmallTablesB.loggingSettings.datalogStreamType) {
 					case asyncDatalogOff:
 					{
 						break;
@@ -175,7 +175,7 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 						TXBufferCurrentPositionHandler += 2;
 
 						/* Set the length */
-						*((unsigned short*)TXBufferCurrentPositionHandler) = configuredBasicDatalogLength;
+						*((unsigned short*)TXBufferCurrentPositionHandler) = TablesB.SmallTablesB.loggingSettings.basicDatalogLength;
 						TXBufferCurrentPositionHandler += 2;
 
 						/* populate data log */

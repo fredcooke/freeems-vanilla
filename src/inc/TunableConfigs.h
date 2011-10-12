@@ -79,6 +79,26 @@
 #define ARRAY_OF_6_FUEL_TRIMS	{32768, 32768, 32768, 32768, 32768, 32768}
 
 
+/** Holds all configuration for logging.
+ *
+ * These are in tunable config such that the system can pick up where it left
+ * off if reset with settings burned to flash, or simply switch back to default
+ * if changed in ram and not burned and then reset.
+ */
+typedef struct {
+	unsigned char datalogStreamType;            ///< Which type of datalog to pump out as fast as we can. @see commsCore.h
+	unsigned char datalogPollingType;           ///< Which type of datalog to pump out as fast as we can. @see commsCore.h
+	unsigned short basicDatalogLength;          ///< How much of the basic datalog to send, cuts off the trailing end.
+	void* datalogByteStreamSourceAddress;       ///< Where to grab our data from.
+	void* datalogWordStreamSourceAddress;       ///< Where to grab our data from.
+	void* datalogLongStreamSourceAddressFirst;  ///< Where to grab our data from. If the second address is set to zero, get 4 bytes from this address.
+	void* datalogLongStreamSourceAddressSecond; ///< Where to grab our data from. If this is non-zero, get 2 bytes from the first address and 2 from this address.
+	// TODO scratch pad configs
+	// TODO structs configs
+	// Note, position type has no config and "just works"
+} loggingSetting;
+
+
 #define SMALL_TABLES_1_FILLER_SIZE (flashSectorSize - (sizeof(twoDTableUS) * 8))  // Update this if adding another table!
 /**
  * One of four structs of live tunable data such as small tables and fuel trims
@@ -103,12 +123,11 @@ typedef struct {
 CASSERT((sizeof(SmallTables1) == flashSectorSize), SmallTables1)
 
 
-#define SMALL_TABLES_2_FILLER_SIZE (flashSectorSize - (2 + 12 + 1)) // Update this if adding another table!
+#define SMALL_TABLES_2_FILLER_SIZE (flashSectorSize - (sizeof(loggingSetting) + 12)) // Update this if adding another table/struct!
 /** @copydoc SmallTables1 */
 typedef struct {
-	void* datalogHighSpeedSourceAddress;                     ///< Where to grab our data from.
+	loggingSetting loggingSettings;                          ///< @copydoc loggingSetting
 	unsigned short perCylinderFuelTrims[INJECTION_CHANNELS]; ///< Trims for injection, from 0% to 200% of base.
-	unsigned char datalogStreamType;                         ///< Which type of datalog to pump out as fast as we can.
 	unsigned char filler[SMALL_TABLES_2_FILLER_SIZE];        ///< Padding data.
 } SmallTables2;
 CASSERT((sizeof(SmallTables2) == flashSectorSize), SmallTables2)

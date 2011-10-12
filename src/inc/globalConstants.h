@@ -154,10 +154,6 @@ EXTERN const unsigned long masterFuelConstant;
 EXTERN const unsigned long MAFFuelConstant;
 
 
-/* Serial data log stuff, temporary */
-EXTERN const unsigned short maxBasicDatalogLength;
-
-
 /// @todo TODO Move these to decoder interface AND rename to be more generic/meaningful/accurate, and make set by each decoder where appropriate
 // These need to be changed if the timer period is changed at all
 /* The number of timer units it takes for the switch on scheduling code to run */
