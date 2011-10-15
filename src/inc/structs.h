@@ -312,7 +312,7 @@ typedef struct {
 
 // Some Fred Cooke cunning inspired by EssEss
 #define FLAG_AND_INC_FLAGGABLE(OFFSET)         \
-(*((unsigned char*)(&Flaggables + OFFSET)))++; \
+(*(((unsigned char*)&Flaggables) + OFFSET))++; \
 KeyUserDebugs.flaggableFlags |= (1 << OFFSET);               // End of macro
 
 /// These should all stay at zero, thus they are incremented through a mechanism that also sets a flag in a special variable
