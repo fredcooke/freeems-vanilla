@@ -163,7 +163,7 @@ void SCI0ISR(){
 		/* If there is noise on the receive line record it */
 		if(flags & SCISR1_RX_NOISE){
 			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrorsSum++;
+			KeyUserDebugs.serialHardwareErrors++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
 		}
@@ -179,7 +179,7 @@ void SCI0ISR(){
 		/* If a framing error occurs record it */
 		if(flags & SCISR1_RX_FRAMING){
 			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrorsSum++;
+			KeyUserDebugs.serialHardwareErrors++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
 		}
@@ -187,7 +187,7 @@ void SCI0ISR(){
 		/* If a parity error occurs record it */
 		if(flags & SCISR1_RX_PARITY){
 			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrorsSum++;
+			KeyUserDebugs.serialHardwareErrors++;
 			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			return;
 		}
@@ -206,7 +206,7 @@ void SCI0ISR(){
 					if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
 						/* Increment the counter */
 						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_STARTS_INSIDE_A_PACKET_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
+						KeyUserDebugs.serialAndCommsCodeErrors++;
 					}
 					/* Reset to us using it unless someone else was */
 					resetReceiveState(COM_SET_SCI0_INTERFACE_ID);
@@ -214,7 +214,7 @@ void SCI0ISR(){
 			}else if(RXPacketLengthReceived >= RX_BUFFER_SIZE){
 				/* Buffer was full, record and reset */
 				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_OVER_LENGTH_OFFSET);
-				KeyUserDebugs.serialAndCommsCodeErrorsSum++;
+				KeyUserDebugs.serialAndCommsCodeErrors++;
 				resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 			}else if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
 				if(RXStateFlags & RX_SCI_ESCAPED_NEXT){
@@ -234,7 +234,7 @@ void SCI0ISR(){
 						/* Otherwise reset and record as data is bad */
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_ESCAPE_PAIR_MISMATCHES_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
+						KeyUserDebugs.serialAndCommsCodeErrors++;
 					}
 				}else if(rawByte == ESCAPE_BYTE){
 					/* Set flag to indicate that the next byte should be un-escaped. */
@@ -252,7 +252,7 @@ void SCI0ISR(){
 					if(RXPacketLengthReceived < 4){
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_UNDER_LENGTH_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
+						KeyUserDebugs.serialAndCommsCodeErrors++;
 					}else if(RXCalculatedChecksum == RXReceivedChecksum){
 						/* If it's OK set process flag */
 						RXStateFlags |= RX_READY_TO_PROCESS;
@@ -260,7 +260,7 @@ void SCI0ISR(){
 						/* Otherwise reset the state and record it */
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
 						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_CHECKSUM_MISMATCHES_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrorsSum++;
+						KeyUserDebugs.serialAndCommsCodeErrors++;
 					}
 				}else{
 					/* If it isn't special process it! */

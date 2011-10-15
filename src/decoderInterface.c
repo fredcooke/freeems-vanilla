@@ -48,7 +48,7 @@
  * @author Fred Cooke
  */
 void resetToNonRunningState(unsigned char uniqueLossID){
-	KeyUserDebugs.decoderSyncResetCalls++;
+	KeyUserDebugs.syncResetCalls++;
 
 	/* Reset RPM to zero */
 	ticksPerDegree0 = 0;

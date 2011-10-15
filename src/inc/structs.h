@@ -177,26 +177,24 @@ typedef struct {
  */
 typedef struct {
 	/*  */
-	unsigned short LoadMain;       ///< Configurable unit of load
-//	unsigned short LoadSecondary;
+	unsigned short LoadMain;       ///< Configurable unit of load, same scale as VE by default
+	unsigned short VEMain;         ///< Divide by 512 to get 0 - 128%
+	unsigned short Lambda;         ///< Divide by 32768 to get Lamda 0 - 2.0
 
-	unsigned short VEMain;         ///< Divide by 512 to get %
-//	unsigned short VESecondary;
+	// TODO remove these:
+	unsigned short AirFlow;        ///< Top half of the equation - intermediate, take this out of derived vars into own special struct with other intermediates
+	unsigned short densityAndFuel; ///< Bottom half of the equation - ditto, or, just ditch. This is dev/debug code, really...
 
-	unsigned short Lambda;         ///< Divide by 32768 to get Lamda
-	unsigned short AirFlow;        ///< Top half of the equation
-	unsigned short densityAndFuel; ///< Bottom half of the equation
+	unsigned short BasePW;         ///< Raw PW before corrections divide by 1250 for ms
+	unsigned short ETE;            ///< Engine Temperature Enrichment percentage correction divide by 327.68 for 0 - 200%
+	signed short TFCTotal;         ///< Transient fuel correction PW (+/-) divide by 1250 for ms
 
-	unsigned short BasePW;         ///< Raw PW before corrections
-	unsigned short ETE;            ///< Engine Temperature Enrichment percentage correction
-	signed short TFCTotal;         ///< Transient fuel correction PW (+/-)
-
-	unsigned short EffectivePW;    ///< Actual PW of fuel delivery
-	unsigned short IDT;            ///< Minimum PW before fuel flow begins
-	unsigned short RefPW;          ///< Reference electrical PW
+	unsigned short EffectivePW;    ///< Actual PW of fuel delivery, before per channel corrections, divide by 1250 for ms
+	unsigned short IDT;            ///< PW duration before fuel flow begins, before per channel corrections, divide by 1250 for ms
+	unsigned short RefPW;          ///< Reference electrical PW what each cylinder is based on, used for all general decisions, divide by 1250 for ms
 
 	unsigned short Advance;        ///< Ignition advance (scaled degrees / oneDegree(currently 50) = degrees)
-	unsigned short Dwell;          ///< Dwell Angle (ticks / 1250 = ms)
+	unsigned short Dwell;          ///< Dwell period, divide by 1250 for ms
 } DerivedVar;
 
 
@@ -434,14 +432,14 @@ typedef struct {
 	unsigned char syncLostWithThisID;    ///< A unique identifier for the reason behind a loss of sync
 	unsigned char syncLostOnThisEvent;   ///< Where in the input pattern it all went very badly wrong
 	unsigned char syncCaughtOnThisEvent; ///< Where in the input pattern that things started making sense
-	unsigned char decoderSyncResetCalls; ///< Sum of losses, corrections and state clears
+	unsigned char syncResetCalls;        ///< Sum of losses, corrections and state clears
 	unsigned char primaryTeethSeen;      ///< Free running counters for number of input events, useful at lower RPM
 	unsigned char secondaryTeethSeen;    ///< @copydoc primaryTeethSeen
 
 	// Likewise these too
 	unsigned char serialOverrunErrors;         ///< Incremented when an overrun occurs due to high interrupt load, not a fault, just a fact of life at high RPM
-	unsigned char serialHardwareErrorsSum;     ///< Sum of noise, parity, and framing errors
-	unsigned char serialAndCommsCodeErrorsSum; ///< Sum of checksum, escape mismatches, starts inside, and over/under length
+	unsigned char serialHardwareErrors;     ///< Sum of noise, parity, and framing errors
+	unsigned char serialAndCommsCodeErrors; ///< Sum of checksum, escape mismatches, starts inside, and over/under length
 	unsigned short inputEventTimeTolerance;    ///< Required to tune noise rejection over RPM TODO add to LT1 and MissingTeeth
 
 	// replace highest first to avoid hassles for offset based dave/mtx...
