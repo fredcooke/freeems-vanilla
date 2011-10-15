@@ -48,7 +48,9 @@
  * @author Fred Cooke
  */
 void resetToNonRunningState(unsigned char uniqueLossID){
-	KeyUserDebugs.syncResetCalls++;
+	if(uniqueLossID){
+		KeyUserDebugs.syncResetCalls++;
+	}
 
 	/* Reset RPM to zero */
 	ticksPerDegree0 = 0;
