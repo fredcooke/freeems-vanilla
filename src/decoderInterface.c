@@ -73,7 +73,7 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 	KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;
 
 	/* Clear all sync flags to lost state */
-	KeyUserDebugs.decoderFlags &= (CLEAR_CAM_SYNC & CLEAR_CRANK_SYNC & CLEAR_COMBUSTION_SYNC & CLEAR_LAST_PERIOD_VALID & CLEAR_LAST_TIMESTAMP_VALID);
+	KeyUserDebugs.decoderFlags = 0; // Nothing should use this except for us anyway!
 	perDecoderReset();
 	// TODO more stuff needs resetting here, but only critical things.
 }

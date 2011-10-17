@@ -59,6 +59,7 @@ void decoderInitPreliminary(){
 	TCTL4 = 0x02; /* Capture on falling edge of T0 only, capture off for 1,2,3 */
 }
 
+
 void perDecoderReset(){
 	NumberOfTwinMatchedPairs = 0; // Var for one more opportunity to sync :-)
 }
@@ -69,8 +70,8 @@ void PrimaryRPMISR(void) {
 	TFLG = 0x01;
 
 	/* Save all relevant available data here */
-	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned short edgeTimeStamp = TC0;    /* Save the edge time stamp */
+	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 	// TODO DEBUG/TUNING MACRO HERE!
 
@@ -90,118 +91,142 @@ void PrimaryRPMISR(void) {
 
 	if(!(PTITCurrentState & 0x01)){
 		// Calc this period
-		unsigned long thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
-
-		unsigned long larger;
-		unsigned long smaller;
-		unsigned char thisLargerThanLast;
-		if(thisInterEventPeriod > lastInterEventPeriod){
-			larger = thisInterEventPeriod;
-			smaller = lastInterEventPeriod;
-			thisLargerThanLast = TRUE;
-		}else{
-			smaller = lastInterEventPeriod;
-			larger = thisInterEventPeriod;
-			thisLargerThanLast = FALSE;
-		}
-
-		// Calculate tolerance, then add and subtract it from whatever required
-		unsigned long tolerance = (smaller * 1024) / 4096; // TODO un hard code this. currently 25% tolerance
-		// div by 4k = fairly high minimum RPM for low teeth wheels
-		// perhaps provide some options for different tolerance on different types of expected widths
-		// the wide one on larger missing counts has more time to get to a higher RPM and needs a wider tolerance
-		// possible options: different percent of smaller for each type, different percent and based on ideal w/b instead of smaller
-		// Another option that keeps the 25% tolerance as the correct amount for any missing count is to simply take the percentage of
-		// the smaller component and multiply by the number of missing teeth! This can be a flash config flag option or possibly rpm thresholded
-		// it could be done on a per level basis too.
-		unsigned long idealWide = smaller * (MISSING_TEETH + 1); // Do this first because it's used twice.
-		// Ideal backward is dynamic because it's failing anyway...
-		if(larger < (smaller + tolerance)){ // has to be first to be most efficient
-			matches.pairs.thisPair = MatchedPair; // same period, roughly
-		}else if((larger < (idealWide + tolerance)) && (larger > (idealWide - tolerance))){ // has to be second to be most efficient
-			if(thisLargerThanLast){
-				matches.pairs.thisPair = NarrowWide;
-			}else{
-				matches.pairs.thisPair = WideNarrow;
-			}
-		}else if((larger <  (((smaller * (MISSING_TEETH + 2)) / 2) + tolerance)) && (larger > (((smaller * (MISSING_TEETH + 2)) / 2) - tolerance))){ // this leads to further code running later, so should come next
-			if(thisLargerThanLast){
-				matches.pairs.thisPair = NarrowBackward;
-			}else{
-				matches.pairs.thisPair = BackwardNarrow;
-			}
-		}else if(larger > (idealWide + tolerance)){
-			if(thisLargerThanLast){
-				resetToNonRunningState(yourVRSensorHasALoosePlugFixIt);
-			}else{
-				resetToNonRunningState(noiseAppearedWayTooEarlyAsIfItWasAVRToothButWasnt);
-			}
-		}else{ // fell between the cracks, not matched, settings very tight, therefore was in two possible places on either side of (N+2)/2.
-			resetToNonRunningState(yourSyncToleranceIsTighterThanAWellYouGetTheIdea);
-		}
-
-
 		unsigned char lastEvent = 0;
-		// This all needs a little more complexity for cam only/crank only/crank + cam sync use, hard coded to crank only for now
-		if(!(KeyUserDebugs.decoderFlags & CRANK_SYNC) && (KeyUserDebugs.decoderFlags & LAST_MATCH_VALID)){ // If we aren't synced and have enough data
-			if(matches.pattern == MatchedPairMatchedPair){      //         | small | small | small | - All periods match, could be anywhere, unless...
-				NumberOfTwinMatchedPairs++;
-				// Because this method REQUIRES 4 evenly spaced teeth to work, it's only available to 5-1 or greater wheels.
-				if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs == (NUMBER_OF_WHEEL_EVENTS - 3))){ // This can't find a match until it's on it's fourth execution
-					// This will match repeatedly then un-sync on next cycle if tolerance is set too high
-					KeyUserDebugs.currentEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
-					SET_SYNC_LEVEL_TO(CRANK_SYNC); // Probability of this = (N + 1) / M
-					// Sample RPM and ADCs here on the basis of cylinders and revolutions
-					// IE, sample RPM once (total teeth (inc missing) per engine cycle / cyls) events have passed
-					// And, do it from the last matching tooth, and do that on every tooth
-					// So have a buffer of time stamps, which would take a LOT of RAM, hmmm, perhaps just wait.
-					// Missing teeth users are clearly not fussed about fast starting anyway
-					// And once sync is gained good readings can be taken without excess memory usage
-				}else if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs > (NUMBER_OF_WHEEL_EVENTS - 3))){ // More matched pairs than possible with config
-					resetToNonRunningState(yourSyncToleranceIsLooserThanAWellYouGetTheIdea);
-				} // else fall through to wait.
-			}else if(matches.pattern == MatchedPairNarrowWide){ // | small | small |      BIG      | Last tooth is first tooth after missing  - ((M-N)-3)/M = common
-				KeyUserDebugs.currentEvent = 0;
-				SET_SYNC_LEVEL_TO(CRANK_SYNC);
-			}else if(matches.pattern == NarrowWideWideNarrow){  // | small |      BIG      | small | Last tooth is second tooth after missing - 1/M
-				KeyUserDebugs.currentEvent = 1;
-				SET_SYNC_LEVEL_TO(CRANK_SYNC);
-			}else if(matches.pattern == WideNarrowMatchedPair){ // |      BIG      | small | small | Last tooth is third tooth after missing  - 1/M
-				KeyUserDebugs.currentEvent = 2;
-				SET_SYNC_LEVEL_TO(CRANK_SYNC);
-			}else{
-				resetToNonRunningState(matches.pattern); // Where they are defined individually in the error file! Beautiful!!
-			}
-		}else if(KeyUserDebugs.decoderFlags & CRANK_SYNC){ // Make sure that we should stay in sync
-			lastEvent = KeyUserDebugs.currentEvent;
-			KeyUserDebugs.currentEvent++;
-			if(KeyUserDebugs.currentEvent == numberOfRealEvents){
-				KeyUserDebugs.currentEvent = 0;
-			}
+		unsigned long thisInterEventPeriod = 0;
+		if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
+			thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
 
-			if((KeyUserDebugs.currentEvent == 0) && (matches.pattern != MatchedPairNarrowWide)){ // First event after gap
-				resetToNonRunningState(matches.pattern);
-			}else if((KeyUserDebugs.currentEvent == 1) && (matches.pattern != NarrowWideWideNarrow)){ // Second event after gap
-				resetToNonRunningState(matches.pattern);
-			}else if((KeyUserDebugs.currentEvent == 2) && (matches.pattern != WideNarrowMatchedPair)){ // Third event after gap
-				resetToNonRunningState(matches.pattern);
-			}else if(matches.pattern != MatchedPairMatchedPair){ // All other events should be preceeded by two matched pairs
-				resetToNonRunningState(matches.pattern);
-			} // else carry on happily as always
+			if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
+				unsigned long larger;
+				unsigned long smaller;
+				unsigned char thisLargerThanLast;
+				if(thisInterEventPeriod > lastInterEventPeriod){
+					larger = thisInterEventPeriod;
+					smaller = lastInterEventPeriod;
+					thisLargerThanLast = 1;
+				}else{
+					larger = lastInterEventPeriod;
+					smaller = thisInterEventPeriod;
+					thisLargerThanLast = 0;
+				}
+
+				// Calculate tolerance, then add and subtract it from whatever required
+				unsigned long tolerance = (smaller * 1024) / 4096; // TODO un hard code this. currently 25% tolerance
+				// div by 4k = fairly high minimum RPM for low teeth wheels
+				// perhaps provide some options for different tolerance on different types of expected widths
+				// the wide one on larger missing counts has more time to get to a higher RPM and needs a wider tolerance
+				// possible options: different percent of smaller for each type, different percent and based on ideal w/b instead of smaller
+				// Another option that keeps the 25% tolerance as the correct amount for any missing count is to simply take the percentage of
+				// the smaller component and multiply by the number of missing teeth! This can be a flash config flag option or possibly rpm thresholded
+				// it could be done on a per level basis too.
+				unsigned long idealWide = 0;
+				unsigned long idealBackward = 0;
+				if(larger < (smaller + tolerance)){ // has to be first to be most efficient
+					matches.pairs.thisPair = MatchedPair; // same period, roughly
+				}else{
+					idealWide = smaller * (MISSING_TEETH + 1); // has to be second to be most efficient
+					if((larger < (idealWide + tolerance)) && (larger > (idealWide - tolerance))){
+						if(thisLargerThanLast){
+							matches.pairs.thisPair = NarrowWide;
+						}else{
+							matches.pairs.thisPair = WideNarrow;
+						}
+					}else{ // We're not in good shape...
+						idealBackward = ((smaller * (MISSING_TEETH + 2)) / 2); // this leads to further code running later, so should come next
+						if((larger <  (idealBackward + tolerance)) && (larger > (idealBackward - tolerance))){
+							if(thisLargerThanLast){
+								matches.pairs.thisPair = NarrowBackward;
+							}else{
+								matches.pairs.thisPair = BackwardNarrow;
+							}
+						}else if(larger > (idealWide + tolerance)){ // We're in very bad shape...
+							if(thisLargerThanLast){
+								resetToNonRunningState(yourVRSensorHasALoosePlugFixIt);
+							}else{
+								resetToNonRunningState(noiseAppearedWayTooEarlyAsIfItWasAVRToothButWasnt);
+							}
+						}else{ // Fell between the cracks, not matched, settings very tight, therefore was in two possible places on either side of (N+2)/2.
+							resetToNonRunningState(yourSyncToleranceIsTighterThanAWellYouGetTheIdea);
+						}
+					}
+				}
+
+				// This all needs a little more complexity for cam only/crank only/crank + cam sync use, hard coded to crank only for now
+				if(KeyUserDebugs.decoderFlags & LAST_MATCH_VALID){ // If we have enough data
+					if(KeyUserDebugs.decoderFlags & CRANK_SYNC){
+						lastEvent = KeyUserDebugs.currentEvent;
+						KeyUserDebugs.currentEvent++;
+						if(KeyUserDebugs.currentEvent == numberOfRealEvents){
+							KeyUserDebugs.currentEvent = 0;
+						}
+
+						if((KeyUserDebugs.currentEvent == 0) && (matches.pattern != MatchedPairNarrowWide)){ // First event after gap
+							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+						}else if((KeyUserDebugs.currentEvent == 1) && (matches.pattern != NarrowWideWideNarrow)){ // Second event after gap
+							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+						}else if((KeyUserDebugs.currentEvent == 2) && (matches.pattern != WideNarrowMatchedPair)){ // Third event after gap
+							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+						}else if((KeyUserDebugs.currentEvent > 2) && (matches.pattern != MatchedPairMatchedPair)){ // All other events should be preceeded by two matched pairs
+							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+						} // else carry on happily as always
+					}else{
+						if(matches.pattern == MatchedPairMatchedPair){      //         | small | small | small | - All periods match, could be anywhere, unless...
+							NumberOfTwinMatchedPairs++;
+							// Because this method REQUIRES 4 evenly spaced teeth to work, it's only available to 5-1 or greater wheels.
+							if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs == (NUMBER_OF_WHEEL_EVENTS - 3))){ // This can't find a match until it's on it's fourth execution
+								// This will match repeatedly then un-sync on next cycle if tolerance is set too high
+								KeyUserDebugs.currentEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
+								SET_SYNC_LEVEL_TO(CRANK_SYNC); // Probability of this = (N + 1) / M
+								// Sample RPM and ADCs here on the basis of cylinders and revolutions
+								// IE, sample RPM once (total teeth (inc missing) per engine cycle / cyls) events have passed
+								// And, do it from the last matching tooth, and do that on every tooth
+								// So have a buffer of time stamps, which would take a LOT of RAM, hmmm, perhaps just wait.
+								// Missing teeth users are clearly not fussed about fast starting anyway
+								// And once sync is gained good readings can be taken without excess memory usage
+							}else if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs > (NUMBER_OF_WHEEL_EVENTS - 3))){ // More matched pairs than possible with config
+								resetToNonRunningState(yourSyncToleranceIsLooserThanAWellYouGetTheIdea);
+							} // else fall through to wait.
+						}else if(matches.pattern == MatchedPairNarrowWide){ // | small | small |      BIG      | Last tooth is first tooth after missing  - ((M-N)-3)/M = common
+							KeyUserDebugs.currentEvent = 0;
+							SET_SYNC_LEVEL_TO(CRANK_SYNC);
+						}else if(matches.pattern == NarrowWideWideNarrow){  // | small |      BIG      | small | Last tooth is second tooth after missing - 1/M
+							KeyUserDebugs.currentEvent = 1;
+							SET_SYNC_LEVEL_TO(CRANK_SYNC);
+						}else if(matches.pattern == WideNarrowMatchedPair){ // |      BIG      | small | small | Last tooth is third tooth after missing  - 1/M
+							KeyUserDebugs.currentEvent = 2;
+							SET_SYNC_LEVEL_TO(CRANK_SYNC);
+						}else{
+							resetToNonRunningState(matches.pattern); // Where they are defined individually in the error file! Beautiful!!
+						}
+					}
+				}
+			}
 		}
 
+		unsigned short thisTicksPerDegree = 0;
 		if(KeyUserDebugs.decoderFlags & CRANK_SYNC){
 			SCHEDULE_ECT_OUTPUTS();
 
 			// sample adcs and record rpm here after scheduling
 			unsigned short thisAngle = 0;
 			if(KeyUserDebugs.currentEvent == 0){
-				thisAngle = eventAngles[KeyUserDebugs.currentEvent] + totalEventAngleRange - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
+				thisAngle = eventAngles[KeyUserDebugs.currentEvent] + angleOfSingleIteration - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
 			}else{
 				thisAngle = eventAngles[KeyUserDebugs.currentEvent] - eventAngles[lastEvent];
 			}
 
-			*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
+			*ticksPerDegreeRecord = thisTicksPerDegree;
+			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+			KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
+			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
+				resetToNonRunningState(1);
+				return;
+			}else if(ratioBetweenThisAndLast < fixedConfigs2.decoderSettings.accelerationInputEventTimeTolerance){
+				resetToNonRunningState(2);
+				return;
+			}
+
 			sampleEachADC(ADCBuffers);
 			Counters.syncedADCreadings++;
 
@@ -218,7 +243,7 @@ void PrimaryRPMISR(void) {
 			}
 			matches.pairs.lastPair = matches.pairs.thisPair; // Stash var for next time
 			lastInterEventPeriod = thisInterEventPeriod;
-//			lastTicksPerDegree = thisTicksPerDegree;
+			lastTicksPerDegree = thisTicksPerDegree;
 			KeyUserDebugs.decoderFlags |= LAST_PERIOD_VALID;
 		}
 		// Always

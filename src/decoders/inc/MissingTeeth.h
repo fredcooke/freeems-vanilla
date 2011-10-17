@@ -38,8 +38,8 @@
 
 
 typedef struct {
-	unsigned thisPair: 4;
 	unsigned lastPair: 4;
+	unsigned thisPair: 4;
 } twoPairs;
 
 typedef union {
@@ -48,16 +48,20 @@ typedef union {
 } match;
 
 
-// Pair designations, possibly move this elsewhere to support defining the others as errors elsewhere too
-#define MatchedPair    4 // ~1:1
-#define NarrowWide     6 // ~1:(N+1)
-#define WideNarrow     7 // ~(N+1):1
-#define NarrowBackward 8 // ~1:(N+2)/2
-#define BackwardNarrow 5 // ~(N+2)/2:1
-#define NarrowTooWide  9 // 1:>(N+1)
-#define TooWideNarrow  9 // >(N+1):1
-#define FellThrough    0x33 // The cracks, ie, no match
+// MissingTeeth uses from 0x40 - 0x8D, below and above are free for all other decoders to use.
 
+// Pair designations, possibly move this elsewhere to support defining the others as errors elsewhere too
+#define FellThrough     64 // 0x40 The cracks, ie, no match
+#define MatchedPair      4 // ~1:1
+#define NarrowWide       6 // ~1:(N+1)
+#define WideNarrow       7 // ~(N+1):1
+#define NarrowBackward   8 // ~1:(N+2)/2
+#define BackwardNarrow   5 // ~(N+2)/2:1
+#define NarrowTooWide   65 // 0x41 1:>(N+1)
+#define TooWideNarrow   66 // 0x42 >(N+1):1
+
+// This is for transposing errors to a unique number to indicate loss of sync different to clear during search
+#define MaskBySumPattern       0x05 // 0xN4 >> 0xN9, 0xN8 >> 0xND, no collisions, free space for more too
 
 // Possible conditions of success and failure.
 //
@@ -68,32 +72,39 @@ typedef union {
 // Move this to shared sync reason def file at some point
 //
 // In sync:
-#define MatchedPairMatchedPair 0x44 // small small small - All periods match
-#define MatchedPairNarrowWide  0x46 // small small BIG - First tooth after missing
-#define NarrowWideWideNarrow   0x67 // small BIG small - Second tooth after missing, the strongest and most certain sync
-#define WideNarrowMatchedPair  0x74 // BIG small small - Third tooth after missing
+#define MatchedPairMatchedPair  68 // 0x44 small small small - All periods match
+#define MatchedPairNarrowWide   70 // 0x46 small small BIG - First tooth after missing
+#define NarrowWideWideNarrow   103 // 0x67 small BIG small - Second tooth after missing, the strongest and most certain sync
+#define WideNarrowMatchedPair  116 // 0x74 BIG small small - Third tooth after missing
+
+// Wild noise and bad settings:
+#define yourVRSensorHasALoosePlugFixIt                    NarrowTooWide
+#define noiseAppearedWayTooEarlyAsIfItWasAVRToothButWasnt TooWideNarrow
+#define yourSyncToleranceIsTighterThanAWellYouGetTheIdea  FellThrough
+#define yourSyncToleranceIsLooserThanAWellYouGetTheIdea   MatchedPairMatchedPair // Too many matched pairs in a row
+
 // Fails:
-#define NearlySyncedNarrowWideBackwardNarrow           0x65
-#define NearlySyncedNarrowBackwardWideNarrow           0x87
-#define NearlySyncedNarrowBackwardBackwardNarrow       0x85
-#define NearlySyncedMatchedPairNarrowBackward          0x48
-#define NearlySyncedBackwardNarrowMatchedPair          0x54
-#define ExtraToothWideNarrowNarrowWide                 0x76
-#define ExtraToothWideNarrowNarrowBackward             0x78
-#define ExtraToothBackwardNarrowNarrowWide             0x56
-#define ExtraToothBackwardNarrowNarrowBackward         0x58
-#define VRWiringBackwardMatchedPairBackwardNarrow      69 // Engineered to be 69 (0x45) for humour value!
-#define VRWiringBackwardMatchedPairWideNarrow          0x47
-#define VRWiringBackwardNarrowWideMatchedPair          0x64
-#define VRWiringBackwardNarrowBackwardMatchedPair      0x84
-#define ExcessDecelerationNarrowBackwardNarrowBackward 0x88
-#define ExcessDecelerationNarrowBackwardNarrowWide     0x86
-#define ExcessDecelerationNarrowWideNarrowBackward     0x68
-#define ExcessDecelerationNarrowWideNarrowWide         0x66
-#define ExcessAccelerationBackwardNarrowBackwardNarrow 0x55
-#define ExcessAccelerationBackwardNarrowWideNarrow     0x57
-#define ExcessAccelerationWideNarrowBackwardNarrow     0x75
-#define ExcessAccelerationWideNarrowWideNarrow         0x77
+#define NearlySyncedNarrowWideBackwardNarrow           101 // 0x65
+#define NearlySyncedNarrowBackwardWideNarrow           135 // 0x87
+#define NearlySyncedNarrowBackwardBackwardNarrow       133 // 0x85
+#define NearlySyncedMatchedPairNarrowBackward           72 // 0x48
+#define NearlySyncedBackwardNarrowMatchedPair           84 // 0x54
+#define ExtraToothWideNarrowNarrowWide                 118 // 0x76
+#define ExtraToothWideNarrowNarrowBackward             120 // 0x78
+#define ExtraToothBackwardNarrowNarrowWide              86 // 0x56
+#define ExtraToothBackwardNarrowNarrowBackward          88 // 0x58
+#define VRWiringBackwardMatchedPairBackwardNarrow       69 // 0x45 Engineered to be 69 for humour value!
+#define VRWiringBackwardMatchedPairWideNarrow           71 // 0x47
+#define VRWiringBackwardNarrowWideMatchedPair          100 // 0x64
+#define VRWiringBackwardNarrowBackwardMatchedPair      132 // 0x84
+#define ExcessDecelerationNarrowBackwardNarrowBackward 136 // 0x88
+#define ExcessDecelerationNarrowBackwardNarrowWide     134 // 0x86
+#define ExcessDecelerationNarrowWideNarrowBackward     104 // 0x68
+#define ExcessDecelerationNarrowWideNarrowWide         102 // 0x66
+#define ExcessAccelerationBackwardNarrowBackwardNarrow  85 // 0x55
+#define ExcessAccelerationBackwardNarrowWideNarrow      87 // 0x57
+#define ExcessAccelerationWideNarrowBackwardNarrow     117 // 0x75
+#define ExcessAccelerationWideNarrowWideNarrow         119 // 0x77
 
 
 // Self-checks on the above
@@ -174,10 +185,8 @@ typedef union {
 #endif
 
 
-#define yourVRSensorHasALoosePlugFixIt                    FellThrough
-#define noiseAppearedWayTooEarlyAsIfItWasAVRToothButWasnt 0x99
-#define yourSyncToleranceIsTighterThanAWellYouGetTheIdea  0x99
-#define yourSyncToleranceIsLooserThanAWellYouGetTheIdea   0xAA // Too many matched pairs in a row
+// TODO Define and check all "+5" reason codes.
+
 
 #define DECODER_MAX_CODE_TIME 100 // To be optimised (shortened)!
 
@@ -234,14 +243,17 @@ typedef union {
 #define NUMBER_OF_REAL_EVENTS NUMBER_OF_WHEEL_EVENTS
 #define NUMBER_OF_VIRTUAL_EVENTS (2 * NUMBER_OF_REAL_EVENTS)
 #define ANGLE_BETWEEN_EVENTS ((oneDegree * 360.0) / TOTAL_TEETH)
+#define angleOfSingleIteration (360 * oneDegree)
 #elif defined(CAM_ONLY)
 #define NUMBER_OF_REAL_EVENTS NUMBER_OF_WHEEL_EVENTS
 #define NUMBER_OF_VIRTUAL_EVENTS NUMBER_OF_REAL_EVENTS
 #define ANGLE_BETWEEN_EVENTS ((oneDegree * 720.0) / TOTAL_TEETH)
+#define angleOfSingleIteration (720 * oneDegree)
 #elif defined(CRANK_WITH_CAM_SYNC)
 #define NUMBER_OF_REAL_EVENTS (2 * NUMBER_OF_WHEEL_EVENTS)
 #define NUMBER_OF_VIRTUAL_EVENTS NUMBER_OF_REAL_EVENTS
 #define ANGLE_BETWEEN_EVENTS ((oneDegree * 360.0) / TOTAL_TEETH)
+#define angleOfSingleIteration (720 * oneDegree)
 #error "Not yet supported!" // And maybe done a different way, we'll see...
 #else
 #error "You MUST configure the style of this decoder!"
