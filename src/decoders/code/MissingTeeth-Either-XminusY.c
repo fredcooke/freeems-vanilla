@@ -176,6 +176,7 @@ void PrimaryRPMISR(void) {
 							if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs == (NUMBER_OF_WHEEL_EVENTS - 3))){ // This can't find a match until it's on it's fourth execution
 								// This will match repeatedly then un-sync on next cycle if tolerance is set too high
 								KeyUserDebugs.currentEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
+								lastEvent = KeyUserDebugs.currentEvent - 1;
 								SET_SYNC_LEVEL_TO(CRANK_SYNC); // Probability of this = (N + 1) / M
 								// Sample RPM and ADCs here on the basis of cylinders and revolutions
 								// IE, sample RPM once (total teeth (inc missing) per engine cycle / cyls) events have passed
@@ -188,12 +189,15 @@ void PrimaryRPMISR(void) {
 							} // else fall through to wait.
 						}else if(matches.pattern == MatchedPairNarrowWide){ // | small | small |      BIG      | Last tooth is first tooth after missing  - ((M-N)-3)/M = common
 							KeyUserDebugs.currentEvent = 0;
+							lastEvent = NUMBER_OF_WHEEL_EVENTS - 1; // Zero indexed
 							SET_SYNC_LEVEL_TO(CRANK_SYNC);
 						}else if(matches.pattern == NarrowWideWideNarrow){  // | small |      BIG      | small | Last tooth is second tooth after missing - 1/M
 							KeyUserDebugs.currentEvent = 1;
+							lastEvent = KeyUserDebugs.currentEvent - 1;
 							SET_SYNC_LEVEL_TO(CRANK_SYNC);
 						}else if(matches.pattern == WideNarrowMatchedPair){ // |      BIG      | small | small | Last tooth is third tooth after missing  - 1/M
 							KeyUserDebugs.currentEvent = 2;
+							lastEvent = KeyUserDebugs.currentEvent - 1;
 							SET_SYNC_LEVEL_TO(CRANK_SYNC);
 						}else{
 							resetToNonRunningState(matches.pattern); // Where they are defined individually in the error file! Beautiful!!
@@ -205,27 +209,32 @@ void PrimaryRPMISR(void) {
 
 		unsigned short thisTicksPerDegree = 0;
 		if(KeyUserDebugs.decoderFlags & CRANK_SYNC){
-			SCHEDULE_ECT_OUTPUTS();
-
-			// sample adcs and record rpm here after scheduling
 			unsigned short thisAngle = 0;
 			if(KeyUserDebugs.currentEvent == 0){
 				thisAngle = eventAngles[KeyUserDebugs.currentEvent] + angleOfSingleIteration - eventAngles[lastEvent] ; // Optimisable... leave readable for now! :-p J/K learn from this...
 			}else{
 				thisAngle = eventAngles[KeyUserDebugs.currentEvent] - eventAngles[lastEvent];
 			}
-
 			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / thisAngle); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
-			*ticksPerDegreeRecord = thisTicksPerDegree;
-			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
-			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
-				resetToNonRunningState(1);
-				return;
-			}else if(ratioBetweenThisAndLast < fixedConfigs2.decoderSettings.accelerationInputEventTimeTolerance){
-				resetToNonRunningState(2);
-				return;
+
+			if(KeyUserDebugs.decoderFlags & LAST_TPD_VALID){
+				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
+				KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
+				if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
+					resetToNonRunningState(1);
+					return;
+				}else if(ratioBetweenThisAndLast < fixedConfigs2.decoderSettings.accelerationInputEventTimeTolerance){
+					resetToNonRunningState(2);
+					return;
+				}
 			}
+
+			SCHEDULE_ECT_OUTPUTS();
+
+			KeyUserDebugs.decoderFlags |= LAST_TPD_VALID;
+
+			// sample adcs and record rpm here after scheduling
+			*ticksPerDegreeRecord = thisTicksPerDegree;
 
 			sampleEachADC(ADCBuffers);
 			Counters.syncedADCreadings++;
