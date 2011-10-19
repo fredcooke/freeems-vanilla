@@ -153,34 +153,6 @@ void RTIISR(){
 }
 
 
-/** @brief Tacho pulse generator
- *
- * Currently this is being used to generate a variable frequency tachometer
- * output. Although this is a bit of a waste of a timer resource it does allow
- * tachometers that were intended for engines with a different cylinder count
- * to be used where it would otherwise not be possible.
- *
- * @author Fred Cooke
- */
-void ModDownCtrISR(){
-	/* Clear the modulus down counter interrupt flag */
-	MCFLG = 0x80;
-
-	/* If the rpm isn't genuine go ultra slow */
-	if(engineCyclePeriod == ticksPerCycleAtOneRPM){
-		tachoPeriod = 65535;
-	}else{
-		/* Use engine cycle period to setup the frequency of this counter and thereby act as a tacho out */
-		tachoPeriod = (unsigned long)engineCyclePeriod / fixedConfigs1.tachoSettings.tachoTotalFactor;
-	}
-	/* Set the count down value */
-	MCCNT = tachoPeriod;
-
-	/* Bit bang the output port */
-//	PO-leave this alone for now-RTA ^= 0x40; // SM pin (A6)
-}
-
-
 /** @brief ECT overflow handler
  *
  * When the ECT free running timer hits 65535 and rolls over, this is run. Its

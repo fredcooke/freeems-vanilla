@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008 - 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -109,7 +109,7 @@ const interruptTable _vectors[] VECTORS = {
 /*	                                                                                                                            */
 
 /* 0xFFC0 to 0xFFCF */
-	UISR,           UISR,           UISR,           UISR,           UISR,           ModDownCtrISR,  PortHISR,       PortJISR,
+	UISR,           UISR,           UISR,           UISR,           UISR,           UISR,           PortHISR,       PortJISR,
 /*	IIC0            Reserved        CRG self clock  CRG PLL lock    PAB Overflow    ModDwnCtrUF     Port H          Port J      */
 /*	                                                                                                                            */
 
