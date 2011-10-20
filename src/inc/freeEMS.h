@@ -103,7 +103,6 @@
 
 
 // temporary test vars
-extern unsigned short tachoPeriod;
 EXTERN unsigned char portHDebounce;
 
 
@@ -260,8 +259,6 @@ EXTERN unsigned long bootFuelConst;  /* constant derived from configurable const
 EXTERN unsigned short TPSMAPRange;   /* The MAP range used to convert fake TPS from MAP and vice versa */
 EXTERN unsigned short TPSADCRange;   /* The ADC range used to generate TPS percentage */
 EXTERN unsigned short boundedTPSADC; // temp to view to debug
-
-EXTERN unsigned short bootTimeAAP; /* TODO populate this at switch on time depending on a few things. */
 
 
 /* ALL STATUS STUFF HERE */

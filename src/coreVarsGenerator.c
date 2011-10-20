@@ -190,9 +190,6 @@ void generateCoreVars(){
 	}else if(FALSE){ /* Configured for dash potentiometer on ADC */
 		/* Get AAP from ADC via conversion to internal kPa figure where 1023ADC = 102.3kPa */
 		localAAP = ADCBuffers->AAP * 10;
-	}else if(FALSE){ /* Configured for fixed AAP reading from pre start */
-		/* Get the AAP reading as saved during startup */
-		localAAP = bootTimeAAP; /* This is populated pre start up */
 	}else if(FALSE){ /* Configured for fixed AAP from config */
 		/* Get the preferred AAP figure from configuration settings */
 		localAAP = fixedConfigs2.sensorPresets.presetAAP;
