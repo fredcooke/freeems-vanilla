@@ -640,11 +640,10 @@ void initECTTimer(){
 	// TODO setup delay counters on 0 and 1 to filter noise (nice feature!)
 	//DLYCT = ??; built in noise filter
 
-	/* Configurable tachometer output */
-	PTMCPSR = fixedConfigs1.tachoSettings.tachoTickFactor - 1; // Precision prescaler - fastest is 1 represented by 0, slowest/longest possible is 256 represented by 255 or 0xFF
-	MCCNT = ONES16; // init to slowest possible, first
-	MCCTL = 0xC4; // turn on and setup the mod down counter
-	MCFLG = 0x80; // clear the flag up front
+//	/* Configurable tachometer output */	PTMCPSR = 0xFF // Precision prescaler - fastest is 1 represented by 0, slowest/longest possible is 256 represented by 255 or 0xFF
+//	MCCNT = ONES16; // init to slowest possible, first
+//	MCCTL = 0xC4; // turn on and setup the mod down counter
+//	MCFLG = 0x80; // clear the flag up front
 
 	decoderInitPreliminary();
 #endif
