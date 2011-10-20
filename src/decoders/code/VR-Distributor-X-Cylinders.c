@@ -70,9 +70,11 @@ const unsigned char eventValidForCrankSync[] = {0,0,0,0};
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
 }
 
 
 void SecondaryRPMISR(){
 	TFLG = 0x02;
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
 }

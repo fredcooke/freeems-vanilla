@@ -66,7 +66,9 @@ const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0}; // Unused in this decoder.
 
 
-void decoderInitPreliminary(){} // This decoder works with the defaults
+void decoderInitPreliminary(){
+	TCTL4 = 0x03; /* Capture on both edges of T0 only, capture off for 1,2,3 */
+} // This decoder works with the defaults
 void perDecoderReset(){} // Nothing special to reset for this code
 
 
@@ -203,4 +205,5 @@ void PrimaryRPMISR(){
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
 }

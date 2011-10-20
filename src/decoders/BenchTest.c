@@ -163,4 +163,5 @@ void PrimaryRPMISR(){
 
 void SecondaryRPMISR(){
 	TFLG = 0x02;
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
 }

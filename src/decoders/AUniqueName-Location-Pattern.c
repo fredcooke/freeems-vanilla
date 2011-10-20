@@ -33,6 +33,7 @@
 
 void PrimaryRPMISR(){
 	TFLG = 0x01;
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
 	// See the decoders directory in the source for real examples of this ISR.
 	// Also see the Makefile for how decoder files are handled differently.
 	/// @see enginePositionRPMDecoders
@@ -40,6 +41,7 @@ void PrimaryRPMISR(){
 
 void SecondaryRPMISR(){
 	TFLG = 0x02;
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
 	// See the decoders directory in the source for real examples of this ISR.
 	// Also see the Makefile for how decoder files are handled differently.
 	/// @see enginePositionRPMDecoders

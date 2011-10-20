@@ -271,4 +271,5 @@ void SecondaryRPMISR(void){
 	// TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
 }
