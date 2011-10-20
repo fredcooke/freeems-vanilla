@@ -24,7 +24,7 @@
  */
 
 
-/**	@file A.c
+/**	@file AUniqueName-Location-Pattern.c
  *
  * This exists to stop some other decoder from becoming the default in doxygen.
  *
