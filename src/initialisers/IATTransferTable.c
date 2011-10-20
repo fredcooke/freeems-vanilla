@@ -58,7 +58,7 @@ const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
 #elif JOSHBROWN
 #include "../data/thermistors/Bosch.h"
 #elif SNOTROCKET
-#include "../data/thermistors/BoschM12H-2k7Bias.h"
+#include "../data/thermistors/GM-2k4Bias.h"
 #else // Default to correctly biased Jap sensor.
 #include "../data/thermistors/Denso-2k7Bias.h"
 #endif
