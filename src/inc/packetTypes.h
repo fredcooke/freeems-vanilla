@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -55,8 +55,8 @@
 //efine replytoSoftSystemReset      0x0009 /* This is reserved */
 #define requestHardSystemReset      0x000A /* System comes up fresh, so no response */
 //efine replytoHardSystemReset      0x000B /* This is reserved */
-#define requestReInitOfSystem      0x000C /* EXPERIMENTAL, currently responds like normal */
-//efine replytoReInitOfSystem      0x000D /* This is reserved */
+#define requestReInitOfSystem       0x000C /* EXPERIMENTAL, currently responds like normal */
+//efine replytoReInitOfSystem       0x000D /* This is reserved */
 
 
 //efine requestAsyncErrorCode       0x000C /* This is reserved */

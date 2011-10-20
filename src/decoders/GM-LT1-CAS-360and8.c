@@ -225,10 +225,10 @@ void PrimaryRPMISR(void){
 		}
 
 		if((bastardTeeth > MAX_BASTARD_TEETH) || (bastardTeeth < -MAX_BASTARD_TEETH)){
-			resetToNonRunningState(BASTARD_SYNC_LOSS_ID_BASE + bastardTeeth);
+			resetToNonRunningState(BASTARD_SYNC_LOSS_ID_BASE + bastardTeeth); // TODO move this to the syncLossIDs.h header
 			return;
 		}else if((cumulativeBastardTeeth > MAX_CUMULATIVE_BASTARD_TEETH) || (cumulativeBastardTeeth < -MAX_CUMULATIVE_BASTARD_TEETH)){
-			resetToNonRunningState(BASTARD_CUMULATIVE_SYNC_LOSS_ID_BASE + cumulativeBastardTeeth);
+			resetToNonRunningState(BASTARD_CUMULATIVE_SYNC_LOSS_ID_BASE + cumulativeBastardTeeth); // TODO move this to the syncLossIDs.h header
 			return;
 		}else{
 			/* TODO all required calcs etc as shown in other working decoders */

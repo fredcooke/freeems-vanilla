@@ -33,7 +33,19 @@
  * This sets up the required arrays and defines such that the generic missing
  * teeth decoder base can function in a specific way for the configured values.
  *
- * @author Fred Cooke
+ * Choose one of these three options:
+ * - #define CRANK_ONLY
+ * - #define CAM_ONLY
+ * - #define CRANK_WITH_CAM_SYNC
+ *
+ * @note The above setting will affect the init routine. CRANK_WITH_CAM_SYNC is
+ * not currently supported.
+ *
+ * Define both of these values appropriately:
+ * - #define TOTAL_TEETH
+ * - #define MISSING_TEETH
+ *
+ * @note Please see the docs directory MissingTeethValidCombos.ods file first.
  */
 
 
@@ -48,161 +60,12 @@ typedef union {
 } match;
 
 
-// MissingTeeth uses from 0x40 - 0x8D, below and above are free for all other decoders to use.
-
-// Pair designations, possibly move this elsewhere to support defining the others as errors elsewhere too
-#define FellThrough     64 // 0x40 The cracks, ie, no match
-#define MatchedPair      4 // ~1:1
-#define NarrowWide       6 // ~1:(N+1)
-#define WideNarrow       7 // ~(N+1):1
-#define NarrowBackward   8 // ~1:(N+2)/2
-#define BackwardNarrow   5 // ~(N+2)/2:1
-#define NarrowTooWide   65 // 0x41 1:>(N+1)
-#define TooWideNarrow   66 // 0x42 >(N+1):1
-
-// This is for transposing errors to a unique number to indicate loss of sync different to clear during search
-#define MaskBySumPattern       0x05 // 0xN4 >> 0xN9, 0xN8 >> 0xND, no collisions, free space for more too
-
-// Possible conditions of success and failure.
-//
-// Literals here for readability, checked below with formula and names
-//
-// Note, whether it is possible to strike these depends on the tolerance used
-//
-// Move this to shared sync reason def file at some point
-//
-// In sync:
-#define MatchedPairMatchedPair  68 // 0x44 small small small - All periods match
-#define MatchedPairNarrowWide   70 // 0x46 small small BIG - First tooth after missing
-#define NarrowWideWideNarrow   103 // 0x67 small BIG small - Second tooth after missing, the strongest and most certain sync
-#define WideNarrowMatchedPair  116 // 0x74 BIG small small - Third tooth after missing
-
-// Wild noise and bad settings:
-#define yourVRSensorHasALoosePlugFixIt                    NarrowTooWide
-#define noiseAppearedWayTooEarlyAsIfItWasAVRToothButWasnt TooWideNarrow
-#define yourSyncToleranceIsTighterThanAWellYouGetTheIdea  FellThrough
-#define yourSyncToleranceIsLooserThanAWellYouGetTheIdea   MatchedPairMatchedPair // Too many matched pairs in a row
-
-// Fails:
-#define NearlySyncedNarrowWideBackwardNarrow           101 // 0x65
-#define NearlySyncedNarrowBackwardWideNarrow           135 // 0x87
-#define NearlySyncedNarrowBackwardBackwardNarrow       133 // 0x85
-#define NearlySyncedMatchedPairNarrowBackward           72 // 0x48
-#define NearlySyncedBackwardNarrowMatchedPair           84 // 0x54
-#define ExtraToothWideNarrowNarrowWide                 118 // 0x76
-#define ExtraToothWideNarrowNarrowBackward             120 // 0x78
-#define ExtraToothBackwardNarrowNarrowWide              86 // 0x56
-#define ExtraToothBackwardNarrowNarrowBackward          88 // 0x58
-#define VRWiringBackwardMatchedPairBackwardNarrow       69 // 0x45 Engineered to be 69 for humour value!
-#define VRWiringBackwardMatchedPairWideNarrow           71 // 0x47
-#define VRWiringBackwardNarrowWideMatchedPair          100 // 0x64
-#define VRWiringBackwardNarrowBackwardMatchedPair      132 // 0x84
-#define ExcessDecelerationNarrowBackwardNarrowBackward 136 // 0x88
-#define ExcessDecelerationNarrowBackwardNarrowWide     134 // 0x86
-#define ExcessDecelerationNarrowWideNarrowBackward     104 // 0x68
-#define ExcessDecelerationNarrowWideNarrowWide         102 // 0x66
-#define ExcessAccelerationBackwardNarrowBackwardNarrow  85 // 0x55
-#define ExcessAccelerationBackwardNarrowWideNarrow      87 // 0x57
-#define ExcessAccelerationWideNarrowBackwardNarrow     117 // 0x75
-#define ExcessAccelerationWideNarrowWideNarrow         119 // 0x77
-
-
-// Self-checks on the above
-#if (MatchedPairMatchedPair != ((MatchedPair << 4) + MatchedPair))
-#error "Header is broken, fix it!"
-#endif
-#if (MatchedPairNarrowWide != ((MatchedPair << 4) + NarrowWide))
-#error "Header is broken, fix it!"
-#endif
-#if (NarrowWideWideNarrow != ((NarrowWide << 4) + WideNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (WideNarrowMatchedPair != ((WideNarrow << 4) + MatchedPair))
-#error "Header is broken, fix it!"
-#endif
-#if (NearlySyncedNarrowWideBackwardNarrow != ((NarrowWide << 4) + BackwardNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (NearlySyncedNarrowBackwardWideNarrow != ((NarrowBackward << 4) + WideNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (NearlySyncedNarrowBackwardBackwardNarrow != ((NarrowBackward << 4) + BackwardNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (NearlySyncedMatchedPairNarrowBackward != ((MatchedPair << 4) + NarrowBackward))
-#error "Header is broken, fix it!"
-#endif
-#if (NearlySyncedBackwardNarrowMatchedPair != ((BackwardNarrow << 4) + MatchedPair))
-#error "Header is broken, fix it!"
-#endif
-#if (ExtraToothWideNarrowNarrowWide != ((WideNarrow << 4) + NarrowWide))
-#error "Header is broken, fix it!"
-#endif
-#if (ExtraToothWideNarrowNarrowBackward != ((WideNarrow << 4) + NarrowBackward))
-#error "Header is broken, fix it!"
-#endif
-#if (ExtraToothBackwardNarrowNarrowWide != ((BackwardNarrow << 4) + NarrowWide))
-#error "Header is broken, fix it!"
-#endif
-#if (ExtraToothBackwardNarrowNarrowBackward != ((BackwardNarrow << 4) + NarrowBackward))
-#error "Header is broken, fix it!"
-#endif
-#if (VRWiringBackwardMatchedPairBackwardNarrow != ((MatchedPair << 4) + BackwardNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (VRWiringBackwardMatchedPairWideNarrow != ((MatchedPair << 4) + WideNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (VRWiringBackwardNarrowWideMatchedPair != ((NarrowWide << 4) + MatchedPair))
-#error "Header is broken, fix it!"
-#endif
-#if (VRWiringBackwardNarrowBackwardMatchedPair != ((NarrowBackward << 4) + MatchedPair))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessDecelerationNarrowBackwardNarrowBackward != ((NarrowBackward << 4) + NarrowBackward))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessDecelerationNarrowBackwardNarrowWide != ((NarrowBackward << 4) + NarrowWide))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessDecelerationNarrowWideNarrowBackward != ((NarrowWide << 4) + NarrowBackward))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessDecelerationNarrowWideNarrowWide != ((NarrowWide << 4) + NarrowWide))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessAccelerationBackwardNarrowBackwardNarrow != ((BackwardNarrow << 4) + BackwardNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessAccelerationBackwardNarrowWideNarrow != ((BackwardNarrow << 4) + WideNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessAccelerationWideNarrowBackwardNarrow != ((WideNarrow << 4) + BackwardNarrow))
-#error "Header is broken, fix it!"
-#endif
-#if (ExcessAccelerationWideNarrowWideNarrow != ((WideNarrow << 4) + WideNarrow))
-#error "Header is broken, fix it!"
-#endif
-
-
-// TODO Define and check all "+5" reason codes.
-
-
 #define DECODER_MAX_CODE_TIME 100 // To be optimised (shortened)!
 
 #include "../../inc/freeEMS.h"
 #include "../../inc/utils.h"
 #include "../../inc/interrupts.h"
-// See approximately 65 lines below for decoderInterface.h include
-
-
-// Choose one of the first three options
-//#define CRANK_ONLY
-//#define CAM_ONLY
-//#define CRANK_WITH_CAM_SYNC // This setting will affect the init routine.
-// Define both of these values appropriately
-//#define TOTAL_TEETH   Commonly 60, 36, 24, 12, though other combos can/will/should work too.
-//#define MISSING_TEETH Usually 1 or 2, but larger numbers should work sync wise, but perhaps not for scheduling, artificially limitting to 1/4 of total teeth for now
+// See approximately 72 lines below for decoderInterface.h include
 
 
 #ifndef TOTAL_TEETH

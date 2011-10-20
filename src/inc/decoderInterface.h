@@ -43,6 +43,9 @@
 #define FILE_DECODER_INTERFACE_H_SEEN
 
 
+#include "syncLossIDs.h"
+
+
 #ifdef EXTERN
 #warning "EXTERN already defined by another header, please sort it out!"
 #undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */

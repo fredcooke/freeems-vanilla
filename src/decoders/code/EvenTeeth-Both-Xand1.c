@@ -79,7 +79,7 @@ void PrimaryRPMISR(){
 		if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 			KeyUserDebugs.currentEvent++;
 			if(KeyUserDebugs.currentEvent == numberOfRealEvents){
-				resetToNonRunningState(1);
+				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_HIGH_NOISE);
 				return;
 			}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
 
@@ -87,10 +87,10 @@ void PrimaryRPMISR(){
 				unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
 				KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
 				if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
-					resetToNonRunningState(2);
+					resetToNonRunningState(PRIMARY_EVENT_ARRIVED_TOO_LATE);
 					return;
 				}else if(ratioBetweenThisAndLast < fixedConfigs2.decoderSettings.accelerationInputEventTimeTolerance){
-					resetToNonRunningState(3);
+					resetToNonRunningState(PRIMARY_EVENT_ARRIVED_TOO_EARLY);
 					return;
 				}else{
 					if(PTITCurrentState & 0x01){
@@ -186,7 +186,7 @@ void SecondaryRPMISR(){
 			 * larger time frame.
 			 */
 			if(KeyUserDebugs.currentEvent < (numberOfRealEvents - 1)){
-				resetToNonRunningState(4);
+				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_LOW_NOISE);
 			}else if(KeyUserDebugs.currentEvent > (numberOfRealEvents -1)){
 				// Record that we had to reset position...
 				FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_CORRECTIONS_OFFSET);

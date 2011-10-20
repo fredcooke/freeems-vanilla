@@ -166,10 +166,10 @@ void PrimaryRPMISR(){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
 			KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
 			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
-				resetToNonRunningState(1);
+				resetToNonRunningState(PRIMARY_EVENT_ARRIVED_TOO_LATE);
 				return;
 			}else if(ratioBetweenThisAndLast < fixedConfigs2.decoderSettings.accelerationInputEventTimeTolerance){
-				resetToNonRunningState(2);
+				resetToNonRunningState(PRIMARY_EVENT_ARRIVED_TOO_EARLY);
 				return;
 			}
 		}
