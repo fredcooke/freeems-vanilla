@@ -52,7 +52,7 @@
  */
 
 
-/* Definitions for functions used across the project */
+/* Definitions for functions used across the project TODO these are unused! */
 /* http://www.seattlerobotics.org/encoder/200109/encoder.htm section Assembly */
 #define INLINE_ASSEMBLY(code) __asm__ __volatile__ (code)
 #define ALWAYS_INLINE __attribute__((always_inline))
@@ -133,7 +133,7 @@
 #define NBIT15_16   0x7FFF    /* 16th bit = 32768 */
 
 
-/* Serial Comms Stuff */
+// Shared serial comms stuff TODO move this to a commsCommon.h header
 #define START_BYTE          0xAA
 #define ESCAPE_BYTE         0xBB
 #define STOP_BYTE           0xCC
@@ -146,6 +146,10 @@
 #define flashSectorSizeInWords  512 /* 512 words to a 1k flash sector */
 
 
+#define IGNITION_TIMING_FACTOR 1024U // Warning, to be changed to 8 bit, use this:
+#define IT(IGNITION_TIMING_BTDC) (IGNITION_TIMING_BTDC * IGNITION_TIMING_FACTOR)
+
+// TODO unused, make used!
 #define RPM_FACTOR      2
 #define MAP_FACTOR    100
 #define TPS_FACTOR    640
@@ -267,11 +271,8 @@
 #define offIdleMAP                3000       /* 30kPa just above where MAP would be with closed throttle at idle */
 #define nearlyWOTMAP              9500       /* 95kPa just below where MAP would be at WOT */
 
-#define ticksPerCycleAtOneRPMx2  300000000   /* twice how many 0.8us ticks there are in between engine cycles at 1 RPM */
 #define ticksPerCycleAtOneRPM    150000000   /* how many 0.8us ticks there are in between engine cycles at 1 RPM */
-//#define ticksForFiftyRPM         3000000       /* ticksPerCycleAtOneRPM / 50 */
 #define tachoTickFactor4at50     6           /* Provides for a 4 cylinder down to 50 RPM  */
-/*efine tachoEdgesPerCycle4at50  8           /  8 events per cycle for a typical 4 cylinder tacho, 4 on, 4 off */
 #define tachoTotalFactor4at50   48           /* http://www.google.com/search?hl=en&safe=off&q=((150000000+%2F+6)+%2F++8+)+%2F+50&btnG=Search */
 
 //#define lookedUpVEDivisor   512
@@ -290,12 +291,6 @@
 #define ADC_DIVISIONS 1023
 
 #define INJECTION_CHANNELS  6    /* How many injection channels the code should support */
-
-/* Ignition defines */
-#define DWELL_ENABLE      BIT0
-#define DWELL_DISABLE    NBIT0
-#define IGNITION_ENABLE   BIT1
-#define IGNITION_DISABLE NBIT1
 
 /* Valid RPAGE values :
  *    0xFF - linear
