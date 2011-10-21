@@ -146,7 +146,7 @@
 #define flashSectorSizeInWords  512 /* 512 words to a 1k flash sector */
 
 
-#define IGNITION_TIMING_FACTOR 1024U // Warning, to be changed to 8 bit, use this:
+#define IGNITION_TIMING_FACTOR 1024UL // Warning, to be changed to 8 bit, use this:
 #define IT(IGNITION_TIMING_BTDC) (IGNITION_TIMING_BTDC * IGNITION_TIMING_FACTOR)
 
 // TODO unused, make used!
