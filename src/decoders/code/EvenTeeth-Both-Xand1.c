@@ -173,11 +173,15 @@ void SecondaryRPMISR(){
 		if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 			/* If the count is less than 23, then we know that the electrical pulse that triggered
 			 * this ISR execution was almost certainly in error and it is NOT valid to stay in sync.
-			 * 
-			 * This begs the question, if we got noise on our 24 edge, who is to say that when this
-			 * runs and the count is too high, that this isn't also in error? It is likely that the
-			 * pulse that caused this execution is genuine, but certainly not guaranteed. Roll with
-			 * it for now, but improve even more later.
+			 *
+			 * If the count is greater than 24, then we know that an electrical noise pulse triggered
+			 * the other interrupt in between and was missed by the time period checks (unlikely, but
+			 * possible) and that, therefore, there could have been a noise pulse on this input too,
+			 * and therefore we don't really know where we are.
+			 *
+			 * In the case where the count is exactly 24 we can only rely on the time period checks in
+			 * the other ISR, which should be sufficient unless poorly setup by a user with too wide
+			 * of a tolerance level.
 			 *
 			 * There is zero point adding relative timing checks to this ISR because by nature, the
 			 * other N teeth have already checked out good timing wise and therefore the average also
@@ -188,9 +192,7 @@ void SecondaryRPMISR(){
 			if(KeyUserDebugs.currentEvent < (numberOfRealEvents - 1)){
 				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_LOW_NOISE);
 			}else if(KeyUserDebugs.currentEvent > (numberOfRealEvents -1)){
-				// Record that we had to reset position...
-				FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_CORRECTIONS_OFFSET);
-				KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;				// Should never happen, or should be caught by timing checks in primary ISR
+				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_HIGH_NOISE);
 			} // ELSE do nothing, and be happy :-)
 		}else{	// If not synced, sync, as this is our reference point.
 			SET_SYNC_LEVEL_TO(CAM_SYNC);
