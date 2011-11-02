@@ -28,20 +28,10 @@
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief Reads any signal that is once per cylinder
+ * @brief Reads any signal that is once per cylinder and only has one good edge.
  *
  * This file contains the two interrupt service routines required for to build
  * cleanly. However, only the first one is used due to the simple nature of it.
- *
- * The functional ISR just blindly injects fuel for every input it receives.
- * Thus a perfectly clean input is absolutely essential at this time.
- *
- * Supported engines include:
- * B230F
- *
- * @author Fred Cooke
- *
- * @note Even though I ran my US road trip car on this exact code, I don't recommend it unless you REALLY know what you are doing!
  */
 
 
@@ -63,18 +53,5 @@ const unsigned short eventAngles[] = {0,180,360,540};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0};
 
 
-/* Blindly start fuel pulses for each and every input pulse.
- *
- * Warning This is for testing and demonstration only, not suitable for driving with just yet.
- */
-void PrimaryRPMISR(){
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x01;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
-
-
-void SecondaryRPMISR(){
-	TFLG = 0x02;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
+#include "../inc/defaultPrimaryRPMISR.c"
+#include "../inc/defaultSecondaryRPMISR.c"

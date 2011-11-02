@@ -87,12 +87,12 @@ const unsigned char eventValidForCrankSync[] = {0}; // no events really...
  */
 void PrimaryRPMISR(){
 	TFLG = 0x01;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
+
+	unsigned short edgeTimeStamp = TC0;
 
 	/* Reset the clock for reading timeout */
 	Clocks.timeoutADCreadingClock = 0;
-
-	/// @todo TODO Migrate this to the decoder itself once the necessary configuration has been setup.
-	unsigned short edgeTimeStamp = TC0;
 
 	// call sched output with args
 	LongTime timeStamp;
@@ -158,10 +158,8 @@ void PrimaryRPMISR(){
 			}
 		}
 	}
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT0, PORTB);
 }
 
 
-void SecondaryRPMISR(){
-	TFLG = 0x02;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
+#include "inc/defaultSecondaryRPMISR.c"

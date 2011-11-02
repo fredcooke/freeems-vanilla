@@ -50,7 +50,9 @@
  * @todo TODO Currently not a problem, but as indirectly pointed out by johntramp, if no flag clearing is being done, then this code will run continuously, which is not a good idea...
  */
 void UISR(void){
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
 
@@ -63,7 +65,9 @@ void UISR(void){
 void PortPISR(void){
 	/* Clear all port P flags (we only want one at a time) */
 	PIFP = ONES;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
 
@@ -76,7 +80,9 @@ void PortPISR(void){
 void PortJISR(void){
 	/* Clear all port H flags (we only want one at a time) */
 	PIFJ = ONES;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
 
@@ -94,6 +100,7 @@ void PortHISR(void)
 //
 //	/* Clear all port H flags (we only want one at a time) */
 	PIFH = ONES;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
 
 	// Bump this for the time being as this should not be occurring.
 	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
@@ -193,6 +200,7 @@ void PortHISR(void)
 //	default : // Two or more pressed, nothing to do except wait for another button press
 //		break;
 //	}
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
 
@@ -205,8 +213,9 @@ void PortHISR(void)
 void IRQISR(void){
 	/* Clear the flag */
 	// ?? TODO
-
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
 
@@ -219,8 +228,9 @@ void IRQISR(void){
 void XIRQISR(void){
 	/* Clear the flag */
 	// ?? TODO
-
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
 
@@ -233,8 +243,7 @@ void XIRQISR(void){
 void LowVoltageISR(void){
 	/* Clear the flag */
 	VREGCTRL |= 0x01;
-
-	/* Increment the counter */
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT6, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_LOW_VOLTATE_CONDITION_OFFSET);
-
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT6, PORTB);
 }

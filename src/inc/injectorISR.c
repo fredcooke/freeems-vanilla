@@ -73,6 +73,8 @@ void InjectorXISR(){
 	/* Record the current time as start time */
 	unsigned short TCNTStart = TCNT;
 
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT2, PORTB);
+
 	/* Record the edge time stamp from the IC register */
 	unsigned short edgeTimeStamp = *injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER];
 
@@ -156,4 +158,6 @@ void InjectorXISR(){
 	}
 	/* Calculate and store the latency based on compare time and start time */
 	injectorCodeLatencies[INJECTOR_CHANNEL_NUMBER] = TCNTStart - edgeTimeStamp;
+
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT2, PORTB);
 }

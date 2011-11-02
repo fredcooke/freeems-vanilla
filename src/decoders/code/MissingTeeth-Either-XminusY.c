@@ -68,12 +68,11 @@ void perDecoderReset(){
 void PrimaryRPMISR(void) {
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
 	unsigned short edgeTimeStamp = TC0;    /* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
-
-	// TODO DEBUG/TUNING MACRO HERE!
 
 	KeyUserDebugs.primaryTeethSeen++;
 
@@ -261,12 +260,8 @@ void PrimaryRPMISR(void) {
 	}else{
 		// do checking for width variance too, perhaps optionally.
 	}
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT0, PORTB);
 }
 
 
-void SecondaryRPMISR(void) { // migrate this to its own file for this decoder type such that various types of secondary sync can be handled with missing tooth main sync, thanks Abe for arguing and whinging.
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x02;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
+#include "../inc/defaultSecondaryRPMISR.c"

@@ -153,7 +153,7 @@ void SCI0ISR(){
 	unsigned char flags = SCI0SR1;
 	/* Note: Combined with reading or writing the data register this also clears the flags. */
 
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT4, PORTB);
 
 	/* If the RX interrupt is enabled check RX related flags */
 	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE){
@@ -311,5 +311,5 @@ void SCI0ISR(){
 		}
 	}
 
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT4, PORTB);
 }

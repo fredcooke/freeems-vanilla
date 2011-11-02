@@ -362,12 +362,11 @@ From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
-
-	// TODO DEBUG/TUNING MACRO HERE!
 
 	KeyUserDebugs.primaryTeethSeen++;
 
@@ -494,7 +493,7 @@ void PrimaryRPMISR(){
 	lastEventTimeStamp = thisEventTimeStamp;
 	KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT0, PORTB);
 }
 
 
@@ -503,12 +502,11 @@ void SecondaryRPMISR(){
 
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT1, PORTB);
 
 	/* Save all relevant available data here */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
 	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
-
-	// TODO DEBUG/TUNING MACRO HERE!
 
 	KeyUserDebugs.secondaryTeethSeen++;
 	// remember that this is both edges, though... 8 per cycle, 4 per rev for the outter wheel, 2/1 for this wheel.
@@ -613,5 +611,5 @@ void SecondaryRPMISR(){
 	lastEventTimeStamp = thisEventTimeStamp;
 	KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT1, PORTB);
 }

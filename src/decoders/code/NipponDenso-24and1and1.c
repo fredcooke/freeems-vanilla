@@ -44,11 +44,7 @@
  * - 1UZ-FE
  * - Mazda F2T
  *
- * @author Fred Cooke
- *
  * @note Pseudo code that does not compile with zero warnings and errors MUST be commented out.
- *
- * @todo TODO make this generic for evenly spaced teeth with a pulse per revolution from the second input.
  */
 
 
@@ -69,15 +65,5 @@ const unsigned short eventAngles[] = {0, 30, 60, 90, 120, 150, 180, 210, 240, 27
 //const unsigned char eventValidForCrankSync[] = {?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?}; // Needs some thought.
 
 
-void PrimaryRPMISR(){
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x01;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
-
-
-void SecondaryRPMISR(){
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x02;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
+#include "../inc/defaultPrimaryRPMISR.c"
+#include "../inc/defaultSecondaryRPMISR.c"

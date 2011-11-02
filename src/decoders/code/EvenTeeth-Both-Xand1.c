@@ -44,8 +44,7 @@ void perDecoderReset(){} // Nothing special to reset for this code
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
-
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
@@ -135,15 +134,14 @@ void PrimaryRPMISR(){
 		lastPrimaryEventTimeStamp = thisEventTimeStamp;
 		KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
 	}
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT0, PORTB);
 }
 
 
 void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
-
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT1, PORTB);
 
 	/* Save all relevant available data here */
 	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
@@ -199,5 +197,5 @@ void SecondaryRPMISR(){
 		}
 		KeyUserDebugs.currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 	}
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT1, PORTB);
 }

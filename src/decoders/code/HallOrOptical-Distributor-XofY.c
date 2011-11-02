@@ -75,12 +75,11 @@ void perDecoderReset(){} // Nothing special to reset for this code
 void PrimaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
 	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
 	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
-
-	// TODO DEBUG/TUNING MACRO HERE!
 
 	KeyUserDebugs.primaryTeethSeen++;
 
@@ -198,12 +197,9 @@ void PrimaryRPMISR(){
 	// Always
 	lastEventTimeStamp = thisEventTimeStamp;
 	KeyUserDebugs.decoderFlags |= LAST_TIMESTAMP_VALID;
-	// TODO DEBUG/TUNING MACRO HERE!
+
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT0, PORTB);
 }
 
 
-void SecondaryRPMISR(){
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x02;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
+#include "../inc/defaultSecondaryRPMISR.c"

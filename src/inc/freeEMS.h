@@ -289,6 +289,37 @@ unsigned short timerExtensionClock; /* Increment for each overflow of the main t
 /* section 10.3.5 page 290 68hc11 reference manual e.g. groups.csail.mit.edu/drl/courses/cs54-2001s/pdf/M68HC11RM.pdf */
 
 
+// Default to off
+#ifndef DECODER_BENCHMARKS
+#define DECODER_BENCHMARKS FALSE
+#else
+#undef DECODER_BENCMARKS
+#define DECODER_BENCHMARKS TRUE
+#endif
+
+
+/** This macro turns a pin ON based on an enable flag, a port address and a pin
+ * mask for that port. It is used to keep the code clean and free from ifdefs
+ * whilst allowing a developer to turn on benchmarking outputs very easily. Note
+ * that it gets optimised out due to the constant literal conditional required.
+ */
+#define DEBUG_TURN_PIN_ON(BENCHMARK_ENABLED, PIN_ON_MASK, PORT_ADDRESS)   \
+if(BENCHMARK_ENABLED){                                                    \
+	PORT_ADDRESS |= PIN_ON_MASK;                                          \
+}                                                                         // End macro
+
+
+/** This macro turns a pin OFF based on an enable flag, a port address and a pin
+ * mask for that port. It is used to keep the code clean and free from ifdefs
+ * whilst allowing a developer to turn on benchmarking outputs very easily. Note
+ * that it gets optimised out due to the constant literal conditional required.
+ */
+#define DEBUG_TURN_PIN_OFF(BENCHMARK_ENABLED, PIN_OFF_MASK, PORT_ADDRESS) \
+if(BENCHMARK_ENABLED){                                                    \
+	PORT_ADDRESS &= PIN_OFF_MASK;                                         \
+}                                                                         // End macro
+
+
 /* For extracting 32 bit long time stamps from the overflow counter and timer registers */
 typedef union { /* Declare Union http://www.esacademy.com/faq/docs/cpointers/structures.htm */
 	unsigned long timeLong;

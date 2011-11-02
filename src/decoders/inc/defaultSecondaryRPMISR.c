@@ -24,16 +24,19 @@
  */
 
 
-/**	@file AUniqueName-Location-Pattern.c
+/**	@file defaultSecondaryRPMISR.c
+ * @ingroup interruptHandlers
+ * @ingroup enginePositionRPMDecoders
  *
- * This exists to stop some other decoder from becoming the default in doxygen.
- *
- * See the decoders directory in the source for real examples of this ISR.
- * Also see the Makefile for how decoder files are handled differently.
- *
- * @see enginePositionRPMDecoders
+ * To be included in decoders that do not use the secondary RPM ISR.
+ * 
+ * Reduces duplication and the chance for errors.
  */
 
 
-#include "../inc/defaultPrimaryRPMISR.c"
-#include "../inc/defaultSecondaryRPMISR.c"
+void SecondaryRPMISR(){
+	TFLG = 0x02;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT1, PORTB);
+	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT1, PORTB);
+}

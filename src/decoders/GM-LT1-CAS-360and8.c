@@ -117,12 +117,11 @@ void PrimaryRPMISR(void){
 	TFLG = 0x01;
 	// Grab this first as it is the most critical var in this decoder
 	accumulatorRegisterCount = PACN1;/* save count before it changes */
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
 	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 	unsigned short edgeTimeStamp = TC0; /* Save the edge time stamp */
-
-	// TODO DEBUG/TUNING MACRO HERE!
 
 	windowState = PTITCurrentState & 0x01; /* Save the high/low state of the port, HIGH PRIORITY some windows are only 2deg wide */
 	unsigned char accumulatorCount = accumulatorRegisterCount - lastPARegisterReading;/* save count before it changes */
@@ -261,15 +260,8 @@ void PrimaryRPMISR(void){
 		SCHEDULE_ECT_OUTPUTS();
 	}
 
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT0, PORTB);
 }
 
 
-/* Update the scheduler every time 5 teeth are counted by the pulse accumulator. */
-void SecondaryRPMISR(void){
-	// TODO Change the accumulator mode to overflow every 5 inputs on PT0 making our 360 tooth wheel interrupt like a 72 tooth wheel
-	// TODO Decide if an explicit parameter is necessary if not use a existing status var instead for now it's explicit.
-	/* Clear the interrupt flag for this input compare channel */
-	TFLG = 0x02;
-	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
-}
+#include "inc/defaultSecondaryRPMISR.c"

@@ -54,7 +54,7 @@ void RTIISR(){
 	/* Clear the RTI flag */
 	CRGFLG = 0x80;
 
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT3, PORTB);
 
 	/* Increment the counter */
 	Clocks.realTimeClockMain++;
@@ -149,7 +149,7 @@ void RTIISR(){
 			}
 		}
 	}
-	// TODO DEBUG/TUNING MACRO HERE!
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT3, PORTB);
 }
 
 
@@ -157,16 +157,20 @@ void RTIISR(){
  *
  * When the ECT free running timer hits 65535 and rolls over, this is run. Its
  * job is to extend the timer to an effective 32 bits for longer measuring much
- * longer periods with the same resolution.
+ * longer periods with the same resolution. Please see section 10.5.5 of the
+ * 68HC11 reference manual for more information on this technique!
+ *
+ * @warning The extension var should be incremented before the flag is cleared!
  *
  * @author Fred Cooke
  */
 void TimerOverflow(){
 	/* Increment the timer extension variable */
 	timerExtensionClock++;
-
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT5, PORTB); // TODO Should this go after the flag, or before the timer inc??? 6 possibilities here!
 	/* Clear the timer overflow interrupt flag */
 	TFLGOF = 0x80;
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT5, PORTB);
 }
 
 
