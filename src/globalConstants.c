@@ -79,6 +79,9 @@ const unsigned char buildTimeAndDate[BUILD_TIME_AND_DATE_LENGTH] = { __TIME__ " 
 /** GCC supplied compiler version */
 const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };
 
+/** Operating system type */
+const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH] = { OPERATING_SYSTEM };
+
 /** Divisors and untunable physical constants combined into a single master fuel constant
  *
  * const unsigned short molarMassOfAir = 2897; // in grams per 100 moles, so divide by 100 to get gm/mol

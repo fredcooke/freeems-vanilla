@@ -58,6 +58,7 @@
 FIRMWARE_VERSION = $(shell git describe --dirty=-SNAPSHOT)
 OUTPREFIX = FreeEMS
 LABEL = $(OUTPREFIX)-$(FIRMWARE_VERSION)
+OS = $(shell uname)
 
 # Windows differences
 ifdef ComSpec
@@ -67,10 +68,20 @@ PATHSEP = \\
 MKDIR = mkdir
 # Windows echo repeats " symbols (Q stands for quote...)
 Q =
+SHASUM = sha1sum
 else
 PATHSEP = /
 MKDIR = mkdir -p
 Q = "
+SHASUM = shasum
+endif
+
+# Mac differences
+ifeq ($(OS), Darwin)
+MD5SUM = md5
+else
+# If using this on windows, we're in cygwin, same as Linux
+MD5SUM = md5sum
 endif
 
 # Directories here
@@ -243,7 +254,7 @@ GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
 # include debug info, optimise , 16 bit ints, hcs12 platform
 GCCOPTS1 = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
 GCCOPTS2 = -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
-GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS) -D" FIRMWARE_VERSION=\"$(FIRMWARE_VERSION)\""
+GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS) -D" FIRMWARE_VERSION=\"$(FIRMWARE_VERSION)\"" -D" OPERATING_SYSTEM=\"$(OS)\""
 # -ffunction-sections option splits out the functions such that the garbage collection can get
 # them on a per section basis. I'm not sure, but this could be harmful to paged code so may
 # have to review this at a later date perhaps splitting paged functions from nonpaged ones.
@@ -744,10 +755,12 @@ testgit:
 	@echo "################################################################################"
 	@echo "#                            Checking git status...                            #"
 	@echo "################################################################################"
-	@echo "Fetching from origin..."
-	git fetch
+	@echo "Are we on master?"
+	test `git symbolic-ref HEAD` = refs/heads/master
 	@echo "Is everything checked in?"
 	test `git status -s | wc -l` -eq 0
+	@echo "Fetching from origin..."
+	git fetch
 	@echo "Are we behind?"
 	test `git rev-list \`git show-ref --hash refs/heads/master\`..\`git show-ref --hash refs/remotes/origin/master\` | wc -l` -eq 0
 	@echo "Are we ahead?"
@@ -762,7 +775,7 @@ md5sumsmsg:
 md5sums: s19 distributiondir md5sumsmsg $(ALLMD5S)
 
 $(ALLMD5S): $(DISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19
-	md5sum $< > $@
+	$(MD5SUM) $< > $@
 
 
 sha1sumsmsg:
@@ -773,7 +786,7 @@ sha1sumsmsg:
 sha1sums: s19 distributiondir sha1sumsmsg $(ALLSHA1S)
 
 $(ALLSHA1S): $(DISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
-	sha1sum $< > $@
+	$(SHASUM) $< > $@
 
 
 
@@ -810,7 +823,7 @@ gendoxy: clean
 	cd ../ ; doxygen docs/Doxyfile | grep Warning > src/doxygen.output;cd -
 
 zipsite: distributiondir gendoxy
-	cd ../docs/ ; zip -r  $(DISTRIBUTIONDIR)/doxygen-html.zip doxygen-html/;cd -
+	cd ../docs/ ; zip -r  $(DISTRIBUTIONDIR)/$(LABEL)-doxygen-html.zip doxygen-html/;cd -
 
 zipsrc: distributiondir
 	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ../$(LABEL)/$(LABEL)-src.zip;cd -

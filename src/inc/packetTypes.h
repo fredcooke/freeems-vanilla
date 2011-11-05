@@ -111,6 +111,7 @@
 #define requestDecoderName          0xEEEE // Makes interrogation unique within a single build
 #define requestFirmwareBuildDate    0xEEF0 // When it was built
 #define requestCompilerVersion      0xEEF2 // Which GCC built it
+#define requestOperatingSystem      0xEEF4 // Which OS was it built on
 #define clearCountersAndFlagsToZero 0xFFF0 // Clean slate to perform tests of any type. Clears various flags too, should not affect running
 
 #else

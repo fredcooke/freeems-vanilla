@@ -421,35 +421,7 @@ void decodePacketAndRespond(){
 			break;
 		}
 		case requestDecoderName:
-		{
-			/// @todo TODO add this call to the documentation, John maybe?
-			if(RXCalculatedPayloadLength != 0){
-				errorID = payloadLengthTypeMismatch;
-				break;
-			}
-
-			/* This type must have a length field, set that up and load the body into place at the same time */
-			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), (unsigned char*)decoderName);
-			*TXHeaderFlags |= HEADER_HAS_LENGTH;
-			// Update with length field and string length.
-			TXBufferCurrentPositionHandler += 2 + *((unsigned short*)TXBufferCurrentPositionHandler);
-			break;
-		}
 		case requestFirmwareBuildDate:
-		{
-			/// @todo TODO add this call to the documentation, John maybe?
-			if(RXCalculatedPayloadLength != 0){
-				errorID = payloadLengthTypeMismatch;
-				break;
-			}
-
-			/* This type must have a length field, set that up and load the body into place at the same time */
-			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), (unsigned char*)buildTimeAndDate);
-			*TXHeaderFlags |= HEADER_HAS_LENGTH;
-			// Update with length field and string length.
-			TXBufferCurrentPositionHandler += 2 + *((unsigned short*)TXBufferCurrentPositionHandler);
-			break;
-		}
 		case requestCompilerVersion:
 		{
 			/// @todo TODO add this call to the documentation, John maybe?
@@ -458,8 +430,23 @@ void decodePacketAndRespond(){
 				break;
 			}
 
+			unsigned char* stringToSend = 0;
+			switch (RXHeaderPayloadID) {
+				case requestDecoderName:
+					stringToSend = (unsigned char*)decoderName;
+					break;
+				case requestFirmwareBuildDate:
+					stringToSend = (unsigned char*)buildTimeAndDate;
+					break;
+				case requestCompilerVersion:
+					stringToSend = (unsigned char*)compilerVersion;
+					break;
+				case requestOperatingSystem:
+					stringToSend = (unsigned char*)operatingSystem;
+					break;
+			}
 			/* This type must have a length field, set that up and load the body into place at the same time */
-			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), (unsigned char*)compilerVersion);
+			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), stringToSend);
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
 			// Update with length field and string length.
 			TXBufferCurrentPositionHandler += 2 + *((unsigned short*)TXBufferCurrentPositionHandler);
