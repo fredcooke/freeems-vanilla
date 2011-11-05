@@ -34,16 +34,16 @@
  * teeth decoder base can function in a specific way for the configured values.
  *
  * Choose one of these three options:
- * - #define CRANK_ONLY
- * - #define CAM_ONLY
- * - #define CRANK_WITH_CAM_SYNC
+ * - CRANK_ONLY
+ * - CAM_ONLY
+ * - CRANK_WITH_CAM_SYNC
  *
  * @note The above setting will affect the init routine. CRANK_WITH_CAM_SYNC is
  * not currently supported.
  *
  * Define both of these values appropriately:
- * - #define TOTAL_TEETH
- * - #define MISSING_TEETH
+ * - TOTAL_TEETH
+ * - MISSING_TEETH
  *
  * @note Please see the docs directory MissingTeethValidCombos.ods file first.
  */

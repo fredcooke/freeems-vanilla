@@ -65,19 +65,19 @@
  * This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
  * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID
  */
-const unsigned char interfaceVersionAndType[20] = {0,0,0,'I','F','r','e','e','E','M','S',' ','V','a','n','i','l','l','a',0};
+const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = {0,0,0,'I','F','r','e','e','E','M','S',' ','V','a','n','i','l','l','a',0}; // TODO change spec to not have numerics and to parse from string, maybe pull from somewhere?
 
 /** Displayable firmware version identifier
  *
  * This should change every time the code is changed at all (even a little) before each release.
  */
-const unsigned char firmwareVersion[31] = {"FreeEMS Vanilla 0.1.2 SNAPSHOT"};
+const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH] = { FIRMWARE_VERSION };
 
-/** GCC supplied build date
- *
- * @todo TODO Might change this to include a time and timezone later
- */
-const unsigned char firmwareBuildDate[12] = { __DATE__ }; // Expands to include double quotes
+/** GCC supplied build date */
+const unsigned char buildTimeAndDate[BUILD_TIME_AND_DATE_LENGTH] = { __TIME__ " " __DATE__ };
+
+/** GCC supplied compiler version */
+const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };
 
 /** Divisors and untunable physical constants combined into a single master fuel constant
  *

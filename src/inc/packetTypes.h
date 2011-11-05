@@ -108,10 +108,10 @@
 // Data interrogation gold
 #define retrieveListOfLocationIDs   0xDA5E // Idea is Dave's, impl is Fred's
 #define retrieveLocationIDDetails   0xF8E0 // Idea is Fred's, impl is Fred's
-#define requestDecoderName          0xEEEE // Ensure interogation knows everything about this firmware
-#define requestFirmwareBuildDate    0xEEEF // Ensure interogation knows everything about this firmware
-#define clearCountersAndFlagsToZero 0xEEF0 // Clean slate to perform tests of any type. Clears various flags too, should not affect running
-
+#define requestDecoderName          0xEEEE // Makes interrogation unique within a single build
+#define requestFirmwareBuildDate    0xEEF0 // When it was built
+#define requestCompilerVersion      0xEEF2 // Which GCC built it
+#define clearCountersAndFlagsToZero 0xFFF0 // Clean slate to perform tests of any type. Clears various flags too, should not affect running
 
 #else
 	/* let us know if we are being untidy with headers */

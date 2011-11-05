@@ -69,6 +69,13 @@
  */
 
 
+// Sizes for array must be outside ifndef block
+#define INTERFACE_VERSION_LENGTH   31
+#define FIRMWARE_VERSION_LENGTH    63
+#define BUILD_TIME_AND_DATE_LENGTH 20
+#define COMPILER_VERSION_LENGTH    31
+
+
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Arrays here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 #ifndef NO_CONST_ARRAYS
@@ -79,10 +86,11 @@ EXTERN const volatile unsigned short CHTTransferTable[1024]; /* 2k */
 EXTERN const volatile unsigned short MAFTransferTable[1024]; /* 2k */
 EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 
-/* Version strings */
-EXTERN const unsigned char interfaceVersionAndType[20];
-EXTERN const unsigned char firmwareVersion[31];
-EXTERN const unsigned char firmwareBuildDate[12];
+/* Version strings 31 because null terminated */
+EXTERN const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH];
+EXTERN const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH];
+EXTERN const unsigned char buildTimeAndDate[BUILD_TIME_AND_DATE_LENGTH];
+EXTERN const unsigned char compilerVersion[COMPILER_VERSION_LENGTH];
 
 
 /* Injection (currently used for both inj and ign) */

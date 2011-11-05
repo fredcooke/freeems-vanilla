@@ -324,12 +324,12 @@ void decodePacketAndRespond(){
 			}
 
 			/* This type must have a length field, set that up */
-			*((unsigned short*)TXBufferCurrentPositionHandler) = sizeof(interfaceVersionAndType);
+			*((unsigned short*)TXBufferCurrentPositionHandler) = sizeof(interfaceVersion);
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
 			TXBufferCurrentPositionHandler += 2;
 			/* Load the body into place */
-			memcpy((void*)TXBufferCurrentPositionHandler, (void*)&interfaceVersionAndType, sizeof(interfaceVersionAndType));
-			TXBufferCurrentPositionHandler += sizeof(interfaceVersionAndType);
+			memcpy((void*)TXBufferCurrentPositionHandler, (void*)&interfaceVersion, sizeof(interfaceVersion));
+			TXBufferCurrentPositionHandler += sizeof(interfaceVersion);
 			break;
 		}
 		case requestFirmwareVersion:
@@ -444,7 +444,22 @@ void decodePacketAndRespond(){
 			}
 
 			/* This type must have a length field, set that up and load the body into place at the same time */
-			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), (unsigned char*)firmwareBuildDate);
+			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), (unsigned char*)buildTimeAndDate);
+			*TXHeaderFlags |= HEADER_HAS_LENGTH;
+			// Update with length field and string length.
+			TXBufferCurrentPositionHandler += 2 + *((unsigned short*)TXBufferCurrentPositionHandler);
+			break;
+		}
+		case requestCompilerVersion:
+		{
+			/// @todo TODO add this call to the documentation, John maybe?
+			if(RXCalculatedPayloadLength != 0){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
+			/* This type must have a length field, set that up and load the body into place at the same time */
+			*((unsigned short*)TXBufferCurrentPositionHandler) = stringCopy((TXBufferCurrentPositionHandler + 2), (unsigned char*)compilerVersion);
 			*TXHeaderFlags |= HEADER_HAS_LENGTH;
 			// Update with length field and string length.
 			TXBufferCurrentPositionHandler += 2 + *((unsigned short*)TXBufferCurrentPositionHandler);

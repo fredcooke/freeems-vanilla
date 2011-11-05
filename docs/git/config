@@ -18,6 +18,7 @@
 [core]
 	repositoryformatversion = 0
 	filemode = true
+	ignorecase = false
 
 # My redundant remotes
 [remote "origin"]

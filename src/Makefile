@@ -55,10 +55,9 @@
 
 
 # Constants
-VERSION = 0.1.2-SNAPSHOT
-PREVIOUSVERSION = 0.1.1
-OUTPREFIX = freeems
-LABEL = $(OUTPREFIX)-$(VERSION)
+FIRMWARE_VERSION = $(shell git describe --dirty=-SNAPSHOT)
+OUTPREFIX = FreeEMS
+LABEL = $(OUTPREFIX)-$(FIRMWARE_VERSION)
 
 # Windows differences
 ifdef ComSpec
@@ -75,7 +74,6 @@ Q = "
 endif
 
 # Directories here
-RELEASEDIR = ../previous-release
 DISTRIBUTIONDIR = ../../$(LABEL)
 DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
@@ -218,8 +216,8 @@ ALLSIZES = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt,$(ALLS19S))
 ALLDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(ALLS19S))
 ALLMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(ALLS19S))
 ALLSHA1S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.sha1,$(ALLS19S))
-ALLS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(ALLS19S))
 ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(ALLS19S))
+
 
 # Convert to output files for GC variants
 GCDELFSC = $(patsubst $(DECDIR)/%.c,$(OUTDIR)/$(LABEL)-%.gc.elf,$(RPMCLASSES))
@@ -230,10 +228,6 @@ GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
 GCDSIZES = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt,$(GCDS19S))
 GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
-GCDMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(GCDS19S))
-GCDSHA1S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.sha1,$(GCDS19S))
-GCDS19RELS = $(patsubst $(S19DIR)/%,$(RELEASEDIR)/%,$(GCDS19S))
-GCDS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(GCDS19S))
 
 
 
@@ -249,7 +243,7 @@ GCDS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(GCDS19S))
 # include debug info, optimise , 16 bit ints, hcs12 platform
 GCCOPTS1 = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
 GCCOPTS2 = -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
-GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS)
+GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS) -D" FIRMWARE_VERSION=\"$(FIRMWARE_VERSION)\""
 # -ffunction-sections option splits out the functions such that the garbage collection can get
 # them on a per section basis. I'm not sure, but this could be harmful to paged code so may
 # have to review this at a later date perhaps splitting paged functions from nonpaged ones.
@@ -262,7 +256,7 @@ LINKOPTSGC = -no-warn-mismatch,--gc-sections,--print-gc-sections,-defsym,vectors
 
 # If using the below option for paged flash, the ADDRESS_TYPE
 # field in the freeEMSloader script should be updated to match.
-COPYOPTS =  --output-target=srec \
+COPYOPTS = --output-target=srec \
 		--change-section-lma .fixedconf1+0xFD4000 \
 		--change-section-lma .fixedconf2+0xFD4000 \
 		     --change-section-lma .text1+0xFD4000 \
@@ -382,7 +376,6 @@ help:
 	@echo $(Q)#       1) help - This comment block                                           #$(Q)
 	@echo $(Q)#       2) all - Executes alldebug, slow, slowgc and size                      #$(Q)
 	@echo $(Q)#       3) dirs - Creates all of the directories required to build             #$(Q)
-	@echo $(Q)#       4) fast - Compiles direct to object code and links once with no debug  #$(Q)
 	@echo $(Q)#       5) slow - Three stage compilation with assembly retained               #$(Q)
 	@echo $(Q)#       6) slowgc - As above, but with garbage collection during linking       #$(Q)
 	@echo $(Q)#       7) alldebug - Generates all debug output files                         #$(Q)
@@ -438,10 +431,8 @@ help:
 	@echo $(Q)#                                                                              #$(Q)
 	@echo $(Q)#    1) Checks that the repository is consistent                               #$(Q)
 	@echo $(Q)#    2) Performs a full clean                                                  #$(Q)
-	@echo $(Q)#    3) Removes the previous release files                                     #$(Q)
 	@echo $(Q)#    4) Removes the doxygen files                                              #$(Q)
 	@echo $(Q)#    5) Builds binaries for each decoder type                                  #$(Q)
-	@echo $(Q)#    6) Copies the binaries into the release directory                         #$(Q)
 	@echo $(Q)#    7) Generates a new doxygen site                                           #$(Q)
 	@echo $(Q)#    8) Performs a full clean                                                  #$(Q)
 	@echo $(Q)#    9) Commits the release files                                              #$(Q)
@@ -481,8 +472,6 @@ help:
 
 # Build everything the long way
 all: alldebug gcsizes sizes size
-# Single stage compilation
-fast: single sizes size
 # Multi stage compilation
 slow: sizes size
 # Multi stage compilation with garbage collection
@@ -492,13 +481,13 @@ clean: cleanasm cleanobj cleanout cleanppc cleans19 cleandebug
 # Generate all debug
 alldebug: maps rees elfdmps objdmps
 # Load the s19 of your choice
-#install: clean fast loader
+#install: clean slow loader
 # Perform a release
-release: relprep relbuild relperf relpack1 relpack2
-relprep: testgit clean cleanrelease cleandoxy
-relbuild: gendoxy s19rel s19relgc
+release: testgit relbuild relperf
+package: relbuild relpack1 relpack2
+relbuild: clean cleandoxy gendoxy s19
 relperf: relcommit tagrelease
-relpack1: md5sums md5sumsgc sha1sums sha1sumsgc s19zips s19zipsgc
+relpack1: md5sums  sha1sums  s19zips 
 relpack2: zipsite zipdocs zipmain zipsrc
 
 
@@ -551,17 +540,6 @@ objdmps: assemble $(BUGDIR) objdmpmsg $(DUMPS) $(DUMPSRPM)
 
 $(DUMPS) $(DUMPSRPM): $(BUGDIR)/%.dmp: $(OBJDIR)/%.o
 	$(DUMP) -spSd $< > $@
-
-
-
-
-################################################################################
-#                 Fast Single Stage Compile Target Definition                  #
-################################################################################
-
-
-single:
-	# TODO fast compile and figure out overlapping dependencies...
 
 
 
@@ -710,7 +688,7 @@ dependencies: dependenciesmsg $(DEPENDENCIES) $(DEPENDENCIESRPM) $(DDEPENDENCIES
 
 # Generate dependency files for recompilation on change semantics
 $(DEPENDENCIES) $(DEPENDENCIESRPM): $(DEPDIR)/%.d: %.c $(ALLH)
-	$(GCC) $(CLIFLAGS) -MM -MF $@ -MT $(PPCDIR)/$*.pp.c $<;
+	$(GCC) $(CLIFLAGS) -MM -MF $@ -MT $(PPCDIR)/$*.pp.c $<
 # Generate dependency files for the dependency files...
 $(DDEPENDENCIES) $(DDEPENDENCIESRPM): $(DEPDIR)/%.dd: %.c $(ALLH)
 	$(GCC) $(CLIFLAGS) -MM -MF $@ -MT $(DEPDIR)/$*.d $<
@@ -776,8 +754,6 @@ testgit:
 	test `git rev-list \`git show-ref --hash refs/remotes/origin/master\`..\`git show-ref --hash refs/heads/master\` | wc -l` -eq 0
 
 
-
-
 md5sumsmsg:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                            Generating MD5 Sums...                            #$(Q)
@@ -802,28 +778,6 @@ $(ALLSHA1S): $(DISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
 
 
 
-md5sumsmsggc:
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                            Generating MD5 Sums...                            #$(Q)
-	@echo $(Q)################################################################################$(Q)
-
-md5sumsgc: gcs19 distributiondir md5sumsmsggc $(GCDMD5S)
-
-$(GCDMD5S): $(DISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19
-	md5sum $< > $@
-
-
-sha1sumsmsggc:
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                           Generating SHA1 Sums...                            #$(Q)
-	@echo $(Q)################################################################################$(Q)
-
-sha1sumsgc: gcs19 distributiondir sha1sumsmsggc $(GCDSHA1S)
-
-$(GCDSHA1S): $(DISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
-	sha1sum $< > $@
-
-
 s19zipsmsg:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                                Zipping S19s...                               #$(Q)
@@ -835,68 +789,31 @@ $(ALLS19ZIPS): $(DISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
 	zip $@ $<
 
 
-s19relmsg:
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                                Copying S19s...                               #$(Q)
-	@echo $(Q)################################################################################$(Q)
-
-s19rel: sizes s19relmsg $(ALLS19RELS)
-
-$(ALLS19RELS): $(RELEASEDIR)/%.s19: $(S19DIR)/%.s19
-	$(CP) $< $@
-
-
-s19zipsgcmsg:
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                              Zipping GC S19s...                              #$(Q)
-	@echo $(Q)################################################################################$(Q)
-
-s19zipsgc: gcs19 distributiondir s19zipsmsg $(GCDS19ZIPS)
-
-$(GCDS19ZIPS): $(DISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
-	zip $@ $<
-
-
-s19relgcmsg:
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                              Copying GC S19s...                              #$(Q)
-	@echo $(Q)################################################################################$(Q)
-
-s19relgc: gcsizes s19relgcmsg $(GCDS19RELS)
-
-$(GCDS19RELS): $(RELEASEDIR)/%.s19: $(S19DIR)/%.s19
-	$(CP) $< $@
-
-
-relcommit:
-	git add $(RELEASEDIR)
-	git commit -m "Automatically committing release files for FreeEMS version $(VERSION)!" ..
-
-
 tagmessage:
 	vim $(RELTAG)
 
 tagname:
 	vim $(TAGNAME)
 
+
 tagrelease: tagname tagmessage
 	git tag -F $(RELTAG) `cat $(TAGNAME)` HEAD
 
 
 zipmain: distributiondir
-	cd ../;git archive --format=zip --prefix=$(LABEL)/ HEAD > ../$(LABEL)/$(LABEL).zip;cd -
+	cd ../ ; git archive --format=zip --prefix=$(LABEL)/ HEAD > ../$(LABEL)/$(LABEL).zip;cd -
 
 zipdocs: distributiondir
-	cd ../;git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ../$(LABEL)/$(LABEL)-docs.zip;cd -
+	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ../$(LABEL)/$(LABEL)-docs.zip;cd -
 
 gendoxy: clean
-	cd ..;doxygen docs/Doxyfile | grep Warning > src/doxygen.output;cd -
+	cd ../ ; doxygen docs/Doxyfile | grep Warning > src/doxygen.output;cd -
 
 zipsite: distributiondir gendoxy
-	cd ../docs/;zip -r $(DISTRIBUTIONDIR)/doxygen-html.zip doxygen-html/;cd -
+	cd ../docs/ ; zip -r  $(DISTRIBUTIONDIR)/doxygen-html.zip doxygen-html/;cd -
 
 zipsrc: distributiondir
-	cd ../;git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ../$(LABEL)/$(LABEL)-src.zip;cd -
+	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ../$(LABEL)/$(LABEL)-src.zip;cd -
 
 
 
@@ -1015,12 +932,6 @@ cleandebug:
 	@echo $(Q)################################################################################$(Q)
 	$(RM) $(BUGDIR)
 
-cleanrelease:
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                         Removing all release files...                        #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(RM) $(RELEASEDIR)/*-$(PREVIOUSVERSION)*
-
 cleandoxy:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                            Removing Doxygen HTML...                          #$(Q)
@@ -1034,7 +945,7 @@ cleandoxy:
 
 
 # Aggregators top level
-.PHONY: all fast slow slowgc single help dirs
+.PHONY: all slow slowgc single help dirs
 
 # Aggregators middle level
 .PHONY: dependencies preprocess compile assemble link gclink s19 gcs19 sizes gcsizes
@@ -1043,7 +954,7 @@ cleandoxy:
 .PHONY: alldebug maps rees objdmps elfdmps size
 
 # Release targets
-.PHONY: release relprep relperf relbuild relpack
+.PHONY: release relperf relbuild relpack
 .PHONY: md5sums sha1sums s19zips sha1sumsgc s19zips s19zipsgc
 .PHONY: testgit relcommit tagname tagmessage tagrelease
 .PHONY: zipmain zipdocs zipsite zipsource
@@ -1054,7 +965,7 @@ cleandoxy:
 .PHONY: md5sumsmsg sha1sumsmsg s19zipsmsg
 
 # Clean targets
-.PHONY: clean cleandep cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleanrelease cleandoxy
+.PHONY: clean cleandep cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleandoxy
 
 # Lonely documentation target :-(
 .PHONY: gendoxy
