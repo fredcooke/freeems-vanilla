@@ -495,11 +495,13 @@ alldebug: maps rees elfdmps objdmps
 #install: clean slow loader
 # Perform a release
 release: testgit relbuild relperf
-package: relbuild relpack1 relpack2
-relbuild: clean cleandoxy gendoxy s19
+package: relbuildfull relpack1 relpack2 zipsite
+packagenodoxy: relbuildfirmware relpack1 relpack2
+relbuildfull: clean cleandoxy gendoxy s19
+relbuildfirmware: clean s19
 relperf: relcommit tagrelease
 relpack1: md5sums  sha1sums  s19zips 
-relpack2: zipsite zipdocs zipmain zipsrc
+relpack2: zipdocs zipmain zipsrc
 
 
 
