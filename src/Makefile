@@ -55,7 +55,7 @@
 
 
 # Constants
-FIRMWARE_VERSION = $(shell git describe --dirty=-SNAPSHOT)
+FIRMWARE_VERSION = $(shell git describe --dirty=-DEV)
 OUTPREFIX = FreeEMS
 LABEL = $(OUTPREFIX)-$(FIRMWARE_VERSION)
 OS = $(shell uname)

@@ -72,7 +72,7 @@
 // Sizes for array must be outside ifndef block
 #define INTERFACE_VERSION_LENGTH   31
 #define FIRMWARE_VERSION_LENGTH    63
-#define BUILD_TIME_AND_DATE_LENGTH 20
+#define BUILD_TIME_AND_DATE_LENGTH 21
 #define COMPILER_VERSION_LENGTH    31
 #define OPERATING_SYSTEM_LENGTH    15
 
