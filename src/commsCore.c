@@ -423,6 +423,7 @@ void decodePacketAndRespond(){
 		case requestDecoderName:
 		case requestFirmwareBuildDate:
 		case requestCompilerVersion:
+		case requestOperatingSystem:
 		{
 			/// @todo TODO add this call to the documentation, John maybe?
 			if(RXCalculatedPayloadLength != 0){
