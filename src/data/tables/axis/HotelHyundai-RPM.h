@@ -37,7 +37,7 @@
 
 
 // 16 RPM values starting at 100 and ending at 6100, only the first 16 are used at the moment
-  200,  1000,  1800,  2600,
+  200,  1000,  1400,  2600,
  3400,  4200,  5000,  5800,
  6600,  7400,  8200,  9000,
  9800, 10600, 11600, 11601,

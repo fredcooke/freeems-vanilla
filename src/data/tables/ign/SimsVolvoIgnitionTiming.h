@@ -44,8 +44,8 @@
 /// TODO @todo this is all wrongly laid out now, due to Dave's whinging, so needs fixing...
 /* Laid out to make sense for 24 RPM and 19 Load bins, 8 extras on end to make up size. */
 
-// Low RPM                                                                                                           High RPM
-//  200     500    1000    1600    2200    2800    3400    4000    4600    5200    5800    6500  6500.5    7600    8000    8001 // Vacuum
+//  Low RPM                                                                                                            High RPM
+//  200     500    1000    1600    2200    2800    3400    4000    4600    5200    5800    6500  6500.5    7600    8000    8001  // Vacuum
   IT(0), IT(10), IT(10), IT(12), IT(18), IT(20), IT(27), IT(30), IT(32), IT(33), IT(32), IT(32),  IT(0),  IT(0),  IT(0),  IT(0), //  15
   IT(0), IT(10), IT(10), IT(13), IT(28), IT(32), IT(34), IT(34), IT(36), IT(36), IT(36), IT(36),  IT(0),  IT(0),  IT(0),  IT(0), //  30
   IT(0), IT(10), IT(10), IT(16), IT(29), IT(32), IT(36), IT(36), IT(36), IT(36), IT(36), IT(36),  IT(0),  IT(0),  IT(0),  IT(0), //  45
@@ -65,8 +65,8 @@
   IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0), // 210
   IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0), // 225
   IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0), // 226
-//  200     500    1000    1600    2200    2800    3400    4000    4600    5200    5800    6500  6500.5    7600    8000    8001 // Boost
-// Low RPM                                                                                                           High RPM
+//  200     500    1000    1600    2200    2800    3400    4000    4600    5200    5800    6500  6500.5    7600    8000    8001  // Boost
+//  Low RPM                                                                                                            High RPM
 
 
 

@@ -234,36 +234,36 @@
 /* Honda Denso 1.8bar found on 88 - ?? Honda vehicles. */
 #define HondaDenso183kPaMin       -664       /* Pressure read at lowest ADC reading */
 #define HondaDenso183kPaMax      18278       /* Pressure read at highest ADC reading */
-#define HondaDenso183kPaRange    18942       /* Pressure difference between lowest and highest ADC readings */
+#define HondaDenso183kPaRange                (HondaDenso183kPaMax - HondaDenso183kPaMin)
 
 /* Toyota 2.3bar found on some Toyota Cynos 5E-FE cars (and probably many others), em_knaps and Lev8n are responsible for this data! */
 #define ToyotaNA227kPaMin         2500       /* Pressure read at lowest ADC reading */
-#define ToyotaNA227kPaMax        22700       /* Pressure read at highest ADC reading */
-#define ToyotaNA227kPaRange      20200       /* Pressure difference between lowest and highest ADC readings */
-// NOTE: Other boosted toyotas have sensors with the same high point, but a lower low and a greater measured range!
+#define ToyotaNA227kPaMax        24700       /* Pressure read at highest ADC reading */
+#define ToyotaNA227kPaRange                  (ToyotaNA227kPaMax - ToyotaNA227kPaMin)
+// NOTE: The accuracy of this calibration is highly questionable. Please use the Honda units which is configured above and known to be accurate
 
 /* GM 2bar found on Cyclone Turbo V6 and probably other cars too. TODO These numbers are probably not that accurate... */
 #define GM2BarMin                  150       /* Pressure read at lowest ADC reading */
 #define GM2BarMax                20000       /* Pressure read at highest ADC reading */
-#define GM2BarRange              20150       /* Pressure difference between lowest and highest ADC readings */
+#define GM2BarRange                          (GM2BarMax - GM2BarMin)
 
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4100A.pdf */
 #define MPX4100AMin               1400       /* Pressure read at lowest ADC reading */
 #define MPX4100AMax              10750       /* Pressure read at highest ADC reading */
-#define MPX4100ARange             9350       /* Pressure difference between lowest and highest ADC readings */
+#define MPX4100ARange                        (MPX4100AMax - MPX4100AMin)
 
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4250A.pdf */
 #define MPX4250AMin                800       /* Pressure read at lowest ADC reading */
 #define MPX4250AMax              26000       /* Pressure read at highest ADC reading */
-#define MPX4250ARange            25200       /* Pressure difference between lowest and highest ADC readings */
+#define MPX4250ARange                        (MPX4250AMax - MPX4250AMin)
 
 #define MPXH6300AMin              1200       /* Pressure read at lowest ADC reading */
 #define MPXH6300AMax             32000       /* Pressure read at highest ADC reading */
-#define MPXH6300ARange           30800       /* Pressure difference between lowest and highest ADC readings */
+#define MPXH6300ARange                       (MPXH6300AMax - MPXH6300AMin)
 
 #define MPXH6400AMin              1200       /* Pressure read at lowest ADC reading */
 #define MPXH6400AMax             42000       /* Pressure read at highest ADC reading */
-#define MPXH6400ARange           40800       /* Pressure difference between lowest and highest ADC readings */
+#define MPXH6400ARange                       (MPXH6400AMax - MPXH6400AMin)
 
 #define TPSDefaultMin                0       /* ADC reading at lowest throttle position */
 #define TPSDefaultMax             1023       /* ADC reading at highest throttle position */
