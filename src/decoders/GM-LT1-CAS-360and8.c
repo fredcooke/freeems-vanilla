@@ -93,7 +93,7 @@ void decoderInitPreliminary(void){
 	// set to capture on rising and falling this way if we have an odd number in the PA we know something went wrong
 	// disable interrupt on PT1
 	ICPAR = 0x02; // set the second bit in ICPAR (PAC1) to enable PT1's pulse accumulator
-	// enable interrupt on overflow and set count to 0xFF-245 to enable an int on every ten teeth
+	// enable interrupt on overflow and set count to 0xFF-245 to enable an interrupt on every ten teeth
 	PACN1 = 0x00; // reset our count register
 	TCTL4 = 0xFF; /* Capture on both edges of pin 0 and only on the falling edges of pin 1, capture off for 2,3 */ // FRED why interrupt on the other one at all, there is no code and you're *causing* jitter in your primary rpm by doing this, along with eating CPU up.
 	//TIE = 0x01; // FRED necessary to do this too? I think so, but check the docs.

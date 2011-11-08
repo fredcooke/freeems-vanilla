@@ -168,7 +168,7 @@ SpSub:
                                ;addressing mode. The branch offset is referenced to the next address after the relative offset (rr) which
                                ;is the last byte of the instruction object code.
 
-  tfr b,ccr                    ;restore ccr and int condition
+  tfr b,ccr                    ;restore ccr and interrupt condition
 
 
 

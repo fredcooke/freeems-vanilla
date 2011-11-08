@@ -554,11 +554,11 @@ void initFlash(){
  */
 void initXgate(){
 	/* route interrupt to xgate, vector address = channel_id * 2 */
-	ROUTE_INTERRUPT(0x39, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on software0 interrupt */
-	ROUTE_INTERRUPT(0x3A, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT3 */
-	ROUTE_INTERRUPT(0x3B, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT2 */
-	ROUTE_INTERRUPT(0x3C, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT1 */
-	ROUTE_INTERRUPT(0x3D, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT0 */
+	ROUTE_INTERRUPT(0x39, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on software0 interrupt */
+	ROUTE_INTERRUPT(0x3A, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT3 */
+	ROUTE_INTERRUPT(0x3B, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT2 */
+	ROUTE_INTERRUPT(0x3C, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT1 */
+	ROUTE_INTERRUPT(0x3D, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT0 */
 
 	/* XGATE sees flash starting at paged address 0xE0, 0x8800 to + 30Kb*/
 	unsigned char savedRPAGE = RPAGE;
