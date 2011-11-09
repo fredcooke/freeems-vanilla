@@ -97,7 +97,7 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-#define E1 (54 * oneDegree)
+#define E1 (64 * oneDegree)
 
 const unsigned char decoderName[] = "HallOrOptical-Distributor-4of54";
 
