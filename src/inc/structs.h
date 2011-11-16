@@ -367,8 +367,6 @@ typedef struct {
 typedef struct {
 	// Scheduling
 	unsigned char normalSchedule;                  ///< times events were scheduled normally.
-	unsigned char tooFarToSchedule;                ///< times sched wasnt done to prevent excess advance.
-	unsigned char dwellStretchedToSchedule;        ///< times sched needed to extend dwell to prevent excess advance.
 	unsigned char timerStretchedToSchedule;        ///< times timer needed to be extended to prevent not scheduling.
 
 	// Decoder scheduling
