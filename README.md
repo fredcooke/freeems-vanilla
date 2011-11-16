@@ -8,11 +8,15 @@ Please see [FreeEMS.org](http://freeems.org) for the most up to date information
 
 Before using FreeEMS read the [disclaimer](http://www.diyefi.org/disclaimer.htm)!
 
+If you're wondering why this project was started have a look at [this page](http://www.diyefi.org/why.htm).
+
 ### Building the firmware
 
 Ensure that you have the latest release or latest code from the [github repository](http://github.com/fredcooke/freeems-vanilla).
 
 To build this firmware you need the latest build environment from the [tools site](http://tools.diyefi.org).
+
+You also need an up to date version of git available on the command line.
 
 ### Loading the firmware
 

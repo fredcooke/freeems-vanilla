@@ -1,40 +1,24 @@
 Serial TODO
 
-split location variable declarations out into own file.
-split some headers into more than one for different  inclusion purposes
-make file dependencies - chainable ? use same thing for message as action (only possible for single targets) 
 main loop, disable timer isrs leaving only comms and enter loop with delay sending out errors - this gives possibility to use comms to load better data and reset without engine running at all
-ping packet?
 globals comments?
-address request packet?
-lower 256 codes are proto - maskable by checking upper byte is 0x00 - update comms spec and code to match
-8 GP buttons for testing purposes - mantis 87
 split files down to smaller chunks
 write functions for wrapping
 caveats document - easy to screw up by x, y, z, etc
 assumptions document - no small table access in isrs
-location id list - fill out with fixed conf stuff and copy to tuner json
 think about header types and return semantics and buffer location independence etc
-Look at IO control payload type
 Look at pointers for memory rearrangement
 Ditto, pointers for paged ram tables etc to make code more readable - not so sure now
 Check ALL isr code for refs to TableA - TableD : separate headers out to avoid this problem
-Work on hardware docs
 Further work on serial errors and debug packets etc
-Look at placement of vars in the structs and try to aim for 16 or 8 long structs. (for filtering)
 see if we can make the flash block location pointers constants in flash  const volatile
 see if const array of injector register locations will work now - may not have had rodata or similar back then...
 finish memory management doc
-data map docs
-update comms docs to match code and vice versa
 group functions that call each other a lot by page
 put things called from everywhere in text/text1 - break text into two chunks, one for stuff that must go there, and one for stuff that is faster if it goes there.
 minh special stack pointer return function so we can know if there is room for a flash burn buffer
-docs = error code as neg ack or independent error packet - best way??
 async errors mask for which to send and which to not send - based on counts or what?
-datalog mask(s?!) for which to send and which to not.
 debugs not sent counter and method send if the tx buffer is empty only logic
-always respond to packets - last line call to send routine, check inside for flag or something and if not set then send generic response packet back
 
 
 possibly switch to pointers for all small tables etc to enhance readability :
@@ -73,51 +57,3 @@ trivial/unimportant :
 17) later, refactor to use UART prefix such that flags for CAN can start with CAN and be obviously unambiguous
 xx) size/length
 
-
-
-
-Tuner thoughts :
-
-aaron to make serial testing framework request/response config based so i can add them as i go and you can base your work on that.
-aarons test framework capable of behaving correctly for sm and ms too?
-
-
-
-Hardware thoughts :
-
-Bootloader PIN as fuel pump and protection activation source
-
-during bootload the bootload pin is X during normal running without intervention it is Y
-X = fuel pump off via inversion pre driver if required
-X = ignition output disable via extra pin on ICs
-Y = fuel pump on and all other pins under control
-This is  no good as it is reversed for a brief period in between just when the ign pins are trying to spike on...
-
-Can't drive A from a B pin as the state will be random when working.
-
-Need independent pin for pump and disable use as discussed in thread.
-
-investigate registers with non zero contents
-investigate the unknown pins and enter into pin out doc
-investigate the known high pins and find out why
-investigate the known high pins and see if we can tame them with resistors during reset/load.
-investigate loading effects on high pins.
-find free pin for fuel pump use
-choose chip(s) to isolate AND select ign outputs
-choose chip(s) to select inputs
-
-select = XOR
-isolate = ???
-inputs : signal > filter/process > invert/noninvert > cpu
-ignition : cpu > isolation layer > invert/noninvert > drivers
-isolate/invert unit could be same part in -ve/+ve versions?
-
-4077             = XNOR
-74hc86 / 74act86 = XOR
-75hc08/74hc01    = AND/NAND for isolation as it forces the output to a particular state when the other gate is powered/not powered
-74hc367          = tri state
-74hc125          = bus buffer
-
-lm1815 goes ?? for tooth and ?? for gap?
-
-to220 part for fuel pump relay drive = many relays controlled by this
