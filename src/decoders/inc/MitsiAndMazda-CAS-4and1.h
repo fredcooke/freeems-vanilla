@@ -73,6 +73,5 @@ unsigned char unknownEdges = 0;
 
 
 // Definitions of decoder interface constants
-const unsigned char decoderName[] = "MitsiAndMazda-CAS-4and1";
 const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,0,1,1,0}; // Unused for now, but correct anyway.

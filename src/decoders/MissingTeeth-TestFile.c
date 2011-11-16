@@ -43,5 +43,3 @@
 
 #include "inc/MissingTeeth.h"
 #include "code/MissingTeeth-Either-XminusY.c"
-
-const unsigned char decoderName[] = "MissingTeeth36-TestFile";

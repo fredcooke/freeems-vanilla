@@ -43,8 +43,7 @@
 #include "../inc/utils.h"
 
 // 69 is a little too high, and 68 is more than a little too low (or inversed)
-#define E1 69 // TODO May need to be 111 instead, needs testing!
+#define E1 (69 * oneDegree) // TODO May need to be 111 instead, needs testing!
 
-const unsigned char decoderName[] = "HallOrOptical-Distributor-4of69";
 
 #include "code/HallOrOptical-Distributor-XofY.c"

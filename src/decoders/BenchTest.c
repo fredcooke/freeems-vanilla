@@ -73,7 +73,6 @@ void decoderInitPreliminary(){
 void perDecoderReset(){} // Nothing special to reset for this code
 
 
-const unsigned char decoderName[] = BENCH_TEST_NAME;
 const unsigned short eventAngles[] = {0};           // no events really...
 const unsigned char eventValidForCrankSync[] = {0}; // no events really...
 

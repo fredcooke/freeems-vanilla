@@ -167,7 +167,7 @@ EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
 
 
 // These are defined per decoder and used elsewhere!
-EXTERN const unsigned char decoderName[ARBITRARY_DECODER_NAME_MAX_LENGTH];
+EXTERN const unsigned char decoderName[sizeof(BASE_FILE_NAME)];
 EXTERN const unsigned char numberOfRealEvents; // How many unique events the decoder sees.
 EXTERN const unsigned char numberOfVirtualEvents; // How many of the members of the eventAngles array are valid. (multiples of real events (1 - 12))
 EXTERN const unsigned short eventAngles[SIZE_OF_EVENT_ARRAYS]; /// @todo TODO From 0 - totalEventAngleRange degrees, scale: x50
@@ -247,6 +247,7 @@ const unsigned char numberOfRealEvents = NUMBER_OF_REAL_EVENTS;
 const unsigned char numberOfVirtualEvents = NUMBER_OF_VIRTUAL_EVENTS;
 const unsigned short totalEventAngleRange = 720 * oneDegree; //TOTAL_EVENT_ANGLE_RANGE;
 const unsigned short decoderMaxCodeTime = DECODER_MAX_CODE_TIME;
+const unsigned char decoderName[] = BASE_FILE_NAME;
 
 #endif
 

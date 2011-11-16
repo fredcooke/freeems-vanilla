@@ -99,6 +99,5 @@
 
 #define E1 (64 * oneDegree)
 
-const unsigned char decoderName[] = "HallOrOptical-Distributor-4of54";
 
 #include "code/HallOrOptical-Distributor-XofY.c"

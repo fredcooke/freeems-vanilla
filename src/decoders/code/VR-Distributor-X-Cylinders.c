@@ -48,7 +48,6 @@
 void decoderInitPreliminary(){} // This decoder works with the defaults
 void perDecoderReset(){} // Nothing special to reset for this code
 
-const unsigned char decoderName[] = "VR-Distributor-X-Cylinders";
 const unsigned short eventAngles[] = {0,180,360,540};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0};
 

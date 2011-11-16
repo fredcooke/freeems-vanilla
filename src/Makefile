@@ -715,8 +715,10 @@ preprocessmsg:
 preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
 
 # Generate preprocessed source files to examine
-$(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH) 
-	$(GCC) $(GCCOPTS) -E $< > $@
+$(PREPROCESSED): $(PPCDIR)/%.pp.c: %.c $(ALLH) 
+	$(GCC) $(GCCOPTS) -D BASE_FILE_NAME=\"$*\" -E $< > $@
+$(PREPROCESSEDRPM): $(PPCDIR)/decoders/%.pp.c: decoders/%.c $(ALLH) 
+	$(GCC) $(GCCOPTS) -D BASE_FILE_NAME=\"$*\" -E $< > $@
 
 
 compilemsg:
