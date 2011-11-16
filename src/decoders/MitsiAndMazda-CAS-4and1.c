@@ -434,14 +434,8 @@ void PrimaryRPMISR(){
 
 		// ...and check that it's correct
 		if((correctEvent != 0) && (KeyUserDebugs.currentEvent != correctEvent)){
-			KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;
-			KeyUserDebugs.currentEvent = correctEvent;
-			lastEvent = KeyUserDebugs.currentEvent - 1;
-
-			// Record that we had to reset position...
-			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_CORRECTIONS_OFFSET);
-			KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent;
-			// Should never happen, or should be caught by timing checks below
+			resetToNonRunningState(STATE_MISMATCH_IN_PRIMARY_RPM_ISR);
+			return;
 		}
 	}else if(correctEvent != 0){
 		KeyUserDebugs.currentEvent = correctEvent;
@@ -563,14 +557,8 @@ void SecondaryRPMISR(){
 
 		// ...and check that it's correct
 		if(KeyUserDebugs.currentEvent != correctEvent){
-			KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;
-			KeyUserDebugs.currentEvent = correctEvent;
-			lastEvent = KeyUserDebugs.currentEvent - 1;
-
-			// Record that we had to reset position...
-			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_CORRECTIONS_OFFSET);
-			KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent;
-			// Should never happen, or should be caught by timing checks below
+			resetToNonRunningState(STATE_MISMATCH_IN_SECONDARY_RPM_ISR);
+			return;
 		}
 	}else{	// If not synced, sync, as in this ISR we always know where we are.
 		KeyUserDebugs.currentEvent = correctEvent;

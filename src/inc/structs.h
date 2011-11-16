@@ -325,10 +325,10 @@ typedef struct {
 
 	// RPM/Position input
 	unsigned char decoderSyncLosses;               ///< Number of times cam, crank or combustion sync is lost.
-	unsigned char decoderSyncCorrections;          ///< Definite decoder syncs found while already synced in a different position.
+	unsigned char spare;                           ///< Spare.
 	unsigned char decoderSyncStateClears;          ///< Sync loss called when not synced yet, thus discarding data and preventing sync.
 #define FLAG_DECODER_SYNC_LOSSES_OFFSET            2
-#define FLAG_DECODER_SYNC_CORRECTIONS_OFFSET       3
+#define FLAG_SPARE_OFFSET                          3
 #define FLAG_DECODER_SYNC_STATE_CLEARS_OFFSET      4
 
 	// If you're getting these, then your serial hardware sucks
@@ -430,7 +430,7 @@ typedef struct {
 	unsigned char syncLostWithThisID;    ///< A unique identifier for the reason behind a loss of sync
 	unsigned char syncLostOnThisEvent;   ///< Where in the input pattern it all went very badly wrong
 	unsigned char syncCaughtOnThisEvent; ///< Where in the input pattern that things started making sense
-	unsigned char syncResetCalls;        ///< Sum of losses, corrections and state clears
+	unsigned char syncResetCalls;        ///< Sum of sync losses and state clears
 	unsigned char primaryTeethSeen;      ///< Free running counters for number of input events, useful at lower RPM
 	unsigned char secondaryTeethSeen;    ///< @copydoc primaryTeethSeen
 

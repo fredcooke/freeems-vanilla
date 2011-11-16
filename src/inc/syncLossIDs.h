@@ -52,6 +52,10 @@
 #define COUNT_OF_EVENTS_IMPOSSIBLY_LOW_NOISE   5
 #define COUNT_OF_EVENTS_IMPOSSIBLY_HIGH_NOISE  6
 
+// Logic based CAS as found on most Mitsi and Mazda engines
+#define STATE_MISMATCH_IN_PRIMARY_RPM_ISR      7
+#define STATE_MISMATCH_IN_SECONDARY_RPM_ISR    8
+
 // MissingTeeth uses from 0x40 - 0x8D, below and above are free for all other decoders to use.
 
 // Pair designations, possibly move this elsewhere to support defining the others as errors elsewhere too
