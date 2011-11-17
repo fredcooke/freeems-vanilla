@@ -1,21 +1,5 @@
-\documentclass[12pt,a4paper,titlepage]{article}
-\usepackage[latin1]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage{listings}
-\usepackage{datetime}
-\usepackage{multirow}
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks,
-    citecolor=black,
-    filecolor=black,
-    linkcolor=black,
-    urlcolor=black
-}
-\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\documentclass[12pt,a4wide,titlepage]{article}
+\include{FreeEMS}
 
 \begin {document}
 
@@ -29,17 +13,11 @@
 \HRule \vfill
 
 \Large \emph{Author:}\\
-\textsc{Joe Dirt} \vfill
+\textsc{Your Name} \vfill
 
 {\large Version 0.1 --- \today}
 
-\end{center}
-\end{titlepage} 
-
-
-\tableofcontents
-\thispagestyle{empty}
-\pagebreak
+\include{FreeEMStoc}
 
 \section {Section }
 
@@ -56,6 +34,5 @@
 \appendix
 
 \section{Appendix }
-
 
 \end {document}
