@@ -1,4 +1,5 @@
-\documentclass[12pt,a4paper,titlepage]{article}
+\documentclass[12pt,a4wide,titlepage]{article}
+\usepackage[margin=2.5cm]{geometry}
 \usepackage[latin1]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -8,6 +9,8 @@
 \usepackage{datetime}
 \usepackage{multirow}
 \usepackage{hyperref}
+\usepackage{enumitem}
+
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -16,6 +19,9 @@
     urlcolor=black
 }
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\setlist{noitemsep}
+\setlist[itemize]{topsep=0pt}
 
 \begin {document}
 
@@ -39,8 +45,11 @@
 
 
 \tableofcontents
-\thispagestyle{empty}
-\pagebreak
+\newpage
+
+
+\setlength{\parindent}{0.0in}
+\parskip 12pt
 
 
 \section {Purpose / Preamble} 
@@ -55,6 +64,8 @@ be changes to the way things are done as time passes. The code is the best
 reference, however I will endeavour to keep this up to date.
 
 
+
+
 \section{Overall Memory Layout}
 
 The \texttt{XDP512} has a 16 bit data bus and main addressing scheme. This
@@ -62,17 +73,10 @@ limits addressable space to a total of 64k (65536 bytes). The 64k is made up of
 the following parts:
 
 \begin{itemize}
-\item 2k of control registers from \texttt{0x0000-0x07FF} with 
-length \texttt{0x0800}
-
-\item 2k of addressable EEPROM from \texttt{0x0800-0x0FFF} with
-length \texttt{0x0800}
-
-\item 12k of addressable RAM from \texttt{0x1000-0x3FFF} with
-length \texttt{0x3000}
-
-\item 48k of addressable Flash from \texttt{0x4000-0xFFFF} with
-length \texttt{0xC000}
+\item 2k of control registers from \texttt{0x0000-0x07FF} with length \texttt{0x0800}
+\item 2k of addressable EEPROM from \texttt{0x0800-0x0FFF} with length \texttt{0x0800}
+\item 12k of addressable RAM from \texttt{0x1000-0x3FFF} with length \texttt{0x3000}
+\item 48k of addressable Flash from \texttt{0x4000-0xFFFF} with length \texttt{0xC000}
 \end{itemize}
 
 The registers are permanently exposed and linearly addressed, and therefore
@@ -82,11 +86,11 @@ total amount of each accessible using paging is as follows:
 
 \begin{itemize}
 \item 4k of EEPROM
-
 \item 32k of RAM
-
 \item 512k of Flash
 \end{itemize}
+
+
 
 
 \section{EEPROM Memory Layout}
@@ -95,11 +99,8 @@ EEPROM is not used in FreeEMS at this time, however the 2k is made up of the
 following parts:
 
 \begin{itemize}
-\item 1k of EEPROM page window from \texttt{0x0C00-0x0FFF} with
-length \texttt{0x0400}
-
-\item 1k of direct addressable EEPROM from \texttt{0x0800-0x0BFF}
-with length \texttt{0x0400}
+\item 1k of EEPROM page window from \texttt{0x0C00-0x0FFF} with length \texttt{0x0400}
+\item 1k of direct addressable EEPROM from \texttt{0x0800-0x0BFF} with length \texttt{0x0400}
 \end{itemize}
 
 The following are valid \texttt{EPAGE} values: \texttt{0xFF}, \texttt{0xFE},
@@ -112,16 +113,16 @@ and ensures that there is a linear EEPROM space available between addresses
 \texttt{EPAGE} values are: \texttt{0xFE}, \texttt{0xFD}, \texttt{0xFC}
 
 
+
+
 \section{RAM Memory Layout}
 
 This section details how the available RAM is laid out and used in FreeEMS.
 The 12k of direct addressable RAM consists of the following parts:
-\begin{itemize}
-\item 4k of RAM page window from \texttt{0x1000-0x1FFF} of length
-\texttt{0x1000}
 
-\item 8k of direct addressable RAM from \texttt{0x2000-0x3FFF} of
-length \texttt{0x2000}
+\begin{itemize}
+\item 4k of RAM page window from \texttt{0x1000-0x1FFF} of length \texttt{0x1000}
+\item 8k of direct addressable RAM from \texttt{0x2000-0x3FFF} of length \texttt{0x2000}
 \end{itemize}
 
 The following are valid \texttt{RPAGE} values: \texttt{0xFF, 0xFE, 0xFD, 0xFC,
@@ -141,13 +142,9 @@ the firmware is using 3 pages that contain one copy of the following:
 
 \begin{itemize}
 \item 3 VE Tables
-
 \item 1 Lambda Target Table
-
 \item 2 Ignition Timing Tables
-
 \item 2 Injection Timing Tables
-
 \item 4 blocks of tunable items including all small tables etc.
 \end{itemize}
 
@@ -159,9 +156,7 @@ follows:
 
 \begin{itemize}
 \item 2k buffer for reception of communications data
-
 \item 2k buffer for transmission of communications data
-
 \item 4k of general purpose RAM
 \end{itemize}
 
@@ -178,14 +173,9 @@ This section details how the available Flash is laid out and used in FreeEMS.
 The 48k of direct addressable Flash consists of the following parts:
 
 \begin{itemize}
-\item 16k of direct addressable Flash from \texttt{0x4000-0x7FFF}
-of length \texttt{0x4000}
-
-\item 16k of Flash page window from \texttt{0x8000-0xBFFF} of
-length \texttt{0x4000}
-
-\item 16k of direct addressable Flash from \texttt{0xC000-0xFFFF}
-of length \texttt{0x4000}
+\item 16k of direct addressable Flash from \texttt{0x4000-0x7FFF} of length \texttt{0x4000}
+\item 16k of Flash page window from \texttt{0x8000-0xBFFF} of length \texttt{0x4000}
+\item 16k of direct addressable Flash from \texttt{0xC000-0xFFFF} of length \texttt{0x4000}
 \end{itemize}
 
 The following are valid \texttt{PPAGE} values: \texttt{0xFF, 0xFE, 0xFD, 0xFC,
@@ -219,21 +209,15 @@ store the following:
 
 \begin{itemize}
 \item Commonly used items and the serial monitor
-
 \item All Interrupt Service Routines
-
 \item Lookups and functions operating on them
-
 \item Fuel tables and functions operating on them
-
 \item Timing tables and functions operating on them
-
 \item Tunable items and functions operating on them
-
 \item General function storage area one
-
 \item General function storage area two
 \end{itemize}
+
 
 
 
@@ -242,17 +226,21 @@ store the following:
 The current break down of usage within those pages is as follows:
 
 Commonly used items and the serial monitor:
+
 \begin{itemize}
 \item All functions without a page specified are stored in text region by default
 \item The serial monitor takes up 2k of space at the high end of text
 \end{itemize}
 
 All Interrupt Service Routines:
+
 \begin{itemize}
 \item All placed in text1 region as a way of tracking flash usage
 \end{itemize}
 
+
 Lookups and functions:
+
 \begin{itemize}
 \item 2k CHT lookup table
 \item 2k IAT lookup table
@@ -260,36 +248,109 @@ Lookups and functions:
 \item Core variable generation function
 \end{itemize}
 
+
 Fuel tables and functions:
+
 \begin{itemize}
 \item 6 1k VE tables
 \item 2 1k Lambda tables
 \item Copy flash to ram function
 \end{itemize}
 
+
 Timing tables and functions:
+
 \begin{itemize}
 \item 4 1k Ignition timing tables
 \item 4 1k Injection timing tables
 \end{itemize}
 
+
 Tunable items and functions:
+
 \begin{itemize}
 \item 8 1k blocks of tunable items
 \end{itemize}
 
+
 General paged function space one:
+
 \begin{itemize}
 \item Assorted functions and data used purely within them
 \end{itemize}
 
+
 General paged function space two:
+
 \begin{itemize}
 \item Assorted functions and data used purely within them
 \end{itemize}
+
 
 Note: The ISR code \emph{must} be kept in linear space such that they can be
 called asynchronously at any time.
+
+
+
+
+\section{How They Get There}
+
+During compilation directives are used to locate various pieces of data and code into specific sections. These sections are defined in the memory.x file which lays out the sizes and offsets from the codes point of view. Regions labeled as certain sections are directed and redirected into specific sections based on the contents of the linker script and also regions.x for FreeEMS specific regions.
+
+The linker as instructed by the linker script then moves and splits and merges these sections to form final sections to be included in the output.
+
+Finally, the object copy program takes these blocks and further relocates them into a loadable image according to rules passed on the command line in the Makefile.
+
+There are many sections that come from the compilation process, however we only use a subset of those.
+
+The following Flash sections are present in the final loadable image :
+
+
+\begin{itemize}
+\item rodata - Constants as declared with the const keyword.
+\item data - Static initialisation to non zero values.
+\item text - Code that must be present in linear space to function correctly.
+\item text1 - ISR code that must be present in linear space to be called asynchronously.
+\item vectors - The jump table of void function addresses for all interrupt handlers.
+\item fixedconf1 - The first block of non live tunable configuration.
+\item fixedconf2 - The second block of non live tunable configuration.
+\item ppageF8 - General purpose flash page.
+\item ppageF9 - General purpose flash page.
+\item dpageFA - Non-volatile storage of the fuel tables.
+\item fpageFA - Function to load the fuel tables.
+\item dpageFB1 - dpageFB8 - Non-volatile storage of the tunable tables.
+\item fpageFB - Function to load the tunable tables.
+\item dpageFC - Non-volatile storage of the timing tables.
+\item fpageFC - Function to load the timing tables.
+\end{itemize}
+
+The following RAM sections are referred to by the final loadable image :
+
+\begin{itemize}
+\item bss - All global variables including those initialised by the data section
+\item rpage - The window region to align a struct inside.
+\item rxbuf - The comms receive buffer.
+\item txbuf - The comms transmit buffer.
+\end{itemize}
+
+
+Additionally, the code uses a standard stack at the high end of ram (\texttt{0x4000}) which grows down towards the bss global variable section. When execution begins the gcc start up code initialises the stack frame pointer to the location defined using the symbol \_stack. As each function runs it builds from this location downwards allocating the space it requires for local variables and temporary variables etc. When a function ends the stack frame pointer is restored to where it was before the call occurred. Because of this and the lack of a heap to manually dynamicly allocate memory on memory leaks are not possible.
+
+
+
+
+\section{Programmatic Usage}
+
+There are a number of hand designed schemes in practice in the code base for handling the placement and movement of memory in the device during its normal operation. All of them aim for two things : Speed and Correctness.
+
+The first set of memory operations that occur are to copy all of the live tunable data up to RAM from their locations in Flash. This is done by a series of functions that reside in the same paged flash space as the data to be copied. Placing these items close together ensures fast access and no linker warnings. In order to have the address dictionary compile cleanly a set of pointer variables are also initialised in these same functions. Before each set of four 1k blocks is copied up to RAM from its Flash page the RPAGE value is set to the appropriate value for the data being copied. Once these functions have all run a function is called that samples a specified pin to determine which set of tables to use. This function is checked periodically such that if the pin changes state (the switch is thrown) then so does the behaviour of the firmware. This should happen seamlessly as all operations will just start using the new data set.
+
+Because only one page of paged data can be accessible at a time, we needed a scheme for RAM tuning data access that would enable us to see all 24k of paged data when we needed it and yet still be simple, maintainable and largely foolproof. This was found by forcing the caller to specify the ram page of the data to be accessed in the table lookup and interpolation function call. The table lookup and interpolation functions take a value for RPAGE, store the current value, set RPAGE to the new value, read the data out and finally restore the previous RPAGE before returning. This scheme allows us to leave the finer grained data permanently exposed in the page window for simple and easy access to it it with the only restriction being no access from the ISR code without explicitly swapping pages in and out as the main table lookup and interpolation functions do.
+
+Functions are placed into flash pages in related groups such that minimal page swapping needs to occur for the most frequent calls to be made. ISR functions are all placed together in text1 such that it is easy to keep track of their total size and because they must be located in linear space. The code that burns to and reads from flash is located in text such that it can freely swap pages without removing itself from visibility. Very little else needs to be present in the linear space and as such, most other things are placed in paged space so that we always know how much linear space we have left for various things that must be stored there.
+
+When a serial packet requesting or supplying a data block arrives we must find out where to get it from or put it. This is accomplished with a dictionary approach whereby a single ID number is passed in with a pointer to a struct that describes a memory blocks possible parameters. The function looks up the ID using a large case statement and then populates the struct with the corresponding data. Finally the function returns and the caller can go ahead and use the parameters that have been retrieved. If the request is for a block of RAM the RPAGE value is saved and then set to the value retrieved from the dictionary before reading the RAM data into the transmit buffer. Likewise, when the request is for a block of flash a similar sequence of save, set, read, restore is performed. Again, when data is supplied to be written to RAM, the same thing happens. For flash it is slightly different as the flash function takes care of the swapping around and is passed the page values, RPAGE as a read from RAM value and PPAGE as a write to flash value. The same goes for just writing to flash, however this is followed up by copying the fresh flash data up to ram to ensure syncronisation.
+
 
 
 \end {document}
