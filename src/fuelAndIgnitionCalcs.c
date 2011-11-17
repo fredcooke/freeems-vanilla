@@ -130,6 +130,11 @@ void calculateFuelAndIgnition(){
 //		//injectorMainPulseWidthsMath[channel] = safeAdd(channelPW, DerivedVars->IDT); do not re-enable this without fixing it properly...
 //	}
 
+	// Make sure we don't have a PW if PW is supposed to be zero, ie, zero the IDT as well.
+	if(!(DerivedVars->EffectivePW)){
+		DerivedVars->IDT = 0; // This also makes fuel and electrical duty work consistently in external apps.
+	}
+
 	/* Reference PW for comparisons etc */
 	DerivedVars->RefPW = safeAdd(DerivedVars->EffectivePW, DerivedVars->IDT);
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -364,12 +369,13 @@ outputEventPinNumbers[3] = 3;
 #endif
 
 
+
 /* "Calculate" the nominal total pulse width before per channel corrections */
 masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngineCycle), DerivedVars->IDT); // div by number of injections per cycle, configured above
 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 
 
-	// Populate fuel channels with values if required.
+	// Populate configured fuel channels with values.
 	int injectionEvent;
 	for(injectionEvent = firstInjectionEvent;injectionEvent < (firstInjectionEvent + numberOfInjectionEvents);injectionEvent++){
 		postReferenceEventDelays[injectionEvent] = decoderMaxCodeTime;
