@@ -68,13 +68,14 @@
  * double		64 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
  */
 
+#define INTERFACE_VERSION  "IFreeEMS Vanilla 0.0.0" // Migrate to come from the makefile where it can be extracted from any file with any tool.
 
 // Sizes for array must be outside ifndef block
-#define INTERFACE_VERSION_LENGTH   31
-#define FIRMWARE_VERSION_LENGTH    63
-#define BUILD_TIME_AND_DATE_LENGTH 21
-#define COMPILER_VERSION_LENGTH    31
-#define OPERATING_SYSTEM_LENGTH    15
+#define INTERFACE_VERSION_LENGTH   sizeof(INTERFACE_VERSION)
+#define FIRMWARE_VERSION_LENGTH    sizeof(FIRMWARE_VERSION)
+#define FIRMWARE_BUILD_DATE_LENGTH sizeof(FIRMWARE_BUILD_DATE)
+#define COMPILER_VERSION_LENGTH    sizeof(__VERSION__)
+#define OPERATING_SYSTEM_LENGTH    sizeof(OPERATING_SYSTEM)
 
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Arrays here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -88,10 +89,9 @@ EXTERN const volatile unsigned short MAFTransferTable[1024]; /* 2k */
 EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 
 
-/* Version strings 31 because null terminated */
 EXTERN const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH];
 EXTERN const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH];
-EXTERN const unsigned char buildTimeAndDate[BUILD_TIME_AND_DATE_LENGTH];
+EXTERN const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH];
 EXTERN const unsigned char compilerVersion[COMPILER_VERSION_LENGTH];
 EXTERN const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH];
 

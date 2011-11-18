@@ -65,7 +65,7 @@
  * This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
  * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID
  */
-const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = {"IFreeEMS Vanilla 0.0.0"}; // TODO change spec to not have numerics and to parse from string, maybe pull from somewhere?
+const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = { INTERFACE_VERSION }; // TODO change spec to not have numerics and to parse from string, maybe pull from somewhere?
 
 /** Displayable firmware version identifier
  *
@@ -74,7 +74,7 @@ const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = {"IFreeEMS Vani
 const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH] = { FIRMWARE_VERSION };
 
 /** GCC supplied build date */
-const unsigned char buildTimeAndDate[BUILD_TIME_AND_DATE_LENGTH] = { __TIME__ " " __DATE__ };
+const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH] = { FIRMWARE_BUILD_DATE };
 
 /** GCC supplied compiler version */
 const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };
