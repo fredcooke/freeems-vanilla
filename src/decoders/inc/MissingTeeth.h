@@ -23,7 +23,8 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file MissingTeeth.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders

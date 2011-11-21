@@ -24,7 +24,8 @@
  */
 
 
-/** @file miscISRs.c
+/** @file
+ *
  * @ingroup interruptHandlers
  *
  * @brief Miscellaneous Interrupt Handlers

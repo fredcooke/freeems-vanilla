@@ -24,7 +24,8 @@
  */
 
 
-/**	@file IATTransferTable.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Inlet Air Temperature Transfer Table

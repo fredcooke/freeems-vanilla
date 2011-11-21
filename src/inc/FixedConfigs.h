@@ -24,7 +24,8 @@
  */
 
 
-/**	@file FixedConfigs.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

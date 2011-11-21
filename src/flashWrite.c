@@ -24,7 +24,7 @@
  */
 
 
-/**	@file flashWrite.c
+/** @file
  *
  * @brief Flash manipulation functions
  *

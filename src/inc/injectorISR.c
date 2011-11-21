@@ -24,7 +24,7 @@
  */
 
 
-/**	@file injectorISR.c
+/** @file
  *
  * @brief Injector ISR shared code
  *

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file TunableConfigs.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file commsCore.c
+/** @file
+ *
  * @ingroup communicationsFiles
  *
  * @brief Core communications functions.

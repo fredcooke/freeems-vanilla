@@ -24,7 +24,7 @@
  */
 
 
-/** @file flat80Percent.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

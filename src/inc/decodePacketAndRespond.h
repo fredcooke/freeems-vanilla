@@ -24,7 +24,8 @@
  */
 
 
-/** @file decodePacketAndRespond.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

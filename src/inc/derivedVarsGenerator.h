@@ -24,7 +24,8 @@
  */
 
 
-/** @file derivedVarsGenerator.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

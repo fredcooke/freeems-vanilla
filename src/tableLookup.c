@@ -24,7 +24,7 @@
  */
 
 
-/** @file tableLookup.c
+/** @file
  *
  * @brief Table access functions
  *

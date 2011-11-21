@@ -24,7 +24,7 @@
  */
 
 
-/** @file StaticBenchTest.c
+/** @file
  *
  * @ingroup testing
  *

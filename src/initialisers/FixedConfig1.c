@@ -24,7 +24,8 @@
  */
 
 
-/**	@file FixedConfig1.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief First fixed config block

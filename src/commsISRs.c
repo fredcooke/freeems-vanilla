@@ -24,7 +24,8 @@
  */
 
 
-/**	@file commsISRs.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup communicationsFiles
  *

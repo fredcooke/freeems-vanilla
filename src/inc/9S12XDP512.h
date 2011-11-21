@@ -24,7 +24,8 @@
  */
 
 
-/**	@file 9S12XDP512.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

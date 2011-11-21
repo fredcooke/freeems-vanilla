@@ -24,7 +24,8 @@
  */
 
 
-/**	@file fuelAndIgnitionCalcs.c
+/** @file
+ *
  * @ingroup measurementsAndCalculations
  *
  * @brief Fuel and ignition calculations.

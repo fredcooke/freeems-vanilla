@@ -24,7 +24,8 @@
  */
 
 
-/** @file TestTransferTable.c
+/** @file
+ *
  * @ingroup dataInitialisers
  * @ingroup testing
  *

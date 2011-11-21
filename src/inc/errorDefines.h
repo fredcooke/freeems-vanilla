@@ -24,7 +24,8 @@
  */
 
 
-/**	@file errorDefines.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

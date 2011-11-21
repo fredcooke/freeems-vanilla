@@ -24,7 +24,8 @@
  */
 
 
-/**	@file CHTTransferTable.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Coolant/Head Temperature Transfer Table

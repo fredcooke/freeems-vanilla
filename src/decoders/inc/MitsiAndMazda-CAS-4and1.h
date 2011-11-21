@@ -24,7 +24,8 @@
  */
 
 
-/**	@file MitsiAndMazda-CAS-4and1.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup enginePositionRPMDecoders
  *

@@ -24,7 +24,8 @@
  */
 
 
-/** @file BenchTest.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup testing
  *

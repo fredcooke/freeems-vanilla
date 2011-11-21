@@ -24,7 +24,8 @@
  */
 
 
-/** @file coreVarsGenerator.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

@@ -24,7 +24,7 @@
  */
 
 
-/**	@file mainTable-Load.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

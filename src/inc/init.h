@@ -24,7 +24,8 @@
  */
 
 
-/**	@file init.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file coreVarsGenerator.c
+/** @file
+ *
  * @ingroup measurementsAndCalculations
  *
  * @brief Generate and average the core variables.

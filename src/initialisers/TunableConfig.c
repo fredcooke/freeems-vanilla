@@ -24,7 +24,8 @@
  */
 
 
-/**	@file TunableConfig.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Small tables and other live tunable data

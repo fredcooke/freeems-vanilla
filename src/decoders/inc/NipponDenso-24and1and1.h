@@ -1,2 +1,0 @@
-unsigned short primaryPulsesPerSecondaryPulse;
-unsigned long lastSecondaryOddTimeStamp;

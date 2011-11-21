@@ -24,7 +24,8 @@
  */
 
 
-/** @file flashBurn.h
+/** @file
+ *
  * @ingroup allHeaders
  *
  * @brief C header for assembly flash function

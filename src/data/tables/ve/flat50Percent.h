@@ -24,7 +24,7 @@
  */
 
 
-/** @file flat50Percent.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

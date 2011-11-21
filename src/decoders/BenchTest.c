@@ -24,7 +24,7 @@
  */
 
 
-/**	@file BenchTest.c
+/** @file
  *
  * @ingroup enginePositionRPMDecoders
  *

@@ -23,7 +23,7 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/** @file groups.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Doxygen module groups definition

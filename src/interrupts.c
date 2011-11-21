@@ -24,7 +24,8 @@
  */
 
 
-/**	@file interrupts.c
+/** @file
+ *
  * @ingroup interruptHandlers
  *
  * @brief Interrupt Vector Table

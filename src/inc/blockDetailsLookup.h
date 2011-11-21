@@ -24,7 +24,8 @@
  */
 
 
-/** @file blockDetailsLookup.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

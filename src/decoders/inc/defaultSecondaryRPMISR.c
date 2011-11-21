@@ -24,7 +24,8 @@
  */
 
 
-/**	@file defaultSecondaryRPMISR.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

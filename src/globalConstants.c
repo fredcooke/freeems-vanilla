@@ -24,7 +24,8 @@
  */
 
 
-/**	@file globalConstants.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Global constant values

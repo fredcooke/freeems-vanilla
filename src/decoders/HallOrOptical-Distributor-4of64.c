@@ -24,7 +24,8 @@
  */
 
 
-/**	@file HallOrOptical-Distributor-4of54.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

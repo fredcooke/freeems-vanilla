@@ -24,7 +24,8 @@
  */
 
 
-/**	@file FuelTables.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Fuel VE and Lambda tables

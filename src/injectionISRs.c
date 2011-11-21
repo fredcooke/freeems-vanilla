@@ -24,7 +24,8 @@
  */
 
 
-/**	@file injectionISRs.c
+/** @file
+ *
  * @ingroup interruptHandlers
  *
  * @brief Injection ISR substitutions

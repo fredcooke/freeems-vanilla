@@ -23,7 +23,7 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file regions.x
+/** @file
  *
  * @brief Region mapping linker script
  *

@@ -24,7 +24,7 @@
  */
 
 
-/**	@file mainTable-RPM.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

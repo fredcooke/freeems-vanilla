@@ -24,7 +24,8 @@
  */
 
 
-/**	@file xgateVectors.c
+/** @file
+ *
  * @ingroup interruptHandlers
  *
  * @brief XGATE Interrupt Vector Table

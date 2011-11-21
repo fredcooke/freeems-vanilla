@@ -24,7 +24,7 @@
  */
 
 
-/**	@file SeansLT1IgnitionTiming.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

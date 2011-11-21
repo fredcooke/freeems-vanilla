@@ -71,7 +71,7 @@
  * - This project is licensed under the GNU GPL v3. The full terms of the license are available <a href="http://www.gnu.org/licenses/gpl-3.0-standalone.html"><b>here</b></a>.
  */
 
-/** @file mainPage.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Doxygen Main index page definition

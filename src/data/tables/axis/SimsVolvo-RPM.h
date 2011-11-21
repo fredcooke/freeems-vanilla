@@ -24,7 +24,7 @@
  */
 
 
-/**	@file SimsVolvo-RPM.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

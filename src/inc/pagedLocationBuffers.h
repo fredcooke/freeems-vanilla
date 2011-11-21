@@ -24,7 +24,8 @@
  */
 
 
-/**	@file pagedLocationBuffers.h
+/** @file
+ *
  * @ingroup allHeaders
  *
  * @brief Pointers to paged memory blocks

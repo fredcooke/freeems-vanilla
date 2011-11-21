@@ -24,7 +24,8 @@
  */
 
 
-/**	@file decodePacketAndRespond.c
+/** @file
+ *
  * @ingroup communicationsFiles
  *
  * @brief Empty file to be filled out

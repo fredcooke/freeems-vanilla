@@ -24,7 +24,8 @@
  */
 
 
-/**	@file originalCurve.h
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief A random stepped Lambda/AFR curve that is probably not a lot of use.

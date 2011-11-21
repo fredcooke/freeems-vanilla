@@ -136,7 +136,7 @@
  * - http://issues.freeems.org/view.php?id=10
  */
 
-/** @file codingStyle.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Doxygen Coding Style page definition

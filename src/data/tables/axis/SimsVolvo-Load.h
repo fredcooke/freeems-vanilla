@@ -24,7 +24,7 @@
  */
 
 
-/**	@file SimsVolvo-Load.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

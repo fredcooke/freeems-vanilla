@@ -34,7 +34,8 @@ void perDecoderReset(){
 }
 
 
-/**	@file MitsiAndMazda-CAS-4and1.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

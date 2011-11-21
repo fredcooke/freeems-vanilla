@@ -24,7 +24,7 @@
  */
 
 
-/**	@file init.c
+/** @file
  *
  * @brief Initialise the devices state
  *

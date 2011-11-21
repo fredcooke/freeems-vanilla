@@ -24,7 +24,8 @@
  */
 
 
-/** @file commsCore.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

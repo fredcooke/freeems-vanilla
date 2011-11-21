@@ -24,7 +24,8 @@
  */
 
 
-/**	@file GM-LT1-CAS-360and8.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

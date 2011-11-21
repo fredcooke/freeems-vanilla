@@ -24,7 +24,8 @@
  */
 
 
-/**	@file GM-LT1-CAS-360and8.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

@@ -23,7 +23,8 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/** @file syncLossIDs.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup enginePositionRPMDecoders
  *

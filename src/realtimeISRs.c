@@ -24,7 +24,8 @@
  */
 
 
-/**	@file realtimeISRs.c
+/** @file
+ *
  * @ingroup interruptHandlers
  *
  * @brief Real time interrupts

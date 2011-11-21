@@ -24,7 +24,8 @@
  */
 
 
-/**	@file flatStoichiometric.h
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief A dead flat stoichiometric 1.0/14.7 Lambda/AFR curve to use as a default or to allow MegaSquirt bodgy style tuning.

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file fuelAndIgnitionCalcs.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

@@ -24,7 +24,8 @@
  */
 
 
-/** @file structs.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

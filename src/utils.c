@@ -24,7 +24,7 @@
  */
 
 
-/**	@file utils.c
+/** @file
  *
  * @brief Utility functions only
  *

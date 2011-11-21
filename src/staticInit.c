@@ -24,7 +24,7 @@
  */
 
 
-/** @file staticInit.c
+/** @file
  *
  * @brief Static initialisation of non-zero variables
  *

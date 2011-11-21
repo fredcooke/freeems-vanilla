@@ -24,7 +24,8 @@
  */
 
 
-/**	@file FredsTruckLambda.h
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief The lambda table as used on my turbo mazda truck

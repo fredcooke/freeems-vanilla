@@ -24,7 +24,7 @@
  */
 
 
-/** @file SeansLT1VE.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

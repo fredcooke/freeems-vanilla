@@ -24,7 +24,8 @@
  */
 
 
-/**	@file SeansLT1Lambda.h
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief The lambda table as used on Sean's turbo LT1 Camaro

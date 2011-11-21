@@ -78,7 +78,7 @@
  * - Many more.
  */
 
-/** @file contributors.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Doxygen Contributors page definition

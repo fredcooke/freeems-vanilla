@@ -24,7 +24,7 @@
  */
 
 
-/**	@file FredsTruck-RPM.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

@@ -40,7 +40,7 @@
  * @todo TODO TBC (other strategies)
  */
 
-/** @file strategies.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Doxygen General Strategies page definition

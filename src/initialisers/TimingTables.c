@@ -24,7 +24,8 @@
  */
 
 
-/** @file TimingTables.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Injection and ignition timing tables

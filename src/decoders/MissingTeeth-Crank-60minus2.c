@@ -23,7 +23,8 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file MissingTeeth-Crank-60minus2.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

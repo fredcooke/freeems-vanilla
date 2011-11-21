@@ -1,4 +1,4 @@
-/**	@file flashGlobals.h
+/** @file
  *
  * @todo TODO integrate this file with the rest of the masks and other global constants and hash defines etc
  *

@@ -24,7 +24,7 @@
  */
 
 
-/** @file main.c
+/** @file
  *
  * @brief The main function!
  *

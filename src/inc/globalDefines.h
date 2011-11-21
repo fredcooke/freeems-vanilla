@@ -24,7 +24,8 @@
  */
 
 
-/** @file globalDefines.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

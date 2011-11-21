@@ -23,7 +23,8 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/** @file decoderInterface.c
+
+/** @file
  *
  * @ingroup enginePositionRPMDecoders
  *
@@ -32,6 +33,7 @@
  * To maximise code reuse and minimise bugs it is strongly recommended that you
  * use these pre-canned functions to do work required in your decoder.
  */
+
 
 #define DECODER_INTERFACE_C
 #include "inc/freeEMS.h"

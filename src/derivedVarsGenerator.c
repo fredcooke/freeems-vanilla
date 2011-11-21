@@ -24,7 +24,8 @@
  */
 
 
-/**	@file derivedVarsGenerator.c
+/** @file
+ *
  * @ingroup measurementsAndCalculations
  *
  * @brief Generate the derived variables.

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file MAFTransferTable.c
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Mass Air Flow Transfer Table

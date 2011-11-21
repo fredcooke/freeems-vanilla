@@ -24,7 +24,8 @@
  */
 
 
-/**	@file freeEMS.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

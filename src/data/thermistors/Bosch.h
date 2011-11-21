@@ -24,7 +24,8 @@
  */
 
 
-/** @file Bosch.h
+/** @file
+ *
  * @ingroup dataInitialisers
  *
  * @brief Bosch Coolant/Head / Inlet Air Temperature Transfer Table Data

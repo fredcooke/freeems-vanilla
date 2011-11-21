@@ -24,7 +24,7 @@
  */
 
 
-/**	@file SeansLT1-RPM.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

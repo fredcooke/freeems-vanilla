@@ -24,7 +24,7 @@
  */
 
 
-/**	@file HotelHyundaiIgnitionTiming.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

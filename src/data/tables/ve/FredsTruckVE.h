@@ -24,7 +24,7 @@
  */
 
 
-/** @file FredsTruckVE.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

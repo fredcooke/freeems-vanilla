@@ -24,7 +24,7 @@
  */
 
 
-/**	@file flat10degrees.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file Listener.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

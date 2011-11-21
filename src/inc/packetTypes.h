@@ -24,7 +24,8 @@
  */
 
 
-/** @file packetTypes.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

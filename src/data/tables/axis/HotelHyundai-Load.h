@@ -24,7 +24,7 @@
  */
 
 
-/**	@file HotelHyundai-Load.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

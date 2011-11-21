@@ -24,7 +24,8 @@
  */
 
 
-/**	@file NipponDenso-24and1and1.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
@@ -55,7 +56,6 @@
 
 #include "../inc/freeEMS.h"
 #include "../inc/interrupts.h"
-#include "inc/NipponDenso-24and1and1.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 

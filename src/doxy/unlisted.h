@@ -46,7 +46,7 @@
  *
  */
 
-/** @file unlisted.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Doxygen Unlisted Files page definition

@@ -24,7 +24,7 @@
  */
 
 
-/**	@file SimsVolvoIgnitionTiming.h
+/** @file
  *
  * @ingroup dataInitialisers
  *

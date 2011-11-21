@@ -24,7 +24,8 @@
  */
 
 
-/** @file unitTestIDs.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

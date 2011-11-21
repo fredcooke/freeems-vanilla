@@ -57,7 +57,7 @@
  * appropriate default values in both the primary and secondary copies.
  */
 
-/** @file tuneSwitching.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Doxygen Tune Switching page definition

@@ -24,7 +24,8 @@
  */
 
 
-/** @file flashWrite.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

@@ -23,7 +23,8 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/** @file xgateVectors.h
+/** @file
+ *
  * @ingroup xgateHeaders
  *
  * @brief C header for assembly xgate functions

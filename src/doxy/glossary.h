@@ -91,7 +91,7 @@
  * - Polling - To read the state of a pin manually from the code, not hardware.
  */
 
-/** @file glossary.h
+/** @file
  *
  * @ingroup doxygenDocFiles
  * @brief Glossary and acronym explanations

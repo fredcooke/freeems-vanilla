@@ -23,7 +23,7 @@
 	Thank you for choosing FreeEMS to run your engine! */
 
 
-/**	@file hc9s12xdp512elfb.x
+/** @file
  *
  * @brief The main linker script
  *

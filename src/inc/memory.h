@@ -24,7 +24,8 @@
  */
 
 
-/**	@file memory.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

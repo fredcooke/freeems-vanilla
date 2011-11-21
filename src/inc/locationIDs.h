@@ -24,7 +24,8 @@
  */
 
 
-/** @file locationIDs.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

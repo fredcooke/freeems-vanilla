@@ -24,7 +24,8 @@
  */
 
 
-/**	@file globalConstants.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file decoderInterface.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup enginePositionRPMDecoders
  *

@@ -24,7 +24,8 @@
  */
 
 
-/**	@file VR-Distributor-X-Cylinders.c
+/** @file
+ *
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *

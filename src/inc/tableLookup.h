@@ -24,7 +24,8 @@
  */
 
 
-/*	tableLookup.h
+/** @file
+ *
  * @ingroup allHeaders
  */
 

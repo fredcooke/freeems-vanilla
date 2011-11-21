@@ -24,7 +24,8 @@
  */
 
 
-/**	@file interrupts.h
+/** @file
+ *
  * @ingroup allHeaders
  * @ingroup globalHeaders
  *
