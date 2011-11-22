@@ -28,6 +28,7 @@
  *
  * @ingroup allHeaders
  * @ingroup globalHeaders
+ * @ingroup dataStructures
  *
  * @brief Struct typedefs for fixed configuration
  *
@@ -39,8 +40,6 @@
  * count and other constants related to physical aspects of the engine setup.
  * When adding configuration values, please consider adding them here first.
  * If a value doesn't need to be live tunable definitely put it here instead.
- *
- * @author Fred Cooke
  */
 
 
@@ -160,7 +159,6 @@ typedef struct {
 
 	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
-CASSERT((sizeof(fixedConfig1) == flashSectorSize), fixedConfig1)
 
 
 #define userTextFieldArrayLength2 (flashSectorSize - (sizeof(sensorPreset) + sizeof(sensorRange) + sizeof(sensorSetting) + sizeof(decoderSetting)))
@@ -172,7 +170,6 @@ typedef struct {
 	decoderSetting decoderSettings;                          ///< @see decoderSetting
 	unsigned char userTextField2[userTextFieldArrayLength2]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig2;
-CASSERT((sizeof(fixedConfig2) == flashSectorSize), fixedConfig2)
 
 
 #else

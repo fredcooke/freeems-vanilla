@@ -56,19 +56,6 @@
 #endif
 
 
-/* Types summary
- *
- * BEWARE : Be explicit!!
- *
- * char			8 bit (defaults to unsigned, but always specify signed/unsigned anyway)
- * short		16 bit (defaults to signed, but always specify signed/unsigned anyway)
- * int			16 bit DO NOT USE! (current compile flags make this 16 bits, but a change of flags could will change your program if you use this because they will all be 32 bit all of a sudden)
- * long			32 bit (defaults to signed, but always specify signed/unsigned anyway)
- * long long	64 bit (inefficient, avoid these, if using : defaults to signed, but always specify signed/unsigned anyway)
- * float		32 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
- * double		64 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
- */
-
 #define INTERFACE_VERSION  "IFreeEMS Vanilla 0.0.0" // Migrate to come from the makefile where it can be extracted from any file with any tool.
 
 // Sizes for array must be outside ifndef block

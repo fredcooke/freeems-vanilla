@@ -28,6 +28,7 @@
  *
  * @ingroup allHeaders
  * @ingroup globalHeaders
+ * @ingroup dataStructures
  *
  * @brief Struct typedefs for tunable configuration
  *
@@ -38,8 +39,6 @@
  * You should add your configuration item here if it is best that it is adjusted with
  * instant results on a running engine. For everything else, please consider placing
  * it in one of the fixed configuration structs.
- *
- * @author Fred Cooke
  */
 
 
@@ -121,7 +120,6 @@ typedef struct {
 	twoDTableUS dwellMaxVersusRPMTable;           ///< Unused at this time.
 	unsigned char filler[SMALL_TABLES_1_FILLER_SIZE];
 } SmallTables1;
-CASSERT((sizeof(SmallTables1) == flashSectorSize), SmallTables1)
 
 
 #define SMALL_TABLES_2_FILLER_SIZE (flashSectorSize - (sizeof(loggingSetting) + 12)) // Update this if adding another table/struct!
@@ -131,7 +129,6 @@ typedef struct {
 	unsigned short perCylinderFuelTrims[INJECTION_CHANNELS]; ///< Trims for injection, from 0% to 200% of base.
 	unsigned char filler[SMALL_TABLES_2_FILLER_SIZE];        ///< Padding data.
 } SmallTables2;
-CASSERT((sizeof(SmallTables2) == flashSectorSize), SmallTables2)
 
 
 #define SMALL_TABLES_3_FILLER_SIZE flashSectorSize // Update this if adding a table!
@@ -139,7 +136,6 @@ CASSERT((sizeof(SmallTables2) == flashSectorSize), SmallTables2)
 typedef struct {
 	unsigned char filler[SMALL_TABLES_3_FILLER_SIZE]; ///< Padding data.
 } SmallTables3;
-CASSERT((sizeof(SmallTables3) == flashSectorSize), SmallTables3)
 
 
 #define SMALL_TABLES_4_FILLER_SIZE flashSectorSize // Update this if adding a table!
@@ -147,7 +143,6 @@ CASSERT((sizeof(SmallTables3) == flashSectorSize), SmallTables3)
 typedef struct {
 	unsigned char filler[SMALL_TABLES_4_FILLER_SIZE]; ///< Padding data.
 } SmallTables4;
-CASSERT((sizeof(SmallTables4) == flashSectorSize), SmallTables4)
 
 
 #else

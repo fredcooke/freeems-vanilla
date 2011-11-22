@@ -31,28 +31,12 @@
  * @brief Global constant values
  *
  * All global constants values are, and should be, defined here.
- *
- * @author Fred Cooke
  */
 
 
 #define GLOBAL_CONSTANTS_C
 #define NO_CONST_ARRAYS
 #include "inc/freeEMS.h"
-
-
-/* Types summary
- *
- * BEWARE : Be explicit!!
- *
- * char			8 bit (defaults to unsigned, but always specify signed/unsigned anyway)
- * short		16 bit (defaults to signed, but always specify signed/unsigned anyway)
- * int			16 bit DO NOT USE! (current compile flags make this 16 bits, but a change of flags could will change your program if you use this because they will all be 32 bit all of a sudden)
- * long			32 bit (defaults to signed, but always specify signed/unsigned anyway)
- * long long	64 bit (inefficient, avoid these, if using : defaults to signed, but always specify signed/unsigned anyway)
- * float		32 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
- * double		64 bit IEEE floating point numbers (inefficient, avoid these, used fixed point math)
- */
 
 
 /* Constants */
@@ -72,16 +56,10 @@ const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = { INTERFACE_VER
  *
  * This should change every time the code is changed at all (even a little) before each release.
  */
-const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH] = { FIRMWARE_VERSION };
-
-/** GCC supplied build date */
-const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH] = { FIRMWARE_BUILD_DATE };
-
-/** GCC supplied compiler version */
-const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };
-
-/** Operating system type */
-const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH] = { OPERATING_SYSTEM };
+const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH] = { FIRMWARE_VERSION }; // TODO shorten the comments here, add docs and refer to them
+const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH] = { FIRMWARE_BUILD_DATE }; ///< GCC supplied compiler version
+const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };             ///< GCC supplied compiler version
+const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH] = { OPERATING_SYSTEM };        ///< Operating system type
 
 /** Divisors and untunable physical constants combined into a single master fuel constant
  *

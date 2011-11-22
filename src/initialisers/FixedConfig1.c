@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010, 2011 Fred Cooke
+ * Copyright 2008-2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -42,7 +42,7 @@
 #include "../inc/freeEMS.h"
 
 
-/// @todo TODO for coreSettingsA masks See definitions in freeEMS.h OR is it in structs.h ???
+/// @todo TODO for coreSettingsA masks See definitions in freeEMS.h
 /// @todo TODO divide fixedConfig1 into useful chunks
 /// @todo TODO create presets sensor values struct
 /// @todo TODO create engine setup struct

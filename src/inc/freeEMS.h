@@ -58,9 +58,15 @@
 #include "globalDefines.h"
 
 /* Include data types at the top as other includes use them */
-#include "structs.h" /// @todo TODO split this out into more chunks as it's too big.
+#include "generalTypes.h"
+#include "counterTypes.h"
+#include "containerTypes.h"
+#include "tableTypes.h"
 #include "FixedConfigs.h"
 #include "TunableConfigs.h"
+
+/* Run size checks on all of the key struct types! */
+#include "typeChecks.h"
 
 /* Global constant declarations */
 #include "globalConstants.h"
