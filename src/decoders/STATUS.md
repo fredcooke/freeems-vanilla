@@ -7,6 +7,7 @@ In Makefile:
  - EvenTeeth-Both-Nand1      - Functional, but incomplete. http://forum.diyefi.org/viewtopic.php?f=56&t=1099
  - HallOrOptical-Distributor - Functional, for 4 cyls only, incomplete. http://forum.diyefi.org/viewtopic.php?f=56&t=1082
  - MitsiAndMazda-CAS-4and1   - Functional, but incomplete. http://forum.diyefi.org/viewtopic.php?f=56&t=1078
+ - Missing Teeth             - Test ONLY. Reads RPM but does NOT produce a reliable output and WILL harm your engine, if it runs. Do NOT use.
  - GM-LT1-CAS-360and8        - Functional, but incomplete. http://forum.diyefi.org/viewtopic.php?f=56&t=1100
 
 Planned near term:
@@ -14,7 +15,6 @@ Planned near term:
  - DSM/Miata 4and2 CAS - 1 hour work, waiting for other changes to prevent creating more work.
  - VR Distributor X cylinders - 3 hours work, waiting for other changes to prevent creating more work.
  - Various Nissan 360 slot - 1 day work, waiting for other changes to prevent creating more work.
- - Missing Teeth - 1 week work, waiting for a user as other things higher priority.
  - Nippon Denso - 1 day work, waiting for a user as other things higher priority.
 
 Other:
