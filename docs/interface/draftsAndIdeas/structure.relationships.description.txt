@@ -1,7 +1,0 @@
-a structure can have N components
-each component can be a primitive or other component
-
-location has many packet types and one structure, structure has units and labels
-structure has size, shape and structure name
-packet types have a structure of their own and optionally a payload section where another structure can be embedded.
-

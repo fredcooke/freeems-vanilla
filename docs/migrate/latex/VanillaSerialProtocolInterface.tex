@@ -1,0 +1,159 @@
+\documentclass[12pt,a4paper,titlepage]{article}
+\include{FreeEMS}
+
+\begin {document}
+
+\begin{titlepage} 
+\begin{center}
+
+\includegraphics[width=1\textwidth]{./logos/freeems}\\[1cm] \vfill
+
+\HRule \\[0.8cm]
+{ \huge \bfseries FreeEMS Vanilla Serial Interface }\\[0.4cm]
+\HRule \vfill
+
+\Large \emph{Author:}\\
+\textsc{Fred Cooke} \vfill
+
+{\large Version 0.0.2 --- Wednesday 23\textsuperscript{rd} November, 2011}
+
+\include{FreeEMStoc}
+
+
+
+
+\section {Foreword}
+
+This document is based on and assumes knowledge of the FreeEMS Serial Protocol -- Core document.
+
+The purpose of this document is to define the application functionality and payload data formats for communicating with FreeEMS Vanilla. Not all devices will support all functions, either because they have limited functionality (a display device for example), or because the software versions may differ. Where logging/debug facilities are available, the payload type of unrecognised packets should be noted before discarding them.
+
+
+
+
+\newpage
+\section {Payload Type Definitions}
+
+The titles of sub-sections within this section consist of the Payload ID followed by a brief description of the payload type. The body of the section is a detailed description of what it what it does. The structure, length and reply specification follows that and is the last piece of information in each sub-section.
+
+
+\subsection{\texttt{0x0100} Update Block In RAM}
+
+Replaces a block of RAM memory with the provided data. Some blocks are only allowed to be changed as a whole and not partially, IE, size must match the size of the locationID provided and offset must be zero. General configuration blocks can be adjusted using arbitrary offset and size parameters provided that offset is less than size and size is greater than 0 and less than the locationID size. The locationID provided must have non-zero RAM fields.
+
+\begin{itemize}
+\item Contents: location ID (2),  offset (2), size (2), data (1+)
+\item Length: 7+
+\end{itemize}
+
+
+\subsection{\texttt{0x0102} Update Block In Flash}
+
+Exactly the same as updateBlockInRAM except for flash memory, and updates the corresponding RAM region if there is one. The locationID provided must have non-zero flash fields.
+
+\begin{itemize}
+\item Contents: locationID (2),  offset (2), size (2), data (1+)
+\item Length: 7+
+\end{itemize}
+
+
+\subsection{\texttt{0x0104} Retrieve Block From RAM}
+
+Exactly as per the title. The locationID provided must have non-zero RAM fields. Size of zero returns entire block.
+
+\begin{itemize}
+\item Contents: locationID (2),  offset (2), size (2)
+\item Length: 6
+\item Reply: requestedData (1+)
+\end{itemize}
+
+
+\newpage
+\subsection{\texttt{0x0106} Retrieve Block From Flash}
+
+Exactly as per the title. The locationID provided must have non-zero flash fields. Size of zero returns entire block.
+
+\begin{itemize}
+\item Contents: locationID (2),  offset (2), size (2)
+\item Length: 6
+\item Reply: requestedData (1+)
+\end{itemize}
+
+
+\subsection{\texttt{0x0108} Burn Block From Ram To Flash}
+
+Burn data from live tuned RAM down to persistent flash storage. The locationID provided must have non-zero values for all RAM and flash fields.
+
+\begin{itemize}
+\item Contents: locationID (2),  offset (2), size (2)
+\item Length: 6
+\end{itemize}
+
+
+\subsection{\texttt{0x0190} Request Basic Datalog}
+
+Request a basic datalog packet to be sent back, useful when not streaming. The optional payload contents are the truncation length to be used. If it is not provided the configured truncation length will be used just as in asynchronous mode.
+
+\begin{itemize}
+\item Contents: Optional Length (2)
+\item Length: 0 or 2
+\item Reply: requestedData (1+)
+\end{itemize}
+
+
+\subsection{\texttt{0x0194} DEPRECATED Set Async Datalog Type}
+
+Use RAM sub-region manipulation to change this. Invalid types will not stream anything. Will be removed in future, new applications should not use this.
+
+Configure the asynchronous datalog type 0x00/0 is off, other values turn specific types of logging on.
+
+\begin{itemize}
+\item Contents: datalogType (1)
+\item Length: 1
+\end{itemize}
+
+
+\newpage
+\subsection{\texttt{0x0258} Retrieve Arbitrary Memory}
+
+As per the title, for debugging ONLY, could be removed in future.
+
+\begin{itemize}
+\item Contents: length (2), address (2), RAMPage (1), FlashPage (1)
+\item Length: 6
+\item Reply: Original contents (6), requestedData (1+)
+\end{itemize}
+
+
+\subsection{\texttt{0xDA5E} Retrieve List Of Location IDs}
+
+Retrieves a list of 16 bit/2 byte location IDs falling into different categories depending on the single byte listType argument. 0x00 gets ALL locationIDs. 0x01 gets all locationIDs that match at least one mask bit "or". 0x02 gets all locationIDs that match ALL of the mask bits "and". See just above the definition of the struct "blockDetails" in the file structs.h for flag bit details.
+
+\begin{itemize}
+\item Contents: listType (1), listMask (2)
+\item Length: 3
+\item Reply: 16 bit/2 byte locationIDs (0--131072) (always an even number, reality is a much lower count)
+\end{itemize}
+
+
+\subsection{\texttt{0xF8E0} Retrieve Location ID Details}
+
+Retrieve the attributes of a location ID.  See the definition of the struct "blockDetails" in the file structs.h for flag bit details. Parent is meaningless unless specified in the flags. The pages and addresses are optional.
+
+\begin{itemize}
+\item Contents: locationID (2)
+\item Length: 2
+\item Reply: flags (2), parent (2), RAMPage (1), FlashPage (1), RAMAddress (2), FlashAddress (2), size (2)
+\end{itemize}
+
+
+
+
+\section{Copyright}
+
+Copyright 2008--2011 Fred Cooke. All rights reserved.
+
+
+
+
+\end {document}

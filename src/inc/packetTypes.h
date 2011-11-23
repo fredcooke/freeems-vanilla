@@ -87,15 +87,9 @@
 /* Datalog request packets */
 #define requestDatalogPacket        0x0190
 #define responseBasicDatalog        0x0191 /* Defined because it can be used both synchronously and asynchronously */
-#define unusedDatalogPacketIDUseMe  0x0192
-#define responseConfigurableDatalog 0x0193 /* Defined because it can be used both synchronously and asynchronously */
 #define setAsyncDatalogType         0x0194
 #define requestByteLADatalog        0x0196 // logic analyser
 #define responseByteLADatalog       0x0197 // logic analyser
-
-/* Special function */
-#define forwardPacketOverCAN        0x01F4
-#define forwardPacketOverOtherUART  0x01F6
 
 /* Generic memory grabber for debugging */
 #define retrieveArbitraryMemory     0x0258

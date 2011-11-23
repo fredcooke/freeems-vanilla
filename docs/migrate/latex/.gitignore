@@ -1,0 +1,9 @@
+# LaTex build files
+
+*.aux
+*.pdf
+*.log
+*.toc
+*.out
+*.synctex.gz
+

@@ -15,10 +15,12 @@
 \Large \emph{Author:}\\
 \textsc{Fred Cooke} \vfill
 
-{\large Version 0.7 --- 1st January 2011\\
-(Working draft)}
+{\large Version 0.7.0 --- Saturday 1\textsuperscript{st} January, 2011}
 
 \include{FreeEMStoc}
+
+
+
 
 \section {Foreword}
 
@@ -39,6 +41,9 @@ will support all functions, either because they have limited functionality
 Where logging/debug facilities are available, the payload type of unrecognised
 packets should be noted before discarding them.
 
+
+
+
 \section {Main Attributes}
 \begin{itemize}
 \item Compact binary data format to maximize speed and bandwidth.
@@ -50,6 +55,8 @@ packets should be noted before discarding them.
 \item Big endian multi byte number format
 \item Compulsory core functionality across implementing devices
 \end{itemize}
+
+
 
 
 \section{Packet Description}
@@ -111,6 +118,9 @@ receive operations and keep the code simple and compact. The checksum covers
 all bytes in the message before any escaping and packetising occurs, including
 the header but not including the start and stop delimiter bytes.
 
+
+
+
 \section{Header Details}
 
 \subsection{Protocol Packets}
@@ -162,6 +172,9 @@ are provided as an option for tuning authors to use.
 
 Length from the end of the header to the end of the payload NOT including the
 checksum, header or packet delimiters, and before escaping occurs.
+
+
+
 
 \section{General Information}
 
@@ -225,6 +238,9 @@ facility to request the maximum permissible packet size.
 \subsection{Response Times}
 
 To be defined once implemented and tested. Thanks EdG!
+
+
+
 
 \section{UART Specifc Information}
 
@@ -302,11 +318,16 @@ sends out as it could easily be corrupted in transit.
 Note: The checksum doesn't cover the start, stop, escape or escaped bytes, only
 the original packet data.
 
+
+
+
 \section{CAN Specific Information}
 
 Yet to be determined.
 
-\appendix
+
+
+
 \section{Payload IDs}
 \label{app:payload}
 \footnotesize
@@ -357,6 +378,15 @@ The purpose of this particular payload type and how the data is laid out.
 
 Note: This table is liable to be extended in subsequent
 versions.
+
+
+
+
+\section{Copyright}
+
+Copyright 2008--2011 Fred Cooke. All rights reserved.
+
+
 
 
 \end {document}

@@ -898,18 +898,6 @@ void decodePacketAndRespond(){
 			TablesB.SmallTablesB.loggingSettings.datalogStreamType = newDatalogType;
 			break;
 		}
-		case forwardPacketOverCAN:
-		{
-			/// perform function TODO @todo REWORK review this
-			errorID = unimplementedFunction;
-			break;
-		}
-		case forwardPacketOverOtherUART:
-		{
-			/// perform function TODO @todo REWORK review this
-			errorID = unimplementedFunction;
-			break;
-		}
 		case retrieveArbitraryMemory:
 		{
 			if(RXCalculatedPayloadLength != 6){
