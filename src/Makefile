@@ -86,7 +86,8 @@ MD5SUM = md5sum
 endif
 
 # Directories here
-DISTRIBUTIONDIR = ../../$(LABEL)
+DISTRIBUTIONDIR = ../tmp/$(LABEL)
+FIRMWAREDISTRIBUTIONDIR = $(DISTRIBUTIONDIR)/$(LABEL)-firmware
 DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
 INCDIR = inc
@@ -226,9 +227,9 @@ ALLREAD = $(ALLREADC) $(ALLREADASM)
 ALLS19S = $(ALLS19SC) $(ALLS19SASM)
 ALLSIZES = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt,$(ALLS19S))
 ALLDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(ALLS19S))
-ALLMD5S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.md5,$(ALLS19S))
-ALLSHA1S = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.sha1,$(ALLS19S))
-ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(DISTRIBUTIONDIR)/%.zip,$(ALLS19S))
+ALLMD5S = $(patsubst $(S19DIR)/%,$(FIRMWAREDISTRIBUTIONDIR)/%.md5,$(ALLS19S))
+ALLSHA1S = $(patsubst $(S19DIR)/%,$(FIRMWAREDISTRIBUTIONDIR)/%.sha1,$(ALLS19S))
+ALLS19ZIPS = $(patsubst $(S19DIR)/%,$(FIRMWAREDISTRIBUTIONDIR)/%.zip,$(ALLS19S))
 
 
 # Convert to output files for GC variants
@@ -779,7 +780,7 @@ md5sumsmsg:
 
 md5sums: s19 distributiondir md5sumsmsg $(ALLMD5S)
 
-$(ALLMD5S): $(DISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19
+$(ALLMD5S): $(FIRMWAREDISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19
 	$(MD5SUM) $< > $@
 
 
@@ -790,7 +791,7 @@ sha1sumsmsg:
 
 sha1sums: s19 distributiondir sha1sumsmsg $(ALLSHA1S)
 
-$(ALLSHA1S): $(DISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
+$(ALLSHA1S): $(FIRMWAREDISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
 	$(SHASUM) $< > $@
 
 
@@ -803,7 +804,7 @@ s19zipsmsg:
 
 s19zips: s19 distributiondir s19zipsmsg $(ALLS19ZIPS)
 
-$(ALLS19ZIPS): $(DISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
+$(ALLS19ZIPS): $(FIRMWAREDISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
 	zip $@ $<
 
 
@@ -819,10 +820,10 @@ tagrelease: tagname tagmessage
 
 
 zipmain: distributiondir
-	cd ../ ; git archive --format=zip --prefix=$(LABEL)/ HEAD > ../$(LABEL)/$(LABEL).zip;cd -
+	cd ../ ; git archive --format=zip --prefix=$(LABEL)/ HEAD > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-full.zip;cd -
 
 zipdocs: distributiondir
-	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ../$(LABEL)/$(LABEL)-docs.zip;cd -
+	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-docs.zip;cd -
 
 gendoxy: clean
 	cd ../ ; doxygen docs/Doxyfile | grep Warning > src/doxygen.output;cd -
@@ -831,7 +832,7 @@ zipsite: distributiondir gendoxy
 	cd ../docs/ ; zip -r  $(DISTRIBUTIONDIR)/$(LABEL)-doxygen-html.zip doxygen-html/;cd -
 
 zipsrc: distributiondir
-	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ../$(LABEL)/$(LABEL)-src.zip;cd -
+	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-src.zip;cd -
 
 
 
@@ -896,8 +897,8 @@ distributiondir:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                    Creating the distribution directory...                    #$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(DISTRIBUTIONDIR)$(PATHSEP)hack
-	rmdir $(DISTRIBUTIONDIR)$(PATHSEP)hack
+	$(MKDIR) $(FIRMWAREDISTRIBUTIONDIR)$(PATHSEP)hack
+	rmdir $(FIRMWAREDISTRIBUTIONDIR)$(PATHSEP)hack
 
 
 
