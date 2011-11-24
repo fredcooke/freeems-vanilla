@@ -75,19 +75,9 @@
 #define retrieveBlockFromFlash      0x0106
 #define burnBlockFromRamToFlash     0x0108
 
-/* Main table manipulation */
-#define adjustMainTableCell         0x012C
-#define adjustMainTableRPMAxis      0x012E
-#define	adjustMainTableLoadAxis     0x0130
-
-/* 2d table manipulation */
-#define adjust2dTableAxis           0x0132
-#define adjust2dTableCell           0x0134
-
 /* Datalog request packets */
 #define requestDatalogPacket        0x0190
 #define responseBasicDatalog        0x0191 /* Defined because it can be used both synchronously and asynchronously */
-#define setAsyncDatalogType         0x0194
 #define requestByteLADatalog        0x0196 // logic analyser
 #define responseByteLADatalog       0x0197 // logic analyser
 
@@ -108,6 +98,14 @@
 #define requestCompilerVersion      0xEEF2 // Which GCC built it
 #define requestOperatingSystem      0xEEF4 // Which OS was it built on
 #define clearCountersAndFlagsToZero 0xFFF0 // Clean slate to perform tests of any type. Clears various flags too, should not affect running
+
+// DEPRECATED TODO Remove once certain no users exist
+#define adjustMainTableCell         0x012C
+#define adjustMainTableRPMAxis      0x012E
+#define adjustMainTableLoadAxis     0x0130
+#define adjust2dTableAxis           0x0132
+#define adjust2dTableCell           0x0134
+#define setAsyncDatalogType         0x0194
 
 #else
 	/* let us know if we are being untidy with headers */

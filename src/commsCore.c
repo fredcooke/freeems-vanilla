@@ -407,6 +407,11 @@ void decodePacketAndRespond(){
 	// FreeEMS Vanilla Firmware Specific cases
 		case clearCountersAndFlagsToZero:
 		{
+			if(RXCalculatedPayloadLength != 0){
+				errorID = payloadLengthTypeMismatch;
+				break;
+			}
+
 			unsigned short zeroCounter;
 			unsigned char* counterPointer = (char*) &Counters;
 			for(zeroCounter = 0;zeroCounter < sizeof(Counter);zeroCounter++){
