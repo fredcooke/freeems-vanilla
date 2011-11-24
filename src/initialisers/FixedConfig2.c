@@ -113,7 +113,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		TPSMaximumADC: TPSDefaultMax
 	},
 	sensorSettings:{ // Warning, until the following mods are made to ADC use, setting this lower than your cranking rpm will result in a pulsing fuel pump.
-		readingTimeout: 250, /** Default to 0.25 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
+		readingTimeout: 500, /** Default to 0.25 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
 	},
 	decoderSettings:{
 // Should macro these, 45.00,50.00 and 100.00 are percentages
