@@ -1233,7 +1233,7 @@ void decodePacketAndRespond(){
 						// use as-is
 						outputEventPinNumbers[channel] = channel;
 						postReferenceEventDelays[channel] = decoderMaxCodeTime;
-						injectorMainPulseWidthsMath[channel] = testPulseWidths[channel];
+						outputEventPulseWidthsMath[channel] = testPulseWidths[channel];
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
 					}else if(testPulseWidths[channel] > 2){
 						// less than the code time, and not special, error!
@@ -1244,13 +1244,13 @@ void decodePacketAndRespond(){
 						// use the dwell from the core maths and input vars.
 						outputEventPinNumbers[channel] = channel;
 						postReferenceEventDelays[channel] = decoderMaxCodeTime;
-						injectorMainPulseWidthsMath[channel] = DerivedVars->Dwell;
+						outputEventPulseWidthsMath[channel] = DerivedVars->Dwell;
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
 					}else if(testPulseWidths[channel] == 1){
 						// use the reference pulse width from the core maths and input vars.
 						outputEventPinNumbers[channel] = channel;
 						postReferenceEventDelays[channel] = decoderMaxCodeTime;
-						injectorMainPulseWidthsMath[channel] = DerivedVars->RefPW;
+						outputEventPulseWidthsMath[channel] = DerivedVars->RefPW;
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
 					}else{ // is zero
 						// Set this channel to zero for and therefore off, don't set this channel.
@@ -1306,12 +1306,12 @@ void decodePacketAndRespond(){
 //				postReferenceEventDelays[3] = decoderMaxCodeTime;
 //				postReferenceEventDelays[4] = decoderMaxCodeTime;
 //				postReferenceEventDelays[5] = decoderMaxCodeTime;
-//				injectorMainPulseWidthsMath[0] = SHORTMAX;
-//				injectorMainPulseWidthsMath[1] = SHORTMAX;
-//				injectorMainPulseWidthsMath[2] = SHORTMAX;
-//				injectorMainPulseWidthsMath[3] = SHORTMAX;
-//				injectorMainPulseWidthsMath[4] = SHORTMAX;
-//				injectorMainPulseWidthsMath[5] = SHORTMAX;
+//				outputEventPulseWidthsMath[0] = SHORTMAX;
+//				outputEventPulseWidthsMath[1] = SHORTMAX;
+//				outputEventPulseWidthsMath[2] = SHORTMAX;
+//				outputEventPulseWidthsMath[3] = SHORTMAX;
+//				outputEventPulseWidthsMath[4] = SHORTMAX;
+//				outputEventPulseWidthsMath[5] = SHORTMAX;
 //
 //				unsigned short edgeTimeStamp = TCNT;
 //				// call sched output with args

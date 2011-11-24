@@ -128,7 +128,7 @@ void calculateFuelAndIgnition(){
 //		channelPW = safeScale(DerivedVars->EffectivePW, TablesB.SmallTablesB.perCylinderFuelTrims[channel]);
 //
 //		/* Add on the IDT to get the final value and put it into the array */
-//		//injectorMainPulseWidthsMath[channel] = safeAdd(channelPW, DerivedVars->IDT); do not re-enable this without fixing it properly...
+//		//outputEventPulseWidthsMath[channel] = safeAdd(channelPW, DerivedVars->IDT); do not re-enable this without fixing it properly...
 //	}
 
 	// Make sure we don't have a PW if PW is supposed to be zero, ie, zero the IDT as well.
@@ -380,7 +380,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 	int injectionEvent;
 	for(injectionEvent = firstInjectionEvent;injectionEvent < (firstInjectionEvent + numberOfInjectionEvents);injectionEvent++){
 		postReferenceEventDelays[injectionEvent] = decoderMaxCodeTime;
-		injectorMainPulseWidthsMath[injectionEvent] = masterPulseWidth;
+		outputEventPulseWidthsMath[injectionEvent] = masterPulseWidth;
 	}
 
 	decoderEngineOffset = cliConfiguredOffset;
@@ -537,7 +537,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
 
 					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
-					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
+					outputEventPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				}else{
@@ -551,16 +551,16 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
 					unsigned char numberOfRepeats = potentialDelay / SHORTMAX;
 					unsigned short finalPeriod = potentialDelay % SHORTMAX;
+					// refactor to use one variable for total delay, and final from repeat, wasting memory right now
 					if(finalPeriod > decoderMaxCodeTime){
-// refactor to use this for repeats as well... wasting memory right now:						postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
-						outputEventExtendFinalPeriod[ignitionEvent] = finalPeriod;
+						outputEventDelayFinalPeriod[ignitionEvent] = finalPeriod;
 						outputEventExtendRepeatPeriod[ignitionEvent] = SHORTMAX;
 						outputEventExtendNumberOfRepeats[ignitionEvent] = numberOfRepeats;
 					}else{
 						unsigned short shortagePerRepeat = (decoderMaxCodeTime - finalPeriod) / numberOfRepeats;
 						unsigned short repeatPeriod = (SHORTMAX - 1) - shortagePerRepeat;
 						finalPeriod += (shortagePerRepeat + 1) * numberOfRepeats;
-						outputEventExtendFinalPeriod[ignitionEvent] = finalPeriod;
+						outputEventDelayFinalPeriod[ignitionEvent] = finalPeriod;
 						outputEventExtendRepeatPeriod[ignitionEvent] = repeatPeriod;
 						outputEventExtendNumberOfRepeats[ignitionEvent] = numberOfRepeats;
 					}
@@ -569,29 +569,10 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					// if so, set repeat to max and final to remainder and number of iterations to divs
 					// if not, decrease repeat size in some optimal way and provide new left over to work with that, and same number of divs/its
 					// Always use dwell as requested
-					injectorMainPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
+					outputEventPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					Counters.timerStretchedToSchedule++;
 				}
-//				}else if // do change starting here, already long, just add config first, and setup sean's to use it, and everyone else's to not use it, and we're good.
-//				(((DerivedVars->Dwell + potentialDelay) - SHORTMAX) <= SHORTMAX){ // Max distance from nearest event to spark is two 16 bit timer periods
-//					/// @todo TODO For those that require exact dwell, a flag and mask can be inserted in this condition with an && to prevent scheduling and just not fire. Necessary for coils/ignitors that fire when excess dwell is reached. Thanks SeanK for mentioning this! :-)
-//					unsigned short finalDwell = (unsigned short)((DerivedVars->Dwell + potentialDelay) - SHORTMAX);
-//					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-//					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
-//					postReferenceEventDelays[ignitionEvent] = SHORTMAX;
-//					injectorMainPulseWidthsMath[ignitionEvent] = finalDwell;
-//					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
-//					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-//					Counters.DwellStretchedToSchedule++;
-//				}else{ // type of scheduling config tested here too.
-//					/* ELSE leave unscheduled rather than advance too much
-//					 * This indicates that the output event is too far from the input event
-//					 * This will only occur on input patterns with too few teeth, or bad alignment
-//					 */
-//					outputEventInputEventNumbers[ignitionEvent] = ONES; // unschedule this pin... lockout not required because the operation is naturally atomic
-//					Counters.TooFarToSchedule++;
-//				}
 				break;
 			}else{
 				if(lastGoodEvent > 0){

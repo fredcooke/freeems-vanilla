@@ -188,7 +188,7 @@ if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                    
 	outputEventExtendNumberOfRepeatsRealtime[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];          \
 	outputEventExtendNumberOfRepeatsRealtime[pin]--;                                                              \
 	outputEventExtendRepeatPeriodRealtime[pin] = outputEventExtendRepeatPeriod[outputEventNumber];                \
-	outputEventExtendFinalPeriodRealtime[pin] = outputEventExtendFinalPeriod[outputEventNumber];                  \
+	outputEventDelayFinalPeriodRealtime[pin] = outputEventDelayFinalPeriod[outputEventNumber];                  \
 	*injectorMainTimeRegisters[pin] = timeStamp.timeShorts[1] + outputEventExtendRepeatPeriod[outputEventNumber]; \
 	Counters.pinScheduledWithTimerExtension++;                                                                    \
 }else{                                                                                                            \
@@ -198,7 +198,7 @@ if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                    
 }                                                                                                                 \
 TIE |= injectorMainOnMasks[pin];                                                                                  \
 TFLG = injectorMainOnMasks[pin];                                                                                  \
-injectorMainPulseWidthsRealtime[pin] = injectorMainPulseWidthsMath[outputEventNumber];                            \
+outputEventPulseWidthsRealtime[pin] = outputEventPulseWidthsMath[outputEventNumber];                            \
 selfSetTimer &= injectorMainOffMasks[pin];                                                                        // End of macro block!
 
 
@@ -265,53 +265,48 @@ const unsigned char decoderName[] = BASE_FILE_NAME;
 //
 //// Live vars for subprocess intercommunication
 #define MAX_NUMBER_OF_OUTPUT_EVENTS 24
-EXTERN unsigned char outputEventExtendNumberOfRepeats[MAX_NUMBER_OF_OUTPUT_EVENTS];
-EXTERN unsigned short outputEventExtendRepeatPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
-EXTERN unsigned short outputEventExtendFinalPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
-EXTERN unsigned char outputEventExtendNumberOfRepeatsHolding[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventExtendRepeatPeriodHolding[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventExtendFinalPeriodHolding[INJECTION_CHANNELS];
-EXTERN unsigned char outputEventExtendNumberOfRepeatsRealtime[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventExtendFinalPeriodRealtime[INJECTION_CHANNELS];
+
 EXTERN unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];            // 0xFF (disabled) by default, populated to actual pin numbers by the scheduler
 EXTERN unsigned char outputEventInputEventNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
-// see injectorMainPulseWidthsMath below, rename to this? EXTERN unsigned short outputEventDurations[MAX_NUMBER_OF_OUTPUT_EVENTS];            // Unused if above are not configured, set from either dwell (stretched or not) or pulsewidth (scaled for number of shots or not)
-// older array immediately below used, rename to this? EXTERN unsigned short outputEventPostInputEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS]; // Unused if above are not configured, set either fixed or from angle calculations (always the latter for ignition)
-EXTERN unsigned short postReferenceEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS];
-// old, remove it... EXTERN unsigned char pinEventDurations[6];                 // Set from decoder when setting timer registers etc, set from outputEventDurations, along with other data from there.
-/// @todo TODO back this ^ array with flags saying set, and then clear them when fired, check the flag before setting, and if required buffer in a secondary array, maybe mimic that to several levels such that a queue is formed, and shuffle them through the queue as we go, or move a pointer around or somthing like that.
 
-/// @todo TODO Perhaps use some of the space freed by shrinking all timing tables for this:
-////unsigned long wheelEventTimeStamps[numberOfWheelEvents]; // For logging wheel patterns as observed. LOTS of memory :-/ may not be possible except by sending lastStamp rapidly at low RPM
+EXTERN unsigned short outputEventPulseWidthsMath[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned char outputEventExtendNumberOfRepeats[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned short outputEventExtendRepeatPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned short outputEventDelayFinalPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
 
+EXTERN unsigned short outputEventPulseWidthsHolding[INJECTION_CHANNELS];
+EXTERN unsigned char outputEventExtendNumberOfRepeatsHolding[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventExtendRepeatPeriodHolding[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventDelayFinalPeriodHolding[INJECTION_CHANNELS];
 
+EXTERN unsigned short outputEventPulseWidthsRealtime[INJECTION_CHANNELS];
+EXTERN unsigned char outputEventExtendNumberOfRepeatsRealtime[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventDelayFinalPeriodRealtime[INJECTION_CHANNELS];
 
-/* WAS injector stuff, now GP output stuff, and soon to be ign stuff, maybe, refactor all names... */
+EXTERN unsigned short postReferenceEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS]; // TODO REMOVE FIXME
+EXTERN unsigned short injectorMainStartOffsetHolding[INJECTION_CHANNELS]; // TODO REMOVE FIXME
 
 /* Register addresses */
-EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS];
-EXTERN volatile unsigned char * volatile injectorMainControlRegisters[INJECTION_CHANNELS];
+EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
+EXTERN volatile unsigned char * volatile injectorMainControlRegisters[INJECTION_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
+
 
 /* Timer holding vars (init not required) */
-EXTERN unsigned short injectorMainStartOffsetHolding[INJECTION_CHANNELS];
-EXTERN unsigned long injectorMainEndTimes[INJECTION_CHANNELS];
-
-// TODO make these names consistent
-/* Code time to run variables (init not required) */
-EXTERN unsigned short injectorCodeOpenRuntimes[INJECTION_CHANNELS];
-EXTERN unsigned short injectorCodeCloseRuntimes[INJECTION_CHANNELS];
-
-/* individual channel pulsewidths (init not required) */
-EXTERN unsigned short injectorMainPulseWidthsMath[MAX_NUMBER_OF_OUTPUT_EVENTS];
-EXTERN unsigned short injectorMainPulseWidthsRealtime[INJECTION_CHANNELS];
-EXTERN unsigned short injectorMainPulseWidthsHolding[INJECTION_CHANNELS];
-
+EXTERN unsigned long injectorMainEndTimes[INJECTION_CHANNELS]; // Used for scheduling calculations
 /* Channel latencies (init not required) */
-EXTERN unsigned short injectorCodeLatencies[INJECTION_CHANNELS];
+EXTERN unsigned short injectorCodeLatencies[INJECTION_CHANNELS]; // Used for injector control in a dysfunctional way.
 
 
+/* Code time to run variables (init not required) */
+EXTERN unsigned short injectorCodeOpenRuntimes[INJECTION_CHANNELS]; // Stats only, remove or change to something accessible
+EXTERN unsigned short injectorCodeCloseRuntimes[INJECTION_CHANNELS]; // Stats only, remove or change to something accessible
 
+
+/// @todo TODO Perhaps use some of the space freed by shrinking all timing tables for this:
+////unsigned long wheelEventTimeStamps[numberOfWheelEvents]; // For logging wheel patterns as observed
+// Could be useful for really nice RPM readings done in the main loop.
+// Logging of this nature will use the serial buffer which it will hold a lock over for the duration of the log.
 
 
 // Helpers - force all these to be inlined!

@@ -129,10 +129,10 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 				if(newStartIsAfterOutputEndTimeAndCanSelfSet){
 					// self sched
 					injectorMainStartOffsetHolding[pin] = startTime - *injectorMainTimeRegisters[pin];
-					injectorMainPulseWidthsHolding[pin] = injectorMainPulseWidthsMath[outputEventNumber];
+					outputEventPulseWidthsHolding[pin] = outputEventPulseWidthsMath[outputEventNumber];
 					outputEventExtendNumberOfRepeatsHolding[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];
 					outputEventExtendRepeatPeriodHolding[pin] = outputEventExtendRepeatPeriod[outputEventNumber];
-					outputEventExtendFinalPeriodHolding[pin] = outputEventExtendFinalPeriod[outputEventNumber];
+					outputEventDelayFinalPeriodHolding[pin] = outputEventDelayFinalPeriod[outputEventNumber];
 					selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
 					Counters.pinScheduledToSelfSchedule++;
 				}else{
