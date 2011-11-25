@@ -805,7 +805,7 @@ s19zipsmsg:
 s19zips: s19 distributiondir s19zipsmsg $(ALLS19ZIPS)
 
 $(ALLS19ZIPS): $(FIRMWAREDISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
-	zip $@ $<
+	zip -j $@ $<
 
 
 tagmessage:
