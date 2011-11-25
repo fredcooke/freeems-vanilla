@@ -1232,7 +1232,7 @@ void decodePacketAndRespond(){
 					if(testPulseWidths[channel] > injectorSwitchOnCodeTime){ // See next block for warning.
 						// use as-is
 						outputEventPinNumbers[channel] = channel;
-						postReferenceEventDelays[channel] = decoderMaxCodeTime;
+						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = testPulseWidths[channel];
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
 					}else if(testPulseWidths[channel] > 2){
@@ -1243,13 +1243,13 @@ void decodePacketAndRespond(){
 					}else if(testPulseWidths[channel] == 2){
 						// use the dwell from the core maths and input vars.
 						outputEventPinNumbers[channel] = channel;
-						postReferenceEventDelays[channel] = decoderMaxCodeTime;
+						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = DerivedVars->Dwell;
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
 					}else if(testPulseWidths[channel] == 1){
 						// use the reference pulse width from the core maths and input vars.
 						outputEventPinNumbers[channel] = channel;
-						postReferenceEventDelays[channel] = decoderMaxCodeTime;
+						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = DerivedVars->RefPW;
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
 					}else{ // is zero
@@ -1300,12 +1300,12 @@ void decodePacketAndRespond(){
 //				outputEventPinNumbers[3] = 3; // 4 ign/2 fuel
 //				outputEventPinNumbers[4] = 4; // 3 fuel
 //				outputEventPinNumbers[5] = 5; // 4 fuel
-//				postReferenceEventDelays[0] = decoderMaxCodeTime;
-//				postReferenceEventDelays[1] = decoderMaxCodeTime;
-//				postReferenceEventDelays[2] = decoderMaxCodeTime;
-//				postReferenceEventDelays[3] = decoderMaxCodeTime;
-//				postReferenceEventDelays[4] = decoderMaxCodeTime;
-//				postReferenceEventDelays[5] = decoderMaxCodeTime;
+//				outputEventDelayFinalPeriod[0] = decoderMaxCodeTime;
+//				outputEventDelayFinalPeriod[1] = decoderMaxCodeTime;
+//				outputEventDelayFinalPeriod[2] = decoderMaxCodeTime;
+//				outputEventDelayFinalPeriod[3] = decoderMaxCodeTime;
+//				outputEventDelayFinalPeriod[4] = decoderMaxCodeTime;
+//				outputEventDelayFinalPeriod[5] = decoderMaxCodeTime;
 //				outputEventPulseWidthsMath[0] = SHORTMAX;
 //				outputEventPulseWidthsMath[1] = SHORTMAX;
 //				outputEventPulseWidthsMath[2] = SHORTMAX;

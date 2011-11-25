@@ -93,7 +93,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 		postReferenceEventDelay = decoderMaxCodeTime;
 		skipEventFlags &= ~(1UL << outputEventNumber); // Clear the flag
 	}else{
-		postReferenceEventDelay = postReferenceEventDelays[outputEventNumber];
+		postReferenceEventDelay = outputEventDelayFinalPeriod[outputEventNumber];
 	}
 	// determine the long and short start times
 	unsigned short startTime = timeStamp.timeShorts[1] + postReferenceEventDelay;

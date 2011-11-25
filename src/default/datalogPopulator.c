@@ -5,7 +5,7 @@ void populateCustomDatalog(){
 
 //	// Currently spare:
 //	CoreVars->DDRPM = outputEventPulseWidthsMath[2];
-//	CoreVars->DTPS = postReferenceEventDelays[2];
+//	CoreVars->DTPS = outputEventDelayFinalPeriod[2];
 //	CoreVars->DMAP = outputEventInputEventNumbers[2];
 
 	// Log scheduling data by default for the time being.
@@ -23,10 +23,10 @@ void populateCustomDatalog(){
 
 //	// First two schedules contents:
 //	KeyUserDebugs.zsp3 = outputEventPulseWidthsMath[0];
-//	KeyUserDebugs.zsp4 = postReferenceEventDelays[0];
+//	KeyUserDebugs.zsp4 = outputEventDelayFinalPeriod[0];
 //	KeyUserDebugs.zsp5 = outputEventInputEventNumbers[0];
 //	KeyUserDebugs.zsp6 = outputEventPulseWidthsMath[1];
-//	KeyUserDebugs.zsp7 = postReferenceEventDelays[1];
+//	KeyUserDebugs.zsp7 = outputEventDelayFinalPeriod[1];
 //	KeyUserDebugs.zsp8 = outputEventInputEventNumbers[1];
 //	KeyUserDebugs.zsp9 = 0;
 //	KeyUserDebugs.zsp10 = 0;

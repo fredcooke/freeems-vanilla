@@ -284,8 +284,7 @@ EXTERN unsigned char outputEventExtendNumberOfRepeatsRealtime[INJECTION_CHANNELS
 EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[INJECTION_CHANNELS];
 EXTERN unsigned short outputEventDelayFinalPeriodRealtime[INJECTION_CHANNELS];
 
-EXTERN unsigned short postReferenceEventDelays[MAX_NUMBER_OF_OUTPUT_EVENTS]; // TODO REMOVE FIXME
-EXTERN unsigned short injectorMainStartOffsetHolding[INJECTION_CHANNELS]; // TODO REMOVE FIXME
+EXTERN unsigned short injectorMainStartOffsetHolding[INJECTION_CHANNELS];
 
 /* Register addresses */
 EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME

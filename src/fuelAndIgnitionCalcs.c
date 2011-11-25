@@ -379,7 +379,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 	// Populate configured fuel channels with values.
 	int injectionEvent;
 	for(injectionEvent = firstInjectionEvent;injectionEvent < (firstInjectionEvent + numberOfInjectionEvents);injectionEvent++){
-		postReferenceEventDelays[injectionEvent] = decoderMaxCodeTime;
+		outputEventDelayFinalPeriod[injectionEvent] = decoderMaxCodeTime;
 		outputEventPulseWidthsMath[injectionEvent] = masterPulseWidth;
 	}
 
@@ -530,13 +530,12 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					 * just mean a single cycle of scheduling is slightly too retarded for a single
 					 * event around change of tooth time which could easily be acceptable.
 					 */
-					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
+					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > outputEventDelayFinalPeriod[ignitionEvent])){
 						skipEventFlags |= (1UL << ignitionEvent);
 					}
 
 					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
-
-					postReferenceEventDelays[ignitionEvent] = (unsigned short)potentialDelay;
+					outputEventDelayFinalPeriod[ignitionEvent] = (unsigned short)potentialDelay;
 					outputEventPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -544,7 +543,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 					// See comment in above block
-					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > postReferenceEventDelays[ignitionEvent])){
+					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > outputEventDelayFinalPeriod[ignitionEvent])){
 						skipEventFlags |= (1UL << ignitionEvent);
 					}
 
