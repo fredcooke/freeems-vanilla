@@ -826,7 +826,7 @@ zipdocs: distributiondir
 	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-docs.zip;cd -
 
 gendoxy: clean
-	cd ../ ; doxygen docs/Doxyfile | grep Warning > src/doxygen.output;cd -
+	cd ../ ; ( cat docs/Doxyfile ; echo "PROJECT_NUMBER=$(FIRMWARE_VERSION)" ) | doxygen - | grep Warning > src/doxygen.output;cd -
 
 zipsite: distributiondir gendoxy
 	cd ../docs/ ; zip -r  $(DISTRIBUTIONDIR)/$(LABEL)-doxygen-html.zip doxygen-html/;cd -
