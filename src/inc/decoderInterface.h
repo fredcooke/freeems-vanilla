@@ -270,9 +270,10 @@ EXTERN unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];        
 EXTERN unsigned char outputEventInputEventNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
 
 EXTERN unsigned short outputEventPulseWidthsMath[MAX_NUMBER_OF_OUTPUT_EVENTS];
-EXTERN unsigned char outputEventExtendNumberOfRepeats[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned char  outputEventExtendNumberOfRepeats[MAX_NUMBER_OF_OUTPUT_EVENTS];
 EXTERN unsigned short outputEventExtendRepeatPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
 EXTERN unsigned short outputEventDelayFinalPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
+EXTERN unsigned long  outputEventDelayTotalPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
 
 EXTERN unsigned short outputEventPulseWidthsHolding[INJECTION_CHANNELS];
 EXTERN unsigned char outputEventExtendNumberOfRepeatsHolding[INJECTION_CHANNELS];
@@ -285,6 +286,8 @@ EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[INJECTION_CHANNELS];
 EXTERN unsigned short outputEventDelayFinalPeriodRealtime[INJECTION_CHANNELS];
 
 EXTERN unsigned short injectorMainStartOffsetHolding[INJECTION_CHANNELS];
+
+
 
 /* Register addresses */
 EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME

@@ -530,7 +530,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					 * just mean a single cycle of scheduling is slightly too retarded for a single
 					 * event around change of tooth time which could easily be acceptable.
 					 */
-					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > outputEventDelayFinalPeriod[ignitionEvent])){
+					if((mappedEvent == eventBeforeCurrent) && (potentialDelay >  outputEventDelayTotalPeriod[ignitionEvent])){
 						skipEventFlags |= (1UL << ignitionEvent);
 					}
 
@@ -539,18 +539,18 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					outputEventPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+					outputEventDelayTotalPeriod[ignitionEvent] = potentialDelay; // No async accesses occur
 				}else{
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 					// See comment in above block
-					if((mappedEvent == eventBeforeCurrent) && ((unsigned short)potentialDelay > outputEventDelayFinalPeriod[ignitionEvent])){
+					if((mappedEvent == eventBeforeCurrent) && (potentialDelay > outputEventDelayTotalPeriod[ignitionEvent])){
 						skipEventFlags |= (1UL << ignitionEvent);
 					}
 
 					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
 					unsigned char numberOfRepeats = potentialDelay / SHORTMAX;
 					unsigned short finalPeriod = potentialDelay % SHORTMAX;
-					// refactor to use one variable for total delay, and final from repeat, wasting memory right now
 					if(finalPeriod > decoderMaxCodeTime){
 						outputEventDelayFinalPeriod[ignitionEvent] = finalPeriod;
 						outputEventExtendRepeatPeriod[ignitionEvent] = SHORTMAX;
@@ -570,6 +570,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					// Always use dwell as requested
 					outputEventPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+					outputEventDelayTotalPeriod[ignitionEvent] = potentialDelay; // No async accesses occur
 					Counters.timerStretchedToSchedule++;
 				}
 				break;
