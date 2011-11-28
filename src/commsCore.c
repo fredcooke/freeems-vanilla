@@ -431,7 +431,6 @@ void decodePacketAndRespond(){
 		case requestCompilerVersion:
 		case requestOperatingSystem:
 		{
-			/// @todo TODO add this call to the documentation, John maybe?
 			if(RXCalculatedPayloadLength != 0){
 				errorID = payloadLengthTypeMismatch;
 				break;
@@ -545,6 +544,7 @@ void decodePacketAndRespond(){
 
 				// If the validation failed, report it
 				if(errorID != 0){
+					RPAGE = oldRamPage; // Restore the original RAM page, even when getting an error condition.
 					break;
 				}
 			}
