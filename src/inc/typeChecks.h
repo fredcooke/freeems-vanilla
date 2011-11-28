@@ -70,17 +70,20 @@
 #define _impl_CASSERT_LINE(predicate, line, file) typedef char _impl_PASTE(assertion_failed_##file##_,line)[2*!!(predicate)-1];
 
 
+// Things with specific sizes:
 CASSERT(sizeof(Flaggable) == 16, Flaggable)
 CASSERT(sizeof(ADCBuffer)  == 32, ADCBuffer)
 CASSERT(sizeof(twoDTableUS) == 64, twoDTableUS)
 CASSERT(sizeof(mainTable) == flashSectorSize, mainTable)
 
+// Short alignment checks:
 CASSERT((sizeof(Clock) % 2) == 0, Clock)
 CASSERT((sizeof(Counter) % 2) == 0, Counter)
 CASSERT((sizeof(CoreVar) % 2) == 0, CoreVar)
 CASSERT((sizeof(DerivedVar) % 2) == 0, DerivedVar)
 CASSERT((sizeof(KeyUserDebug) % 2) == 0, KeyUserDebug)
 
+// Flash block alignment checks:
 CASSERT((sizeof(SmallTables1) == flashSectorSize), SmallTables1)
 CASSERT((sizeof(SmallTables2) == flashSectorSize), SmallTables2)
 CASSERT((sizeof(SmallTables3) == flashSectorSize), SmallTables3)
@@ -88,6 +91,12 @@ CASSERT((sizeof(SmallTables4) == flashSectorSize), SmallTables4)
 
 CASSERT((sizeof(fixedConfig1) == flashSectorSize), fixedConfig1)
 CASSERT((sizeof(fixedConfig2) == flashSectorSize), fixedConfig2)
+
+// The following is just a reminder that updates to MTX and OLV are required
+CASSERT(maxBasicDatalogLength == 96, DatalogLength) // Sum of the ones below
+CASSERT(sizeof(CoreVar) == 32, CoreVar)
+CASSERT(sizeof(DerivedVar) == 26, DerivedVar)
+CASSERT(sizeof(KeyUserDebug) == 38, KeyUserDebug)
 
 
 #else
