@@ -122,12 +122,13 @@ void resetReceiveState(unsigned char sourceIDState){
 	}else if(sourceIDState & COM_SET_CAN0_INTERFACE_ID){
 		/* Turn off all others here */
 		/* Only SCI for now */
-		SCI0CR2 &= SCICR2_RX_DISABLE;
 		SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
 		/* SPI ? I2C ? SCI1 ? */
 	}else{ /* If clearing all flags then enable RX on all interfaces */
 		/* Only SCI for now */
-		SCI0CR2 |= SCICR2_RX_ENABLE;
+		unsigned char devnull; // Is there a better way to do this?
+		devnull = SCI0SR1; // Reading the flags combined with...
+		devnull = SCI0DRL; // ...reading the data clears the flags
 		SCI0CR2 |= SCICR2_RX_ISR_ENABLE;
 		/// @todo TODO CAN0CTL1 |= CANCTL1_RX_ENABLE;
 		/// @todo TODO CAN0CTL1 |= CANCTL1_RX_ISR_ENABLE;
@@ -200,7 +201,6 @@ void SCI0ISR(){
 				/* If another interface is using it (Note, clear flag, not normal) */
 				if(RXBufferContentSourceID & COM_CLEAR_SCI0_INTERFACE_ID){
 					/* Turn off our reception */
-					SCI0CR2 &= SCICR2_RX_DISABLE;
 					SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
 				}else{
 					/* If we are using it */
@@ -242,7 +242,6 @@ void SCI0ISR(){
 					RXStateFlags |= RX_SCI_ESCAPED_NEXT;
 				}else if(rawByte == STOP_BYTE){
 					/* Turn off reception */
-					SCI0CR2 &= SCICR2_RX_DISABLE;
 					SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
 
 					/* Bring the checksum back to where it should be */
