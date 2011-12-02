@@ -1191,8 +1191,6 @@ void decodePacketAndRespond(){
 				if(coreStatusA & BENCH_TEST_ON){
 					errorID = benchTestAlreadyRunning;
 					break;
-				}else{
-					coreStatusA |= BENCH_TEST_ON;
 				}
 
 				testEventsPerCycle = *((unsigned char*)RXBufferCurrentPosition); //100;  // @ 10ms  =  1s
@@ -1270,6 +1268,9 @@ void decodePacketAndRespond(){
 
 					// Trigger decoder interrupt to fire thus starting the loop!
 					TIE = 0x01; // The ISR does the rest!
+
+					// Nothing went wrong, now set flag.
+					coreStatusA |= BENCH_TEST_ON;
 				}else{
 					break;
 				}
