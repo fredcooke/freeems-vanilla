@@ -176,19 +176,12 @@ void finaliseAndSend(unsigned short errorID){
 		TXPacketLengthToSendSCI0 = TXPacketLengthToSend;
 		TXPacketLengthToSendCAN0 = TXPacketLengthToSend;
 
-		/* Queue preamble by clearing and then setting transmit enable	*/
-		/* See section 11.4.5.2 of the xdp512 specification document	*/
-		//SCI0CR2 &= SCICR2_TX_DISABLE;
-		//SCI0CR2 |= SCICR2_TX_ENABLE;
-
 		/* Initiate transmission */
 		SCI0DRL = START_BYTE;
-		while(!(SCI0SR1 & 0x80)){/* Wait for ever until able to send then move on */}
-		SCI0DRL = START_BYTE; // nasty hack that works... means at least one and most 2 starts are sent so stuff works, but is messy... there must be a better way.
 
 		/* Note : Order Is Important! */
 		/* TX empty flag is already set, so we must clear it by writing out before enabling the interrupt */
-		SCI0CR2 |= SCICR2_TX_ISR_ENABLE;
+		SCI0CR2 |= (SCICR2_TX_ENABLE | SCICR2_TX_ISR_ENABLE);
 	}
 	/* CAN0 - Main CAN interface */
 	if(TXBufferInUseFlags & COM_SET_CAN0_INTERFACE_ID){

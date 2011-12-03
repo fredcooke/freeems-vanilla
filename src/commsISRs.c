@@ -297,9 +297,7 @@ void SCI0ISR(){
 		}else{ /* Length is zero */
 			if(coreStatusA & BIT7){
 				/* Turn off transmission interrupt */
-				SCI0CR2 &= SCICR2_TX_ISR_DISABLE;
-				/* Send the stop byte */
-				SCI0DRL = STOP_BYTE;
+				SCI0CR2 &= (SCICR2_TX_ISR_DISABLE & SCICR2_TX_DISABLE);
 				/* Clear the TX in progress flag */
 				TXBufferInUseFlags &= COM_CLEAR_SCI0_INTERFACE_ID;
 				coreStatusA &= NBIT7;
