@@ -496,12 +496,11 @@ alldebug: maps rees elfdmps objdmps
 # Load the s19 of your choice
 #install: clean slow loader
 # Perform a release
-release: testgit relbuild relperf
+release: testgit relbuild tagrelease
 package: relbuildfull relpack1 relpack2 zipsite
 packagenodoxy: relbuildfirmware relpack1 relpack2
 relbuildfull: clean cleandoxy gendoxy s19
 relbuildfirmware: clean s19
-relperf: relcommit tagrelease
 relpack1: md5sums  sha1sums  s19zips 
 relpack2: zipdocs zipmain zipsrc
 
@@ -973,9 +972,9 @@ cleandoxy:
 .PHONY: alldebug maps rees objdmps elfdmps size
 
 # Release targets
-.PHONY: release relperf relbuild relpack
+.PHONY: release relbuild relpack
 .PHONY: md5sums sha1sums s19zips sha1sumsgc s19zips s19zipsgc
-.PHONY: testgit relcommit tagname tagmessage tagrelease
+.PHONY: testgit tagname tagmessage tagrelease
 .PHONY: zipmain zipdocs zipsite zipsource
 
 # Messages
