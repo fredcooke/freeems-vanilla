@@ -156,4 +156,8 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 		SCHEDULE_ONE_ECT_OUTPUT();
 		Counters.pinScheduledFromCold++;
 	}
+
+#ifdef XGATE // This has to be here because the timing of the ECT stuff is critical and it must run first.
+#include "xgateScheduler.c"
+#endif // Also, this should always run so can't be inside the above if/else block.
 }

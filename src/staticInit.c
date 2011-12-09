@@ -65,3 +65,7 @@ unsigned short masterPulseWidth = 10;
 
 /* Setup so that the tacho reads low when the engine isn't running */
 unsigned long engineCyclePeriod = ticksPerCycleAtOneRPM;
+
+#ifdef XGATE
+#include "xgateGlobals.c"
+#endif

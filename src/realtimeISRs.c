@@ -83,19 +83,16 @@ void RTIISR(){
 			PORTA |= BIT7;
 		}
 
+
+#ifdef XGATE_TESTS
+#include "xgateTests.c"
+#endif
+
+
 		/* Every 100 millis is one tenth */
 		if(Clocks.millisToTenths % 100 == 0){
 			/* Increment the tenths counter */
 			Clocks.realTimeClockTenths++;
-
-#ifdef XGATE
-			//set off software trigger 0 that is handled by xgate
-			unsigned char savedRPage = RPAGE;
-			RPAGE = RPAGE_TUNE_TWO;
-			(*(unsigned short*)(((unsigned short)parameterGuard) - ((unsigned short)RPAGE_TUNE_TWO_WINDOW_DIFFERENCE)))++; /* increment our parameterGuard variable in shared RAM*/
-			RPAGE = savedRPage;
-			XGSWT = 0x0101;
-#endif
 
 			/* Increment the tenths roll over variable */
 			Clocks.tenthsToSeconds++;

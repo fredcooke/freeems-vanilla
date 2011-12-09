@@ -81,6 +81,11 @@ void init(){
 }
 
 
+#ifdef XGATE
+#include "xgateInit.c"
+#endif
+
+
 /* used to chop out all the init stuff at compile time for hardware testing. */
 //#define NO_INIT
 
@@ -538,59 +543,6 @@ void initFlash(){
 	FSTAT = FSTAT | (PVIOL | ACCERR);	/* Clear any errors             	*/
 }
 
-/** @brief Xgate module setup
- *
- * Configure XGATE setup registers and prepare XGATE code to be run by copying
- * it from flash hcs12mem can write to to flash XGATE can read from.
- *
- * @author Sean Keys and Fred Cooke
- *
- * @note A thanks goes out to Edward Karpicz for helping me get xgate configured
- * properly.
- *
- * @warning If executing from RAM you must copy the code from Flash to RAM before
- * starting Xgate
- *
- */
-void initXgate(){
-	/* route interrupt to xgate, vector address = channel_id * 2 */
-	ROUTE_INTERRUPT(0x39, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on software0 interrupt */
-	ROUTE_INTERRUPT(0x3A, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT3 */
-	ROUTE_INTERRUPT(0x3B, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT2 */
-	ROUTE_INTERRUPT(0x3C, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT1 */
-	ROUTE_INTERRUPT(0x3D, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /* enable xgate interrupt on PIT0 */
-
-	/* XGATE sees flash starting at paged address 0xE0, 0x8800 to + 30Kb*/
-	unsigned char savedRPAGE = RPAGE;
-	unsigned char savedPPAGE = PPAGE;
-	// XGATE threads execute from RAM
-	RPAGE = RPAGE_TUNE_TWO;
-	PPAGE = 0xE1;
-	// we can't use the symbols for the memcpy part because the symbols need to contain xgate relevant values
-	memcpy(START_OF_RAM_WINDOW, START_OF_FLASH_WINDOW, XGATE_RAM_ALLOCATION_SIZE);
-	//TODO set RAM protection
-	RPAGE = savedRPAGE;
-	PPAGE = savedPPAGE;
-	// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)
-	XGVBR = (unsigned short )0x0800; // EO region is divided to ensure vectors end up here visible to xgate
-
-	// Enable XGate and XGate interrupts
-	XGMCTL= (unsigned short)0x8181;
-
-	/* Enable PIT TODO move back to proper section once unit tested */
-	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
-	PITMTLD1 = 0x1F; /* ditto */
-	PITMUX = 0xC0; /* set chan 0-1 to use PITMTLD0 base and chan 2-3 to use PITMTLD1 */
-	/* http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2840MHz+%2F+32+%29 Exactly the same as for ECT */
-	PITLD0 = 0xFFFF; // set timers running //TEST ONLY
-	PITLD1 = 0x7FFF; // set timers running //TEST ONLY
-	PITLD2 = 0xFFFF; // set timers running //TEST ONLY
-
-	PITCFLMT = 0x80; // enable module
-	PITCE = 0x05; // enable channels 0, 1 and 2
-	PITINTE = 0x05; // enable interrupt on 0, 1 and 2
-	PITFLT = ONES; // clear flags
-}
 
 /* Set up the timer module and its various interrupts */
 void initECTTimer(){

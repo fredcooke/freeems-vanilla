@@ -25,6 +25,7 @@
 
 /** @file
  *
+ * @ingroup xgateFiles
  * @ingroup xgateHeaders
  *
  * @brief C header for assembly xgate functions

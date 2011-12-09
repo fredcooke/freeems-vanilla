@@ -334,6 +334,11 @@ typedef union { /* Declare Union http://www.esacademy.com/faq/docs/cpointers/str
 } LongTime;
 
 
+#ifdef XGATE
+#include "xgateGlobals.h"
+#endif
+
+
 #undef EXTERN
 
 
