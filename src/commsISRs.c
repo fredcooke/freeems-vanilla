@@ -158,45 +158,38 @@ void SCI0ISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT4, PORTB);
 
 	/* If the RX interrupt is enabled check RX related flags */
-	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE){
+	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE && flags & SCISR1_RX_REGISTER_FULL){
 		/* Grab the received byte from the register */
 		unsigned char rawByte = SCI0DRL;
 
-		/* If there is noise on the receive line record it */
-		if(flags & SCISR1_RX_NOISE){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+		if(flags & (SCISR1_RX_NOISE | SCISR1_RX_FRAMING | SCISR1_RX_PARITY | SCISR1_RX_OVERRUN)){
+			/* If there is noise on the receive line record it */
+			if(flags & SCISR1_RX_NOISE){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
+				KeyUserDebugs.serialHardwareErrors++;
+			}
 
-		/* If an overrun occurs record it */
-		if(flags & SCISR1_RX_OVERRUN){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_OVERRUN_ERRORS_OFFSET);
-			KeyUserDebugs.serialOverrunErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+			/* If a framing error occurs record it */
+			if(flags & SCISR1_RX_FRAMING){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
+				KeyUserDebugs.serialHardwareErrors++;
+			}
 
-		/* If a framing error occurs record it */
-		if(flags & SCISR1_RX_FRAMING){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+			/* If a parity error occurs record it */
+			if(flags & SCISR1_RX_PARITY){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
+				KeyUserDebugs.serialHardwareErrors++;
+			}
 
-		/* If a parity error occurs record it */
-		if(flags & SCISR1_RX_PARITY){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+			/* If an overrun occurs record it */
+			if(flags & SCISR1_RX_OVERRUN){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_OVERRUN_ERRORS_OFFSET);
+				KeyUserDebugs.serialOverrunErrors++;
+			}
 
-		/* If there is data waiting to be received */
-		if(flags & SCISR1_RX_REGISTER_FULL){
-			/* Look for a start bresetReceiveStateyte to indicate a new packet */
+			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+		}else{ // Process the received data
+			/* Look for a start byte to indicate a new packet */
 			if(rawByte == START_BYTE){
 				/* If another interface is using it (Note, clear flag, not normal) */
 				if(RXBufferContentSourceID & COM_CLEAR_SCI0_INTERFACE_ID){
