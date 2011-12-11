@@ -68,8 +68,6 @@ EXTERN void populateBasicDatalog(void) FPAGE_FE;
 
 
 /* Global variables for TX (one set per interface) */
-EXTERN unsigned short	TXPacketLengthToSendCAN0;
-EXTERN unsigned short	TXPacketLengthToSendSCI0;
 EXTERN unsigned char*	TXBufferCurrentPositionHandler;
 EXTERN unsigned char*	TXBufferCurrentPositionCAN0;
 EXTERN unsigned char*	TXBufferCurrentPositionSCI0;
@@ -101,7 +99,6 @@ EXTERN unsigned char	RXBufferContentSourceID;
 /* Global variables for RX (one set for all) */
 EXTERN unsigned char	RXStateFlags;
 EXTERN unsigned char*	RXBufferCurrentPosition;
-EXTERN unsigned short	RXPacketLengthReceived;
 EXTERN unsigned short	RXCalculatedPayloadLength; // why global??
 /* Masks for SCIRXStateFlags */
 //#define RX_BUFFER_IN_USE			BIT0

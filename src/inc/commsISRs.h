@@ -76,7 +76,6 @@
 
 /* TX/RX state variables */
 EXTERN unsigned char	TXByteEscaped;
-EXTERN unsigned char	RXCalculatedChecksum;
 
 
 #undef EXTERN
