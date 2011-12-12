@@ -114,11 +114,12 @@ void resetReceiveState(unsigned char sourceIDState){
  * @todo TODO Fix the dual start/stop issue by finding out why bytes get dropped at the ends. IE, read docs thoroughly.
  */
 void SCI0ISR(){
+	// OK before flag reading because cleared when SCI0DRL accessed (R or W)
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT4, PORTB);
+
 	/* Read the flags register */
 	unsigned char flags = SCI0SR1;
 	/* Note: Combined with reading or writing the data register this also clears the flags. */
-
-	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT4, PORTB);
 
 	/* If the RX interrupt is enabled check RX related flags */
 	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE && flags & SCISR1_RX_REGISTER_FULL){
