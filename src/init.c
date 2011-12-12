@@ -647,9 +647,11 @@ void initSCIStuff(){
 	 * 0 = WAKE (idle line wakeup)
 	 * 0 = ILT (idle line type count start pos)
 	 * 1 = PE (parity on)
-	 * 1 = PT (odd parity) (minicom defaults to no parity)
+	 * 1 = PT (odd parity)
 	 *
-	 * 00010011 = 0x13
+	 * 0x13 = ODD (default)
+	 * 0x12 = EVEN
+	 * 0x00 = NONE
 	 */
 	SCI0CR1 = 0x13;
 
@@ -662,8 +664,6 @@ void initSCIStuff(){
 	 * 1 = RE (receive enabled)
 	 * 0 = RWU (rx wake up normal)
 	 * 0 = SBK (send break off)
-	 *
-	 * 00100100 = 0x24
 	 */
 	SCI0CR2 = 0x24;
 }
