@@ -193,11 +193,11 @@ void PrimaryRPMISR(void) {
 							SET_SYNC_LEVEL_TO(CRANK_SYNC);
 						}else if(matches.pattern == NarrowWideWideNarrow){  // | small |      BIG      | small | Last tooth is second tooth after missing - 1/M
 							KeyUserDebugs.currentEvent = 1;
-							lastEvent = KeyUserDebugs.currentEvent - 1;
+							lastEvent = 0;
 							SET_SYNC_LEVEL_TO(CRANK_SYNC);
 						}else if(matches.pattern == WideNarrowMatchedPair){ // |      BIG      | small | small | Last tooth is third tooth after missing  - 1/M
 							KeyUserDebugs.currentEvent = 2;
-							lastEvent = KeyUserDebugs.currentEvent - 1;
+							lastEvent = 1;
 							SET_SYNC_LEVEL_TO(CRANK_SYNC);
 						}else{
 							resetToNonRunningState(matches.pattern); // Where they are defined individually in the error file! Beautiful!!
