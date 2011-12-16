@@ -69,8 +69,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		TPSOpenMAP:    nearlyWOTMAP,
 // MAP Sensor Configuration
 #ifdef HOTEL
-		MAPMinimum:    ToyotaNA227kPaMin,
-		MAPRange:      ToyotaNA227kPaRange,
+		MAPMinimum:    HondaDenso183kPaMin,
+		MAPRange:      HondaDenso183kPaRange,
 #elif SNOTROCKET
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
