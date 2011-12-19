@@ -1239,11 +1239,13 @@ void decodePacketAndRespond(){
 						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = testPulseWidths[channel];
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
-					}else if(testPulseWidths[channel] > 2){
+					}else if(testPulseWidths[channel] > 3){
 						// less than the code time, and not special, error!
 						errorID = tooShortOfAPulseWidthToTest;
 						// Warning, PWs close to this could be slightly longer than requested, that will change in later revisions.
 						break;
+					}else if(testPulseWidths[channel] == 3){
+						testMode++; // Dirty hack to avoid dealing with Dave for the time being.
 					}else if(testPulseWidths[channel] == 2){
 						// use the dwell from the core maths and input vars.
 						outputEventPinNumbers[channel] = channel;
@@ -1271,6 +1273,28 @@ void decodePacketAndRespond(){
 				if(errorID == 0){
 					// Let the first iteration roll it over to zero.
 					KeyUserDebugs.currentEvent = 0xFF; // Needs to be here in case of multiple runs, init is not sufficient
+
+					if(testMode == TEST_MODE_DODGY_MISSING_TOOTH){
+						if(testEventsPerCycle <= 127){
+							testEventsPerCycle *= 2;
+						}else{
+							errorID = tooManyEventsPerCycleMissingTth;
+							break;
+						}
+
+						// Setup the channels to use
+						outputEventPinNumbers[0] = 0; // 0 is our main signal
+						outputEventPinNumbers[1] = 1; // 1 is out cam sync signal
+
+						// Un-schedule anything that got scheduled
+						outputEventInputEventNumbers[2] = 0xFF;
+						outputEventInputEventNumbers[3] = 0xFF;
+						outputEventInputEventNumbers[4] = 0xFF;
+						outputEventInputEventNumbers[5] = 0xFF;
+					}else if(testMode > TEST_MODE_DODGY_MISSING_TOOTH){
+						errorID = unimplementedTestMode;
+						break;
+					}
 
 					// Trigger decoder interrupt to fire thus starting the loop!
 					TIE = 0x01; // The ISR does the rest!

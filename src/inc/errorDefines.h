@@ -144,6 +144,7 @@
 #define bumpingByZeroMakesNoSense       0x7780
 #define benchTestNotRunningToStop       0x7781
 #define benchTestNotRunningToBump       0x7782
+#define tooManyEventsPerCycleMissingTth 0x7783
 
 
 #else

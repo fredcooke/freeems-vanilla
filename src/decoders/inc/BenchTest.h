@@ -63,6 +63,7 @@ EXTERN unsigned char testMode;
 #define TEST_MODE_STOP                0
 #define TEST_MODE_ITERATIONS          1
 #define TEST_MODE_BUMP_UP_CYCLES      2
+#define TEST_MODE_DODGY_MISSING_TOOTH TEST_MODE_BUMP_UP_CYCLES // Genuine bumps exit before getting here, so this is being reused in the hackiest most horrible way imaginable!
 #define TEST_MODE_TIME_UNITS_SECONDS  3
 #define TEST_MODE_TIME_UNITS_MINUTES  4
 #define TEST_MODE_TIME_UNITS_HOURS    5
