@@ -138,7 +138,7 @@ void PrimaryRPMISR(){
 		// Cam sync pulse logic and one cycle's missing event, horrible, hard coded, yuck.
 		if(KeyUserDebugs.currentEvent == 0){
 			// Schedule the cam pulse
-			outputEventDelayFinalPeriod[1] = testTicksPerEvent/2;
+			outputEventDelayFinalPeriod[1] = 3*(testTicksPerEvent/4);
 			outputEventPulseWidthsMath[1] = testTicksPerEvent;
 			outputEventInputEventNumbers[1] = KeyUserDebugs.currentEvent;
 			// Unschedule the main pulse
@@ -150,8 +150,12 @@ void PrimaryRPMISR(){
 				outputEventInputEventNumbers[0] = 0xFF;
 			}else{ // In all other cases schedule on this event!
 				outputEventDelayFinalPeriod[0] = decoderMaxCodeTime;
-				outputEventPulseWidthsMath[0] = testTicksPerEvent/2;
 				outputEventInputEventNumbers[0] = KeyUserDebugs.currentEvent;
+				if((KeyUserDebugs.currentEvent == ((testEventsPerCycle / 2) - 1)) || (KeyUserDebugs.currentEvent == (testEventsPerCycle - 1))){
+					outputEventPulseWidthsMath[0] = testTicksPerEvent;
+				}else{
+					outputEventPulseWidthsMath[0] = testTicksPerEvent/2;
+				}
 			}
 		}
 
