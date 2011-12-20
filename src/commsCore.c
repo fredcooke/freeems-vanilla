@@ -1282,6 +1282,9 @@ void decodePacketAndRespond(){
 							break;
 						}
 
+						// Store the time per event in RPM such that it can be updated dynamically
+						CoreVars->RPM = testTicksPerEvent;
+
 						// Setup the channels to use
 						outputEventPinNumbers[0] = 0; // 0 is our main signal
 						outputEventPinNumbers[1] = 1; // 1 is out cam sync signal

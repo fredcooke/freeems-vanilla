@@ -135,6 +135,9 @@ void PrimaryRPMISR(){
 			}
 		}
 
+		// Grab updated time period
+		testTicksPerEvent = CoreVars->RPM;
+
 		// Cam sync pulse logic and one cycle's missing event, horrible, hard coded, yuck.
 		if(KeyUserDebugs.currentEvent == 0){
 			// Schedule the cam pulse
@@ -159,7 +162,6 @@ void PrimaryRPMISR(){
 			}
 		}
 
-		// TODO pull this out of RPM, inverted or direct from the PC pre calculated
 		TC0 += testTicksPerEvent;
 	}else if(testMode == TEST_MODE_REVOLUTIONS){
 		// sub modes of different patterns, use scheduler for this by setting the ADC array up and probing/triggering/touching/poking/starting/
