@@ -489,7 +489,7 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			// Don't let anyone write to running variables unless we are running BenchTest firmware!
-			if((details.flags & block_is_read_only) && !(compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME)))){
+			if((details.flags & block_is_read_only) && compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME))){
 				errorID = attemptToWriteToReadOnlyBlock;
 				break;
 			}
