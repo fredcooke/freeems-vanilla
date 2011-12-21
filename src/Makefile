@@ -496,8 +496,10 @@ alldebug: maps rees elfdmps objdmps
 # Load the s19 of your choice
 #install: clean slow loader
 # Perform a release
-release: testgit relbuild tagrelease
+release: testgit relbuildfull tagrelease
 package: relbuildfull relpack1 relpack2 zipsite
+publish: package deploydoxy deploy
+publishnodoxy: packagenodoxy deploy
 packagenodoxy: relbuildfirmware relpack1 relpack2
 relbuildfull: clean cleandoxy gendoxy s19
 relbuildfirmware: clean s19
@@ -833,6 +835,14 @@ zipsite: distributiondir gendoxy
 zipsrc: distributiondir
 	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-src.zip;cd -
 
+deploy: distributiondir
+	scp -r $(DISTRIBUTIONDIR) raptor:/home/firmware/releases/
+
+deploydoxy: zipsite
+	scp -r $(DISTRIBUTIONDIR)/$(LABEL)-doxygen-html.zip raptor:/home/docs/releases/
+	ssh raptor unzip /home/docs/releases/$(LABEL)-doxygen-html.zip -d /home/docs/releases/
+	ssh raptor mv /home/docs/releases/doxygen-html/ /home/docs/releases/$(FIRMWARE_VERSION)
+
 
 
 
@@ -972,10 +982,11 @@ cleandoxy:
 .PHONY: alldebug maps rees objdmps elfdmps size
 
 # Release targets
-.PHONY: release relbuild relpack
+.PHONY: release relpack1 relpack2 package packagenodoxy publish publishnodoxy
+.PHONY: rebuildfull rebuildnodoxy relbuildfirmware deploy deploydoxy
 .PHONY: md5sums sha1sums s19zips sha1sumsgc s19zips s19zipsgc
 .PHONY: testgit tagname tagmessage tagrelease
-.PHONY: zipmain zipdocs zipsite zipsource
+.PHONY: zipmain zipdocs zipsite zipsrc
 
 # Messages
 .PHONY: mapsmsg reesmsg elfdmpsmsg objdmpmsg linkmsg gclinkmsg
