@@ -61,7 +61,7 @@ typedef union {
 } match;
 
 
-#define DECODER_MAX_CODE_TIME 100 // To be optimised (shortened)!
+#define DECODER_MAX_CODE_TIME 250 // From Spudmn's measurements in NZ. 171us runtime was max = 214 ticks.
 
 #include "../../inc/freeEMS.h"
 #include "../../inc/utils.h"

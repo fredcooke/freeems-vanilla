@@ -158,8 +158,6 @@ EXTERN const unsigned long MAFFuelConstant;
 EXTERN const unsigned short injectorSwitchOnCodeTime;
 /* The number of timer units it takes for the switch off scheduling code to run */
 EXTERN const unsigned short injectorSwitchOffCodeTime;
-/* The minimum a requested pulsewidth can be before it is not switched on at all */
-EXTERN const unsigned short injectorMinimumPulseWidth;
 
 
 #undef EXTERN
