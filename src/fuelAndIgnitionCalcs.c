@@ -200,6 +200,8 @@ void calculateFuelAndIgnition(){
 #define SilverTop4ageOffset     (128.52 * oneDegree) /// Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
 #define BrownVolvoOffset        (570.00 * oneDegree) // Stockish Volvo B230FT with DSM/Miata CAS + 24+1 disk.
 #define SnotRocketOffset        (482.00 * oneDegree) // Volvo B21A with DSM/Miata CAS + 24+1 disk and LS1 coils.
+#define SpudmnsMiniOffset       (  0.00 * oneDegree) // Spudmn's mk1 racing mini in NZ :-)
+#define RoadSlaterOffset        (  0.00 * oneDegree) // Citroen with t25 turbo on a flat 4 air cooled engine
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK
@@ -355,6 +357,33 @@ outputEventPinNumbers[3] = 3;
 #define cliConfiguredOffset SnotRocketOffset
 #define firstInjectionEvent 1
 #define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+
+#elif SPUDMN // http://forum.diyefi.org/viewtopic.php?f=55&t=1507
+anglesOfTDC[0] =   0 * oneDegree; // 1 and 4
+anglesOfTDC[1] = 180 * oneDegree; // 2 and 3
+outputEventPinNumbers[0] = 0;
+outputEventPinNumbers[1] = 1;
+#define cliConfigredNumberOfIgnitionEvents 2
+#define numberOfInjectionEvents 0
+#define cliConfiguredOffset SpudmnsMiniOffset
+#define firstInjectionEvent 1
+#define numberOfInjectionsPerEngineCycle 1 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+
+#elif SLATER // http://forum.diyefi.org/viewtopic.php?f=62&t=1336
+anglesOfTDC[0] =   0 * oneDegree; // 1 and 4
+anglesOfTDC[1] = 180 * oneDegree; // 2 and 3
+outputEventPinNumbers[0] = 0;
+outputEventPinNumbers[1] = 1;
+#define cliConfigredNumberOfIgnitionEvents 2
+#define numberOfInjectionEvents 2
+#define firstInjectionEvent 2
+#define cliConfiguredOffset RoadSlaterOffset
+#define numberOfInjectionsPerEngineCycle 2 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
+// These are on 4/5 because he plans to use the same hardware on the V8 supra with wasted spark and thus 2/3 are required for ignition
+outputEventPinNumbers[4] = 4;
+outputEventPinNumbers[5] = 5;
+outputEventInputEventNumbers[4] = 0;
+outputEventInputEventNumbers[5] = 6;
 
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 #else
