@@ -376,7 +376,7 @@ outputEventPinNumbers[0] = 0;
 outputEventPinNumbers[1] = 1;
 #define cliConfigredNumberOfIgnitionEvents 2
 #define numberOfInjectionEvents 2
-#define firstInjectionEvent 2
+#define firstInjectionEvent 4
 #define cliConfiguredOffset RoadSlaterOffset
 #define numberOfInjectionsPerEngineCycle 2 // but requires to know how big a cycle is, 1/4 1, 1/2, etc
 // These are on 4/5 because he plans to use the same hardware on the V8 supra with wasted spark and thus 2/3 are required for ignition
