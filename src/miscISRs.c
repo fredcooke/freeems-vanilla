@@ -160,39 +160,14 @@ void PortHISR(void)
 //		}
 //		break;
 //	case 0x40 : // Injection output enable/disable
-//		if(coreSettingsA & FUEL_CUT){
-//			coreSettingsA &= FUEL_CUT_OFF;
-//		}else{
-//			coreSettingsA |= FUEL_CUT;
-//		}
 //		break;
 //	case 0x20 : // Ignition output enable/disable
-//		if(coreSettingsA & HARD_SPARK_CUT){
-//			coreSettingsA &= HARD_SPARK_CUT_OFF;
-//		}else{
-//			coreSettingsA |= HARD_SPARK_CUT;
-//		}
 //		break;
 //	case 0x10 : // Staged injection enable/disable
-//		if(coreSettingsA & STAGED_ON){
-//			coreSettingsA &= STAGED_OFF;
-//		}else{
-//			coreSettingsA |= STAGED_ON;
-//		}
 //		break;
 //	case 0x08 : // Staged injection start sched/fixed
-//		if(coreSettingsA & STAGED_START){
-//			coreSettingsA &= CLEAR_STAGED_START;
-//		}else{
-//			coreSettingsA |= STAGED_START;
-//		}
 //		break;
 //	case 0x04 : // Staged injection end sched/fixed
-//		if(coreSettingsA & STAGED_END){
-//			coreSettingsA &= CLEAR_STAGED_END;
-//		}else{
-//			coreSettingsA |= STAGED_END;
-//		}
 //		break;
 //	case 0x02 : // free input
 //		break;

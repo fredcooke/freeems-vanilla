@@ -125,7 +125,7 @@ typedef struct {
 } sensorSetting;
 
 
-#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(tachoSetting) + 2))
+#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(tachoSetting)))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  *
@@ -138,25 +138,6 @@ typedef struct {
 	engineSetting engineSettings; ///< @see engineSetting
 	serialSetting serialSettings; ///< @see serialSetting
 	tachoSetting tachoSettings;   ///< @see tachoSetting
-	unsigned short coreSettingsA; ///< Each bit represents the state of some core setting, masks below and above where the same one is used. @todo TODO needs a rename, as does coreStatusA
-	/* Bit masks for coreSettingsA */
-	//#define COREA1			BIT1_16		/*  1 */
-	#define PRIMARY_POLARITY	BIT2_16		/*  2 1 = high teeth 0 = low teeth */
-	#define SECONDARY_POLARITY	BIT3_16		/*  3 1 = high teeth 0 = low teeth */
-	//#define COREA4 			BIT4_16		/*  4 */
-	//#define FUEL_CUT			BIT5_16		/*  5 Remove injection completely */
-	//#define HARD_SPARK_CUT	BIT6_16		/*  6 Remove ignition completely */
-	//#define SOFT_SPARK_CUT	BIT7_16		/*  7 Remove ignition events round robin style */
-	//#define SPARK_RETARD		BIT8_16		/*  8 Retard ignition in RPM dependent way */
-	#define STAGED_ON			BIT9_16		/*  9 Whether we are firing the staged injectors */
-	#define STAGED_START		BIT10_16	/* 10 1 = Fixed start 0 = Scheduled start */
-	#define STAGED_END			BIT11_16	/* 11 1 = Fixed end 0 = Scheduled end */
-	//#define COREA12			BIT12_16	/* 12 */
-	//#define COREA13			BIT13_16	/* 13 */
-	//#define COREA14			BIT14_16	/* 14 */
-	//#define COREA15			BIT15_16	/* 15 */
-	//#define COREA16			BIT16_16	/* 16 */
-
 	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
 

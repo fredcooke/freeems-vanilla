@@ -142,7 +142,6 @@
 #define engineSettingsLocationID                       0xC000
 #define serialSettingsLocationID                       0xC001
 #define tachoSettingsLocationID                        0xC002
-#define coreSettingsALocationID                        0xC003
 #define userTextFieldLocationID                        0xC004
 
 /* Fixed config 2 sub sections */

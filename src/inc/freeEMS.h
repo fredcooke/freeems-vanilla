@@ -260,7 +260,6 @@ EXTERN unsigned short boundedTPSADC; // temp to view to debug
 
 /* ALL STATUS STUFF HERE */
 
-// TODO these flags are used for coreSettingsA and it is not clear that they are dual purpose, fix this...
 /* State variables : 0 = false (don't forget to change the init mask to suit!) */
 EXTERN unsigned char coreStatusA;	/* Each bit represents the state of some core parameter, masks below */
 /* Bit masks for coreStatusA */ // TODO needs a rename as does coresetingsA
