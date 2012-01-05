@@ -245,23 +245,13 @@ EXTERN unsigned char currentTimeRPage;
 //EXTERN twoDTableUS* primingVolumeTable;
 //EXTERN twoDTableUS* engineTempEnrichmentTablePercent;
 //EXTERN twoDTableUS* dwellMaxVersusRPMTable;
-//
-///* Pointers to SmallTablesB */
-//EXTERN unsigned short* perCylinderFuelTrims;
-
-
+/* Pointers to SmallTablesB */
 /* Pointers to SmallTablesC */
-
-
 /* Pointers to SmallTablesD */
-
-
 
 
 /* Output variables (init not required) TODO ditch this in favour of the real vars in the calcs function and struct */
 extern unsigned short masterPulseWidth;
-EXTERN unsigned short totalDwell;
-
 EXTERN unsigned long bootFuelConst;  /* constant derived from configurable constants */
 EXTERN unsigned short TPSMAPRange;   /* The MAP range used to convert fake TPS from MAP and vice versa */
 EXTERN unsigned short TPSADCRange;   /* The ADC range used to generate TPS percentage */
@@ -281,7 +271,7 @@ EXTERN unsigned char coreStatusA;	/* Each bit represents the state of some core 
 #define BENCH_TEST_ON   BIT4 /* 4 Bench test running TEMPORARY */
 #define COREA05         BIT5 /* 5 */
 #define COREA06         BIT6 /* 6 */
-//#define COREA07         BIT7 /* 7 Currently used for dual stop byte hack... */
+#define COREA07         BIT7 /* 7 */
 
 
 #define CLEAR_FUEL_PUMP_PRIME NBIT0 /* */

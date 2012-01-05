@@ -125,7 +125,7 @@ typedef struct {
 /// Important "always send" stuff for datalogging
 typedef struct {
 	// To be improved MAJORLY:
-	unsigned char tempClock;      ///< Incremented once per log sent, to be moved to a char
+	unsigned char tempClock;      ///< Incremented once per log sent
 	unsigned char spareChar;      ///< Unused at this time.
 
 	// All flags! Pair keeps things sane for hacky apps that think everything is 16 bit.
