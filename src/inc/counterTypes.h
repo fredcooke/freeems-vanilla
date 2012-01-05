@@ -138,9 +138,9 @@ typedef struct {
 	unsigned char injectorSelfSchedules;           ///< number of times the injector switched off and scheduled itself again
 	unsigned char injectorSelfScheduleExtensions;  ///< number of times the injector switched off and scheduled itself again with timer extension
 
-	unsigned char syncedADCreadings;              ///< Incremented each time a synchronous ADC reading is taken
-	unsigned char timeoutADCreadings;             ///< Incremented for each ADC reading in RTC because of timeout
-	unsigned char calculationsPerformed;          ///< Incremented for each time the fuel and ign calcs are done
+	unsigned char syncedADCreadings;               ///< Incremented each time a synchronous ADC reading is taken
+	unsigned char timeoutADCreadings;              ///< Incremented for each ADC reading in RTC because of timeout
+	unsigned char calculationsPerformed;           ///< Incremented for each time the fuel and ign calcs are done
 
 	unsigned char sparePadding;                    ///< Replace with something useful
 } Counter;

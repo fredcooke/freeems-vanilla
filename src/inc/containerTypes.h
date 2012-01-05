@@ -125,8 +125,8 @@ typedef struct {
 /// Important "always send" stuff for datalogging
 typedef struct {
 	// To be improved MAJORLY:
-	unsigned char tempClock;      ///< Incremented once per log sent
-	unsigned char spareChar;      ///< Unused at this time.
+	unsigned char tempClock;       ///< Incremented once per log sent
+	unsigned char spareChar;       ///< Unused at this time.
 
 	// All flags! Pair keeps things sane for hacky apps that think everything is 16 bit.
 	unsigned char coreStatusA;     ///< Duplicated, migrate here, remove global var
@@ -145,8 +145,8 @@ typedef struct {
 
 	// Likewise these too
 	unsigned char serialOverrunErrors;         ///< Incremented when an overrun occurs due to high interrupt load, not a fault, just a fact of life at high RPM
-	unsigned char serialHardwareErrors;     ///< Sum of noise, parity, and framing errors
-	unsigned char serialAndCommsCodeErrors; ///< Sum of checksum, escape mismatches, starts inside, and over/under length
+	unsigned char serialHardwareErrors;        ///< Sum of noise, parity, and framing errors
+	unsigned char serialAndCommsCodeErrors;    ///< Sum of checksum, escape mismatches, starts inside, and over/under length
 	unsigned short inputEventTimeTolerance;    ///< Required to tune noise rejection over RPM TODO add to LT1 and MissingTeeth
 
 	// replace highest first to avoid hassles for offset based dave/mtx...
