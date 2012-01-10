@@ -272,10 +272,6 @@
 #define offIdleMAP                3000       /* 30kPa just above where MAP would be with closed throttle at idle */
 #define nearlyWOTMAP              9500       /* 95kPa just below where MAP would be at WOT */
 
-#define ticksPerCycleAtOneRPM    150000000   /* how many 0.8us ticks there are in between engine cycles at 1 RPM */
-#define tachoTickFactor4at50     6           /* Provides for a 4 cylinder down to 50 RPM  */
-#define tachoTotalFactor4at50   48           /* http://www.google.com/search?hl=en&safe=off&q=((150000000+%2F+6)+%2F++8+)+%2F+50&btnG=Search */
-
 //#define lookedUpVEDivisor   512
 //#define VEpercentageDivisor 100
 #define oneHundredPercentVE 51200

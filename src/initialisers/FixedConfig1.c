@@ -77,9 +77,17 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	serialSettings:{
 		baudDivisor:        divisorFor115200bps
 	},
-	tachoSettings:{
-		tachoTickFactor:    tachoTickFactor4at50,
-		tachoTotalFactor:   tachoTotalFactor4at50
+	coarseBitBangSettings:{
+#ifdef SNOTROCKET
+		outputActions:      simisTachoArray,
+#elif SLATER
+		outputActions:      slaterTachoArray,
+#else
+		outputActions:      standardTachoArray,
+#endif
+		ports:              standardTachoPorts,
+		masks:              standardTachoMasks,
+		numberConfigured:   1
 	},
-	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but more won't be possible later!! Extra Space!"
+	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this fiel"
 };

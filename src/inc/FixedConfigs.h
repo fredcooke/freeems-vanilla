@@ -112,12 +112,20 @@ typedef struct {
 } serialSetting;
 
 
-/// Settings related to tacho output
+/// Settings for coarse bit bang outputs
 typedef struct {
-	unsigned char tachoTickFactor;   ///< Unused at this time.
-	unsigned short tachoTotalFactor; ///< Unused at this time.
-} tachoSetting;
+	unsigned char outputActions[256]; ///< Nothing, On, Off, Toggle for each input event.
+	unsigned char* ports[4];         ///< The addresses of the port control registers.
+	unsigned char  masks[4];         ///< The masks to apply to the ports above.
+	unsigned char numberConfigured;  ///< How many to loop through, max of 4
+} coarseBitBangSetting;
 
+
+#define simisTachoArray {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0} // 24 events for a 24+1 CAS setup with 4 cylinder tacho
+#define slaterTachoArray {1,0,0,2,0,0,1,0,0,2,0} // 11 events for 12-1 crank setup with 4 cylinder tacho
+#define standardTachoArray {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2}
+#define standardTachoPorts {(unsigned char*)&PORTE,(unsigned char*)&PORTK,(unsigned char*)&PORTK,(unsigned char*)&PORTK}
+#define standardTachoMasks {0x80,0x01,0x02,0x04}
 
 /// Settings related to sensor reading
 typedef struct {
@@ -125,7 +133,7 @@ typedef struct {
 } sensorSetting;
 
 
-#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(tachoSetting)))
+#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting)))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  *
@@ -137,7 +145,7 @@ typedef struct {
 typedef struct {
 	engineSetting engineSettings; ///< @see engineSetting
 	serialSetting serialSettings; ///< @see serialSetting
-	tachoSetting tachoSettings;   ///< @see tachoSetting
+	coarseBitBangSetting coarseBitBangSettings;   ///< @see coarseBitBangSetting
 	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
 

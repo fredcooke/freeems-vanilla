@@ -141,7 +141,7 @@
 /* Fixed config 1 sub sections */
 #define engineSettingsLocationID                       0xC000
 #define serialSettingsLocationID                       0xC001
-#define tachoSettingsLocationID                        0xC002
+#define coarseBBSettingsLocationID                     0xC002
 #define userTextFieldLocationID                        0xC004
 
 /* Fixed config 2 sub sections */

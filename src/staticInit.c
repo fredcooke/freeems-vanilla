@@ -42,8 +42,6 @@
 #include "inc/freeEMS.h"
 
 
-unsigned short tachoPeriod = 65535;	/* Lowest RPM at start up time. */
-
 // Values for testing
 unsigned short masterPulseWidth = 10;
 
@@ -60,11 +58,6 @@ unsigned short masterPulseWidth = 10;
 //	injectorMainControlRegisters[3] = TCTL1_ADDR;
 //	injectorMainControlRegisters[4] = TCTL1_ADDR;
 //	injectorMainControlRegisters[5] = TCTL1_ADDR;
-
-	// TODO perhaps read from the ds1302 once at start up and init the values or different ones with the actual time and date then update them in RTI
-
-/* Setup so that the tacho reads low when the engine isn't running */
-unsigned long engineCyclePeriod = ticksPerCycleAtOneRPM;
 
 #ifdef XGATE
 #include "xgateGlobals.c"

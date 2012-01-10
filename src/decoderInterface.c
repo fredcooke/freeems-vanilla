@@ -58,9 +58,6 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 	ticksPerDegree0 = 0;
 	ticksPerDegree1 = 0;
 
-	/* Ensure tacho reads lowest possible value */
-	engineCyclePeriod = ticksPerCycleAtOneRPM;
-
 	// Keep track of lost sync in counters
 	if(KeyUserDebugs.decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
 		FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_LOSSES_OFFSET);

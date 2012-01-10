@@ -126,6 +126,8 @@ void PrimaryRPMISR(){
 			SCHEDULE_ECT_OUTPUTS();
 		}
 
+		OUTPUT_COARSE_BBS();
+
 		// do these always at first, and use them with a single 30 degree angle for the first cut
 		if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 			lastPrimaryTicksPerDegree = thisTicksPerDegree;

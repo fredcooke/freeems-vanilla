@@ -246,6 +246,8 @@ void PrimaryRPMISR(void) {
 			Clocks.timeoutADCreadingClock = 0;
 		}
 
+		OUTPUT_COARSE_BBS();
+
 		if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 			if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
 				KeyUserDebugs.decoderFlags |= LAST_MATCH_VALID;

@@ -476,10 +476,10 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = (void*)&(fixedConfigs1.serialSettings);
 		details->parent = FixedConfig1LocationID;
 		break;
-	case tachoSettingsLocationID:
-		details->size = sizeof(tachoSetting);
+	case coarseBBSettingsLocationID:
+		details->size = sizeof(coarseBitBangSetting);
 		details->FlashPage = PPAGE;
-		details->FlashAddress = (void*)&(fixedConfigs1.tachoSettings);
+		details->FlashAddress = (void*)&(fixedConfigs1.coarseBitBangSettings);
 		details->parent = FixedConfig1LocationID;
 		break;
 	case userTextFieldLocationID:

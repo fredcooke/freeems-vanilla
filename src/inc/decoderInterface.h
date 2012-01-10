@@ -139,7 +139,6 @@ EXTERN unsigned short lastTicksPerDegree;
 EXTERN unsigned short lastPrimaryTicksPerDegree;
 EXTERN unsigned short lastSecondaryTicksPerDegree;
 EXTERN unsigned long skipEventFlags;
-EXTERN unsigned long engineCyclePeriod;
 EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
 
 /// @todo Introduce the concept of sync level to schedule for if NOT synced
@@ -228,6 +227,30 @@ for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEven
 	}                                                                                       \
 }                                                                                           // End of macro block!
 
+
+// A value of zero = do nothing
+#define COARSE_BB_IGNORE 0
+#define COARSE_BB_GO_ON  1
+#define COARSE_BB_GO_OFF 2
+#define COARSE_BB_TOGGLE 3
+#define COARSE_BB_MASK   0x03
+
+#define OUTPUT_COARSE_BBS() \
+if(fixedConfigs1.coarseBitBangSettings.outputActions[KeyUserDebugs.currentEvent]){                                                                \
+	int offset;                                                                                                                                   \
+	for(offset=0;offset<fixedConfigs1.coarseBitBangSettings.numberConfigured;offset++){                                                           \
+		unsigned char behaviour = (fixedConfigs1.coarseBitBangSettings.outputActions[KeyUserDebugs.currentEvent] >> (offset*2)) & COARSE_BB_MASK; \
+		if(behaviour){                                                                                                                            \
+			if(behaviour == COARSE_BB_GO_ON){                                                                                                     \
+				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) |= fixedConfigs1.coarseBitBangSettings.masks[offset];                        \
+			}else if(behaviour == COARSE_BB_GO_OFF){                                                                                              \
+				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) &= (unsigned char)~(fixedConfigs1.coarseBitBangSettings.masks[offset]);      \
+			}else if(behaviour == COARSE_BB_TOGGLE){                                                                                              \
+				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) ^= fixedConfigs1.coarseBitBangSettings.masks[offset];                        \
+			}                                                                                                                                     \
+		}                                                                                                                                         \
+	}                                                                                                                                             \
+}                                                                                                                                                 // End of macro block!
 
 
 // These give a warning in eclipse because they aren't defined in this file, they are defined per decoder and enforced here.
