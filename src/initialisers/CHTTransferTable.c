@@ -60,6 +60,8 @@ const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
 #include "../data/thermistors/Bosch.h"
 #elif SNOTROCKET
 #include "../data/thermistors/GM-2k4Bias.h"
+#elif SLATER
+#include "../data/thermistors/BoschM12H-2k6Bias.h"
 #else // Default to correctly biased Jap sensor.
 #include "../data/thermistors/Denso-2k7Bias.h"
 #endif

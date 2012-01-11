@@ -201,7 +201,7 @@ void calculateFuelAndIgnition(){
 #define BrownVolvoOffset        (570.00 * oneDegree) // Stockish Volvo B230FT with DSM/Miata CAS + 24+1 disk.
 #define SnotRocketOffset        (482.00 * oneDegree) // Volvo B21A with DSM/Miata CAS + 24+1 disk and LS1 coils.
 #define SpudmnsMiniOffset       (  0.00 * oneDegree) // Spudmn's mk1 racing mini in NZ :-)
-#define RoadSlaterOffset        (  0.00 * oneDegree) // Citroen with t25 turbo on a flat 4 air cooled engine
+#define RoadSlaterOffset        (120.00 * oneDegree) // Citroen with t25 turbo on a flat 4 air cooled engine
 
 // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
 #ifdef TRUCK

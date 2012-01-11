@@ -67,6 +67,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif JOSHBROWN
 		perCylinderVolume:  cylinderSize575cc,
 		injectorFlow:       injector1600cc,
+#elif SLATER
+		perCylinderVolume:  cylinderSize324cc,
+		injectorFlow:       injector320cc,
 #else
 		perCylinderVolume:  cylinderSize500cc,
 		injectorFlow:       injector550cc,
