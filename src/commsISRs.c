@@ -111,7 +111,6 @@ void resetReceiveState(unsigned char sourceIDState){
  *
  * @todo TODO Move this code into an include file much like the fuel interrupts such that it can be used for multiple UART SCI devices without duplication.
  * @todo TODO Fix the init code such that this doesn't run at boot without a serail device attached. Clear buffer maybe? or flag clearing/isr enabling ordering?
- * @todo TODO Fix the dual start/stop issue by finding out why bytes get dropped at the ends. IE, read docs thoroughly.
  */
 void SCI0ISR(){
 	// OK before flag reading because cleared when SCI0DRL accessed (R or W)
