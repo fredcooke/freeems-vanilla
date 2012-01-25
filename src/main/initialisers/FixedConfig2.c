@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -196,6 +196,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		PortDirectionT: 0xFF  // Ignored! TODO: Overridden for precision timed outputs
 	},
 	decoderSettings:{
+		syncConfirmationsRunning: 10, // This number is arbitrary, add an if block and configure to taste.
+		syncConfirmationsStarting: 0, // Most users should leave this zero, however having it set to 1 or 2 could be beneficial
 #if CONFIG == HOTEL_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
@@ -221,5 +223,5 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 			"to the state of tune and configuration of settings. Lastly, please "
 			"remember that this field WILL be shrinking in length from it's "
 			"currently large size to something more reasonable in future. I would "
-			"like to attempt to keep it at least thirty two characters long "
+			"like to attempt to keep it at least thirty two characters lon"
 };

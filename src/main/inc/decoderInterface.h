@@ -137,6 +137,8 @@ EXTERN unsigned short lastPrimaryTicksPerDegree;
 EXTERN unsigned short lastSecondaryTicksPerDegree;
 EXTERN unsigned long skipEventFlags;
 EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
+EXTERN unsigned char syncConfirmationsRunningCounter;  // TODO move to a struct?
+EXTERN unsigned char syncConfirmationsStartingCounter; // TODO move to a struct?
 
 /// @todo Introduce the concept of sync level to schedule for if NOT synced
 /// @todo and a way of deciding what to do in different sync states
@@ -152,7 +154,7 @@ EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
 #define LAST_PERIOD_VALID    BIT4 ///< Set when second decoder ISR runs post a reset
 #define LAST_MATCH_VALID     BIT5 ///< Missing teeth style decoders set this when a valid match is found
 #define LAST_TPD_VALID       BIT6 ///< Set once sync is found and we've stored a Ticks Per Degree value
-#define DF_SPARE_7           BIT7
+#define OK_TO_SCHEDULE       BIT7 ///< Sync confirmed OK by configured number of checks
 // WARNING: Entire flag var is cleared with loss of sync!
 
 
@@ -173,9 +175,27 @@ EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
 
-#define SET_SYNC_LEVEL_TO(SYNC_LEVEL)                             \
-KeyUserDebugs.decoderFlags |= SYNC_LEVEL;                         \
-KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent; // End of macro.
+#define SET_SYNC_LEVEL_TO(SYNC_LEVEL) \
+/* Otherwise caught-on event would be reset constantly */             \
+if(!(KeyUserDebugs.decoderFlags & SYNC_LEVEL)){                       \
+    KeyUserDebugs.decoderFlags |= SYNC_LEVEL;                         \
+    KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent; \
+}                                                                     \
+                                                                      \
+/* Reason for last loss of sync was not timeout (0) */                \
+if(KeyUserDebugs.syncLostWithThisID){                                 \
+    if(syncConfirmationsRunningCounter){                              \
+        syncConfirmationsRunningCounter--;                            \
+    }else{                                                            \
+        KeyUserDebugs.decoderFlags |= OK_TO_SCHEDULE;                 \
+    }                                                                 \
+}else{                                                                \
+    if(syncConfirmationsStartingCounter){                             \
+        syncConfirmationsStartingCounter--;                           \
+    }else{                                                            \
+        KeyUserDebugs.decoderFlags |= OK_TO_SCHEDULE;                 \
+    }                                                                 \
+}                                                                     // End of macro.
 
 
 #define SCHEDULE_ONE_ECT_OUTPUT() \
@@ -184,7 +204,7 @@ if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                    
 	outputEventExtendNumberOfRepeatsRealtime[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];          \
 	outputEventExtendNumberOfRepeatsRealtime[pin]--;                                                              \
 	outputEventExtendRepeatPeriodRealtime[pin] = outputEventExtendRepeatPeriod[outputEventNumber];                \
-	outputEventDelayFinalPeriodRealtime[pin] = outputEventDelayFinalPeriod[outputEventNumber];                  \
+	outputEventDelayFinalPeriodRealtime[pin] = outputEventDelayFinalPeriod[outputEventNumber];                    \
 	*injectorMainTimeRegisters[pin] = timeStamp.timeShorts[1] + outputEventExtendRepeatPeriod[outputEventNumber]; \
 	Counters.pinScheduledWithTimerExtension++;                                                                    \
 }else{                                                                                                            \
@@ -194,7 +214,7 @@ if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                    
 }                                                                                                                 \
 TIE |= injectorMainOnMasks[pin];                                                                                  \
 TFLG = injectorMainOnMasks[pin];                                                                                  \
-outputEventPulseWidthsRealtime[pin] = outputEventPulseWidthsMath[outputEventNumber];                            \
+outputEventPulseWidthsRealtime[pin] = outputEventPulseWidthsMath[outputEventNumber];                              \
 selfSetTimer &= injectorMainOffMasks[pin];                                                                        // End of macro block!
 
 
@@ -202,27 +222,29 @@ selfSetTimer &= injectorMainOffMasks[pin];                                      
 
 /// @todo TODO behave differently depending upon sync level?
 #define SCHEDULE_ECT_OUTPUTS() \
-numberScheduled = 0;                                                                        \
-unsigned char outputEventNumber;                                                            \
-for(outputEventNumber=0;outputEventNumber<fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;outputEventNumber++){ \
-	if(outputEventInputEventNumbers[outputEventNumber] == KeyUserDebugs.currentEvent){      \
-		skipEventFlags &= ~(1UL << outputEventNumber);                                      \
-		schedulePortTPin(outputEventNumber, timeStamp);                                     \
-		numberScheduled++;                                                                  \
-	}else if(skipEventFlags & (1UL << outputEventNumber)){                                  \
-		unsigned char eventBeforeCurrent = 0;                                               \
-		if(KeyUserDebugs.currentEvent == 0){                                                \
-			eventBeforeCurrent = numberOfRealEvents - 1;                                    \
-		}else{                                                                              \
-			eventBeforeCurrent = KeyUserDebugs.currentEvent - 1;                            \
-		}                                                                                   \
-                                                                                            \
-		if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){          \
-			schedulePortTPin(outputEventNumber, timeStamp);                                 \
-			numberScheduled++;                                                              \
-		}                                                                                   \
-	}                                                                                       \
-}                                                                                           // End of macro block!
+numberScheduled = 0;                                                                                                                \
+if(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE){                                                                                    \
+	unsigned char outputEventNumber;                                                                                                \
+	for(outputEventNumber=0;outputEventNumber<fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;outputEventNumber++){ \
+		if(outputEventInputEventNumbers[outputEventNumber] == KeyUserDebugs.currentEvent){                                          \
+			skipEventFlags &= ~(1UL << outputEventNumber);                                                                          \
+			schedulePortTPin(outputEventNumber, timeStamp);                                                                         \
+			numberScheduled++;                                                                                                      \
+		}else if(skipEventFlags & (1UL << outputEventNumber)){                                                                      \
+			unsigned char eventBeforeCurrent = 0;                                                                                   \
+			if(KeyUserDebugs.currentEvent == 0){                                                                                    \
+				eventBeforeCurrent = numberOfRealEvents - 1;                                                                        \
+			}else{                                                                                                                  \
+				eventBeforeCurrent = KeyUserDebugs.currentEvent - 1;                                                                \
+			}                                                                                                                       \
+                                                                                                                                    \
+			if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){                                              \
+				schedulePortTPin(outputEventNumber, timeStamp);                                                                     \
+				numberScheduled++;                                                                                                  \
+			}                                                                                                                       \
+		}                                                                                                                           \
+	}                                                                                                                               \
+}                                                                                                                                   // End of macro block!
 
 
 // A value of zero = do nothing

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2011-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -431,10 +431,14 @@ void PrimaryRPMISR(){
 			KeyUserDebugs.currentEvent = 0;
 		}
 
-		// ...and check that it's correct
-		if((correctEvent != 0) && (KeyUserDebugs.currentEvent != correctEvent)){
-			resetToNonRunningState(STATE_MISMATCH_IN_PRIMARY_RPM_ISR);
-			return;
+		// ...and, if known, check that it's correct
+		if(correctEvent != 0){
+			if(KeyUserDebugs.currentEvent != correctEvent){
+				resetToNonRunningState(STATE_MISMATCH_IN_PRIMARY_RPM_ISR);
+				return;
+			}else if(!(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE)){
+				SET_SYNC_LEVEL_TO(CAM_SYNC);
+			} // Else do nothing, we're running!
 		}
 	}else if(correctEvent != 0){
 		KeyUserDebugs.currentEvent = correctEvent;
@@ -474,9 +478,7 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
-		SCHEDULE_ECT_OUTPUTS();
-	}
+	SCHEDULE_ECT_OUTPUTS();
 
 	OUTPUT_COARSE_BBS();
 
@@ -560,7 +562,9 @@ void SecondaryRPMISR(){
 		if(KeyUserDebugs.currentEvent != correctEvent){
 			resetToNonRunningState(STATE_MISMATCH_IN_SECONDARY_RPM_ISR);
 			return;
-		}
+		}else if(!(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE)){
+			SET_SYNC_LEVEL_TO(CAM_SYNC);
+		} // Else do nothing, we're running!
 	}else{ // If not synced, sync, as in this ISR we always know where we are.
 		KeyUserDebugs.currentEvent = correctEvent;
 		lastEvent = KeyUserDebugs.currentEvent - 1;
@@ -588,9 +592,7 @@ void SecondaryRPMISR(){
 		}
 	}
 
-	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
-		SCHEDULE_ECT_OUTPUTS();
-	}
+	SCHEDULE_ECT_OUTPUTS();
 
 	OUTPUT_COARSE_BBS();
 

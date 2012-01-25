@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -57,10 +57,10 @@ typedef struct {
 
 	// RPM/Position input
 	unsigned char decoderSyncLosses;               ///< Number of times cam, crank or combustion sync is lost.
-	unsigned char spare;                           ///< Spare.
+	unsigned char decoderSyncsNotConfirmed;        ///< How many times we cleared sync state without having yet accumulated enough confirmations.
 	unsigned char decoderSyncStateClears;          ///< Sync loss called when not synced yet, thus discarding data and preventing sync.
 #define FLAG_DECODER_SYNC_LOSSES_OFFSET            2
-#define FLAG_SPARE_OFFSET                          3
+#define FLAG_DECODER_SYNCS_NOT_CONFIRMED_OFFSET    3
 #define FLAG_DECODER_SYNC_STATE_CLEARS_OFFSET      4
 
 	// If you're getting these, then your serial hardware sucks

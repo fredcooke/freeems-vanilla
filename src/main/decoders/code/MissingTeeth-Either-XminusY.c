@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2011-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -143,11 +143,14 @@ void PrimaryRPMISR(void) {
 						}else if(larger > (idealWide + tolerance)){ // We're in very bad shape...
 							if(thisLargerThanLast){
 								resetToNonRunningState(yourVRSensorHasALoosePlugFixIt);
+								return;
 							}else{
 								resetToNonRunningState(noiseAppearedWayTooEarlyAsIfItWasAVRToothButWasnt);
+								return;
 							}
 						}else{ // Fell between the cracks, not matched, settings very tight, therefore was in two possible places on either side of (N+2)/2.
 							resetToNonRunningState(yourSyncToleranceIsTighterThanAWellYouGetTheIdea);
+							return;
 						}
 					}
 				}
@@ -163,12 +166,18 @@ void PrimaryRPMISR(void) {
 
 						if((KeyUserDebugs.currentEvent == 0) && (matches.pattern != MatchedPairNarrowWide)){ // First event after gap
 							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+							return;
 						}else if((KeyUserDebugs.currentEvent == 1) && (matches.pattern != NarrowWideWideNarrow)){ // Second event after gap
 							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+							return;
 						}else if((KeyUserDebugs.currentEvent == 2) && (matches.pattern != WideNarrowMatchedPair)){ // Third event after gap
 							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+							return;
 						}else if((KeyUserDebugs.currentEvent > 2) && (matches.pattern != MatchedPairMatchedPair)){ // All other events should be preceeded by two matched pairs
 							resetToNonRunningState(matches.pattern + MaskBySumPattern);
+							return;
+						}else if(!(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE)){
+							SET_SYNC_LEVEL_TO(CRANK_SYNC); // Add a confirmation if necessary
 						} // else carry on happily as always
 					}else{
 						if(matches.pattern == MatchedPairMatchedPair){      //         | small | small | small | - All periods match, could be anywhere, unless...
@@ -187,6 +196,7 @@ void PrimaryRPMISR(void) {
 								// And once sync is gained good readings can be taken without excess memory usage
 							}else if((NUMBER_OF_WHEEL_EVENTS > 3) && (NumberOfTwinMatchedPairs > (NUMBER_OF_WHEEL_EVENTS - 3))){ // More matched pairs than possible with config
 								resetToNonRunningState(yourSyncToleranceIsLooserThanAWellYouGetTheIdea);
+								return;
 							} // else fall through to wait.
 						}else if(matches.pattern == MatchedPairNarrowWide){ // | small | small |      BIG      | Last tooth is first tooth after missing  - ((M-N)-3)/M = common
 							KeyUserDebugs.currentEvent = 0;
@@ -202,6 +212,7 @@ void PrimaryRPMISR(void) {
 							SET_SYNC_LEVEL_TO(CRANK_SYNC);
 						}else{
 							resetToNonRunningState(matches.pattern); // Where they are defined individually in the error file! Beautiful!!
+							return;
 						}
 					}
 				}
