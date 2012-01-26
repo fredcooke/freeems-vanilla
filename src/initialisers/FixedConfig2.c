@@ -71,6 +71,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #ifdef HOTEL
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
+#elif PRESTO
+		MAPMinimum:    HondaDenso183kPaMin,
+		MAPRange:      HondaDenso183kPaRange,
 #elif SNOTROCKET
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
