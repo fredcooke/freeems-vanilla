@@ -85,7 +85,7 @@ typedef union {
 #error "Missing teeth must be greater than 0!"
 #endif
 
-#if ((MISSING_TEETH * 4) > TOTAL_TEETH)
+#if ((MISSING_TEETH * 3) > TOTAL_TEETH)
 #error "Too many missing teeth! (or not enough total teeth!)"
 #endif
 
