@@ -120,87 +120,90 @@ void SCI0ISR(){
 	unsigned char flags = SCI0SR1;
 	/* Note: Combined with reading or writing the data register this also clears the flags. */
 
-	/* If the RX interrupt is enabled check RX related flags */
-	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE && flags & SCISR1_RX_REGISTER_FULL){
-		/* Grab the received byte from the register */
+	/* If either of these flags is set, we need to read the data to clear the flag */
+	if(flags & (SCISR1_RX_REGISTER_FULL | SCISR1_RX_OVERRUN)){
+		/* Grab the received byte from the register to clear the flag, whether we want the data or not */
 		unsigned char rawByte = SCI0DRL;
 
-		if(flags & (SCISR1_RX_NOISE | SCISR1_RX_FRAMING | SCISR1_RX_PARITY | SCISR1_RX_OVERRUN)){
-			/* If there is noise on the receive line record it */
-			if(flags & SCISR1_RX_NOISE){
-				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
-				KeyUserDebugs.serialHardwareErrors++;
-			}
-
-			/* If a framing error occurs record it */
-			if(flags & SCISR1_RX_FRAMING){
-				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
-				KeyUserDebugs.serialHardwareErrors++;
-			}
-
-			/* If a parity error occurs record it */
-			if(flags & SCISR1_RX_PARITY){
-				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
-				KeyUserDebugs.serialHardwareErrors++;
-			}
-
-			/* If an overrun occurs record it */
-			if(flags & SCISR1_RX_OVERRUN){
-				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_OVERRUN_ERRORS_OFFSET);
-				KeyUserDebugs.serialOverrunErrors++;
-			}
-
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-		}else{ // Process the received data
-			/* Look for a start byte to indicate a new packet */
-			if(rawByte == START_BYTE){
-				/* If another interface is using it (Note, clear flag, not normal) */
-				if(RXBufferContentSourceID & COM_CLEAR_SCI0_INTERFACE_ID){
-					/* Turn off our reception */
-					SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
-				}else{
-					/* If we are using it */
-					if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
-						/* Increment the counter */
-						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_STARTS_INSIDE_A_PACKET_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrors++;
-					}
-					/* Reset to us using it unless someone else was */
-					resetReceiveState(COM_SET_SCI0_INTERFACE_ID);
+		/* If the RX interrupt is enabled do something useful */
+		if(SCI0CR2 & SCICR2_RX_ISR_ENABLE){
+			if(flags & (SCISR1_RX_NOISE | SCISR1_RX_FRAMING | SCISR1_RX_PARITY | SCISR1_RX_OVERRUN)){
+				/* If there is noise on the receive line record it */
+				if(flags & SCISR1_RX_NOISE){
+					FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
+					KeyUserDebugs.serialHardwareErrors++;
 				}
-			}else if((unsigned short)RXBufferCurrentPosition >= ((unsigned short)&RXBuffer + RX_BUFFER_SIZE)){
-				/* Buffer was full, record and reset */
-				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_OVER_LENGTH_OFFSET);
-				KeyUserDebugs.serialAndCommsCodeErrors++;
+
+				/* If a framing error occurs record it */
+				if(flags & SCISR1_RX_FRAMING){
+					FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
+					KeyUserDebugs.serialHardwareErrors++;
+				}
+
+				/* If a parity error occurs record it */
+				if(flags & SCISR1_RX_PARITY){
+					FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
+					KeyUserDebugs.serialHardwareErrors++;
+				}
+
+				/* If an overrun occurs record it */
+				if(flags & SCISR1_RX_OVERRUN){
+					FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_OVERRUN_ERRORS_OFFSET);
+					KeyUserDebugs.serialOverrunErrors++;
+				}
+
 				resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			}else if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
-				if(RXStateFlags & RX_SCI_ESCAPED_NEXT){
-					/* Clear escaped byte next flag, thanks Karsten! ((~ != !) == (! ~= ~)) == LOL */
-					RXStateFlags &= RX_SCI_NOT_ESCAPED_NEXT;
-
-					if(rawByte == ESCAPED_ESCAPE_BYTE){
-						*RXBufferCurrentPosition++ = ESCAPE_BYTE;
-					}else if(rawByte == ESCAPED_START_BYTE){
-						*RXBufferCurrentPosition++ = START_BYTE;
-					}else if(rawByte == ESCAPED_STOP_BYTE){
-						*RXBufferCurrentPosition++ = STOP_BYTE;
+			}else{ // Process the received data
+				/* Look for a start byte to indicate a new packet */
+				if(rawByte == START_BYTE){
+					/* If another interface is using it (Note, clear flag, not normal) */
+					if(RXBufferContentSourceID & COM_CLEAR_SCI0_INTERFACE_ID){
+						/* Turn off our reception */
+						SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
 					}else{
-						/* Otherwise reset and record as data is bad */
-						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_ESCAPE_PAIR_MISMATCHES_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrors++;
+						/* If we are using it */
+						if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
+							/* Increment the counter */
+							FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_STARTS_INSIDE_A_PACKET_OFFSET);
+							KeyUserDebugs.serialAndCommsCodeErrors++;
+						}
+						/* Reset to us using it unless someone else was */
+						resetReceiveState(COM_SET_SCI0_INTERFACE_ID);
 					}
-				}else if(rawByte == ESCAPE_BYTE){
-					/* Drop the escape and set the flag to indicate that the next byte should be un-escaped. */
-					RXStateFlags |= RX_SCI_ESCAPED_NEXT;
-				}else if(rawByte == STOP_BYTE){
-					/* Turn off reception */
-					SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
-					RXStateFlags |= RX_READY_TO_PROCESS;
-				}else{
-					*RXBufferCurrentPosition++ = rawByte;
-				}
-			} /* ELSE: Do nothing : drop the byte */
+				}else if((unsigned short)RXBufferCurrentPosition >= ((unsigned short)&RXBuffer + RX_BUFFER_SIZE)){
+					/* Buffer was full, record and reset */
+					FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_OVER_LENGTH_OFFSET);
+					KeyUserDebugs.serialAndCommsCodeErrors++;
+					resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+				}else if(RXBufferContentSourceID & COM_SET_SCI0_INTERFACE_ID){
+					if(RXStateFlags & RX_SCI_ESCAPED_NEXT){
+						/* Clear escaped byte next flag, thanks Karsten! ((~ != !) == (! ~= ~)) == LOL */
+						RXStateFlags &= RX_SCI_NOT_ESCAPED_NEXT;
+
+						if(rawByte == ESCAPED_ESCAPE_BYTE){
+							*RXBufferCurrentPosition++ = ESCAPE_BYTE;
+						}else if(rawByte == ESCAPED_START_BYTE){
+							*RXBufferCurrentPosition++ = START_BYTE;
+						}else if(rawByte == ESCAPED_STOP_BYTE){
+							*RXBufferCurrentPosition++ = STOP_BYTE;
+						}else{
+							/* Otherwise reset and record as data is bad */
+							resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+							FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_ESCAPE_PAIR_MISMATCHES_OFFSET);
+							KeyUserDebugs.serialAndCommsCodeErrors++;
+						}
+					}else if(rawByte == ESCAPE_BYTE){
+						/* Drop the escape and set the flag to indicate that the next byte should be un-escaped. */
+						RXStateFlags |= RX_SCI_ESCAPED_NEXT;
+					}else if(rawByte == STOP_BYTE){
+						/* Turn off reception */
+						SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
+						RXStateFlags |= RX_READY_TO_PROCESS;
+					}else{
+						*RXBufferCurrentPosition++ = rawByte;
+					}
+				} /* ELSE: Do nothing : drop the byte */
+			}
 		}
 	}
 
