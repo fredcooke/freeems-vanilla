@@ -480,6 +480,8 @@ void PrimaryRPMISR(){
 		SCHEDULE_ECT_OUTPUTS();
 	}
 
+	OUTPUT_COARSE_BBS();
+
 	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
 		KeyUserDebugs.decoderFlags |= LAST_PERIOD_VALID;
@@ -591,6 +593,8 @@ void SecondaryRPMISR(){
 	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 		SCHEDULE_ECT_OUTPUTS();
 	}
+
+	OUTPUT_COARSE_BBS();
 
 	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;

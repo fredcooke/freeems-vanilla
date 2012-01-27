@@ -179,6 +179,8 @@ void PrimaryRPMISR(){
 		SCHEDULE_ECT_OUTPUTS();
 	}
 
+	OUTPUT_COARSE_BBS();
+
 	/* TODO this delays outputs until the fourth ISR execution, but we could
 	 * get them one execution or 1/8 of a rev sooner if we did a preliminary
 	 * calc from the previous edge instead of the previous same edge now, and
