@@ -118,6 +118,9 @@ void RTIISR(){
 				Clocks.tenthsToSeconds = 0;
 				/* Perform all tasks that are once per second here or preferably main */
 
+				// Toggle the CEL on the same pin as the SM load/run switch
+				PORTA ^= BIT6;
+
 				// temp fuel pump prime and safety off impl
 				if(coreStatusA & FUEL_PUMP_PRIME){
 					if(Clocks.secondsToMinutes == 4){
