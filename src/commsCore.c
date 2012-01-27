@@ -1246,6 +1246,7 @@ void decodePacketAndRespond(){
 						break;
 					}else if(testPulseWidths[channel] == 3){
 						testMode++; // Dirty hack to avoid dealing with Dave for the time being.
+						testNumberOfMissing = channel;
 					}else if(testPulseWidths[channel] == 2){
 						// use the dwell from the core maths and input vars.
 						outputEventPinNumbers[channel] = channel;

@@ -138,27 +138,43 @@ void PrimaryRPMISR(){
 		// Grab updated time period
 		testTicksPerEvent = CoreVars->RPM;
 
-		// Cam sync pulse logic and one cycle's missing event, horrible, hard coded, yuck.
+		// Output the sync pulse only once per "engine cycle"
 		if(KeyUserDebugs.currentEvent == 0){
 			// Schedule the cam pulse
 			outputEventDelayFinalPeriod[1] = 3*(testTicksPerEvent/4);
 			outputEventPulseWidthsMath[1] = testTicksPerEvent;
 			outputEventInputEventNumbers[1] = KeyUserDebugs.currentEvent;
-			// Unschedule the main pulse
-			outputEventInputEventNumbers[0] = 0xFF;
 		}else{
 			outputEventInputEventNumbers[1] = 0xFF;
-			// If we're on the other cycle, skip the tooth too
-			if(KeyUserDebugs.currentEvent == (testEventsPerCycle/2)){
-				outputEventInputEventNumbers[0] = 0xFF;
-			}else{ // In all other cases schedule on this event!
-				outputEventDelayFinalPeriod[0] = decoderMaxCodeTime;
-				outputEventInputEventNumbers[0] = KeyUserDebugs.currentEvent;
-				if((KeyUserDebugs.currentEvent == ((testEventsPerCycle / 2) - 1)) || (KeyUserDebugs.currentEvent == (testEventsPerCycle - 1))){
-					outputEventPulseWidthsMath[0] = testTicksPerEvent;
+		}
+
+		// Generate crank strength signal
+		unsigned char fakeCurrentEvent = 0;
+		if(KeyUserDebugs.currentEvent >= (testEventsPerCycle/2)){
+			fakeCurrentEvent = KeyUserDebugs.currentEvent - (testEventsPerCycle/2);
+		}else{
+			fakeCurrentEvent = KeyUserDebugs.currentEvent;
+		}
+
+		// Schedule the main teeth, or not
+		if(fakeCurrentEvent < testNumberOfMissing){
+			outputEventInputEventNumbers[0] = 0xFF;
+		}else{
+			outputEventDelayFinalPeriod[0] = decoderMaxCodeTime;
+			outputEventInputEventNumbers[0] = KeyUserDebugs.currentEvent;
+
+			unsigned short singleWidth = testTicksPerEvent/2;
+			// See if this is the last one before the gap
+			if((KeyUserDebugs.currentEvent == ((testEventsPerCycle / 2) - 1)) || (KeyUserDebugs.currentEvent == (testEventsPerCycle - 1))){
+				// Migrate this to a safeMultiply() inline function
+				unsigned long wideWideWidth = (unsigned long)singleWidth * (testNumberOfMissing + 1);
+				if(wideWideWidth < SHORTMAX){
+					outputEventPulseWidthsMath[0] = (unsigned short)wideWideWidth;
 				}else{
-					outputEventPulseWidthsMath[0] = testTicksPerEvent/2;
+					outputEventPulseWidthsMath[0] = SHORTMAX;
 				}
+			}else{
+				outputEventPulseWidthsMath[0] = singleWidth;
 			}
 		}
 

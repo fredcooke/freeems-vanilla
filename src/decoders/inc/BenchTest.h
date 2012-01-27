@@ -59,6 +59,7 @@
 EXTERN unsigned short testTicksPerEvent;
 EXTERN unsigned short testNumberOfCycles;
 EXTERN unsigned char testEventsPerCycle;
+EXTERN unsigned char testNumberOfMissing;
 EXTERN unsigned char testMode;
 #define TEST_MODE_STOP                0
 #define TEST_MODE_ITERATIONS          1
