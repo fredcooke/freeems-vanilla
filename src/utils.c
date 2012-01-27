@@ -61,9 +61,9 @@ unsigned short safeAdd(unsigned short addend1, unsigned short addend2){
 }
 
 
-/** @brief Add two unsigned shorts safely
+/** @brief Add signed short to an unsigned short safely
  *
- * This will either return short max or the sum of the two arguments.
+ * This will either return short max, zero, or the sum of the two arguments.
  *
  * @author Fred Cooke
  *
