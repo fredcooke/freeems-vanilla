@@ -85,8 +85,8 @@
 #define WideNarrowMatchedPair  116 // 0x74 BIG small small - Third tooth after missing
 
 // Except when we should get something else:
-#define MatchedPairMatchedPairPlusMask  73 // 0x49 small small small - All periods match
-#define MatchedPairNarrowWidePlusMask   75 // 0x4B small small BIG - First tooth after missing
+#define MatchedPairMatchedPairPlusMask  73 // 0x49 small small small - All periods match (Indicates wrong decoder with too few teeth, same missing)
+#define MatchedPairNarrowWidePlusMask   75 // 0x4B small small BIG - First tooth after missing (Indicates wrong decoder with too many teeth, same missing)
 #define NarrowWideWideNarrowPlusMask   108 // 0x6C small BIG small - Second tooth after missing, the strongest and most certain sync
 #define WideNarrowMatchedPairPlusMask  121 // 0x79 BIG small small - Third tooth after missing
 
