@@ -121,11 +121,21 @@ typedef struct {
 } coarseBitBangSetting;
 
 
+typedef struct {
+	unsigned char schedulingConfigurationBits[24];
+} schedulingSetting;
+
+
 #define simisTachoArray {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0} // 24 events for a 24+1 CAS setup with 4 cylinder tacho
 #define slaterTachoArray {1,0,0,2,0,0,1,0,0,2,0} // 11 events for 12-1 crank setup with 4 cylinder tacho
 #define standardTachoArray {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2}
 #define standardTachoPorts {(unsigned char*)&PORTE,(unsigned char*)&PORTK,(unsigned char*)&PORTK,(unsigned char*)&PORTK}
 #define standardTachoMasks {0x80,0x01,0x02,0x04}
+
+
+#define petersJSeriesFuelOnlyArray {1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+#define standardIgnitionArray      {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+
 
 /// Settings related to sensor reading
 typedef struct {
@@ -133,7 +143,7 @@ typedef struct {
 } sensorSetting;
 
 
-#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting)))
+#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting)))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  *
@@ -146,6 +156,7 @@ typedef struct {
 	engineSetting engineSettings; ///< @see engineSetting
 	serialSetting serialSettings; ///< @see serialSetting
 	coarseBitBangSetting coarseBitBangSettings;   ///< @see coarseBitBangSetting
+	schedulingSetting schedulingSettings;         ///< @see schedulingSetting
 	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
 

@@ -92,5 +92,12 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		masks:              standardTachoMasks,
 		numberConfigured:   1
 	},
-	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this fiel"
+	schedulingSettings:{
+#ifdef PETERJSERIES
+		schedulingConfigurationBits: petersJSeriesFuelOnlyArray
+#else
+		schedulingConfigurationBits: standardIgnitionArray // Fueling manually configured with fixed timing
+#endif
+	},
+	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please"
 };

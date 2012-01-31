@@ -385,6 +385,25 @@ outputEventPinNumbers[5] = 5;
 outputEventInputEventNumbers[4] = 0;
 outputEventInputEventNumbers[5] = 6;
 
+#elif PETERJSERIES // Firing order 1-4-2-5-3-6 http://forum.diyefi.org/viewtopic.php?f=62&t=1533
+anglesOfTDC[0] =   0 * oneDegree; // Cylinder 1
+anglesOfTDC[1] = 120 * oneDegree; // Cylinder 4
+anglesOfTDC[2] = 240 * oneDegree; // Cylinder 2
+anglesOfTDC[3] = 360 * oneDegree; // Cylinder 5
+anglesOfTDC[4] = 480 * oneDegree; // Cylinder 3
+anglesOfTDC[5] = 600 * oneDegree; // Cylinder 6
+outputEventPinNumbers[0] = 0; // PT2 -> Cylinder 1
+outputEventPinNumbers[1] = 3; // PT5 -> Cylinder 4
+outputEventPinNumbers[2] = 1; // PT3 -> Cylinder 2
+outputEventPinNumbers[3] = 4; // PT6 -> Cylinder 5
+outputEventPinNumbers[4] = 2; // PT4 -> Cylinder 3
+outputEventPinNumbers[5] = 5; // PT7 -> Cylinder 6
+#define cliConfigredNumberOfIgnitionEvents 6 // THESE ARE NOT IGN, THEY ARE FUEL
+#define numberOfInjectionEvents 0 // Not true, configured WITH scheduling, first of its kind!
+#define firstInjectionEvent 6 // This shouldn't matter, set here for paranoia reasons.
+#define cliConfiguredOffset (0 * oneDegree) // Trim fuel injection END point with this value.
+#define numberOfInjectionsPerEngineCycle 1 // Sequential, baby, yeah!
+
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 #else
 //anglesOfTDC[?] = ? * oneDegree;
@@ -479,6 +498,13 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 		 *      once xgate bit banging works sweetly.
 		 */
 
+		// Hacking fuel scheduling in to facilitate proper sequential on Peter's Honda
+		unsigned short pulsewidthToUseForThisChannel = DerivedVars->Dwell;
+		unsigned short endOfPulseTimingToUseForThisChannel = DerivedVars->Advance;
+		if(fixedConfigs1.schedulingSettings.schedulingConfigurationBits[ignitionEvent]){ //
+			pulsewidthToUseForThisChannel = masterPulseWidth;
+			endOfPulseTimingToUseForThisChannel = 0; // Fixed flat timing for fueling for the time being
+		}
 
 		/** @todo TODO move sched code to a function or functions (inline?)
 		 * that can be unit tested such that we KNOW it performs as anticipated
@@ -487,10 +513,10 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 
 		/// @todo TODO refactor this partly into init.c as per more detailed TD above
 		unsigned short codeAngleOfIgnition = 0;
-		if(anglesOfTDC[ignitionEvent] > ((unsigned long)decoderEngineOffset + DerivedVars->Advance)){ /// @todo TODO keep an eye on overflow here when increasing resolution by scaling angles
-			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + DerivedVars->Advance);
+		if(anglesOfTDC[ignitionEvent] > ((unsigned long)decoderEngineOffset + endOfPulseTimingToUseForThisChannel)){ /// @todo TODO keep an eye on overflow here when increasing resolution by scaling angles
+			codeAngleOfIgnition = anglesOfTDC[ignitionEvent] - (decoderEngineOffset + endOfPulseTimingToUseForThisChannel);
 		}else{
-			codeAngleOfIgnition = (unsigned short)(((unsigned long)totalEventAngleRange + anglesOfTDC[ignitionEvent]) - ((unsigned long)decoderEngineOffset + DerivedVars->Advance));
+			codeAngleOfIgnition = (unsigned short)(((unsigned long)totalEventAngleRange + anglesOfTDC[ignitionEvent]) - ((unsigned long)decoderEngineOffset + endOfPulseTimingToUseForThisChannel));
 		}
 		/** @todo TODO, do this ^ at init time from fixed config as an array of
 		 * angles and a single engine offset combined into this runtime array.
@@ -524,7 +550,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 				ticksBetweenEventAndSpark = ((unsigned long)*ticksPerDegree * ((unsigned long)codeAngleOfIgnition + (totalEventAngleRange - eventAngles[lastGoodEvent]))) / ticks_per_degree_multiplier;
 			}
 
-			if(ticksBetweenEventAndSpark > ((unsigned long)DerivedVars->Dwell + decoderMaxCodeTime)){
+			if(ticksBetweenEventAndSpark > ((unsigned long)pulsewidthToUseForThisChannel + decoderMaxCodeTime)){
 				// generate event mapping from real vs virtual counts, how? better with a cylinder ratio?
 				unsigned char mappedEvent = 0xFF;
 				if(numberOfRealEvents == numberOfVirtualEvents){
@@ -541,7 +567,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					eventBeforeCurrent = outputEventInputEventNumbers[ignitionEvent] - 1;
 				}
 
-				unsigned long potentialDelay = ticksBetweenEventAndSpark - DerivedVars->Dwell;
+				unsigned long potentialDelay = ticksBetweenEventAndSpark - pulsewidthToUseForThisChannel;
 				if(potentialDelay <= SHORTMAX){ // We can use dwell as is
 					ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
@@ -565,7 +591,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 
 					outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
 					outputEventDelayFinalPeriod[ignitionEvent] = (unsigned short)potentialDelay;
-					outputEventPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
+					outputEventPulseWidthsMath[ignitionEvent] = pulsewidthToUseForThisChannel;
 					outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					outputEventDelayTotalPeriod[ignitionEvent] = potentialDelay; // No async accesses occur
@@ -597,7 +623,7 @@ masterPulseWidth = safeAdd((DerivedVars->EffectivePW / numberOfInjectionsPerEngi
 					// if so, set repeat to max and final to remainder and number of iterations to divs
 					// if not, decrease repeat size in some optimal way and provide new left over to work with that, and same number of divs/its
 					// Always use dwell as requested
-					outputEventPulseWidthsMath[ignitionEvent] = DerivedVars->Dwell;
+					outputEventPulseWidthsMath[ignitionEvent] = pulsewidthToUseForThisChannel;
 					ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 					outputEventDelayTotalPeriod[ignitionEvent] = potentialDelay; // No async accesses occur
 					Counters.timerStretchedToSchedule++;
