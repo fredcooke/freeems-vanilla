@@ -379,6 +379,7 @@ COPYOPTS = --output-target=srec \
 
 
 
+.DEFAULT_GOAL := help
 help:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                        Dependency And Target Summary                         #$(Q)
@@ -472,6 +473,14 @@ help:
 	@echo $(Q)#   wait for other unrelated things to build first nor do you have to wait     #$(Q)
 	@echo $(Q)#   for other files to continue building after yours is successful. Before     #$(Q)
 	@echo $(Q)#   using individual output files for targets, please run 'make dirs'.         #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   Common goals:                                                              #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   You most likely just want to run "make s19" or "make clean", do that!      #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   To build with a specific compiled in configuration do this instead:        #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   CLIFLAGS="-D YOURBUILDNAME=1" make clean s19                               #$(Q)
 	@echo $(Q)#                                                                              #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
