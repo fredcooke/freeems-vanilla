@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009, 2010 Fred Cooke
+ * Copyright 2009-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -35,6 +35,8 @@
 #define ESCAPED_START_BYTE		0x55
 #define ESCAPED_STOP_BYTE		0x33
 
+
+#define MAXIMUM_EXPECTED_PACKET_LENGTH 0x0820
 
 /* TODO split into functions? */
 int main( int argc, char *argv[] ){
@@ -81,7 +83,7 @@ int main( int argc, char *argv[] ){
 		unsigned int currentPacketLength = 0;
 
 		// To store a packet in for purposes of further diagnostics
-		unsigned char packetBuffer[3000]; // more than sufficient for current FreeEMS increase for other variants.
+		unsigned char packetBuffer[MAXIMUM_EXPECTED_PACKET_LENGTH]; // more than sufficient for current FreeEMS increase for other variants.
 		unsigned short packetTypeCounts[65536] = {0}; // upto 65535 of each type, then it'll overflow...
 
 		/* Iterate through the file char at a time */
@@ -173,11 +175,21 @@ int main( int argc, char *argv[] ){
 					currentPacketLength= 0;
 					checksum = 0;
 				}else{
-					/* If it isn't special checksum it! */
-					checksum += character;
-					lastChar = character;
-					packetBuffer[currentPacketLength] = character;
-					currentPacketLength++;
+					if (currentPacketLength < MAXIMUM_EXPECTED_PACKET_LENGTH) {
+						/* If it isn't special checksum it! */
+						checksum += character;
+						lastChar = character;
+						packetBuffer[currentPacketLength] = character;
+						currentPacketLength++;
+					}else{
+						charsDropped++;
+						/* Clear the state */
+						insidePacket = 0;
+						currentPacketLength= 0;
+						checksum = 0;
+						// TODO count overlength packets, just print for now:
+						printf("Overlength packet found, resetting state!");
+					}
 				}
 			}else{
 				/* Do nothing : drop the byte */
