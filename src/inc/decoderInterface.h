@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2010, 2011 Fred Cooke
+ * Copyright 2010-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -76,7 +76,6 @@
 #define degreeTicksPerMinute 4166667 // rounded up by 1/3
 #define ticks_per_degree_multiplier (10 * oneDegree)
 /// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
-#define oneDegree 50U // Scaler for all scheduler and decoder angles, not tables etc. Suffix is necessary otherwise 8 bit is assumed. TODO Mount Messenger road to New Plymouth! Recommended Kim@bach with NAZZZ and Steve!
 
 
 // ADC
@@ -203,11 +202,11 @@ selfSetTimer &= injectorMainOffMasks[pin];                                      
 
 #ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
 
-/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+/// @todo TODO behave differently depending upon sync level?
 #define SCHEDULE_ECT_OUTPUTS() \
 numberScheduled = 0;                                                                        \
 unsigned char outputEventNumber;                                                            \
-for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){ \
+for(outputEventNumber=0;outputEventNumber<fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;outputEventNumber++){ \
 	if(outputEventInputEventNumbers[outputEventNumber] == KeyUserDebugs.currentEvent){      \
 		skipEventFlags &= ~(1UL << outputEventNumber);                                      \
 		schedulePortTPin(outputEventNumber, timeStamp);                                     \
@@ -285,11 +284,7 @@ const unsigned char decoderName[] = BASE_FILE_NAME;
 //// Config items: These must exist in flash only config, not here...
 //EXTERN const unsigned char ADCSampleEvents[12];
 //EXTERN const unsigned char numberOfOutputEvents;
-//
-//// Live vars for subprocess intercommunication
-#define MAX_NUMBER_OF_OUTPUT_EVENTS 24
 
-EXTERN unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];            // 0xFF (disabled) by default, populated to actual pin numbers by the scheduler
 EXTERN unsigned char outputEventInputEventNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
 
 EXTERN unsigned short outputEventPulseWidthsMath[MAX_NUMBER_OF_OUTPUT_EVENTS];

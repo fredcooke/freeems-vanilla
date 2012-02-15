@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -129,6 +129,10 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 
 			/* Perform the calculations TODO possibly move this to the software interrupt if it makes sense to do so */
 			calculateFuelAndIgnition();
+			// TODO DEBUG/TUNING MACRO HERE!
+
+			/* Calculate the scheduling based on configuration and previously calculated variables */
+			scheduleOutputs();
 			// TODO DEBUG/TUNING MACRO HERE!
 		}else{
 			/* In the event that no calcs are required, sleep a little before returning to retry. */

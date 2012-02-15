@@ -2,7 +2,7 @@
 #
 #	Makefile
 #
-#	Copyright 2008-2011 Fred Cooke
+#	Copyright 2008-2012 Fred Cooke
 #
 #	This Makefile is part of the FreeEMS project.
 #
@@ -160,7 +160,7 @@ DATA = $(patsubst %.c,$(DATADIR)/%.c,$(DATARAW))
 
 # Source code files
 UTILCLASSES = tableLookup.c init.c utils.c globalConstants.c StaticBenchTest.c
-MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c decoderInterface.c
+MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c outputScheduler.c decoderInterface.c
 COMCLASSES = flashWrite.c commsCore.c blockDetailsLookup.c
 ISRCLASSES = interrupts.c injectionISRs.c commsISRs.c realtimeISRs.c miscISRs.c xgateVectors.c
 # Combined source code files

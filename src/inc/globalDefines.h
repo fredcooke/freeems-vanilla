@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -146,6 +146,8 @@
 #define flashSectorSize        1024
 #define flashSectorSizeInWords  512 /* 512 words to a 1k flash sector */
 
+#define MAX_NUMBER_OF_OUTPUT_EVENTS 24
+#define oneDegree 50U // Scaler for all scheduler and decoder angles, not tables etc. Suffix is necessary otherwise 8 bit is assumed. TODO Mount Messenger road to New Plymouth! Recommended Kim@bach with NAZZZ and Steve!
 
 #define IGNITION_TIMING_FACTOR 1024UL // Warning, to be changed to 8 bit, use this:
 #define IT(IGNITION_TIMING_BTDC) (IGNITION_TIMING_BTDC * IGNITION_TIMING_FACTOR)

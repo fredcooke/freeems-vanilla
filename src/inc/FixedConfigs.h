@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -121,8 +121,23 @@ typedef struct {
 } coarseBitBangSetting;
 
 
+/// Settings for ignition and injection output scheduling
 typedef struct {
-	unsigned char schedulingConfigurationBits[24];
+	unsigned short anglesOfTDC[MAX_NUMBER_OF_OUTPUT_EVENTS];                ///< The effective TDC angle of the event in question.
+	unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];       ///< Which of the 6 pins should be associated with this event
+	unsigned char schedulingConfigurationBits[MAX_NUMBER_OF_OUTPUT_EVENTS]; ///< 0 = ignition, 1 = injection
+	unsigned short decoderEngineOffset;
+	/**<
+	 * Add decoderEngineOffset to code degrees to find 0/TDC for cyl/output 1
+	 * or subtract from real degrees to get code degrees. Make this number
+	 * larger to advance the base timing, make it smaller to retard it. IE, if
+	 * you have 10btdc in your table, flat, and a timing light shows 5btdc on
+	 * the engine, then increase this number by 5 degrees. More here:
+	 *
+	 * http://forum.diyefi.org/viewtopic.php?f=54&t=1523
+	 */
+	unsigned char numberOfConfiguredOutputEvents;   ///< Should match the used section of the three arrays above
+	unsigned char numberOfInjectionsPerEngineCycle; ///< How much to divide the fuel pulse width by to get the per injection fuel pulse width
 } schedulingSetting;
 
 
@@ -131,10 +146,6 @@ typedef struct {
 #define standardTachoArray {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2}
 #define standardTachoPorts {(unsigned char*)&PORTE,(unsigned char*)&PORTK,(unsigned char*)&PORTK,(unsigned char*)&PORTK}
 #define standardTachoMasks {0x80,0x01,0x02,0x04}
-
-
-#define petersJSeriesFuelOnlyArray {1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-#define standardIgnitionArray      {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 
 
 /// Settings related to sensor reading

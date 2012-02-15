@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -84,7 +84,7 @@ void resetToNonRunningState(unsigned char uniqueLossID){
  * @warning If you do not handle the skipEventFlags then excess advance may occur!
  */
 void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
-	unsigned char pin = outputEventPinNumbers[outputEventNumber];
+	unsigned char pin = fixedConfigs1.schedulingSettings.outputEventPinNumbers[outputEventNumber];
 	unsigned short postReferenceEventDelay = 0;
 	if(skipEventFlags & (1UL << outputEventNumber)){
 		postReferenceEventDelay = decoderMaxCodeTime;
