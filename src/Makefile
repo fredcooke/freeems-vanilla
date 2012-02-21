@@ -192,7 +192,8 @@ DEPENDENCIES = $(patsubst %.c,$(DEPDIR)/%.d,$(CLASSES))
 DDEPENDENCIES = $(patsubst %.c,$(DEPDIR)/%.dd,$(CLASSES))
 PREPROCESSED = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(CLASSES))
 ASSEMBLIES = $(patsubst %.c,$(ASMDIR)/%.s,$(CLASSES))
-OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
+OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES))
+HANDOBJECTS = $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
 DUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(HANDASMS))
 XGOBJECTS = $(patsubst %.s,$(XGOBJDIR)/%.o,$(XGASMSRCS))
 
@@ -254,7 +255,7 @@ GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
 
 # http://www.gnu.org/software/m68hc11/m68hc11_gcc.html shows code size with different options used
 # include debug info, optimise , 16 bit ints, hcs12 platform
-GCCOPTS1 = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
+GCCOPTS1 = -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
 GCCOPTS2 = -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
 GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS) -D FIRMWARE_VERSION=\"$(FIRMWARE_VERSION)\" -D FIRMWARE_BUILD_DATE=\"$(BUILD_DATE)\" -D OPERATING_SYSTEM=\"$(OS)\"
 # -ffunction-sections option splits out the functions such that the garbage collection can get
@@ -582,11 +583,11 @@ linkmsg:
 link: assemble $(OUTDIR) linkmsg $(ALLELFS)
 
 # link the object files into an elf executable
-$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XGOBJECTS)
+$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $(OBJECTS) $(XGOBJECTS) $<
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS) $<
 
 
 gclinkmsg:
@@ -597,11 +598,11 @@ gclinkmsg:
 gclink: assemble $(OUTDIR) linkmsg $(GCDELFS)
 
 # link the object files into an elf executable with gc enabled
-$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XGOBJECTS)
+$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $(OBJECTS) $(XGOBJECTS) $<
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS) $<
 # The links with garbage collection are to ensure that there are no warnings
 # TODO find out how to stop .tramp from being collected (or inserted)!
 # This will be the only way once Sean's stuff is done and distributed, I can't wait to cut all this bullshit out!
@@ -742,7 +743,7 @@ compile: preprocess compilemsg $(ASSEMBLIES) $(ASSEMBLIESRPM)
 
 # Generate assembly files to examine
 $(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
-	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
+	$(GCC) -g $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
 assemblemsg:
@@ -750,11 +751,14 @@ assemblemsg:
 	@echo $(Q)#                          Assembling Object Files...                          #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-assemble: compile $(OBJDIR) $(XGOBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM) $(XGOBJECTS)
+assemble: compile $(OBJDIR) $(XGOBJDIR) assemblemsg $(OBJECTS) $(HANDOBJECTS) $(OBJECTSRPM) $(XGOBJECTS)
 
 # Generate object files to link
 $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
 	$(GCC) $(GCCOPTS) -c -o $@ $<
+
+$(HANDOBJECTS): $(OBJDIR)/%.o: $(ASMDIR)/%.s
+	$(GCC) -g $(GCCOPTS) -c -o $@ $<
 
 $(XGOBJECTS): $(XGOBJDIR)/%.o: $(XGASMDIR)/%.s
 	$(XGAS) -o $@ $<
