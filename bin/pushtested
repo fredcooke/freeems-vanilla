@@ -1,9 +1,9 @@
 #!/bin/bash
 
-git push origin      master master:dev
-git push raptor      master master:dev
-git push freeems     master master:dev
-git push gitorious   master master:dev
-git push sourceforge master master:dev
-git push repoorcz    master master:dev
+git push origin      master
+git push raptor      master
+git push freeems     master
+git push gitorious   master
+git push sourceforge master
+git push repoorcz    master
 
