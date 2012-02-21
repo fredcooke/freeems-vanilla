@@ -79,7 +79,7 @@ endif
 
 # Mac differences
 ifeq ($(OS), Darwin)
-MD5SUM = md5
+MD5SUM = md5 -r
 else
 # If using this on windows, we're in cygwin, same as Linux
 MD5SUM = md5sum
