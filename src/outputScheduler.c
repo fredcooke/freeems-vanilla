@@ -55,7 +55,7 @@ void scheduleOutputs(){
 	if(fixedConfigs1.schedulingSettings.decoderEngineOffset >= totalEventAngleRange){
 		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
 	}
-	if(fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents > 12){
+	if(fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents > MAX_NUMBER_OF_OUTPUT_EVENTS){
 		return; /// @todo don't bother doing anything, settings don't make sense... TODO move this to init time to prevent bad config
 	}
 /// @todo TODO create this check:
