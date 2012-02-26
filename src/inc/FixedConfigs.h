@@ -141,6 +141,53 @@ typedef struct {
 } schedulingSetting;
 
 
+/// Enable flags for each cut
+typedef struct {
+	unsigned InjectionRPM :1; ///< @todo document this
+	unsigned IgnitionRPM  :1; ///< @todo document this
+	unsigned InjOverBoost :1; ///< @todo document this
+	unsigned IgnOverBoost :1; ///< @todo document this
+	unsigned Spare0 :1;
+	unsigned Spare1 :1;
+	unsigned Spare2 :1;
+	unsigned Spare3 :1;
+	unsigned Spare4 :1;
+	unsigned Spare5 :1;
+	unsigned Spare6 :1;
+	unsigned Spare7 :1;
+	unsigned Spare8 :1;
+	unsigned Spare9 :1;
+	unsigned SpareA :1;
+	unsigned SpareB :1;
+} cutEnabled;
+
+
+/// Single cut/limiter
+typedef struct {
+	unsigned short disableThreshold;  ///< Level at which to disable outputs
+	unsigned short reenableThreshold; ///< Level at which to re-enable outputs
+} singleCut;
+
+
+/// Cuts and limiters
+typedef struct { // Comment represents normal and recommended cut type
+	singleCut InjectionRPM;       ///< Injection, enabled by default at 5k with both and 200 RPM hysteresis
+	singleCut IgnitionRPM;        ///< Ignition, enabled by default at 5k with both and 220 RPM hysteresis to ensure not lean when power comes back on
+	singleCut OverBoost;          ///< Ignition, enabled by default, set to rail value for sensor, with large hysteresis, requires time out to operate safely
+
+	// Disabled by default until duties are available, then enabled and fuel duty hard coded, elec duty optional, re enabled by time out not just hysteresis
+//	singleCut InjectionFuelDuty;  ///< Both, disabled by default, until duties are available
+//	singleCut InjectionElecDuty;  ///< Both, disabled by default, until duties are available
+
+	// These require other logic in addition to the generic logic:
+//	singleCut TwoStep;            ///< Ignition only or both, disabled by default
+//	singleCut OverHeat;           ///< Ignition only or both, disabled by default
+//	singleCut Overrun;            ///< Injection, disabled by default
+//	singleCut FloodClear;         ///< Injection, disabled by default
+	cutEnabled cutsEnabled;       ///< Override hard code on for desired fuel duty not to exceed 102.4% or similar
+} cutAndLimiterSetting;
+
+
 #define simisTachoArray {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0} // 24 events for a 24+1 CAS setup with 4 cylinder tacho
 #define slaterTachoArray {1,0,0,2,0,0,1,0,0,2,0} // 11 events for 12-1 crank setup with 4 cylinder tacho
 #define standardTachoArray {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2}
@@ -154,7 +201,7 @@ typedef struct {
 } sensorSetting;
 
 
-#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting)))
+#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting) + sizeof(cutAndLimiterSetting)))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  *
@@ -166,8 +213,9 @@ typedef struct {
 typedef struct {
 	engineSetting engineSettings; ///< @see engineSetting
 	serialSetting serialSettings; ///< @see serialSetting
-	coarseBitBangSetting coarseBitBangSettings;   ///< @see coarseBitBangSetting
-	schedulingSetting schedulingSettings;         ///< @see schedulingSetting
+	coarseBitBangSetting coarseBitBangSettings; ///< @see coarseBitBangSetting
+	schedulingSetting schedulingSettings;       ///< @see schedulingSetting
+	cutAndLimiterSetting cutAndLimiterSettings; ///< @see cutAndLimiterSetting
 	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
 

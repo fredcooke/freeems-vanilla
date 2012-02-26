@@ -162,7 +162,36 @@ typedef struct {
 	// Do we want these recorded at log assembly time, or at recording of ADC time, or at calculation of vars (core and/or deriv) or at enabling of scheduling, or all of the above?
 	unsigned short clockInMilliSeconds; ///< Migrate to start of all large datalogs once analysed
 	unsigned short clockIn8thsOfAMilli; ///< Migrate to start of all large datalogs once analysed
+	unsigned char ignitionCuts;  ///< Up to 8 reasons to not schedule ignition
+	unsigned char injectionCuts; ///< Up to 8 reasons to not schedule injection
 } KeyUserDebug;
+
+
+/// Active flags for each injection cut
+typedef struct {
+	unsigned InjectionRPM :1; ///< @todo document this
+	unsigned InjOverBoost :1; ///< @todo document this
+	unsigned Spare0 :1;
+	unsigned Spare1 :1;
+	unsigned Spare2 :1;
+	unsigned Spare3 :1;
+	unsigned Spare4 :1;
+	unsigned Spare5 :1;
+} injectionCutFlags;
+
+
+/// Active flags for each ignition cut
+typedef struct {
+	unsigned IgnitionRPM  :1; ///< @todo document this
+	unsigned IgnOverBoost :1; ///< @todo document this
+	unsigned Spare0 :1;
+	unsigned Spare1 :1;
+	unsigned Spare2 :1;
+	unsigned Spare3 :1;
+	unsigned Spare4 :1;
+	unsigned Spare5 :1;
+} ignitionCutFlags;
+
 
 // Any changes to the above that don't maintain the same size will change the packet size
 #define maxBasicDatalogLength (sizeof(CoreVar) + sizeof(DerivedVar) + sizeof(KeyUserDebug))

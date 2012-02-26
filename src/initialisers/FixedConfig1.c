@@ -194,5 +194,37 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfInjectionsPerEngineCycle:        1  // 720 degree decoders with one injection per cycle
 #endif
 	},
-	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installe"
+	cutAndLimiterSettings:{
+		InjectionRPM:{
+			disableThreshold:  10000, // 5k
+			reenableThreshold:  9800  // Come back on before ignition does
+		},
+		IgnitionRPM:{
+			disableThreshold:  10000, // 5k
+			reenableThreshold:  9600  // Come back on after injection does
+		},
+		OverBoost:{
+			disableThreshold:   25000, // Cut close to std sensor max
+			reenableThreshold:  10000  // Re enable when boost gone all together (force driver to lift)
+		},
+		cutsEnabled:{
+			InjectionRPM: 1,
+			IgnitionRPM:  1,
+			InjOverBoost: 1,
+			IgnOverBoost: 1,
+			Spare0: 1,
+			Spare1: 1,
+			Spare2: 1,
+			Spare3: 1,
+			Spare4: 1,
+			Spare5: 1,
+			Spare6: 1,
+			Spare7: 1,
+			Spare8: 1,
+			Spare9: 1,
+			SpareA: 1,
+			SpareB: 1
+		}
+	},
+	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is in"
 };

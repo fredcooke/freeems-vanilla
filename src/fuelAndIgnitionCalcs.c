@@ -143,4 +143,47 @@ void calculateFuelAndIgnition(){
 	/* "Calculate" the nominal total pulse width before per channel corrections */
 	masterPulseWidth = safeAdd((DerivedVars->EffectivePW / fixedConfigs1.schedulingSettings.numberOfInjectionsPerEngineCycle), DerivedVars->IDT); // div by number of injections per cycle, configured above
 	// but requires to know how big a cycle is, 1/4 1, 1/2, etc
+
+	// Note, conversions to address and then pointer are necessary to avoid error on direct cast
+	// Cuts and limiters TODO move these to their own special place?
+	// TODO Make source of threshold either struct or temp based curve for these
+
+	if(fixedConfigs1.cutAndLimiterSettings.cutsEnabled.IgnitionRPM){
+		unsigned short confirmedReenableThreshold = fixedConfigs1.cutAndLimiterSettings.IgnitionRPM.reenableThreshold;
+		if(confirmedReenableThreshold >= fixedConfigs1.cutAndLimiterSettings.IgnitionRPM.disableThreshold){
+			confirmedReenableThreshold = fixedConfigs1.cutAndLimiterSettings.IgnitionRPM.disableThreshold / 2;
+		}
+		if(CoreVars->RPM > fixedConfigs1.cutAndLimiterSettings.IgnitionRPM.disableThreshold){
+			((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnitionRPM = 1;
+		}else if(CoreVars->RPM < confirmedReenableThreshold){
+			((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnitionRPM = 0;
+		}
+	}
+
+	if(fixedConfigs1.cutAndLimiterSettings.cutsEnabled.InjectionRPM){
+		unsigned short confirmedReenableThreshold = fixedConfigs1.cutAndLimiterSettings.InjectionRPM.reenableThreshold;
+		if(confirmedReenableThreshold >= fixedConfigs1.cutAndLimiterSettings.InjectionRPM.disableThreshold){
+			confirmedReenableThreshold = fixedConfigs1.cutAndLimiterSettings.InjectionRPM.disableThreshold / 2;
+		}
+		if(CoreVars->RPM > fixedConfigs1.cutAndLimiterSettings.InjectionRPM.disableThreshold){
+			((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjectionRPM = 1;
+		}else if(CoreVars->RPM < confirmedReenableThreshold){
+			((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjectionRPM = 0;
+		}
+	}
+
+	// TODO add time based lock out as well as threshold based as threshold could re-enable too quickly
+	if(fixedConfigs1.cutAndLimiterSettings.cutsEnabled.InjOverBoost || fixedConfigs1.cutAndLimiterSettings.cutsEnabled.IgnOverBoost){
+		unsigned short confirmedReenableThreshold = fixedConfigs1.cutAndLimiterSettings.OverBoost.reenableThreshold;
+		if(confirmedReenableThreshold >= fixedConfigs1.cutAndLimiterSettings.OverBoost.disableThreshold){
+			confirmedReenableThreshold = fixedConfigs1.cutAndLimiterSettings.OverBoost.disableThreshold / 2;
+		}
+		if(CoreVars->MAP > fixedConfigs1.cutAndLimiterSettings.OverBoost.disableThreshold){
+			((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjOverBoost = fixedConfigs1.cutAndLimiterSettings.cutsEnabled.InjOverBoost;
+			((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnOverBoost = fixedConfigs1.cutAndLimiterSettings.cutsEnabled.IgnOverBoost;
+		}else if(CoreVars->MAP < confirmedReenableThreshold){
+			((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjOverBoost = 0;
+			((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnOverBoost = 0;
+		}
+	}
 }

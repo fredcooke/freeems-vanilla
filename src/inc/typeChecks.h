@@ -75,6 +75,9 @@ CASSERT(sizeof(Flaggable) == 16, Flaggable)
 CASSERT(sizeof(ADCBuffer)  == 32, ADCBuffer)
 CASSERT(sizeof(twoDTableUS) == 64, twoDTableUS)
 CASSERT(sizeof(mainTable) == flashSectorSize, mainTable)
+CASSERT(sizeof(cutEnabled) == 2, cutEnabled)
+CASSERT(sizeof(ignitionCutFlags) == 1, ignitionCutFlags)
+CASSERT(sizeof(injectionCutFlags) == 1, injectionCutFlags)
 
 // Short alignment checks:
 CASSERT((sizeof(Clock) % 2) == 0, Clock)
@@ -93,10 +96,10 @@ CASSERT((sizeof(fixedConfig1) == flashSectorSize), fixedConfig1)
 CASSERT((sizeof(fixedConfig2) == flashSectorSize), fixedConfig2)
 
 // The following is just a reminder that updates to MTX and OLV are required
-CASSERT(maxBasicDatalogLength == 96, DatalogLength) // Sum of the ones below
+CASSERT(maxBasicDatalogLength == 98, DatalogLength) // Sum of the ones below
 CASSERT(sizeof(CoreVar) == 32, CoreVar)
 CASSERT(sizeof(DerivedVar) == 26, DerivedVar)
-CASSERT(sizeof(KeyUserDebug) == 38, KeyUserDebug)
+CASSERT(sizeof(KeyUserDebug) == 40, KeyUserDebug)
 
 
 #else
