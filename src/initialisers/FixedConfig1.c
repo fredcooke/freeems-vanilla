@@ -120,7 +120,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential, for now.
 
 #elif SEANKLT1 // http://forum.diyefi.org/viewtopic.php?f=55&t=1146
-		anglesOfTDC: {(0 * oneDegree), (90 * oneDegree), (180 * oneDegree), (270 * oneDegree), (360 * oneDegree), (450 * oneDegree), (540 * oneDegree), (630 * oneDegree)},
+		anglesOfTDC: {(0 * oneDegree), (90 * oneDegree), (180 * oneDegree), (270 * oneDegree), (360 * oneDegree), (450 * oneDegree), (540 * oneDegree), (630 * oneDegree), (0 * oneDegree), (90 * oneDegree), (180 * oneDegree), (270 * oneDegree), (360 * oneDegree), (450 * oneDegree), (540 * oneDegree), (630 * oneDegree)},
 		outputEventPinNumbers:       {0,0,0,0,0,0,0,0,2,3,4,5,2,3,4,5}, // LTCC e-dizzy, semi-sequential injection 1/6, 8/5, 4/7, 3/2, and repeat
 		schedulingConfigurationBits: {0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1}, // See below two lines
 		decoderEngineOffset:        (0.00 * oneDegree), // Decoder has a true zero zero mechanically hard coded
