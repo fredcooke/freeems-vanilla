@@ -93,7 +93,7 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #elif HOTEL
 #include "../data/tables/ve/FredsTruckVE.h"
 #elif PRESTO
-#include "../data/tables/ve/FredsTruckVE.h" // should put something else here, but this is what it was using, so...
+#include "../data/tables/ve/flat60Percent.h"
 #elif SEANKLT1
 #include "../data/tables/ve/SeansLT1VE.h"
 #elif SEANKR1
@@ -180,7 +180,7 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #elif HOTEL
 #include "../data/tables/lambda/FredsTruckLambda.h"
 #elif PRESTO
-#include "../data/tables/lambda/FredsTruckLambda.h"
+#include "../data/tables/lambda/SeansLT1Lambda.h"
 #elif SEANKLT1
 #include "../data/tables/lambda/SeansLT1Lambda.h"
 #elif SEANKR1
