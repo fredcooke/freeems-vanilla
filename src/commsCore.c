@@ -382,32 +382,31 @@ void decodePacketAndRespond(){
 		{
 			if(RXCalculatedPayloadLength != 0){
 				errorID = payloadLengthTypeMismatch;
-				break;
+			}else{ // Perform soft system reset
+				_start();
 			}
-			/* Perform soft system reset */
-			_start();
+			break;
 		}
 		case requestHardSystemReset:
 		{
 			if(RXCalculatedPayloadLength != 0){
 				errorID = payloadLengthTypeMismatch;
-				break;
+			}else{
+				/* This is how the serial monitor does it. */
+				COPCTL = 0x01; /* Arm with shortest time */
+				ARMCOP = 0xFF; /* Write bad value, should cause immediate reset */
+				/* Using _start() only resets the app ignoring the monitor switch. It does not work */
+				/* properly because the location of _start is not the master reset vector location. */
 			}
-
-			/* This is how the serial monitor does it. */
-			COPCTL = 0x01; /* Arm with shortest time */
-			ARMCOP = 0xFF; /* Write bad value, should cause immediate reset */
-			/* Using _start() only resets the app ignoring the monitor switch. It does not work */
-			/* properly because the location of _start is not the master reset vector location. */
+			break;
 		}
 		case requestReInitOfSystem:
 		{
 			if(RXCalculatedPayloadLength != 0){
 				errorID = payloadLengthTypeMismatch;
-				break;
+			}else{
+				init();
 			}
-
-			init();
 			break;
 		}
 	// FreeEMS Vanilla Firmware Specific cases
@@ -1375,6 +1374,7 @@ void decodePacketAndRespond(){
 			}else{
 				errorID = unrecognisedPayloadID;
 			}
+			break;
 		}
 	}
 
