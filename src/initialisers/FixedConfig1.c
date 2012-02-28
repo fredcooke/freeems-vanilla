@@ -96,7 +96,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 // Sadly, FreeEMS car numero uno is gone, RIP Volvo! http://forum.diyefi.org/viewtopic.php?f=55&t=1068
 
 #ifdef TRUCK // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
-		anglesOfTDC: {(0 * oneDegree), (180 * oneDegree), (360 * oneDegree), (540 * oneDegree), (0 * oneDegree), (360 * oneDegree)},
+		anglesOfTDC: {(0 * oneDegree), (180 * oneDegree), (360 * oneDegree), (540 * oneDegree), (0 * oneDegree), (180 * oneDegree), (360 * oneDegree), (540 * oneDegree)},
 		outputEventPinNumbers:       {0,1,2,3,4,5,4,5}, // COP and semi-sequential
 		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
 		decoderEngineOffset:       (90.00 * oneDegree), // FE-DOHC, 4and1 CAS approximately centre
@@ -108,6 +108,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		outputEventPinNumbers:               {0}, // First pin
 		schedulingConfigurationBits:         {0}, // Ignition only
 		decoderEngineOffset: (20.00 * oneDegree), // Distributor fully retarded? Is this true? I don't think so?
+		// Update: This needs new code and the sensor to be rotated 10 degrees toward the front of the car (more advanced) producing an offset of zero above.
+		// This will allow a special fixed schedule to be done over the entire quarter cycle to arrive correctly and on time during cranking assuming stable RPM.
 		numberOfConfiguredOutputEvents:        1, // One per decoder cycle = 4
 		numberOfInjectionsPerEngineCycle:      1  // Ditto
 
