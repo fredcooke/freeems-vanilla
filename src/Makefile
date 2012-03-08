@@ -55,11 +55,11 @@
 
 
 # Constants
-FIRMWARE_VERSION = $(shell git describe --dirty=-DEV)
-OUTPREFIX = FreeEMS
-LABEL = $(OUTPREFIX)-$(FIRMWARE_VERSION)
-BUILD_DATE = "$(shell date)"
-OS = $(shell uname)
+FIRMWARE_VERSION := $(shell git describe --dirty=-DEV)
+OUTPREFIX := FreeEMS
+LABEL := $(OUTPREFIX)-$(FIRMWARE_VERSION)
+BUILD_DATE := "$(shell date)"
+OS := $(shell uname)
 
 # Windows differences
 ifdef ComSpec
