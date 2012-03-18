@@ -1,7 +1,7 @@
 \documentclass[12pt,a4paper,titlepage]{article}
 \include{FreeEMS}
 
-\begin {document}
+\begin{document}
 
 \begin{titlepage} 
 \begin{center}
@@ -17,12 +17,14 @@
 
 {\large Version 0.7.0 --- Saturday 1\textsuperscript{st} January, 2011}
 
+\end{center}
+\end{titlepage} 
 \include{FreeEMStoc}
 
 
 
 
-\section {Foreword}
+\section{Foreword}
 
 The purpose of the protocol is to provide reliable two-way serial communication
 with FreeEMS and associated devices over multiple physical protocols. This will
@@ -44,7 +46,7 @@ packets should be noted before discarding them.
 
 
 
-\section {Main Attributes}
+\section{Main Attributes}
 \begin{itemize}
 \item Compact binary data format to maximize speed and bandwidth.
 \item Data is packetized with an escaping scheme.
@@ -64,8 +66,8 @@ packets should be noted before discarding them.
 \subsection{Packet Data Format}
 \begin{center}
 \begin{tabular}{|c|c|c|}
-\hline Packer header: 3 -- 6 bytes & Packet payload: 0 -- max bytes & CKS \\ 
-\hline 
+\hline Packer header: 3 -- 6 bytes & Packet payload: 0 -- max bytes & CKS \\
+\hline
 \end{tabular} 
 \end{center}
 
@@ -77,8 +79,8 @@ medium of transmission.
 \subsection{Packet Header Layout}
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
-\hline  Flags & Payload ID & Seq No. & Payload Length \\
-\hline 
+\hline Flags & Payload ID & Seq No. & Payload Length \\
+\hline
 \end{tabular} 
 \end{center}
 
@@ -389,4 +391,4 @@ Copyright 2008--2011 Fred Cooke. All rights reserved.
 
 
 
-\end {document}
+\end{document}
