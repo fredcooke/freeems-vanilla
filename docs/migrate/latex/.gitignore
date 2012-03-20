@@ -6,4 +6,6 @@
 *.toc
 *.out
 *.synctex.gz
+*.dvi
+*.ps
 
