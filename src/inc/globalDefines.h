@@ -74,6 +74,7 @@
 /* Halves and Maxes */
 #define LONGHALF  0x80000000UL /* 2147483648 */ // Ned IS awesome! ;-)
 #define LONGMAX   0xFFFFFFFFUL /* 4294967295 */
+#define SHORT4TH  0x4000       /* 16384 */
 #define SHORTHALF 0x8000       /* 32768 */
 #define SHORTMAX  0xFFFF       /* 65535 */
 

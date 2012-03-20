@@ -101,13 +101,13 @@ unsigned short safeTrim(unsigned short addend1, signed short addend2){
  * @param baseValue
  * @param scaler
  */
-unsigned short safeScale(unsigned short baseValue, unsigned short scaler){
+unsigned short safeScale(unsigned short baseValue, unsigned short dividend, unsigned short divisor){
 	/* Perform the scaling */
-	unsigned short scaled = ((unsigned long)baseValue * scaler) / SHORTHALF;
+	unsigned short scaled = ((unsigned long)baseValue * dividend) / divisor;
 
 	/* If the trim is greater than 100% then the trimmedPW MUST be larger */
-	/* If it's less than 100% it can't have overflowed */		 /* If it's not larger, it overflowed */
-	if((scaler > SHORTHALF) && (baseValue > scaled)){
+	/* If it's less than 100% it can't have overflowed. If it's not larger, it overflowed */
+	if((dividend > divisor) && (baseValue > scaled)){
 		return SHORTMAX;
 	}else{
 		return scaled;

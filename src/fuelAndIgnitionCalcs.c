@@ -107,7 +107,7 @@ void calculateFuelAndIgnition(){
 
 	/* Apply the corrections after calculating */
 	DerivedVars->EffectivePW = safeTrim(DerivedVars->BasePW, DerivedVars->TFCTotal);
-	DerivedVars->EffectivePW = safeScale(DerivedVars->EffectivePW, DerivedVars->ETE);
+	DerivedVars->EffectivePW = safeScale(DerivedVars->EffectivePW, DerivedVars->ETE, SHORT4TH);
 
 
 //	unsigned char channel; // the declaration of this variable is used in multiple loops below.

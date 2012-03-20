@@ -65,7 +65,8 @@
 /** An array of 16 temperatures in Kelvin. */
 #define ARRAY_OF_16_TEMPS         {24315, 25315, 26315, 27315, 28315, 29315, 30315, 31315, 32315, 33315, 34315, 35315, 36315, 37315, 38315, 39315}
 /** An array of 16 percentages for temperature based enrichment. */
-#define ARRAY_OF_16_PERCENTS      {65535, 65535, 65535, 65535, 62259, 57344, 52429, 47514, 42598, 37683, 35226, 32768, 32768, 36045, 39322, 42598}
+#define ARRAY_OF_16_PERCENTS      {40960, 38502, 36045, 33587, 31130, 28672, 26214, 23757, 21299, 19333, 17613, 16384, 16384, 18022, 19661, 21299}
+
 /** An array of 16 time periods - scale unknown */
 #define ARRAY_OF_16_TIMES         {    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
 /** An array of 16 percentages for temperature based post start enrichment. */
