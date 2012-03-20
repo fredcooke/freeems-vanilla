@@ -47,6 +47,7 @@
 #include "fuelAndIgnitionCalcs.h"
 #include "outputScheduler.h"
 #include "decoderInterface.h"
+#include "tableLookup.h"
 
 
 /* Computer Operating Properly reset sequence MC9S12XDP512V2.PDF Section 2.4.1.5 */

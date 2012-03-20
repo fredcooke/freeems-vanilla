@@ -64,7 +64,39 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 
 	/// @todo TODO Add verification reporting code here that disables the timer interrupts such that no events ever get scheduled, and then sits looping sending error packets out about what is wrong. set a whole bunch of flags and check them here sending a packet for each with a unique errorID for each and thus a unique easy to understand message for each on the PC side. BEFORE the priming code such that no fuel gets injected. Will need to modularise the comms stuff to process packets based on calls from this section too, avoid excess duplication if possible.
 
-	/// @todo TODO Add priming pulse code here, this code will be driven from configuration such that only the correct channels fire and for the correc period each, regardless of cylinder count and channel count, etc
+	// TODO move this to a function so that it can be called on a hot restart post being asleep.
+	#define NUMBER_OF_OUTPUT_PINS 6
+	unsigned char outputEvent;
+	unsigned char activeFuelChannels[NUMBER_OF_OUTPUT_PINS] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+	for(outputEvent = 0;outputEvent < fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;outputEvent++){
+		if(fixedConfigs1.schedulingSettings.schedulingConfigurationBits[outputEvent] == 1 && fixedConfigs1.schedulingSettings.outputEventPinNumbers[outputEvent] < NUMBER_OF_OUTPUT_PINS) { // todo remove second condition?
+			activeFuelChannels[fixedConfigs1.schedulingSettings.outputEventPinNumbers[outputEvent]] = outputEvent;
+		}
+	}
+	sampleEachADC(ADCBuffers);       // Read sensors
+	generateCoreVars();              // Calculate BRV
+	generateDerivedVars();           // Calculate IDT
+	unsigned short primingPulseWidth = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.primingVolumeTable, CoreVars->CHT);
+	primingPulseWidth = safeAdd(primingPulseWidth, DerivedVars->IDT);
+	unsigned short edgeTimeStamp = TCNT;
+	// call sched output with args
+	LongTime timeStamp;
+	/* Install the low word */
+	timeStamp.timeShorts[1] = edgeTimeStamp;
+	/* Find out what our timer value means and put it in the high word */
+	if(TFLGOF && !(edgeTimeStamp & 0x8000)){ /* see 10.3.5 paragraph 4 of 68hc11 ref manual for details */
+		timeStamp.timeShorts[0] = timerExtensionClock + 1;
+	}else{
+		timeStamp.timeShorts[0] = timerExtensionClock;
+	}
+	unsigned char outputPin;
+	for(outputPin = 0; outputPin< NUMBER_OF_OUTPUT_PINS; outputPin++){
+		if(activeFuelChannels[outputPin] < MAX_NUMBER_OF_OUTPUT_EVENTS){
+			outputEventPulseWidthsMath[activeFuelChannels[outputPin]] = primingPulseWidth;
+			outputEventDelayFinalPeriod[activeFuelChannels[outputPin]] = SHORTHALF;
+			schedulePortTPin(activeFuelChannels[outputPin], timeStamp);
+		}
+	}
 
 	// Run forever repeating.
 	while(TRUE){
