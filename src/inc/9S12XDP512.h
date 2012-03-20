@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -461,11 +461,11 @@
 
 
 /* SPI0 */
-//0x00D8 SPI0CR1
-//0x00D9 SPI0CR2
-//0x00DA SPI0BR
-//0x00DB SPI0SR
-//0x00DD SPI0DR
+#define SPI0CR1 DVUCP(0x00D8)
+#define SPI0CR2 DVUCP(0x00D9)
+#define SPI0BR  DVUCP(0x00DA)
+#define SPI0SR  DVUCP(0x00DB)
+#define SPI0DR  DVUCP(0x00DD)
 
 
 /* IIC0  */
