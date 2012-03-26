@@ -151,7 +151,7 @@
 #define oneDegree 50U // Scaler for all scheduler and decoder angles, not tables etc. Suffix is necessary otherwise 8 bit is assumed. TODO Mount Messenger road to New Plymouth! Recommended Kim@bach with NAZZZ and Steve!
 
 #define IGNITION_TIMING_FACTOR 1024UL // Warning, to be changed to 8 bit, use this:
-#define IT(IGNITION_TIMING_BTDC) (IGNITION_TIMING_BTDC * IGNITION_TIMING_FACTOR)
+#define IT(IGNITION_TIMING_BTDC) ((IGNITION_TIMING_BTDC * IGNITION_TIMING_FACTOR) + 0.5)
 
 // TODO unused, make used!
 #define RPM_FACTOR      2
