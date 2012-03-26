@@ -39,31 +39,31 @@
  */
 
 
-/* Header file multiple inclusion protection courtesy eclipse Header Template	*/
-/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
+/* Header file multiple inclusion protection courtesy eclipse Header Template */
+/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_MEMORY_H_SEEN
 #define FILE_MEMORY_H_SEEN
 
 
-/* http://gcc.gnu.org/onlinedocs/gcc-4.0.0/gcc/Variable-Attributes.html	*/
+/* http://gcc.gnu.org/onlinedocs/gcc-4.0.0/gcc/Variable-Attributes.html */
 
 /* EEPROM */
 //#define EEPROM __attribute__ ((section (".eeprom")))
-/* EEPROM would appear to not be loadable by hcs12mem		*/
-/* Furthermore it isn't really needed except in code anyway	*/
+/* EEPROM would appear to not be loadable by hcs12mem       */
+/* Furthermore it isn't really needed except in code anyway */
 
 /* RAM divided up into special purpose blocks */
-#define RWINDOW		__attribute__ ((section (".rpage")))		/* ~4k paged RAM window */
-#define RXBUF		__attribute__ ((section (".rxbuf")))		/* ~2k block of RAM for receive buffer */
-#define TXBUF		__attribute__ ((section (".txbuf")))		/* ~2k block of RAM for transmit buffer */
+#define RWINDOW __attribute__ ((section (".rpage"))) /* ~4k paged RAM window                 */
+#define RXBUF   __attribute__ ((section (".rxbuf"))) /* ~2k block of RAM for receive buffer  */
+#define TXBUF   __attribute__ ((section (".txbuf"))) /* ~2k block of RAM for transmit buffer */
 // 4k of RAM for general variable and stack use, need to put some aside for xgate!!
 
 /* Direct flash blocks */
-#define FIXEDCONF1	__attribute__ ((section (".fixedconf1"))) /*  1k unpaged block, primary static configuration.		*/
-#define FIXEDCONF2	__attribute__ ((section (".fixedconf2"))) /*  1k unpaged block, secondary static configuration.		*/
-#define TEXT1		__attribute__ ((section (".text1")))	  /* 14k unpaged block, must be explicitly used.			*/
-#define TEXT		__attribute__ ((section (".text")))		  /* 14k unpaged block, code defaults to being stored here.	*/
-/*define SERMON		__attribute__ ((section (".sermon")))	      2k unpaged block, occupied by AN2548 serial monitor. 	*/
+#define FIXEDCONF1 __attribute__ ((section (".fixedconf1"))) /*  1k unpaged block, primary static configuration.       */
+#define FIXEDCONF2 __attribute__ ((section (".fixedconf2"))) /*  1k unpaged block, secondary static configuration.     */
+#define TEXT1      __attribute__ ((section (".text1")))      /* 14k unpaged block, must be explicitly used.            */
+#define TEXT       __attribute__ ((section (".text")))       /* 14k unpaged block, code defaults to being stored here. */
+/*define SERMON    __attribute__ ((section (".sermon")))         2k unpaged block, occupied by AN2548 serial monitor.  */
 
 
 /* far shortcut for data */
