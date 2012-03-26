@@ -1,33 +1,33 @@
-;	9S12XDP512asm.h
+;    9S12XDP512asm.h
 ;
-;	Copyright 2008, 2009 Sean Keys
+;    Copyright 2008, 2009 Sean Keys
 ;
-;	This file is part of the FreeEMS project.
+;    This file is part of the FreeEMS project.
 ;
-;	FreeEMS software is free software: you can redistribute it and/or modify
-;	it under the terms of the GNU General Public License as published by
-;	the Free Software Foundation, either version 3 of the License, or
-;	(at your option) any later version.
+;    FreeEMS software is free software: you can redistribute it and/or modify
+;    it under the terms of the GNU General Public License as published by
+;    the Free Software Foundation, either version 3 of the License, or
+;    (at your option) any later version.
 ;
-;	FreeEMS software is distributed in the hope that it will be useful,
-;	but WITHOUT ANY WARRANTY; without even the implied warranty of
-;	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;	GNU General Public License for more details.
+;    FreeEMS software is distributed in the hope that it will be useful,
+;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;    GNU General Public License for more details.
 ;
-;	You should have received a copy of the GNU General Public License
-;	along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
+;    You should have received a copy of the GNU General Public License
+;    along with any FreeEMS software.  If not, see http://www.gnu.org/licenses/
 ;
-;	We ask that if you make any changes to this file you email them upstream to
-;	us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
+;    We ask that if you make any changes to this file you email them upstream to
+;    us at admin(at)diyefi(dot)org or, even better, fork the code on github.com!
 ;
-;	Thank you for choosing FreeEMS to run your engine!
+;    Thank you for choosing FreeEMS to run your engine!
 
-;	Full basic register definitions for the Freescale S912XDP512 processor
-;	MC9S12XDP512V2.pdf Appendix G
+;    Full basic register definitions for the Freescale S912XDP512 processor
+;    MC9S12XDP512V2.pdf Appendix G
 
 ;* Define the cores of the CPU
 
-.equ PIMcore0,	0x0000	;ports A, B, E, ; inits, test
+.equ PIMcore0,   0x0000  ;ports A, B, E, ; inits, test
 .equ MMCcore0,   0x000A  ;Module Mapping Control core section 0 modes
 .equ PIMcore1,   0x000C  ;PIMcore section 1 TODO add explaination
 .equ EBIcore,    0x000E  ;External Bus Interface
@@ -571,9 +571,9 @@
 ;                       SCI0
 ;************************************************************************
 ;SCI0BDH/SCI0BDL/SCI0BDL registers are accessable if the AMAP bit in the
-;	SCI0SR2 register is set to ZERO
+;    SCI0SR2 register is set to ZERO
 ;SCI0ASR1/SCIACR1/SCI0ACR2 registers are accessible if the AMAP bit in
-;	the SCI0SR2 register is set to ONE
+;    the SCI0SR2 register is set to ONE
 ;
 ;************************************************************************
 .equ SCI0BDH, SCI0core+0x00  ;SCI0 baud rate registers (8-12 bits)
@@ -688,18 +688,18 @@
 
 .equ SCI0DRL,  SCI0core+0x0A  ;
 ; f (as in first) added as prefix so names dont conflict with other SCIs
-.equ fR0,	 0b00000001   ;
-.equ fR1,	 0b00000010   ;
-.equ fR2,	 0b00000100   ;
+.equ fR0,        0b00000001   ;
+.equ fR1,        0b00000010   ;
+.equ fR2,        0b00000100   ;
 .equ fR3,        0b00001000   ;
 .equ fR4,        0b00010000   ;
 .equ fR5,        0b00100000   ;
 .equ fR6,        0b01000000   ;
 .equ fR7,        0b10000000   ;
 ;
-.equ fT0,	 0b00000001   ;
-.equ fT1,	 0b00000010   ;
-.equ fT2,	 0b00000100   ;
+.equ fT0,        0b00000001   ;
+.equ fT1,        0b00000010   ;
+.equ fT2,        0b00000100   ;
 .equ fT3,        0b00001000   ;
 .equ fT4,        0b00010000   ;
 .equ fT5,        0b00100000   ;

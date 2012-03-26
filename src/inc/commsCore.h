@@ -68,47 +68,47 @@ EXTERN void populateBasicDatalog(void) FPAGE_FE;
 
 
 /* Global variables for TX (one set per interface) */
-EXTERN unsigned char*	TXBufferCurrentPositionHandler;
-EXTERN unsigned char*	TXBufferCurrentPositionCAN0;
-EXTERN unsigned char*	TXBufferCurrentPositionSCI0;
+EXTERN unsigned char* TXBufferCurrentPositionHandler;
+EXTERN unsigned char* TXBufferCurrentPositionCAN0;
+EXTERN unsigned char* TXBufferCurrentPositionSCI0;
 
 
 /* Buffer use and source IDs/flags */
-EXTERN unsigned char	TXBufferInUseFlags;
-EXTERN unsigned char	RXBufferContentSourceID;
+EXTERN unsigned char TXBufferInUseFlags;
+EXTERN unsigned char RXBufferContentSourceID;
 /* Masks for TXBufferInUseFlags and RXBufferContentSourceID */
-#define COM_SET_SCI0_INTERFACE_ID		BIT0
-#define COM_SET_CAN0_INTERFACE_ID		BIT1
-#define COM_SET_SPARE2_INTERFACE_ID		BIT2
-#define COM_SET_SPARE3_INTERFACE_ID		BIT3
-#define COM_SET_SPARE4_INTERFACE_ID		BIT4
-#define COM_SET_SPARE5_INTERFACE_ID		BIT5
-#define COM_SET_SPARE6_INTERFACE_ID		BIT6
-#define COM_SET_SPARE7_INTERFACE_ID		BIT7
-#define COM_CLEAR_SCI0_INTERFACE_ID		NBIT0
-#define COM_CLEAR_CAN0_INTERFACE_ID		NBIT1
-#define COM_CLEAR_SPARE2_INTERFACE_ID	NBIT2
-#define COM_CLEAR_SPARE3_INTERFACE_ID	NBIT3
-#define COM_CLEAR_SPARE4_INTERFACE_ID	NBIT4
-#define COM_CLEAR_SPARE5_INTERFACE_ID	NBIT5
-#define COM_CLEAR_SPARE6_INTERFACE_ID	NBIT6
-#define COM_CLEAR_SPARE7_INTERFACE_ID	NBIT7
-#define CLEAR_ALL_SOURCE_ID_FLAGS		ZEROS
+#define COM_SET_SCI0_INTERFACE_ID     BIT0
+#define COM_SET_CAN0_INTERFACE_ID     BIT1
+#define COM_SET_SPARE2_INTERFACE_ID   BIT2
+#define COM_SET_SPARE3_INTERFACE_ID   BIT3
+#define COM_SET_SPARE4_INTERFACE_ID   BIT4
+#define COM_SET_SPARE5_INTERFACE_ID   BIT5
+#define COM_SET_SPARE6_INTERFACE_ID   BIT6
+#define COM_SET_SPARE7_INTERFACE_ID   BIT7
+#define COM_CLEAR_SCI0_INTERFACE_ID   NBIT0
+#define COM_CLEAR_CAN0_INTERFACE_ID   NBIT1
+#define COM_CLEAR_SPARE2_INTERFACE_ID NBIT2
+#define COM_CLEAR_SPARE3_INTERFACE_ID NBIT3
+#define COM_CLEAR_SPARE4_INTERFACE_ID NBIT4
+#define COM_CLEAR_SPARE5_INTERFACE_ID NBIT5
+#define COM_CLEAR_SPARE6_INTERFACE_ID NBIT6
+#define COM_CLEAR_SPARE7_INTERFACE_ID NBIT7
+#define CLEAR_ALL_SOURCE_ID_FLAGS     ZEROS
 
 
 /* Global variables for RX (one set for all) */
-EXTERN unsigned char	RXStateFlags;
-EXTERN unsigned char*	RXBufferCurrentPosition;
-EXTERN unsigned short	RXCalculatedPayloadLength; // why global??
+EXTERN unsigned char  RXStateFlags;
+EXTERN unsigned char* RXBufferCurrentPosition;
+EXTERN unsigned short RXCalculatedPayloadLength; // why global??
 /* Masks for SCIRXStateFlags */
-//#define RX_BUFFER_IN_USE			BIT0
-#define RX_READY_TO_PROCESS			BIT1
-#define RX_SCI_ESCAPED_NEXT			BIT2
-//#define RX_SCI_INSIDE_PACKET		BIT3
-//#define RX_BUFFER_NOT_IN_USE		NBIT0
-#define RX_CLEAR_READY_TO_PROCESS	NBIT1
-#define RX_SCI_NOT_ESCAPED_NEXT		NBIT2
-//#define RX_SCI_NOT_INSIDE_PACKET	NBIT3
+//#define RX_BUFFER_IN_USE          BIT0
+#define RX_READY_TO_PROCESS       BIT1
+#define RX_SCI_ESCAPED_NEXT       BIT2
+//#define RX_SCI_INSIDE_PACKET      BIT3
+//#define RX_BUFFER_NOT_IN_USE      NBIT0
+#define RX_CLEAR_READY_TO_PROCESS NBIT1
+#define RX_SCI_NOT_ESCAPED_NEXT   NBIT2
+//#define RX_SCI_NOT_INSIDE_PACKET  NBIT3
 
 /* Global CAN specific variables */
 // TODO can id filters routing etc
@@ -116,14 +116,14 @@ EXTERN unsigned short	RXCalculatedPayloadLength; // why global??
 
 /* Comms Control Enable and Disable Masks */
 /* SCI masks */
-#define SCICR2_RX_ENABLE		BIT2
-#define SCICR2_TX_ENABLE		BIT3
-#define SCICR2_RX_ISR_ENABLE	BIT5
-#define SCICR2_TX_ISR_ENABLE	BIT7
-#define SCICR2_RX_DISABLE		NBIT2
-#define SCICR2_TX_DISABLE		NBIT3
-#define SCICR2_RX_ISR_DISABLE	NBIT5
-#define SCICR2_TX_ISR_DISABLE	NBIT7
+#define SCICR2_RX_ENABLE      BIT2
+#define SCICR2_TX_ENABLE      BIT3
+#define SCICR2_RX_ISR_ENABLE  BIT5
+#define SCICR2_TX_ISR_ENABLE  BIT7
+#define SCICR2_RX_DISABLE     NBIT2
+#define SCICR2_TX_DISABLE     NBIT3
+#define SCICR2_RX_ISR_DISABLE NBIT5
+#define SCICR2_TX_ISR_DISABLE NBIT7
 /* CAN masks */
 // TODO probably 8 of these too
 // TODO probably 8 of these too
@@ -137,16 +137,16 @@ EXTERN unsigned short	RXCalculatedPayloadLength; // why global??
 
 
 /* Header components */
-EXTERN unsigned char	RXHeaderFlags;
-EXTERN unsigned char*   TXHeaderFlags;
-EXTERN unsigned short	RXHeaderPayloadID; /// TODO @todo why global?
-EXTERN unsigned short	RXHeaderPayloadLength;
+EXTERN unsigned char  RXHeaderFlags;
+EXTERN unsigned char* TXHeaderFlags;
+EXTERN unsigned short RXHeaderPayloadID; /// TODO @todo why global?
+EXTERN unsigned short RXHeaderPayloadLength;
 
 
 /* Header flag masks */
-/* Always has flags (obviously)			*/
-/* Always has payload ID so no flag		*/
-/* Always has checksum, so no flag		*/
+/* Always has flags (obviously)     */
+/* Always has payload ID so no flag */
+/* Always has checksum, so no flag  */
 #define HEADER_HAS_LENGTH   BIT0
 #define HEADER_IS_NACK      BIT1
 #define HEADER_HAS_SEQUENCE BIT2
