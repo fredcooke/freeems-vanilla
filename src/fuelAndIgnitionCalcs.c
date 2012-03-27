@@ -62,14 +62,14 @@ void calculateFuelAndIgnition(){
 		/* Determine the type of air flow data */
 		if(TRUE /* SpeedDensity */){
 			/* This won't overflow until 512kPa or about 60psi of boost with 128% VE. */
-			DerivedVars->AirFlow = ((unsigned long)CoreVars->MAP * DerivedVars->VEMain) / oneHundredPercentVE;
+			DerivedVars->AirFlow = ((unsigned long)CoreVars->MAP * DerivedVars->VEMain) / VE(100);
 			/* Result is 450 - 65535 always. */
 		}else if(FALSE /*AlphaN*/){
 			DerivedVars->AirFlow = DerivedVars->VEMain; /* Not actually VE, but rather tuned air flow without density information */
 		}else if(FALSE /*MAF*/){
 			DerivedVars->AirFlow = CoreVars->MAF; /* Just fix temperature at appropriate level to provide correct Lambda */
 			/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!
-			airInletTemp = roomTemperature; // 293.15k is 20c * 100 to get value, so divide by 100 to get real number
+			airInletTemp = DEGREES_C(20); // Room temperature?
 		}else if(FALSE /*FixedAF*/){ /* Fixed air flow from config */
 			DerivedVars->AirFlow = fixedConfigs2.sensorPresets.presetAF;
 		}else{ /* Default to no fuel delivery and error */
@@ -80,8 +80,8 @@ void calculateFuelAndIgnition(){
 
 
 		/* This won't overflow until well past 125C inlet, 1.5 Lambda and fuel as dense as water */
-		DerivedVars->densityAndFuel = (((unsigned long)((unsigned long)airInletTemp * DerivedVars->Lambda) / stoichiometricLambda) * fixedConfigs1.engineSettings.densityOfFuelAtSTP) / densityOfFuelTotalDivisor;
-		/* Result is 7500 - 60000 always. */
+		DerivedVars->densityAndFuel = (((unsigned long)((unsigned long)airInletTemp * DerivedVars->Lambda) / LAMBDA(1.0)) * fixedConfigs1.engineSettings.densityOfFuelAtSTP) / FUEL_DENSITY(FUEL_DENSITY_UNIT_FACTOR);
+		/* Result is 7500 - 60000 always. TODO clean up the last item on the above line */
 
 		/* Divisors for air inlet temp and pressure :
 		 * #define airInletTempDivisor 100

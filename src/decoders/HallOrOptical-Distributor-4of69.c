@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -44,7 +44,7 @@
 #include "../inc/utils.h"
 
 // 69 is a little too high, and 68 is more than a little too low (or inversed)
-#define E1 (69 * oneDegree) // TODO May need to be 111 instead, needs testing!
+#define E1 (69 * ANGLE_FACTOR) // TODO May need to be 111 instead, needs testing!
 
 
 #include "code/HallOrOptical-Distributor-XofY.c"

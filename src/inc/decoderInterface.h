@@ -74,7 +74,7 @@
 // 75000000 / 360 = 208333.333333333333333
 // 208333.333333333333333 * 2 * 10 = 4166666.666666666666667
 #define degreeTicksPerMinute 4166667 // rounded up by 1/3
-#define ticks_per_degree_multiplier (10 * oneDegree)
+#define ticks_per_degree_multiplier (10 * ANGLE_FACTOR) // FIX <<< shouldn't be done like this.
 /// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
 
 
@@ -268,7 +268,7 @@ if(fixedConfigs1.coarseBitBangSettings.outputActions[KeyUserDebugs.currentEvent]
 
 const unsigned char numberOfRealEvents = NUMBER_OF_REAL_EVENTS;
 const unsigned char numberOfVirtualEvents = NUMBER_OF_VIRTUAL_EVENTS;
-const unsigned short totalEventAngleRange = 720 * oneDegree; //TOTAL_EVENT_ANGLE_RANGE;
+const unsigned short totalEventAngleRange = ANGLE(720); //TOTAL_EVENT_ANGLE_RANGE;
 const unsigned short decoderMaxCodeTime = DECODER_MAX_CODE_TIME;
 const unsigned char decoderName[] = BASE_FILE_NAME;
 

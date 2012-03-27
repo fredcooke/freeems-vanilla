@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -53,14 +53,14 @@ unsigned char unknownEdges = 0;
 
 
 // Event angle setup via defines to minimise the opportunity for human error when changing values
-#define OuterSlotAngle  (69 * oneDegree) // BUT 69 is too high, and 68 is even more too low = need to refactor to specify these angles accurately enough for perfect RPM/scheduling
-#define InnerSlotAngle (140 * oneDegree) // WAS 138 // WAS 139 // WAS 137 // Speculation: 140? Close to it... ignore my affection for round numbers... :-) HA! I was close to right this time, the other was right first guess and wants to be a little lower.
+#define OuterSlotAngle ANGLE( 69) // BUT 69 is too high, and 68 is even more too low = need to refactor to specify these angles accurately enough for perfect RPM/scheduling
+#define InnerSlotAngle ANGLE(140) // WAS 138 // WAS 139 // WAS 137 // Speculation: 140? Close to it... ignore my affection for round numbers... :-) HA! I was close to right this time, the other was right first guess and wants to be a little lower.
 
 // Outer slot fixed events - these are, by definition, correct!
-#define E0   (0 * oneDegree)
-#define E2 (180 * oneDegree)
-#define E4 (360 * oneDegree)
-#define E7 (540 * oneDegree)
+#define E0 ANGLE(  0)
+#define E2 ANGLE(180)
+#define E4 ANGLE(360)
+#define E7 ANGLE(540)
 
 // These are offset from the fixed ones by the angle of the slot
 #define E1 (E0 + OuterSlotAngle)
@@ -69,7 +69,7 @@ unsigned char unknownEdges = 0;
 #define E8 (E7 + OuterSlotAngle)
 
 // Inner slot events
-#define E6 (525 * oneDegree) // WAS 527 // WAS 526 // Start position measured, just like outer on/off duty.
+#define E6 ANGLE(525) // WAS 527 // WAS 526 // Start position measured, just like outer on/off duty.
 #define E9 (E6 + InnerSlotAngle)
 
 

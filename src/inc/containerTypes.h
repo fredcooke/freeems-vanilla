@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -109,16 +109,16 @@ typedef struct {
 	unsigned short AirFlow;        ///< Top half of the equation - intermediate, take this out of derived vars into own special struct with other intermediates
 	unsigned short densityAndFuel; ///< Bottom half of the equation - ditto, or, just ditch. This is dev/debug code, really...
 
-	unsigned short BasePW;         ///< Raw PW before corrections divide by 1250 for ms
+	unsigned short BasePW;         ///< Raw PW before corrections divide by PW_TICK_FACTOR for milli seconds
 	unsigned short ETE;            ///< Engine Temperature Enrichment percentage correction divide by 327.68 for 0 - 200%
-	signed short TFCTotal;         ///< Transient fuel correction PW (+/-) divide by 1250 for ms
+	signed short TFCTotal;         ///< Transient fuel correction PW (+/-) divide by PW_TICK_FACTOR for milli seconds
 
-	unsigned short EffectivePW;    ///< Actual PW of fuel delivery, before per channel corrections, divide by 1250 for ms
-	unsigned short IDT;            ///< PW duration before fuel flow begins, before per channel corrections, divide by 1250 for ms
-	unsigned short RefPW;          ///< Reference electrical PW what each cylinder is based on, used for all general decisions, divide by 1250 for ms
+	unsigned short EffectivePW;    ///< Actual PW of fuel delivery, before per channel corrections, divide by PW_TICK_FACTOR for milli seconds
+	unsigned short IDT;            ///< PW duration before fuel flow begins, before per channel corrections, divide by PW_TICK_FACTOR for milli seconds
+	unsigned short RefPW;          ///< Reference electrical PW what each cylinder is based on, used for all general decisions, divide by PW_TICK_FACTOR for milli seconds
 
-	unsigned short Advance;        ///< Ignition advance (scaled degrees / oneDegree(currently 50) = degrees)
-	unsigned short Dwell;          ///< Dwell period, divide by 1250 for ms
+	unsigned short Advance;        ///< Ignition advance (scaled degrees / ANGLE_FACTOR = degrees)
+	unsigned short Dwell;          ///< Dwell period, divide by PW_TICK_FACTOR for milli seconds
 } DerivedVar;
 
 

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -98,7 +98,7 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-#define E1 (64 * oneDegree)
+#define E1 (64 * ANGLE_FACTOR)
 
 
 #include "code/HallOrOptical-Distributor-XofY.c"

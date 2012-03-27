@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -46,7 +46,7 @@
  */
 
 
-#define angleOfSingleIteration (180 * oneDegree)
+#define angleOfSingleIteration (180 * ANGLE_FACTOR)
 
 #define E0 0
 // Define E1 in your reverse header!

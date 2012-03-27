@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -43,6 +43,37 @@
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_MEMORY_H_SEEN
 #define FILE_MEMORY_H_SEEN
+
+
+#define flashSectorSize        1024
+#define flashSectorSizeInWords  512 /* 512 words to a 1k flash sector */
+
+
+/* Valid RPAGE values :
+ *    0xFF - linear
+ *    0xFE - linear
+ *    0xFD - default
+ *    0xFC
+ *    0xFB
+ *    0xFA
+ *    0xF9
+ *    0xF8
+ */
+/* The reset value of RPAGE is 0xFD               */
+/* The other 8k of linear RAM space is accessible */
+/* through the RPAGE window with 0xFE and 0xFF    */
+/* 0xFE refers to the 0x2000 to 0x3000 region     */
+/* 0xFF refers to the 0x3000 to 0x4000 region     */
+#define RPAGE_TUNE_ONE    0xF8
+#define RPAGE_TUNE_TWO    0xF9
+#define RPAGE_FUEL_ONE    0xFA
+#define RPAGE_FUEL_TWO    0xFB
+#define RPAGE_TIME_ONE    0xFC
+#define RPAGE_TIME_TWO    0xFD
+#define RPAGE_LINEAR      0xFD
+#define RPAGE_MIN         0xF8
+#define PPAGE_MIN         0xE0
+#define EPAGE_MIN         0x?? // TODO
 
 
 /* http://gcc.gnu.org/onlinedocs/gcc-4.0.0/gcc/Variable-Attributes.html */

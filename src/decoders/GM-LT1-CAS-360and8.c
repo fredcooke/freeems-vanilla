@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009-2011 Sean Keys, Fred Cooke
+ * Copyright 2009-2012 Sean Keys, Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -53,10 +53,10 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-const unsigned short eventAngles[] = {(  0 * oneDegree), ( 86 * oneDegree), (130 * oneDegree), (176 * oneDegree),
-                                      (180 * oneDegree), (266 * oneDegree), (280 * oneDegree), (356 * oneDegree),
-                                      (360 * oneDegree), (446 * oneDegree), (470 * oneDegree), (536 * oneDegree),
-                                      (540 * oneDegree), (626 * oneDegree), (660 * oneDegree), (716 * oneDegree)};
+const unsigned short eventAngles[] = {ANGLE(  0), ANGLE( 86), ANGLE(130), ANGLE(176),
+                                      ANGLE(180), ANGLE(266), ANGLE(280), ANGLE(356),
+                                      ANGLE(360), ANGLE(446), ANGLE(470), ANGLE(536),
+                                      ANGLE(540), ANGLE(626), ANGLE(660), ANGLE(716)};
 const unsigned char eventValidForCrankSync[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // This is wrong, but will never be used on this decoder anyway.
 const unsigned char windowCounts[] = {4,86,44,46,4,86,14,76,4,86,24,66,4,86,34,56};
 unsigned char lastAccumulatorCount = 0xFF; /* set to bogus number */
@@ -240,7 +240,7 @@ void PrimaryRPMISR(void){
 				/* RPM CALC, KISS for now and only run this part of the ISR when the edge has gone high
 				 * this way we have evenly spaced teeth
 				 */
-				*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / (90 * oneDegree));
+				*ticksPerDegreeRecord = (unsigned short)((ticks_per_degree_multiplier * timeBetweenSuccessivePrimaryPulses) / (90 * ANGLE_FACTOR));
 				// instead of above:
 				// save time difference
 				// have angle of time difference as setting

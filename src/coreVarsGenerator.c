@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -88,7 +88,7 @@ void generateCoreVars(){
 		localBRV = fixedConfigs2.sensorPresets.presetBRV;
 	}else{ /* Fail safe if config is broken */
 		/* Default to normal alternator charging voltage 14.4V */
-		localBRV = runningVoltage;
+		localBRV = VOLTS(14.4);
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(BRV_NOT_CONFIGURED_CODE);
 	}
@@ -100,13 +100,13 @@ void generateCoreVars(){
 		localCHT = CHTTransferTable[ADCBuffers->CHT];
 	}else if(FALSE){ /* Configured to be read From ADC as dashpot */
 		/* Transfer the ADC reading to an engine temperature in a reasonable way */
-		localCHT = (ADCBuffers->CHT * 10) + freezingPoint; /* 0 ADC = 0C = 273.15K = 27315, 1023 ADC = 102.3C = 375.45K = 37545 */
+		localCHT = (ADCBuffers->CHT * 10) + DEGREES_C(0); /* 0 ADC = 0C = 273.15K = 27315, 1023 ADC = 102.3C = 375.45K = 37545 */
 	}else if(FALSE){ /* Configured to be fixed value */
 		/* Get the preferred CHT figure from configuration settings */
 		localCHT = fixedConfigs2.sensorPresets.presetCHT;
 	}else{ /* Fail safe if config is broken */
 		/* Default to normal running temperature of 85C/358K */
-		localCHT = runningTemperature;
+		localCHT = DEGREES_C(85);
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(CHT_NOT_CONFIGURED_CODE);
 	}
@@ -123,8 +123,8 @@ void generateCoreVars(){
 		/* Get the preferred IAT figure from configuration settings */
 		localIAT = fixedConfigs2.sensorPresets.presetIAT;
 	}else{ /* Fail safe if config is broken */
-		/* Default to normal air temperature of 20C/293K */
-		localIAT = roomTemperature;
+		/* Default to room temperature (20C/293K) TODO poor choice, fix. */
+		localIAT = DEGREES_C(20);
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(IAT_NOT_CONFIGURED_CODE);
 	}
@@ -196,7 +196,7 @@ void generateCoreVars(){
 		localAAP = fixedConfigs2.sensorPresets.presetAAP;
 	}else{ /* Fail safe if config is broken */
 		/* Default to sea level */
-		localAAP = seaLevelKPa; /* 100kPa */
+		localAAP = KPA(100);
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(AAP_NOT_CONFIGURED_CODE); // or maybe queue it?
 	}
@@ -212,7 +212,7 @@ void generateCoreVars(){
 		localEGO = fixedConfigs2.sensorPresets.presetEGO;
 	}else{ /* Default value if not connected incase other things are misconfigured */
 		/* Default to stoichiometric */
-		localEGO = stoichiometricLambda; /* EGO / 32768 = Lambda */
+		localEGO = LAMBDA(1.0);
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(EGO_NOT_CONFIGURED_CODE); // or maybe queue it?
 	}
@@ -228,7 +228,7 @@ void generateCoreVars(){
 		localEGO2 = fixedConfigs2.sensorPresets.presetEGO2;
 	}else{ /* Default value if not connected incase other things are misconfigured */
 		/* Default to stoichiometric */
-		localEGO2 = stoichiometricLambda;
+		localEGO2 = LAMBDA(1.0);
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(EGO2_NOT_CONFIGURED_CODE); // or maybe queue it?
 	}
@@ -238,28 +238,28 @@ void generateCoreVars(){
 	/* Get TPS percentage */
 	if(TRUE){ /* If TPS is connected */
 		/* Get TPS from ADC no need to add TPS min as we know it is zero by definition */
-		localTPS = ((unsigned long)boundedTPSADC * TPS_RANGE_MAX) / TPSADCRange;
+		localTPS = ((unsigned long)boundedTPSADC * PERCENT(100)) / TPSADCRange;
 	}else if(FALSE){ /* Configured for TPS to imitate MAP signal */
 		/* Get TPS from MAP via conversion */
 		/* Box MAP signal down */
 		if(localTPS > fixedConfigs2.sensorRanges.TPSOpenMAP){ /* Greater than ~95kPa */
-			localTPS = TPS_RANGE_MAX; /* 64000/640 = 100% */
+			localTPS = PERCENT(100);
 		}else if(localTPS < fixedConfigs2.sensorRanges.TPSClosedMAP){ /* Less than ~30kPa */
 			localTPS = 0;
 		}else{ /* Scale MAP range to TPS range */
 			localTPS = localMAP - fixedConfigs2.sensorRanges.TPSClosedMAP;
 		}
 		// get TPS from MAP no need to add TPS min as we know it is zero by definition
-		localTPS = ((unsigned long)localTPS * TPS_RANGE_MAX) / (fixedConfigs2.sensorRanges.TPSOpenMAP - fixedConfigs2.sensorRanges.TPSClosedMAP);
+		localTPS = ((unsigned long)localTPS * PERCENT(100)) / (fixedConfigs2.sensorRanges.TPSOpenMAP - fixedConfigs2.sensorRanges.TPSClosedMAP);
 	}else if(FALSE){ /* Configured for dash potentiometer on ADC */
 		/* Get TPS from ADC as shown : 1023 ADC = 100%, 0 ADC = 0% */
-		localTPS = ((unsigned long)ADCBuffers->TPS * TPS_RANGE_MAX) / ADC_DIVISIONS;
+		localTPS = ((unsigned long)ADCBuffers->TPS * PERCENT(100)) / ADC_DIVISIONS;
 	}else if(FALSE){ /* Configured for fixed TPS from config */
 		/* Get the preferred TPS figure from configuration settings */
 		localTPS = fixedConfigs2.sensorPresets.presetTPS;
 	}else{ /* Fail safe if config is broken */
 		/* Default to 50% to not trigger any WOT or CT conditions */
-		localTPS = halfThrottle;
+		localTPS = PERCENT(51.2); // TODO change to 50%
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(TPS_NOT_CONFIGURED_CODE); // or maybe queue it?
 	}

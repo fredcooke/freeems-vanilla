@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -52,6 +52,10 @@ void sendDebugInternal(unsigned char*) FPAGE_FE;
 #endif
 
 
+// Buffer size minus the overhead of a maximal packet header
+#define TX_MAX_PAYLOAD_SIZE   (TX_BUFFER_SIZE - 32)
+
+
 /* Function declarations */
 /* This function accesses paged flash and thus must be in linear space. Set explicitly to text. */
 EXTERN void decodePacketAndRespond(void) TEXT;
@@ -76,6 +80,18 @@ EXTERN unsigned char* TXBufferCurrentPositionSCI0;
 /* Buffer use and source IDs/flags */
 EXTERN unsigned char TXBufferInUseFlags;
 EXTERN unsigned char RXBufferContentSourceID;
+
+
+// Shared serial comms stuff TODO move this to a commsCommon.h header
+#define START_BYTE          0xAA
+#define ESCAPE_BYTE         0xBB
+#define STOP_BYTE           0xCC
+
+#define ESCAPED_START_BYTE  0x55
+#define ESCAPED_ESCAPE_BYTE 0x44
+#define ESCAPED_STOP_BYTE   0x33
+
+
 /* Masks for TXBufferInUseFlags and RXBufferContentSourceID */
 #define COM_SET_SCI0_INTERFACE_ID     BIT0
 #define COM_SET_CAN0_INTERFACE_ID     BIT1
@@ -133,7 +149,6 @@ EXTERN unsigned short RXCalculatedPayloadLength; // why global??
 // TODO probably 8 of these too
 // TODO probably 8 of these too
 // TODO probably 8 of these too
-
 
 
 /* Header components */

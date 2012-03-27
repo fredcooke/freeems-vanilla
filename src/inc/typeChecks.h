@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -100,6 +100,11 @@ CASSERT(maxBasicDatalogLength == 98, DatalogLength) // Sum of the ones below
 CASSERT(sizeof(CoreVar) == 32, CoreVar)
 CASSERT(sizeof(DerivedVar) == 26, DerivedVar)
 CASSERT(sizeof(KeyUserDebug) == 40, KeyUserDebug)
+
+// Check the fixed point readability macros for correct behaviour
+CASSERT(KPA(655.3450000000) == KPA(655.35), PRESSURE) // Lowest to round up
+CASSERT(KPA(655.3549999999) == KPA(655.35), PRESSURE) // Highest to round down
+CASSERT(KPA(655.36) > SHORTMAX, PRESSURE)             // Overflow gets caught
 
 
 #else

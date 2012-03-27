@@ -72,7 +72,7 @@ typedef struct {
 	unsigned short presetAAP;  ///< @copydoc presetIAT
 	unsigned short presetMAT;  ///< @copydoc presetIAT
 	unsigned short presetEGO2; ///< @copydoc presetIAT
-	unsigned short presetIAP;  ///< @copydoc presetIAT
+	unsigned short presetIAP;  ///< @copydoc presetIAT TODO YAGNI
 	unsigned short presetBPW;  ///< @copydoc presetIAT
 	unsigned short presetAF;   ///< @copydoc presetIAT
 } sensorPreset;
@@ -87,13 +87,11 @@ typedef struct {
 	unsigned short AAPMinimum;    ///< @copydoc MAPMinimum
 	unsigned short AAPRange;      ///< @copydoc MAPRange
 	unsigned short EGOMinimum;    ///< Lambda that 0 Volt input corresponds to.
-	unsigned short EGORange;      ///< Lambda that 5 Volt input corresponds to.
-	unsigned short BRVMinimum;    ///< Battery Voltage that 0 Volt input means. 0 Volts usually.
-	unsigned short BRVRange;      ///< Battery Voltage range between 0 Volt and 5 Volt input. FreeEMS standard is 24.5 Volts for 1k and 3k9 resistors on a 12v vehicle.
+	unsigned short EGORange;      ///< Lambda difference between what 0V and 5V inputs correspond to.
+	unsigned short BRVMinimum;    ///< Battery Voltage that 0 Volt input means. 0 Volts usually. TODO YAGNI usually? always? what/why?
+	unsigned short BRVRange;      ///< TODO reword when above is fixed. Real world voltage difference between lowest and highest ADC reading (0 to 5V). FreeEMS standard is 24.5 Volts for 1k and 3k9 resistors on a 12v vehicle.
 	unsigned short TPSMinimumADC; ///< This should be zero, but often isn't, this value is what the TPS input reads with the throttle fully closed.
-	unsigned short TPSMaximumADC; ///< This should be 1023, but often isn't, this value is what the TPS input reads with the throttle fully open.
-/*efine TPS_MINIMUM 0             ///< = 0.00%   For clarity ONLY, always zero. */
-#define TPS_RANGE_MAX 64000       ///< = 100.00%
+	unsigned short TPSMaximumADC; ///< This should be the maximum ADC value, but often isn't. This value is what the TPS input reads with the throttle fully open.
 } sensorRange;
 
 

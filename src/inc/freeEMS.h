@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -54,8 +54,11 @@
 ///include "registerMasks.h @todo TODO we should define the register masks that we use in one place, but probably not in the main device header.
 
 /* Include define files at the top here as other includes use them */
+#include "systemConfig.h"
 #include "errorDefines.h"
 #include "globalDefines.h"
+#include "scalerDefines.h"
+#include "constantsLibrary.h"
 
 /* Include data types at the top as other includes use them */
 #include "generalTypes.h"

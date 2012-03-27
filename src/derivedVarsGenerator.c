@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -63,7 +63,7 @@ void generateDerivedVars(){
 	}else if(FALSE){ /* Use TPS as load */
 		DerivedVars->LoadMain = CoreVars->TPS;
 	}else if(FALSE){ /* Use AAP corrected MAP as load */
-		DerivedVars->LoadMain = ((unsigned long)CoreVars->MAP * CoreVars->AAP) / seaLevelKPa;
+		DerivedVars->LoadMain = ((unsigned long)CoreVars->MAP * CoreVars->AAP) / KPA(100);
 	}else{ /* Default to MAP, but throw error */
 		DerivedVars->LoadMain = CoreVars->MAP;
 		/* If anyone is listening, let them know something is wrong */
@@ -84,7 +84,7 @@ void generateDerivedVars(){
 
 	// temp dwell and advance vars...
 	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
-	unsigned long tempAdvance = oneDegree * (unsigned long)lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID);
+	unsigned long tempAdvance = ANGLE_FACTOR * (unsigned long)lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID);
 	DerivedVars->Advance = (unsigned short)(tempAdvance / 1024); // This calculation will change when the timing tables get shrunk to a more reasonable 8 bit size with appropriate scaling
 	// Move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
@@ -96,7 +96,7 @@ void generateDerivedVars(){
 // a setting to choose which behaviour (don't limit/% dwell limit/min spark time/other?)
 #ifdef HOTEL
 	/// @bug hack for hyundai! 135 = 3/4 of 180 = one cycle...
-	unsigned long threeQuartersOfAvailableTime = ((unsigned long)CoreVars->DRPM * 135 * oneDegree) / ticks_per_degree_multiplier;
+	unsigned long threeQuartersOfAvailableTime = ((unsigned long)CoreVars->DRPM * 135 * ANGLE_FACTOR) / ticks_per_degree_multiplier;
 	if(DerivedVars->Dwell > threeQuartersOfAvailableTime){
 		DerivedVars->Dwell = threeQuartersOfAvailableTime;
 	}

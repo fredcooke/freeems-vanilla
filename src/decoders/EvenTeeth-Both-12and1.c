@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -51,7 +51,7 @@
 #include "../inc/interrupts.h"
 #include "../inc/decoderInterface.h"
 
-const unsigned short eventAngles[] = {(0 * oneDegree), (30 * oneDegree), (60 * oneDegree), (90 * oneDegree), (120 * oneDegree), (150 * oneDegree), (180 * oneDegree), (210 * oneDegree), (240 * oneDegree), (270 * oneDegree), (300 * oneDegree), (330 * oneDegree), (360 * oneDegree), (390 * oneDegree), (420 * oneDegree), (450 * oneDegree), (480 * oneDegree), (510 * oneDegree), (540 * oneDegree), (570 * oneDegree), (600 * oneDegree), (630 * oneDegree), (660 * oneDegree), (690 * oneDegree)};
+const unsigned short eventAngles[] = {ANGLE(0), ANGLE(30), ANGLE(60), ANGLE(90), ANGLE(120), ANGLE(150), ANGLE(180), ANGLE(210), ANGLE(240), ANGLE(270), ANGLE(300), ANGLE(330), ANGLE(360), ANGLE(390), ANGLE(420), ANGLE(450), ANGLE(480), ANGLE(510), ANGLE(540), ANGLE(570), ANGLE(600), ANGLE(630), ANGLE(660), ANGLE(690)};
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
 
 // Bring in the actual code.

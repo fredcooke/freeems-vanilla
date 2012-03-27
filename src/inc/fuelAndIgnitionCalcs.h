@@ -52,6 +52,14 @@
 EXTERN void calculateFuelAndIgnition(void) FPAGE_FE;
 
 
+/* The scaling system was reworked extensively in the commit after:
+ *
+ * c11833092d0b22839287beb2c54787355c9f7adc
+ *
+ * Refer to all changes in the subsequent commit to decipher the docs below!
+ */
+
+
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Always show your working! &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 /* At least, that is what my teachers used to say 15 years ago ;-) */

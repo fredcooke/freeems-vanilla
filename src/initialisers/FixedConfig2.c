@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -51,22 +51,22 @@
 /** @copydoc fixedConfig1 */
 const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	sensorPresets:{
-		presetIAT:  roomTemperature,
-		presetCHT:  runningTemperature,
-		presetTPS:  halfThrottle,
-		presetEGO:  stoichiometricLambda,
-		presetBRV:  runningVoltage,
-		presetMAP:  idleManifoldPressure,
-		presetAAP:  seaLevelKPa,
-		presetMAT:  roomTemperature,
-		presetEGO2: stoichiometricLambda,
-		presetIAP:  maxExpectedBoost,
-		presetBPW:  idlePulseWidth,
-		presetAF:   idleAirFlow
+		presetIAT:  DEGREES_C(20), // Room temperature
+		presetCHT:  DEGREES_C(85), // Running temperature
+		presetTPS:  PERCENT(51.2), // TODO change to 50%
+		presetEGO:  LAMBDA(1.0),   // Stoichiometric
+		presetBRV:  VOLTS(14.4),   // Standard alternator charging level for wet cell lead acid
+		presetMAP:  KPA(30),       // Idle manifold pressure
+		presetAAP:  KPA(100),      // Sea-level
+		presetMAT:  DEGREES_C(20), // Room temperature
+		presetEGO2: LAMBDA(1.0),   // Stoichiometric
+		presetIAP:  KPA(300),      // TODO move to 250 (Max for std sensor)
+		presetBPW:  PW_MS(1.6),    // TODO YAGNI
+		presetAF:   1500 // TODO YAGNI remove? Number is random...
 	},
 	sensorRanges:{
-		TPSClosedMAP:  offIdleMAP,
-		TPSOpenMAP:    nearlyWOTMAP,
+		TPSClosedMAP:  KPA(30), // Just above where MAP would be with closed throttle at idle
+		TPSOpenMAP:    KPA(95), // Just below where MAP would be at WOT
 // MAP Sensor Configuration
 #ifdef HOTEL
 		MAPMinimum:    HondaDenso183kPaMin,
@@ -106,25 +106,25 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		EGORange:      LC1LambdaRange,
 #endif
 #ifdef HOTEL
-		BRVMinimum:    batteryVoltageMin,
-		BRVRange:      (25.082 * 1000),
+		BRVMinimum:    VOLTS(0),
+		BRVRange:      VOLTS(25.082),
 #elif SNOTROCKET
-		BRVMinimum:    batteryVoltageMin,
-		BRVRange:      (24.777 * 1000),
+		BRVMinimum:    VOLTS(0),
+		BRVRange:      VOLTS(24.777),
 #else
-		BRVMinimum:    batteryVoltageMin,
-		BRVRange:      batteryVoltageRange,
+		BRVMinimum:    VOLTS(0),
+		BRVRange:      VOLTS(24.5), // Standard 3.9k and 1k values.
 #endif
-		TPSMinimumADC: TPSDefaultMin,
-		TPSMaximumADC: TPSDefaultMax
+		TPSMinimumADC: 0,
+		TPSMaximumADC: ADC_MAX_VALUE
 	},
 	sensorSettings:{ // Warning, until the following mods are made to ADC use, setting this lower than your cranking rpm will result in a pulsing fuel pump.
-		readingTimeout: 500, /** Default to 0.25 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
+		readingTimeout: 500, /** Default to 0.5 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
 	},
 	decoderSettings:{
 // Should macro these, 45.00,50.00 and 100.00 are percentages
 #ifdef HOTEL
-		accelerationInputEventTimeTolerance: ((100/(100 + 100.00)) * 1000), // once started this needs a lot less...
+		accelerationInputEventTimeTolerance: ((100/(100 + 100.00)) * 1000), // once started this needs a lot less... fix
 		decelerationInputEventTimeTolerance: (((100 + 100.00)/100) * 1000)
 #elif SNOTROCKET
 		accelerationInputEventTimeTolerance: ((100/(100 + 100.00)) * 1000),

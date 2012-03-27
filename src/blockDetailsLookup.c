@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -89,22 +89,22 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 
 	/* lookup tables */
 	case IATTransferTableLocationID:
-		details->size = TransferTableSize;
+		details->size = sizeof(IATTransferTable);
 		details->FlashPage = LOOKUP_PPAGE;
 		details->FlashAddress = IATTransferTableLocation;
 		break;
 	case CHTTransferTableLocationID:
-		details->size = TransferTableSize;
+		details->size = sizeof(CHTTransferTable);
 		details->FlashPage = LOOKUP_PPAGE;
 		details->FlashAddress = CHTTransferTableLocation;
 		break;
 	case MAFTransferTableLocationID:
-		details->size = TransferTableSize;
+		details->size = sizeof(MAFTransferTable);
 		details->FlashPage = LOOKUP_PPAGE;
 		details->FlashAddress = MAFTransferTableLocation;
 		break;
 	case TestTransferTableLocationID:
-		details->size = TransferTableSize;
+		details->size = sizeof(TestTransferTable);
 		details->FlashPage = LOOKUP_PPAGE;
 		details->FlashAddress = TestTransferTableLocation;
 		break;
