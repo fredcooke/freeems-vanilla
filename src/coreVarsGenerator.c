@@ -259,7 +259,7 @@ void generateCoreVars(){
 		localTPS = fixedConfigs2.sensorPresets.presetTPS;
 	}else{ /* Fail safe if config is broken */
 		/* Default to 50% to not trigger any WOT or CT conditions */
-		localTPS = PERCENT(51.2); // TODO change to 50%
+		localTPS = PERCENT(50); // TODO YAGNI?
 		/* If anyone is listening, let them know something is wrong */
 		sendErrorIfClear(TPS_NOT_CONFIGURED_CODE); // or maybe queue it?
 	}

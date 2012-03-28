@@ -53,14 +53,14 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	sensorPresets:{
 		presetIAT:  DEGREES_C(20), // Room temperature
 		presetCHT:  DEGREES_C(85), // Running temperature
-		presetTPS:  PERCENT(51.2), // TODO change to 50%
+		presetTPS:  PERCENT(50),   // TODO YAGNI
 		presetEGO:  LAMBDA(1.0),   // Stoichiometric
 		presetBRV:  VOLTS(14.4),   // Standard alternator charging level for wet cell lead acid
 		presetMAP:  KPA(30),       // Idle manifold pressure
 		presetAAP:  KPA(100),      // Sea-level
 		presetMAT:  DEGREES_C(20), // Room temperature
 		presetEGO2: LAMBDA(1.0),   // Stoichiometric
-		presetIAP:  KPA(300),      // TODO move to 250 (Max for std sensor)
+		presetIAP:  KPA(250),      // TODO YAGNI
 		presetBPW:  PW_MS(1.6),    // TODO YAGNI
 		presetAF:   1500 // TODO YAGNI remove? Number is random...
 	},
