@@ -79,7 +79,7 @@ const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH] = { OPERATING_SYSTE
  *
  * master = (msToTicks * molarMassOfAir * universalGasConstantDivisor * stoichiometricAFRDivisor * injectorFlowTotalDivisor) / (universalGasConstant * molarMassOfAirDivisor * perCylinderVolumeDivisor);
  * master = (1250	   * 2897			* 4096						  * 1024				     * 1024000				   ) / (34056				 * 100					 * 32768				   );
- * http://www.google.com/search?hl=en&safe=off&q=((1250+*+2897+*+4096+*+1024+*+1024000)+%2F+(34056+*++100+*+32768)&btnG=Search
+ * http://duckduckgo.com/?q=%28%281250+*+2897+*+4096+*+1024+*+1024000%29+%2F+%2834056+*++100+*+32768%29
  *
  * ((1250 * 2897 * 4096 * 1024 * 1024000) / (34056 *  100 * 32768) = 139371764
  */

@@ -62,7 +62,7 @@
 
 #define BENCH_TEST_NAME "BenchTest"
 
-// http://www.google.com/search?hl=en&biw=1283&bih=670&q=1250+*+60%29+*+50&aq=f&aqi=h1&aql=&oq=
+// http://duckduckgo.com/?q=%281250+*+60%29+*+50
 // 1250 ticks per milli second
 // 1250000 ticks per second
 // 60 seconds per minute

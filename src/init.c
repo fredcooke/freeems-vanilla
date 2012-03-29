@@ -578,8 +578,8 @@ void initECTTimer(){
 //	PTPSR = 0x3F; /* 64 prescaler gives 1.6uS resolution and max period of 105ms measured */
 //	PTPSR = 0xFF; /* 256 prescaler gives 6.4uS resolution and max period of 400ms measured */
 //	PTPSR = 0x7F; /* 128 prescaler gives 3.2uS resolution and max period of 200ms measured */
-	/* http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2840MHz+%2F+32+%29&btnG=Search */
-	/* http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2840MHz+%2F+32+%29+*+2%5E16&btnG=Search */
+	/* http://duckduckgo.com/?q=1+%2F+%2840MHz+%2F+32+%29 */
+	/* http://duckduckgo.com/?q=%281+%2F+%2840MHz+%2F+32+%29%29+*+2^16 */
 	/* www.mecheng.adelaide.edu.au/robotics_novell/WWW_Devs/Dragon12/LM4_Timer.pdf */
 
 	/* Initial actions */
@@ -609,7 +609,7 @@ void initPITTimer(){
 //	// set micro periods
 //	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
 //	PITMTLD1 = 0x1F; /* ditto */
-//	/* http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2840MHz+%2F+32+%29 Exactly the same as for ECT */
+//	/* http://duckduckgo.com/?q=1+%2F+%2840MHz+%2F+32+%29 Exactly the same as for ECT */
 //
 //	// set timers running
 //	PITLD0 = dwellPeriod;
@@ -679,7 +679,7 @@ void initConfiguration(){
 	 * OR
 	 *nstant = ((masterConst / injectorFlow) * perCylinderVolume) / stoichiometricAFR;
 	 *nstant = ((139371764	 / 4096		   ) * 16384			) / 15053			 ;
-	 * http://www.google.com/search?hl=en&safe=off&q=((139371764++%2F+4096+++++)+*+16384+++)+%2F+15053++++&btnG=Search */
+	 * http://duckduckgo.com/?q=%28%28139371764++%2F+4096%29+*+16384%29+%2F+15053 */
 	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.engineSettings.injectorFlow) * fixedConfigs1.engineSettings.perCylinderVolume) / fixedConfigs1.engineSettings.stoichiometricAFR;
 
 	/* The MAP range used to convert fake TPS from MAP and vice versa */
@@ -725,8 +725,8 @@ void initInterrupts(){
 	IVBR = 0xF7; /* Without this the interrupts will never find your code! */
 
 	/* Set up the Real Time Interrupt */
-	RTICTL = 0x81; /* 0b_1000_0001 0.125ms/125us period http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2816MHz+%2F+%282+*+10%5E3%29+%29&btnG=Search */
-//	RTICTL = 0xF9; /* 0b_1111_1001 0.125s/125ms period http://www.google.com/search?hl=en&safe=off&q=1+%2F+%2816MHz+%2F+%282*10%5E6%29+%29&btnG=Search */
+	RTICTL = 0x81; /* 0b_1000_0001 0.125ms/125us period http://duckduckgo.com/?q=1+%2F+%2816MHz+%2F+%282+*+10^3%29+%29 */
+//	RTICTL = 0xF9; /* 0b_1111_1001 0.125s/125ms period http://duckduckgo.com/?q=1+%2F+%2816MHz+%2F+%282*10^6%29+%29 */
 	CRGINT |= 0x80; /* Enable the RTI */
 	CRGFLG = 0x80; /* Clear the RTI flag */
 
