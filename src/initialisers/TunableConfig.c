@@ -61,27 +61,57 @@
 const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 
 #if SEANKLT1
-		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, SEANKLT1_16_DWELLS},
-#elif JOSHBROWN
-		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DWELLS},
+		dwellDesiredVersusVoltageTable: {
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: { T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00)}
+		},
 #elif SNOTROCKET
-		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, LS1COILS_16_DWELLS},
+		dwellDesiredVersusVoltageTable: {
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: { T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
+		},
 #else
-		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},
+		dwellDesiredVersusVoltageTable: {
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: ARRAY_OF_16_DWELLS
+		},
 #endif
 
 #if JOSHBROWN
-		injectorDeadTimeTable: {ARRAY_OF_16_VOLTAGES, BRNVOLVO_16_DEADTIMES},
+		injectorDeadTimeTable: {
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: {T(6.40), T(5.06), T(4.09), T(3.74), T(3.48), T(3.23), T(3.06), T(2.86), T(2.71), T(2.53), T(2.41), T(2.29), T(2.18), T(1.67), T(1.25), T(0.88)}
+		},
 #else
-		injectorDeadTimeTable: {ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DEADTIMES},
+		injectorDeadTimeTable: {
+			Axis: ARRAY_OF_16_VOLTAGES,
+			Values: ARRAY_OF_16_DEADTIMES
+		},
 #endif
-
-		postStartEnrichmentTable:         {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_BASE_PERCENTS},
-		postStartTaperTimeTable:          {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_TIMES},
-		engineTempEnrichmentTableFixed:   {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_ZEROS}, // currently unused
-		primingVolumeTable:               {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_VOLUMES},
-		engineTempEnrichmentTablePercent: {ARRAY_OF_16_TEMPS,    ARRAY_OF_16_PERCENTS},
-		dwellMaxVersusRPMTable:           {ARRAY_OF_16_RPMS,     ARRAY_OF_16_MAX_DWELLS},
+		postStartEnrichmentTable: {       // TODO YAGNI currently unused
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: ARRAY_OF_16_PERCENTS
+		},
+		postStartTaperTimeTable: {        // TODO YAGNI currently unused
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: ARRAY_OF_16_TIMES
+		},
+		engineTempEnrichmentTableFixed: { // TODO YAGNI currently unused
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: ARRAY_OF_16_ZEROS
+		},
+		primingVolumeTable: {
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: ARRAY_OF_16_VOLUMES
+		},
+		engineTempEnrichmentTablePercent: {
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: ARRAY_OF_16_PERCENTS
+		},
+		dwellMaxVersusRPMTable: {         // TODO YAGNI currently unused
+			Axis:   ARRAY_OF_16_RPMS,
+			Values: ARRAY_OF_16_DWELLS
+		},
 		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -111,7 +141,7 @@ const volatile SmallTables2 SmallTablesBFlashV TUNETABLESDV2 = {
 			datalogLongStreamSourceAddressFirst:  (void*)&PORTS_BA, // Port B and A combined with...
 			datalogLongStreamSourceAddressSecond: (void*)&ATD0DR4,  // ...MAP for default
 		},
-		perCylinderFuelTrims:          ARRAY_OF_6_FUEL_TRIMS,   /* perCylinderFuelTrims[] */
+		perCylinderFuelTrims: {32768, 32768, 32768, 32768, 32768, 32768}, // TODO YAGNI unused, format could change
 		filler: {0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

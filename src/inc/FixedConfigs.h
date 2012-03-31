@@ -186,13 +186,6 @@ typedef struct { // Comment represents normal and recommended cut type
 } cutAndLimiterSetting;
 
 
-#define simisTachoArray {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0} // 24 events for a 24+1 CAS setup with 4 cylinder tacho
-#define slaterTachoArray {1,0,0,2,0,0,1,0,0,2,0} // 11 events for 12-1 crank setup with 4 cylinder tacho
-#define standardTachoArray {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2}
-#define standardTachoPorts {(unsigned char*)&PORTE,(unsigned char*)&PORTK,(unsigned char*)&PORTK,(unsigned char*)&PORTK}
-#define standardTachoMasks {0x80,0x01,0x02,0x04}
-
-
 /// Settings related to sensor reading
 typedef struct {
 	unsigned short readingTimeout; ///< How often an ADC reading MUST occur.

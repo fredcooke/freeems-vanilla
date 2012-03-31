@@ -34,18 +34,10 @@
  * The declaration can be found in the global constants header file.
  *
  * Please ensure that all variables added here have good default values.
- *
- * @author Fred Cooke
  */
 
 
 #include "../inc/freeEMS.h"
-
-
-/// @todo TODO divide fixedConfig2 into useful chunks
-/// @todo TODO create engine hardware config chunk
-/// @todo TODO create random stuff chunk
-/// @todo TODO add the userTextField2 to the dictionary/address lookup
 
 
 /** @copydoc fixedConfig1 */
@@ -122,16 +114,15 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		readingTimeout: 500, /** Default to 0.5 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
 	},
 	decoderSettings:{
-// Should macro these, 45.00,50.00 and 100.00 are percentages
 #ifdef HOTEL
-		accelerationInputEventTimeTolerance: ((100/(100 + 100.00)) * 1000), // once started this needs a lot less... fix
-		decelerationInputEventTimeTolerance: (((100 + 100.00)/100) * 1000)
+		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100)
 #elif SNOTROCKET
-		accelerationInputEventTimeTolerance: ((100/(100 + 100.00)) * 1000),
-		decelerationInputEventTimeTolerance: (((100 + 100.00)/100) * 1000)
+		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100)
 #else
-		accelerationInputEventTimeTolerance: ((100/(100 + 50.00)) * 1000),
-		decelerationInputEventTimeTolerance: (((100 + 50.00)/100) * 1000)
+		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(50),
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(50)
 #endif
 	},
 	userTextField2:        "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but not "

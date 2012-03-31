@@ -34,19 +34,10 @@
  * The declaration can be found in the global constants header file.
  *
  * Please ensure that all variables added here have good default values.
- *
- * @author Fred Cooke
  */
 
 
 #include "../inc/freeEMS.h"
-
-
-/// @todo TODO divide fixedConfig1 into useful chunks
-/// @todo TODO create presets sensor values struct
-/// @todo TODO create engine setup struct
-/// @todo TODO create ranges struct
-/// @todo TODO add userTextField1 to the dictionary/address lookup
 
 
 /// @copydoc fixedConfig1
@@ -74,7 +65,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		perCylinderVolume:  CYLINDER_VOLUME(500),
 		injectorFlow:       CC_PER_MINUTE(550),
 #endif
-		stoichiometricAFR:  stoichiometricAFRGasoline,
+		stoichiometricAFR:  stoichiometricAFRPetrol,
 		densityOfFuelAtSTP: densityOfPetrol
 	},
 	serialSettings:{
@@ -83,10 +74,10 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		// http://duckduckgo.com/?q=22+%2F+%28%2840000000%2F16%29%2F115200%29 1.376% error in speed
 	},
 	coarseBitBangSettings:{
-#ifdef SNOTROCKET
-		outputActions:      simisTachoArray,
-#elif SLATER
-		outputActions:      slaterTachoArray,
+#ifdef SNOTROCKET // 24 events for a 24+1 CAS setup with 4 cylinder tacho
+		outputActions:      {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0},
+#elif SLATER // 11 events for 12-1 crank setup with 4 cylinder tacho
+		outputActions:      {1,0,0,2,0,0,1,0,0,2,0},
 #else
 		outputActions:      standardTachoArray,
 #endif

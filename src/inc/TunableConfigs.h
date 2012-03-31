@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -46,38 +46,6 @@
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_TUNABLE_CONFIGS_H_SEEN
 #define FILE_TUNABLE_CONFIGS_H_SEEN
-
-
-/** An array of 16 zeros to fill out currently unused tables. */
-#define ARRAY_OF_16_ZEROS         {    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
-/** An array of 16 scaled voltages for use as axes. */
-#define ARRAY_OF_16_VOLTAGES      { 6000,  7200,  8400,  9000,  9600, 10200, 10800, 11400, 12000, 12600, 13200, 13800, 14400, 17800, 21000, 24500}
-/** An array of 16 dwell times in native ticks. */
-#define ARRAY_OF_16_DWELLS        {18188, 14375, 11625, 10625,  9875,  9188,  8688,  8125,  7688,  7188,  6844,  6500,  6188,  4750,  3563,  2500}
-#define LS1COILS_16_DWELLS        { 9875,  9875,  9875,  9875,  9875,  9188,  8688,  8125,  7688,  7188,  6844,  6500,  6188,  4750,  3563,  2500}
-#define BRNVOLVO_16_DWELLS        {29100, 23000, 18600, 17000, 15800, 14700, 13900, 13000, 12300, 11500, 10950, 10400,  9900,  7600,  5700,  4000}
-#define SEANKLT1_16_DWELLS        { 2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500,  2500}
-/** An array of 16 maximum dwell times in native ticks. */
-#define ARRAY_OF_16_MAX_DWELLS    {18188, 14375, 11625, 10625,  9875,  9188,  8688,  8125,  7688,  7188,  6844,  6500,  6188,  4750,  3563,  2500}
-/** An array of 16 injector dead times in native ticks. */
-#define ARRAY_OF_16_DEADTIMES     { 3638,  2875,  2325,  2125,  1975,  1838,  1738,  1625,  1538,  1438,  1369,  1300,  1238,   950,   713,   500}
-#define BRNVOLVO_16_DEADTIMES     { 8003,  6325,  5115,  4675,  4345,  4043,  3823,  3575,  3383,  3163,  3011,  2860,  2723,  2090,  1568,  1100}
-/** An array of 16 temperatures in Kelvin. */
-#define ARRAY_OF_16_TEMPS         {24315, 25315, 26315, 27315, 28315, 29315, 30315, 31315, 32315, 33315, 34315, 35315, 36315, 37315, 38315, 39315}
-/** An array of 16 percentages for temperature based enrichment. */
-#define ARRAY_OF_16_PERCENTS      {40960, 38502, 36045, 33587, 31130, 28672, 26214, 23757, 21299, 19333, 17613, 16384, 16384, 18022, 19661, 21299}
-
-/** An array of 16 time periods - scale unknown */
-#define ARRAY_OF_16_TIMES         {    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
-/** An array of 16 percentages for temperature based post start enrichment. */
-#define ARRAY_OF_16_BASE_PERCENTS {65535, 65535, 65535, 65535, 62259, 57344, 52429, 47514, 42598, 37683, 35226, 32768, 32768, 36045, 39322, 42598}
-/** An array of 16 volumes - scale unknown */
-#define ARRAY_OF_16_VOLUMES       { 8003,  6325,  5115,  4675,  4345,  4043,  3823,  3575,  3383,  3163,  3011,  2860,  2723,  2090,  1568,  1100} // Just ticks for now
-/** Any array of 16 RPM values forAxis values for use as axes. TODO fill out values */
-#define ARRAY_OF_16_RPMS          {    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0}
-
-/** An array of 6 percentage fuel trims, the value is 100%. */
-#define ARRAY_OF_6_FUEL_TRIMS	{32768, 32768, 32768, 32768, 32768, 32768}
 
 
 /** Holds all configuration for logging.
