@@ -151,6 +151,6 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 	},
 	Table: {
-#include "../data/tables/lambda/SeansLT1Lambda.h" // Reasonable starting point
+#include "../data/tables/lambda/GenericLambda.h" // Reasonable starting point
 	}
 };

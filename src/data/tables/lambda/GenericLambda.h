@@ -28,7 +28,7 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief The lambda table as used on Sean's turbo LT1 Camaro
+ * @brief A reasonable default full-range lambda table that suits any engine well enough.
  *
  * This file only contains the data to be hash included into the lambda tables
  * in the fuel table files for car specific builds.
