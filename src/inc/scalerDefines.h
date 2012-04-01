@@ -79,7 +79,7 @@
 #define LAMBDA(LAMBDA_VALUE)          (unsigned long)ROUND((LAMBDA_VALUE) * (double)LAMBDA_FACTOR)
 #define RPM(ENGINE_SPEED)             (unsigned long)ROUND((ENGINE_SPEED) * (double)RPM_FACTOR)
 #define ANGLE(CRANK_DEGREES)          (unsigned long)ROUND((CRANK_DEGREES) * (double)ANGLE_FACTOR)
-#define AFR(AIR_FUEL_RATIO)           (unsigned long)ROUND((AIR_FUEL_RATIO) * (double)AFR_FACTOR)
+#define STOICH_AFR(AIR_FUEL_RATIO)    (unsigned long)ROUND((AIR_FUEL_RATIO) * (double)AFR_FACTOR)
 #define FUEL_DENSITY(DENSITY)         (unsigned long)ROUND((DENSITY) * (double)FUEL_DENSITY_FACTOR)
 #define PW_MS(PW_MILLISECONDS)        (unsigned long)ROUND((PW_MILLISECONDS) * (double)PW_TICK_FACTOR)
 #define PERCENT(PERCENTAGE)           (unsigned long)ROUND((PERCENTAGE) * (double)PERCENT_FACTOR)

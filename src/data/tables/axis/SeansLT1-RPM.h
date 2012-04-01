@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -31,18 +31,36 @@
  * @brief A default set of RPMs for a worked pushrod v8.
  *
  * This file only contains the data to be hash included into all mainTable RPM sections
- *
- * @author Fred Cooke
  */
 
 
-// 16 RPM values starting at 200 and ending at 6750, only the first 16 are used at the moment
-  400,  1000,  1800,  2700,
- 3600,  4500,  5400,  6300,
- 7200,  8100,  9000,  9900,
-10800, 11700, 12600, 13500,
+// 16 RPM values of which only 16 are used due to current tuning software limitations
+ RPM(200),
+ RPM(500),
+ RPM(900),
+RPM(1350),
+RPM(1800),
+RPM(2250),
+RPM(2700),
+RPM(3150),
+RPM(3600),
+RPM(4050),
+RPM(4500),
+RPM(4950),
+RPM(5400),
+RPM(5850),
+RPM(6300),
+RPM(6750),
 
 // spare:
-20000,  20001,  20002,  20003,
-20004,  20005,  20006,  20007,
-20008,  20009,  20010
+RPM(9000),
+RPM(9001),
+RPM(9002),
+RPM(9003),
+RPM(9004),
+RPM(9005),
+RPM(9006),
+RPM(9007),
+RPM(9008),
+RPM(9009),
+RPM(9010)

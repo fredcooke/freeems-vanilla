@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -31,15 +31,28 @@
  * @brief A default set of loads for a boosted engine.
  *
  * This file only contains the data to be hash included into all mainTable Load sections
- *
- * @author Fred Cooke
  */
 
 
-/* 21 load values starting at 16kPa and ending at 336kPa, only the first 19 are used by default */
- 1600,	 3200,	 4800,	 6400,
- 8000,	 9600,	11200,	12800,
-14400,	16000,	17600,	19200,
-20800,	22400,	24000,	25600,
-27200,	28800,	30400,	32000,
-33600
+// 21 load values of which only 16 are used due to current tuning software limitations
+ KPA(16),
+ KPA(32),
+ KPA(48),
+ KPA(64),
+ KPA(80),
+ KPA(96),
+KPA(112),
+KPA(128),
+KPA(144),
+KPA(160),
+KPA(176),
+KPA(192),
+KPA(208),
+KPA(224),
+KPA(240),
+KPA(256),
+KPA(272),
+KPA(288),
+KPA(304),
+KPA(320),
+KPA(336)

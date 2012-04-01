@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -31,12 +31,10 @@
  * @brief A fairly standard naturally aspirated 16x16 ignition curve.
  *
  * This file only contains the data to be hash included into some timing tables
- *
- * @author Fred Cooke
  */
 
 //  Low RPM                                                                                                            High RPM
-//  100     500     700    1300    1700    2100    2500    2900    3300    3700    4100    4500    4900    5300    5800  5800.5  // Vacuum
+//  100     500     700    1300    1700    2100    2500    2900    3300    3700    4100    4500    4900    5300    5800    6300  // Vacuum
   IT(0), IT(10), IT(12), IT(12), IT(17), IT(22), IT(27), IT(32), IT(37), IT(38), IT(38), IT(38), IT(38), IT(38), IT(38),  IT(0), //  20
   IT(0), IT(10), IT(12), IT(12), IT(17), IT(22), IT(27), IT(32), IT(37), IT(38), IT(38), IT(38), IT(38), IT(38), IT(38),  IT(0), //  26
   IT(0), IT(10), IT(12), IT(12), IT(17), IT(22), IT(27), IT(32), IT(37), IT(37), IT(37), IT(37), IT(37), IT(37), IT(37),  IT(0), //  32
@@ -56,7 +54,7 @@
   IT(0),  IT(4),  IT(4),  IT(7), IT(10), IT(13), IT(19), IT(24), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28),  IT(0), //  98
   IT(0),  IT(4),  IT(4),  IT(6),  IT(8), IT(12), IT(18), IT(24), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28),  IT(0), // 104
   IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0), // 110
-//  100     500     700    1300    1700    2100    2500    2900    3300    3700    4100    4500    4900    5300    5800  5800.5  //  WOT
+//  100     500     700    1300    1700    2100    2500    2900    3300    3700    4100    4500    4900    5300    5800    6300  //  WOT
 //  Low RPM                                                                                                            High RPM
 
 

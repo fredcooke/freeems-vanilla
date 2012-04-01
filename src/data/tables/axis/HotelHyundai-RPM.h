@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -31,18 +31,36 @@
  * @brief A default set of RPMs for a typical sohc engine.
  *
  * This file only contains the data to be hash included into all mainTable RPM sections
- *
- * @author Fred Cooke
  */
 
 
 // 16 RPM values starting at 100 and ending at 6100, only the first 16 are used at the moment
-  200,  1000,  1400,  2600,
- 3400,  4200,  5000,  5800,
- 6600,  7400,  8200,  9000,
- 9800, 10600, 11600, 11601,
+ RPM(100),
+ RPM(500),
+ RPM(700),
+RPM(1300),
+RPM(1700),
+RPM(2100),
+RPM(2500),
+RPM(2900),
+RPM(3300),
+RPM(3700),
+RPM(4100),
+RPM(4500),
+RPM(4900),
+RPM(5300),
+RPM(5800),
+RPM(6300),
 
 // spare:
-20000,  20001,  20002,  20003,
-20004,  20005,  20006,  20007,
-20008,  20009,  20010
+RPM(9000),
+RPM(9001),
+RPM(9002),
+RPM(9003),
+RPM(9004),
+RPM(9005),
+RPM(9006),
+RPM(9007),
+RPM(9008),
+RPM(9009),
+RPM(9010)

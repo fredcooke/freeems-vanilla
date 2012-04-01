@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -28,20 +28,33 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief A 16 long set of loads for my hyundai before mtx supports full tables
+ * @brief A 16 long set of loads for my hyundai before we have tuning software that supports full tables
  *
  * This file only contains the data to be hash included into all mainTable Load sections
- *
- * @author Fred Cooke
  */
 
 
-// 16 load values starting at 20kPa and ending at 110kPa, only the first 16 are used at the moment
- 2000,	 2600,	 3200,	 3800,
- 4400,	 5000,	 5600,	 6200,
- 6800,	 7400,	 8000,	 8600,
- 9200,	 9800,	10400,	11000,
+// 21 load values of which only 16 are used due to current tuning software limitations
+ KPA(20),
+ KPA(26),
+ KPA(32),
+ KPA(38),
+ KPA(44),
+ KPA(50),
+ KPA(56),
+ KPA(62),
+ KPA(68),
+ KPA(74),
+ KPA(80),
+ KPA(86),
+ KPA(92),
+ KPA(98),
+KPA(104),
+KPA(110),
 
 // spare:
-27200,	28800,	30400,	32000,
-33600
+KPA(272),
+KPA(288),
+KPA(304),
+KPA(320),
+KPA(336)

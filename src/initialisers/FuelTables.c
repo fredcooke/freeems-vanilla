@@ -141,54 +141,16 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 	RPMLength:  MAINTABLE_RPM_LENGTH,
 	LoadLength: MAINTABLE_LOAD_LENGTH,
 	RPM: {
-#ifdef TRUCK
-#include "../data/tables/axis/FredsTruck-RPM.h"
-#elif HOTEL
-#include "../data/tables/axis/HotelHyundai-RPM.h"
-#elif PRESTO
-#include "../data/tables/axis/FredsTruck-RPM.h"
-#elif SEANKLT1
-#include "../data/tables/axis/SeansLT1-RPM.h"
-#elif SEANKR1
-#include "../data/tables/axis/FredsTruck-RPM.h"
-#elif JOSHBROWN
+#ifdef SEANKLT1
 #include "../data/tables/axis/SeansLT1-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
 	},
 	Load: {
-#ifdef TRUCK
 #include "../data/tables/axis/FredsTruck-Load.h"
-#elif HOTEL
-#include "../data/tables/axis/HotelHyundai-Load.h"
-#elif PRESTO
-#include "../data/tables/axis/FredsTruck-Load.h"
-#elif SEANKLT1
-#include "../data/tables/axis/FredsTruck-Load.h"
-#elif SEANKR1
-#include "../data/tables/axis/FredsTruck-Load.h"
-#elif JOSHBROWN
-#include "../data/tables/axis/FredsTruck-Load.h"
-#else
-#include "../data/tables/axis/FredsTruck-Load.h"
-#endif
 	},
 	Table: {
-#ifdef TRUCK
-#include "../data/tables/lambda/FredsTruckLambda.h"
-#elif HOTEL
-#include "../data/tables/lambda/FredsTruckLambda.h"
-#elif PRESTO
-#include "../data/tables/lambda/SeansLT1Lambda.h"
-#elif SEANKLT1
-#include "../data/tables/lambda/SeansLT1Lambda.h"
-#elif SEANKR1
-#include "../data/tables/lambda/FredsTruckLambda.h"
-#elif JOSHBROWN
-#include "../data/tables/lambda/FredsTruckLambda.h" // flat stoich
-#else
 #include "../data/tables/lambda/SeansLT1Lambda.h" // Reasonable starting point
-#endif
 	}
 };

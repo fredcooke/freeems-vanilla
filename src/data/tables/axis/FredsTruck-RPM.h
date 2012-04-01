@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -31,18 +31,36 @@
  * @brief A default set of RPMs for a typical jap engine.
  *
  * This file only contains the data to be hash included into all mainTable RPM sections
- *
- * @author Fred Cooke
  */
 
 
-/* 27 RPM values starting at 200 and ending at 9100, only the first 24 are used by default */
-  500,  1400,  2000,  3200,
- 4400,  5600,  6800,  8000,
- 9200, 10400, 11600, 12800,
-14000, 15200, 16000,  16001,
+// 27 RPM values of which only 16 are used due to current tuning software limitations
+ RPM(250),
+ RPM(700),
+RPM(1000),
+RPM(1600),
+RPM(2200),
+RPM(2800),
+RPM(3400),
+RPM(4000),
+RPM(4600),
+RPM(5200),
+RPM(5800),
+RPM(6400),
+RPM(7000),
+RPM(7600),
+RPM(8200),
+RPM(8800),
 
 // spare:
-20000,  20001,  20002,  20003,
-20004,  20005,  20006,  20007,
-20008,  20009,  20010
+RPM(9000),
+RPM(9001),
+RPM(9002),
+RPM(9003),
+RPM(9004),
+RPM(9005),
+RPM(9006),
+RPM(9007),
+RPM(9008),
+RPM(9009),
+RPM(9010)

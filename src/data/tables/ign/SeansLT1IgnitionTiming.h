@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -28,14 +28,9 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief A flat 0 degree timing table, ONLY for use with mechanical timing as
- * a basis for a trim table or for finding TDC while setting up an engine.
- *
- * @warning DO NOT RUN YOUR CAR ON THIS!
+ * @brief Sean's LT1 rough tuned timing table
  *
  * This file only contains the data to be hash included into some timing tables
- *
- * @author Fred Cooke
  */
 
 
@@ -59,7 +54,7 @@
   IT(0),  IT(5),  IT(5), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(12), // 195
   IT(0),  IT(5),  IT(5),  IT(5), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), // 210
   IT(0),  IT(5),  IT(5),  IT(5),  IT(5), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), // 225
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0), // 225.01
+  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0), // 240
 //  100     500     900    1300    1800    2250    2700    3150    3600    4050    4500    4950    5400    5850    6300    6750  //  WOT
 //  Low RPM                                                                                                            High RPM
 
