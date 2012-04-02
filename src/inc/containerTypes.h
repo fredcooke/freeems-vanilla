@@ -168,29 +168,29 @@ typedef struct {
 
 
 /// Active flags for each injection cut
-typedef struct {
-	unsigned InjectionRPM :1; ///< @todo document this
-	unsigned InjOverBoost :1; ///< @todo document this
-	unsigned Spare0 :1;
-	unsigned Spare1 :1;
-	unsigned Spare2 :1;
-	unsigned Spare3 :1;
-	unsigned Spare4 :1;
+typedef struct { // BIT7 at the top
+	unsigned Spare7 :1;
+	unsigned Spare6 :1;
 	unsigned Spare5 :1;
-} injectionCutFlags;
+	unsigned Spare4 :1;
+	unsigned Spare3 :1;
+	unsigned Spare2 :1;
+	unsigned InjOverBoost :1; ///< @todo document this
+	unsigned InjectionRPM :1; ///< @todo document this
+} injectionCutFlags; // BIT0 at the bottom
 
 
 /// Active flags for each ignition cut
-typedef struct {
-	unsigned IgnitionRPM  :1; ///< @todo document this
-	unsigned IgnOverBoost :1; ///< @todo document this
-	unsigned Spare0 :1;
-	unsigned Spare1 :1;
-	unsigned Spare2 :1;
-	unsigned Spare3 :1;
-	unsigned Spare4 :1;
+typedef struct { // BIT7 at the top
+	unsigned Spare7 :1;
+	unsigned Spare6 :1;
 	unsigned Spare5 :1;
-} ignitionCutFlags;
+	unsigned Spare4 :1;
+	unsigned Spare3 :1;
+	unsigned Spare2 :1;
+	unsigned IgnOverBoost :1; ///< @todo document this
+	unsigned IgnitionRPM  :1; ///< @todo document this
+} ignitionCutFlags; // BIT0 at the bottom
 
 
 // Any changes to the above that don't maintain the same size will change the packet size
