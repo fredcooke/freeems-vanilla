@@ -99,7 +99,8 @@ unsigned short safeTrim(unsigned short addend1, signed short addend2){
  * @author Fred Cooke
  *
  * @param baseValue
- * @param scaler
+ * @param dividend
+ * @param divisor
  */
 unsigned short safeScale(unsigned short baseValue, unsigned short dividend, unsigned short divisor){
 	/* Perform the scaling */
