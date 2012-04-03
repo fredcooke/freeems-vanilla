@@ -42,23 +42,25 @@
 
 /** @copydoc fixedConfig1 */
 const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
+	sensorSources:{
+		BRV: SOURCE_NORMAL,
+		CHT: SOURCE_NORMAL,
+		IAT: SOURCE_NORMAL,
+	},
 	sensorPresets:{
 		presetIAT:  DEGREES_C(20), // Room temperature
 		presetCHT:  DEGREES_C(85), // Running temperature
-		presetTPS:  PERCENT(50),   // TODO YAGNI
-		presetEGO:  LAMBDA(1.0),   // Stoichiometric
 		presetBRV:  VOLTS(14.4),   // Standard alternator charging level for wet cell lead acid
-		presetMAP:  KPA(30),       // Idle manifold pressure
-		presetAAP:  KPA(100),      // Sea-level
-		presetMAT:  DEGREES_C(20), // Room temperature
-		presetEGO2: LAMBDA(1.0),   // Stoichiometric
-		presetIAP:  KPA(250),      // TODO YAGNI
-		presetBPW:  PW_MS(1.6),    // TODO YAGNI
-		presetAF:   1500 // TODO YAGNI remove? Number is random...
+
+		failsafeIATIgnition:  DEGREES_C(40),
+		failsafeIATInjection:  DEGREES_C(0),
+		failsafeCHT:  DEGREES_C(100),
+		failsafeMAP:  KPA(60),
+		failsafeBRV:  VOLTS(14.4),
+		failsafeAAP:  KPA(100),
+		failsafeTPS:  PERCENT(10), // Enough for light throttle and idle in Alpha-N with a fault
 	},
 	sensorRanges:{
-		TPSClosedMAP:  KPA(30), // Just above where MAP would be with closed throttle at idle
-		TPSOpenMAP:    KPA(95), // Just below where MAP would be at WOT
 // MAP Sensor Configuration
 #ifdef HOTEL
 		MAPMinimum:    HondaDenso183kPaMin,
@@ -115,6 +117,12 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	},
 	sensorSettings:{ // Warning, until the following mods are made to ADC use, setting this lower than your cranking rpm will result in a pulsing fuel pump.
 		readingTimeout: 500, /** Default to 0.5 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
+		numberOfADCsToRead: 8,
+		spare8bitConfig: 0
+	},
+	algorithmSettings:{
+		loadType:      LOAD_MAP,
+		algorithmType: ALGO_SPEED_DENSITY
 	},
 	decoderSettings:{
 #ifdef HOTEL
@@ -128,5 +136,5 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(50)
 #endif
 	},
-	userTextField2:        "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, but not "
+	userTextField2:        "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, not more!"
 };

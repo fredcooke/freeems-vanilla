@@ -45,25 +45,21 @@
 #include "inc/decoderInterface.h"
 
 
-/** @brief Generate the derived variables.
- *
- * This function uses the core variables to lookup and calculate further second
+/**
+ * Use core variables to lookup and calculate the derived variables. This
+ * function uses the core variables to lookup and calculate further second
  * order variables such as load, VE, Lamdda, Transient fuel correction, engine
  * temperature enrichment, Injector dead time, etc.
- *
- * @author Fred Cooke
  */
 void generateDerivedVars(){
-	/*&&&&&&&&&&&&&&&&&&&& Use basic variables to lookup and calculate derived variables &&&&&&&&&&&&&&&&&&&*/
-
-
 	/* Determine load based on options */
-	if(TRUE){ /* Use MAP as load */
+	if(!(fixedConfigs2.algorithmSettings.loadType)){ /* Use MAP as load */
 		DerivedVars->LoadMain = CoreVars->MAP;
-	}else if(FALSE){ /* Use TPS as load */
+	}else if(fixedConfigs2.algorithmSettings.loadType == LOAD_TPS){ /* Use TPS as load */
 		DerivedVars->LoadMain = CoreVars->TPS;
-	}else if(FALSE){ /* Use AAP corrected MAP as load */
+	}else if(fixedConfigs2.algorithmSettings.loadType == LOAD_AAP){ /* Use AAP corrected MAP as load */
 		DerivedVars->LoadMain = ((unsigned long)CoreVars->MAP * CoreVars->AAP) / KPA(100);
+		// TODO add maf calc load option here
 	}else{ /* Default to MAP, but throw error */
 		DerivedVars->LoadMain = CoreVars->MAP;
 		/* If anyone is listening, let them know something is wrong */
@@ -135,6 +131,4 @@ void generateDerivedVars(){
 		DerivedVars->TFCTotal = 0;
 		/* Don't throw error as correction may not be required */
 	}
-
-	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 }

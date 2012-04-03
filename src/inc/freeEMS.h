@@ -256,9 +256,7 @@ EXTERN unsigned char currentTimeRPage;
 /* Output variables (init not required) TODO ditch this in favour of the real vars in the calcs function and struct */
 extern unsigned short masterPulseWidth;
 EXTERN unsigned long bootFuelConst;  /* constant derived from configurable constants */
-EXTERN unsigned short TPSMAPRange;   /* The MAP range used to convert fake TPS from MAP and vice versa */
 EXTERN unsigned short TPSADCRange;   /* The ADC range used to generate TPS percentage */
-EXTERN unsigned short boundedTPSADC; // temp to view to debug
 
 
 /* ALL STATUS STUFF HERE */

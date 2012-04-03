@@ -49,19 +49,10 @@
 #define NO_PROBLEMO                     0x0666
 
 /* Unconfigured options */
-#define IAT_NOT_CONFIGURED_CODE         0x1000
-#define CHT_NOT_CONFIGURED_CODE         0x1001
-#define TPS_NOT_CONFIGURED_CODE         0x1002
-#define EGO_NOT_CONFIGURED_CODE         0x1003
-#define BRV_NOT_CONFIGURED_CODE         0x1004
-#define MAP_NOT_CONFIGURED_CODE         0x1005
-#define AAP_NOT_CONFIGURED_CODE         0x1006
-#define MAT_NOT_CONFIGURED_CODE         0x1007
-#define EGO2_NOT_CONFIGURED_CODE        0x1008
-#define IAP_NOT_CONFIGURED_CODE         0x1009
-#define LOAD_NOT_CONFIGURED_CODE        0x100A
-#define AIRFLOW_NOT_CONFIGURED_CODE     0x100B
-#define BPW_NOT_CONFIGURED_CODE         0x100C
+#define IAT_NOT_CONFIGURED_CODE  0x1000
+#define CHT_NOT_CONFIGURED_CODE  0x1001
+#define BRV_NOT_CONFIGURED_CODE  0x1002
+#define LOAD_NOT_CONFIGURED_CODE 0x1003
 
 
 /* Badly configured options */

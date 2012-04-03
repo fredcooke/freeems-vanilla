@@ -104,7 +104,7 @@ typedef union {
 
 
 // Make current tolerance scheme work properly for different missing levels OOTB
-#define TOLERANCE_LEVEL (MISSING_TEETH*1024)
+#define TOLERANCE_LEVEL (MISSING_TEETH*2048)
 
 
 #if defined(CRANK_ONLY)

@@ -56,6 +56,20 @@ typedef struct {
 } decoderSetting;
 
 
+#define SOURCE_NORMAL 0
+#define SOURCE_PRESET 1
+#define SOURCE_LINEAR 2 ///< Read from the normal ADC pin, but process linearly. For bench use, mainly.
+
+/**
+ * Configuration that controls how the values of variables are determined.
+ */
+typedef struct {
+	unsigned char BRV;
+	unsigned char CHT;
+	unsigned char IAT;
+} sensorSource;
+
+
 /** @brief Preset values for inputs and other variables
  *
  * In some cases you may want to ignore input readings and just use some
@@ -63,25 +77,22 @@ typedef struct {
  * choose to use a fixed reading instead of the real thing.
  */
 typedef struct {
-	unsigned short presetIAT;  ///< Preset variable value to override calculated values.
-	unsigned short presetCHT;  ///< @copydoc presetIAT
-	unsigned short presetTPS;  ///< @copydoc presetIAT
-	unsigned short presetEGO;  ///< @copydoc presetIAT
-	unsigned short presetBRV;  ///< @copydoc presetIAT
-	unsigned short presetMAP;  ///< @copydoc presetIAT
-	unsigned short presetAAP;  ///< @copydoc presetIAT
-	unsigned short presetMAT;  ///< @copydoc presetIAT
-	unsigned short presetEGO2; ///< @copydoc presetIAT
-	unsigned short presetIAP;  ///< @copydoc presetIAT TODO YAGNI
-	unsigned short presetBPW;  ///< @copydoc presetIAT
-	unsigned short presetAF;   ///< @copydoc presetIAT
+	unsigned short presetIAT;   ///< Preset variable value to override calculated values.
+	unsigned short presetCHT;   ///< @copydoc presetIAT
+	unsigned short presetBRV;   ///< @copydoc presetIAT
+
+	unsigned short failsafeIATIgnition;  ///< Value to fall back on if a sensor fault is detected
+	unsigned short failsafeIATInjection; ///< @copydoc failsafeIAT
+	unsigned short failsafeCHT; ///< @copydoc failsafeIAT
+	unsigned short failsafeBRV; ///< @copydoc failsafeIAT
+	unsigned short failsafeMAP; ///< @copydoc failsafeIAT
+	unsigned short failsafeAAP; ///< @copydoc failsafeIAT
+	unsigned short failsafeTPS; ///< @copydoc failsafeIAT
 } sensorPreset;
 
 
 /// Ranges for sensors with linear config
 typedef struct {
-	unsigned short TPSClosedMAP;  ///< Unused at this time.
-	unsigned short TPSOpenMAP;    ///< Unused at this time.
 	signed short   MAPMinimum;    ///< Vacuum required to make the sensor reach 0 Volt output. Theoretical only, most do not rail.
 	unsigned short MAPRange;      ///< Number of kPa between 0 Volts and 5 Volts.
 	unsigned short AAPMinimum;    ///< @copydoc MAPMinimum
@@ -189,8 +200,25 @@ typedef struct { // Comment represents normal and recommended cut type
 /// Settings related to sensor reading
 typedef struct {
 	unsigned short readingTimeout; ///< How often an ADC reading MUST occur.
+	unsigned char numberOfADCsToRead;
+	unsigned char spare8bitConfig;
 } sensorSetting;
 
+
+#define LOAD_MAP 0
+#define LOAD_TPS 1
+#define LOAD_MAF 2
+#define LOAD_AAP 3
+
+#define ALGO_SPEED_DENSITY 0
+#define ALGO_ALPHA_N       1
+#define ALGO_MAF           2
+
+/// Settings for fueling algorithms
+typedef struct {
+	unsigned char loadType;
+	unsigned char algorithmType;
+} algorithmSetting;
 
 #define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting) + sizeof(cutAndLimiterSetting)))
 /**
@@ -211,12 +239,14 @@ typedef struct {
 } fixedConfig1;
 
 
-#define userTextFieldArrayLength2 (flashSectorSize - (sizeof(sensorPreset) + sizeof(sensorRange) + sizeof(sensorSetting) + sizeof(decoderSetting)))
+#define userTextFieldArrayLength2 (flashSectorSize - (sizeof(sensorSource) + sizeof(sensorPreset) + sizeof(sensorRange) + sizeof(sensorSetting) + sizeof(algorithmSetting) + sizeof(decoderSetting)))
 /** @copydoc fixedConfig1 */
 typedef struct {
+	sensorSource sensorSources;                              ///< @see sensorSource
 	sensorPreset sensorPresets;                              ///< @see sensorPreset
 	sensorRange sensorRanges;                                ///< @see sensorRange
 	sensorSetting sensorSettings;                            ///< @see sensorSetting
+	algorithmSetting algorithmSettings;                      ///< @see algorithmSetting
 	decoderSetting decoderSettings;                          ///< @see decoderSetting
 	unsigned char userTextField2[userTextFieldArrayLength2]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig2;

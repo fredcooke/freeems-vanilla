@@ -41,62 +41,41 @@
 #include "inc/fuelAndIgnitionCalcs.h"
 
 
-/** @brief Fuel and ignition calculations
- *
- * Using a variety of primary algorithms calculate a base pulsewidth and then
- * apply various corrections to it such as injector dead time, transient fuel
- * correction, engine temperature enrichment and per cylinder trims. The fuel
- * injection timing is also determined here.
- *
- * Calculate the ignition timing and dwell here too. Several corrections are
- * applied to these as well.
- *
- * @todo TODO change the way configuration is done and make sure the most common options are after the first if().
- * @todo TODO add actual configuration options to the fixed config blocks for these items.
+/**
+ * Final fuel and ignition calculations. Using a variety of primary algorithms
+ * calculate a base pulsewidth and then apply various corrections to it such as
+ * injector dead time, transient fuel correction, engine temperature enrichment
+ * and per cylinder trims. The ignition timing and fuel injection timing are
+ * also determined here, as are the various limiters and cuts.
  */
 void calculateFuelAndIgnition(){
-	/*&&&&&&&&&&&&& Perform the basic calculations one step at a time to get a final pulsewidth &&&&&&&&&&&&*/
-
-	if(TRUE /* Genuine method */){
-		unsigned short airInletTemp = CoreVars->IAT; /* All except MAF use this. */
-		/* Determine the type of air flow data */
-		if(TRUE /* SpeedDensity */){
-			/* This won't overflow until 512kPa or about 60psi of boost with 128% VE. */
-			DerivedVars->AirFlow = ((unsigned long)CoreVars->MAP * DerivedVars->VEMain) / VE(100);
-			/* Result is 450 - 65535 always. */
-		}else if(FALSE /*AlphaN*/){
-			DerivedVars->AirFlow = DerivedVars->VEMain; /* Not actually VE, but rather tuned air flow without density information */
-		}else if(FALSE /*MAF*/){
-			DerivedVars->AirFlow = CoreVars->MAF; /* Just fix temperature at appropriate level to provide correct Lambda */
-			/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!
-			airInletTemp = DEGREES_C(20); // Room temperature?
-		}else if(FALSE /*FixedAF*/){ /* Fixed air flow from config */
-			DerivedVars->AirFlow = fixedConfigs2.sensorPresets.presetAF;
-		}else{ /* Default to no fuel delivery and error */
-			DerivedVars->AirFlow = 0;
-			/* If anyone is listening, let them know something is wrong */
-//			sendError(AIRFLOW_NOT_CONFIGURED_CODE); // or maybe queue it?
-		}
-
-
-		/* This won't overflow until well past 125C inlet, 1.5 Lambda and fuel as dense as water */
-		DerivedVars->densityAndFuel = (((unsigned long)((unsigned long)airInletTemp * DerivedVars->Lambda) / LAMBDA(1.0)) * fixedConfigs1.engineSettings.densityOfFuelAtSTP) / FUEL_DENSITY(FUEL_DENSITY_UNIT_FACTOR);
-		/* Result is 7500 - 60000 always. TODO clean up the last item on the above line */
-
-		/* Divisors for air inlet temp and pressure :
-		 * #define airInletTempDivisor 100
-		 * #define airPressureDivisor 100
-		 * cancel each other out! all others are used. */
-
-
-		DerivedVars->BasePW = (bootFuelConst * DerivedVars->AirFlow) / DerivedVars->densityAndFuel;
-	}else if(FALSE /*configured*/){ /* Fixed PW from config */
-		DerivedVars->BasePW = fixedConfigs2.sensorPresets.presetBPW;
+	unsigned short airInletTemp = CoreVars->IAT; /* All except MAF use this. */
+	/* Determine the type of air flow data */
+	if(!(fixedConfigs2.algorithmSettings.algorithmType)){
+		/* This won't overflow until 512kPa or about 60psi of boost with 128% VE. */
+		DerivedVars->AirFlow = ((unsigned long)CoreVars->MAP * DerivedVars->VEMain) / VE(100);
+		/* Result is 450 - 65535 always. */
+	}else if(fixedConfigs2.algorithmSettings.algorithmType == ALGO_ALPHA_N){
+		DerivedVars->AirFlow = DerivedVars->VEMain; /* Not actually VE, but rather tuned air flow without density information */
+	}else if(fixedConfigs2.algorithmSettings.algorithmType == ALGO_MAF){
+		DerivedVars->AirFlow = CoreVars->MAF; /* Just fix temperature at appropriate level to provide correct Lambda */
+		/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!
+		airInletTemp = DEGREES_C(20); // Room temperature?
 	}else{ /* Default to no fuel delivery and error */
-		DerivedVars->BasePW = 0;
-		/* If anyone is listening, let them know something is wrong */
-//		sendError(BPW_NOT_CONFIGURED_CODE); // or maybe queue it?
+		DerivedVars->AirFlow = 0;
 	}
+
+
+	/* This won't overflow until well past 125C inlet, 1.5 Lambda and fuel as dense as water */
+	DerivedVars->densityAndFuel = (((unsigned long)((unsigned long)airInletTemp * DerivedVars->Lambda) / LAMBDA(1.0)) * fixedConfigs1.engineSettings.densityOfFuelAtSTP) / FUEL_DENSITY(FUEL_DENSITY_UNIT_FACTOR);
+	/* Result is 7500 - 60000 always. TODO clean up the last item on the above line */
+
+	/* Divisors for air inlet temp and pressure :
+	 * #define airInletTempDivisor 100
+	 * #define airPressureDivisor 100
+	 * cancel each other out! all others are used. */
+
+	DerivedVars->BasePW = (bootFuelConst * DerivedVars->AirFlow) / DerivedVars->densityAndFuel;
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
