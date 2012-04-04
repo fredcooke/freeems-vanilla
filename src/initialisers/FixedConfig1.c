@@ -97,14 +97,12 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfInjectionsPerEngineCycle:            2  // Used to be batch, dead time being wrong could have affected AFRs
 
 #elif HOTEL // Fred's Hotel Hyundai (Stellar) http://forum.diyefi.org/viewtopic.php?f=55&t=1086
-		anglesOfTDC:                  {ANGLE(0)}, // Simple dual edge dizzy
-		outputEventPinNumbers:               {0}, // First pin
-		schedulingConfigurationBits:         {0}, // Ignition only
-		decoderEngineOffset: ANGLE(20.00), // Distributor fully retarded? Is this true? I don't think so?
-		// Update: This needs new code and the sensor to be rotated 10 degrees toward the front of the car (more advanced) producing an offset of zero above.
-		// This will allow a special fixed schedule to be done over the entire quarter cycle to arrive correctly and on time during cranking assuming stable RPM.
-		numberOfConfiguredOutputEvents:        1, // One per decoder cycle = 4
-		numberOfInjectionsPerEngineCycle:      1  // Ditto
+		anglesOfTDC:             {ANGLE(0)}, // Simple dual edge dizzy
+		outputEventPinNumbers:          {0}, // First pin
+		schedulingConfigurationBits:    {0}, // Ignition only
+		decoderEngineOffset:    ANGLE(0.00), // Locked dizzy with timing of TDC on edge, used for static timing during cranking.
+		numberOfConfiguredOutputEvents:   1, // One per decoder cycle = 4
+		numberOfInjectionsPerEngineCycle: 1  // Ditto
 
 #elif PRESTO // Preston's silver-top-on-a-stand http://forum.diyefi.org/viewtopic.php?f=55&t=1101
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
@@ -193,8 +191,13 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			reenableThreshold: RPM(4900)  // Come back on before ignition does
 		},
 		IgnitionRPM:{
+#ifdef HOTEL
+			disableThreshold:  RPM(5800),
+			reenableThreshold: RPM(5700) // Nice and close to save the exhaust
+#else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4800)  // Come back on after injection does
+#endif
 		},
 		OverBoost:{
 			disableThreshold:  KPA(250), // Cut close to std sensor max
