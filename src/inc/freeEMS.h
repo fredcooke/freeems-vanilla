@@ -292,7 +292,7 @@ unsigned short timerExtensionClock; /* Increment for each overflow of the main t
 #ifndef DECODER_BENCHMARKS
 #define DECODER_BENCHMARKS FALSE
 #else
-#undef DECODER_BENCMARKS
+#undef DECODER_BENCHMARKS
 #define DECODER_BENCHMARKS TRUE
 #endif
 
