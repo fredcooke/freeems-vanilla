@@ -194,6 +194,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #ifdef HOTEL
 			disableThreshold:  RPM(5800),
 			reenableThreshold: RPM(5700) // Nice and close to save the exhaust
+#elif SNOTROCKET
+			disableThreshold:  RPM(6300),
+			reenableThreshold: RPM(6200)
 #else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4800)  // Come back on after injection does
