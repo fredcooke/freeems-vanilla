@@ -61,6 +61,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif SLATER
 		perCylinderVolume:  CYLINDER_VOLUME(324),
 		injectorFlow:       CC_PER_MINUTE(320),
+#elif DEUCECOUPE
+		perCylinderVolume:  CYLINDER_VOLUME(522),
+		injectorFlow:       CC_PER_MINUTE(235),
 #else
 		perCylinderVolume:  CYLINDER_VOLUME(500),
 		injectorFlow:       CC_PER_MINUTE(550),
@@ -162,10 +165,17 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:          6, // THESE ARE NOT IGN, THEY ARE FUEL
 		numberOfInjectionsPerEngineCycle:        1  // Sequential, baby, yeah!
 
+#elif DEUCECOUPE // DeuceEFI's GM 3100 V6, firing order 1-6-5-4-3-2, wasted spark DIS ignition http://forum.diyefi.org/viewtopic.php?f=3&t=1278
+		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600), ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
+		outputEventPinNumbers:       {0,0,0,0,0,0,2,3,4,2,3,4}, // DIS E-dizzy and semi-sequential, for now.
+		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Six E-dizzy style DIS ignition outputs and six injection events, two per cycle, semi sequential
+		decoderEngineOffset:           ANGLE(0.00), // Nothing for now, so as to be able to figure out what is going on.
+		numberOfConfiguredOutputEvents:         12, // See three lines above
+		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, for now.
+
 // Looking forward to there being links to threads here soon! In no particular order:
 //#elif LEV8N
 //#elif SEANKR1
-//#elif DEUCECOUPE
 //#elif TTV8SUPRA
 //#elif SECRETSQUIRREL // Shhhhhh! :-p
 //#elif HOTCAT

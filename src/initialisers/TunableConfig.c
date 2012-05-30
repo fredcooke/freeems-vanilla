@@ -75,6 +75,11 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: {T(29.10), T(23.00), T(18.60), T(17.00), T(15.80), T(14.70), T(13.90), T(13.00), T(12.30), T(11.50), T(10.96), T(10.40),  T(9.90),  T(7.60),  T(5.70),  T(4.00)}
 		},
+#elif DEUCECOUPE
+		dwellDesiredVersusVoltageTable: {
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: { T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00)}
+		},
 #else
 		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,

@@ -66,6 +66,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif JOSHBROWN
 #include "../data/tables/axis/SeansLT1-RPM.h"
+#elif DEUCECOUPE
+#include "../data/tables/axis/HotelHyundai-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -83,6 +85,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif JOSHBROWN
 #include "../data/tables/axis/FredsTruck-Load.h"
+#elif DEUCECOUPE
+#include "../data/tables/axis/HotelHyundai-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
 #endif
@@ -99,6 +103,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #elif SEANKR1
 #include "../data/tables/ve/flat80Percent.h"
 #elif JOSHBROWN
+#include "../data/tables/ve/flat60Percent.h"
+#elif DEUCECOUPE
 #include "../data/tables/ve/flat60Percent.h"
 #else
 #include "../data/tables/ve/flat60Percent.h"

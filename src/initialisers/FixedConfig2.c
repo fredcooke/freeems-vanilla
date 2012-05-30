@@ -78,6 +78,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 //#elif JOSHBROWN
 //		MAPMinimum:    MPXH6400AMin,
 //		MAPRange:      MPXH6400ARange,
+#elif DEUCECOUPE
+		MAPMinimum:    MPX4100AMin,
+		MAPRange:      MPX4100ARange,
 #else
 		MAPMinimum:    MPX4250AMin,
 		MAPRange:      MPX4250ARange,
