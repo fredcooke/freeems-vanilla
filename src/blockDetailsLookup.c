@@ -388,7 +388,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB.SmallTablesB.loggingSettings;
 		details->FlashAddress = loggingSettings2Location;
-		details->parent = SmallTablesBLocationID;
+		details->parent = SmallTablesB2LocationID;
 		break;
 
 	/* TablesC small tables */
