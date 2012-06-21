@@ -197,6 +197,24 @@ typedef struct { // Comment represents normal and recommended cut type
 } cutAndLimiterSetting;
 
 
+typedef struct {
+	unsigned short* variable;
+	unsigned short upperValue;
+	unsigned short lowerValue;
+	unsigned char* port;
+	unsigned char mask;
+	unsigned char flags; // for go high or low on success.
+} singleSimpleGPOutput;
+
+
+#define NUMBER_OF_OUTPUT_CONFIGS 8
+typedef struct {
+	singleSimpleGPOutput outputConfigs[NUMBER_OF_OUTPUT_CONFIGS];
+	unsigned char numberConfigured;
+	unsigned char spare;
+} simpleGPIOSetting;
+
+
 /// Settings related to sensor reading
 typedef struct {
 	unsigned short readingTimeout; ///< How often an ADC reading MUST occur.
@@ -220,7 +238,7 @@ typedef struct {
 	unsigned char algorithmType;
 } algorithmSetting;
 
-#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting) + sizeof(cutAndLimiterSetting)))
+#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting) + sizeof(cutAndLimiterSetting) + sizeof(simpleGPIOSetting)))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  *
@@ -235,6 +253,7 @@ typedef struct {
 	coarseBitBangSetting coarseBitBangSettings; ///< @see coarseBitBangSetting
 	schedulingSetting schedulingSettings;       ///< @see schedulingSetting
 	cutAndLimiterSetting cutAndLimiterSettings; ///< @see cutAndLimiterSetting
+	simpleGPIOSetting simpleGPIOSettings;       ///< @see simpleGPIOSetting
 	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
 

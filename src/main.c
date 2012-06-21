@@ -34,8 +34,6 @@
  * from which low priority non-realtime code runs. The most important units of
  * code that runs under the main loop umbrella are the injection, ignition and
  * scheduling calculations.
- *
- * @author Fred Cooke
  */
 
 
@@ -55,8 +53,6 @@
  * closely reflects the attached engines rapidly changing requirements. When
  * accessory code is added a new scheduling algorithm will be required to keep
  * the latency low without starving any particular blocks of CPU time.
- *
- * @author Fred Cooke
  */
 int  main(){ /// @todo TODO maybe move this to paged flash ?
 	// Set everything up.
@@ -284,6 +280,8 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 				lastCalcCount = Counters.calculationsPerformed;
 			}
 		}
+
+		performSimpleGPIO();
 
 		// PWM experimentation
 		adjustPWM();

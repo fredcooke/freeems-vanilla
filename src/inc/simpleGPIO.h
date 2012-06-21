@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -26,41 +26,37 @@
 
 /** @file
  *
- * @ingroup allHeaders
+ * Declarations for simpleGPIO.c implementations.
+ * To add a file to the project :
+ * - Change all 4 hash defines to the filename uppercased and underscored
  */
 
 
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
-#ifndef FILE_MAIN_H_SEEN
-#define FILE_MAIN_H_SEEN
+#ifndef FILE_SIMPLE_GPIO_H_SEEN
+#define FILE_SIMPLE_GPIO_H_SEEN
 
 
-#include "freeEMS.h"
-#include "interrupts.h"
-#include "utils.h"
-#include "init.h"
-#include "commsISRs.h"
-#include "commsCore.h"
-#include "coreVarsGenerator.h"
-#include "derivedVarsGenerator.h"
-#include "fuelAndIgnitionCalcs.h"
-#include "outputScheduler.h"
-#include "decoderInterface.h"
-#include "tableLookup.h"
-#include "simpleGPIO.h"
+#ifdef EXTERN
+#warning "EXTERN already defined by another header, please sort it out!"
+#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
+#endif
+
+#ifdef SIMPLE_GPIO_C
+#define EXTERN
+#else
+#define EXTERN extern
+#endif
 
 
-/* Computer Operating Properly reset sequence MC9S12XDP512V2.PDF Section 2.4.1.5 */
-#define COP_RESET1 0x55
-#define COP_RESET2 0xAA
+EXTERN void performSimpleGPIO(void) FPAGE_FE;
 
-// method of ensuring no duplicate logs are sent.
-unsigned short lastCalcCount;
 
+#undef EXTERN
 
 #else
 	/* let us know if we are being untidy with headers */
-	#warning "Header file MAIN_H seen before, sort it out!"
+	#warning "Header file SIMPLE_GPIO_H seen before, sort it out!"
 /* end of the wrapper ifdef from the very top */
 #endif

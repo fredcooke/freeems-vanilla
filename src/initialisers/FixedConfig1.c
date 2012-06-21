@@ -235,5 +235,27 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			SpareB: 1
 		}
 	},
-	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is in"
+	simpleGPIOSettings:{
+		outputConfigs:{
+			[0] = {
+				variable: &CoreVars0.RPM,
+				upperValue: RPM(5000),
+				lowerValue: RPM(4000),
+				port: (unsigned char*)&PORTK,
+				mask: 0x08,
+				flags: 0
+			},
+			[1] = {
+				variable: &CoreVars0.CHT,
+				upperValue: DEGREES_C(100),
+				lowerValue: DEGREES_C(90),
+				port: (unsigned char*)&PORTK,
+				mask: 0x10,
+				flags: 0
+			}
+		},
+		numberConfigured: 2,
+		spare: 0
+	},
+	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you kee"
 };
