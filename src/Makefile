@@ -517,6 +517,9 @@ relpack1: md5sums  sha1sums  s19zips
 relpack2: zipdocs zipmain zipsrc
 
 
+# Force dates and versions to be up to date
+$(PPCDIR)/globalConstants.pp.c: .FORCE
+.FORCE:
 
 
 ################################################################################
