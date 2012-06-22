@@ -4,7 +4,7 @@
 #
 #	filename here
 #
-#	Copyright 2011 Fred Cooke
+#	Copyright 2012 Fred Cooke
 #
 #	This file is part of the FreeEMS project.
 #

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -23,6 +23,7 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
+
 /** @file
  *
  * @ingroup putMeInSomeGroups
@@ -34,9 +35,7 @@
  *
  * To add a file to the project :
  * - Copy this file to the source directory with an appropriate name
- * - Change the name to your own at the top of the GPL comment
- * - Change the filename to the correct one at the top of this comment
- * - Change all 4 hash defines to the filename uppercased and underscored
+ * - Change all 4 hash defines to the filename upper-cased and underscored
  *
  * @bug THIS DOCUMENTATION IS FAULTY!!
  * @todo REPLACE THIS WITH REAL DOCUMENTATION!!
@@ -44,10 +43,12 @@
  * @warning IMAGINE WHAT THEIR CODE MIGHT BE LIKE IF THEIR DOCUMENTATION IS THIS BAD!!
  */
 
+
 /* Header file multiple inclusion protection courtesy eclipse Header Template	*/
 /* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
 #ifndef FILE_< filename >_H_SEEN
 #define FILE_< filename >_H_SEEN
+
 
 #ifdef EXTERN
 #warning "EXTERN already defined by another header, please sort it out!"
@@ -60,9 +61,12 @@
 #define EXTERN extern
 #endif
 
+
 // hash defines here
 
+
 // declarations here
+
 
 #undef EXTERN
 

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -23,6 +23,7 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
+
 /** @file
  *
  * @ingroup putMeInSomeGroups
@@ -34,8 +35,6 @@
  *
  * To add a C source file to the project :
  * - Copy this file to the source directory with an appropriate name
- * - Change the name to your own at the top of the GPL comment
- * - Change the filename to the correct one at the top of this comment
  * - Change the hash define to the filename uppercased and underscored
  * - Remove or adjust the hash include of the matching header
  *
@@ -45,15 +44,17 @@
  * @warning IMAGINE WHAT THEIR CODE MIGHT BE LIKE IF THEIR DOCUMENTATION IS THIS BAD!!
  */
 
+
 #define < filename >_C
 #include "inc/freeEMS.h"
 #include "inc/< filename >.h"
 
-/** @brief code here!
+
+/**
+ * A short summary sentence used for auto-brief. The rest of the detailed
+ * description, wrapped to 80 columns.
  *
- * xyz
- *
- * @author Fred Cooke
+ * @author Your Name
  *
  * @param ??
  *
