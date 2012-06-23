@@ -799,14 +799,14 @@
 #define ATD0DIEN DVUCP(0x02CD) /* Digital input enable */
 //0x02CF ATD0PTAD0 digital use only
 #define ATD0_BASE 0x02D0 /* Maybe use this with a loop to sample them in a compact way. */
-#define ATD0DR0 DVUSP(ATD0_BASE + 0x0) /* 16 bit (0x02D0 ATD0DR0H, 0x02D1 ATD0DR0L) */ /* IAT/MAT on my JimStim setup			*/
-#define ATD0DR1 DVUSP(ATD0_BASE + 0x2) /* 16 bit (0x02D2 ATD0DR1H, 0x02D3 ATD0DR1L) */ /* CHT/CLT on my JimStim setup			*/
-#define ATD0DR2 DVUSP(ATD0_BASE + 0x4) /* 16 bit (0x02D4 ATD0DR2H, 0x02D5 ATD0DR2L) */ /* TPS/TPS on my JimStim setup			*/
-#define ATD0DR3 DVUSP(ATD0_BASE + 0x6) /* 16 bit (0x02D6 ATD0DR3H, 0x02D7 ATD0DR3L) */ /* EGO/O2 on my JimStim setup				*/
-#define ATD0DR4 DVUSP(ATD0_BASE + 0x8) /* 16 bit (0x02D8 ATD0DR4H, 0x02D9 ATD0DR4L) */ /* BRV  left of 3 one end of my h1 board	*/
-#define ATD0DR5 DVUSP(ATD0_BASE + 0xA) /* 16 bit (0x02DA ATD0DR5H, 0x02DB ATD0DR5L) */ /* MAP   mid of 3 one end of my h1 board	*/
-#define ATD0DR6 DVUSP(ATD0_BASE + 0xC) /* 16 bit (0x02DC ATD0DR6H, 0x02DD ATD0DR6L) */ /* AAP right of 3 one end of my h1 board	*/
-#define ATD0DR7 DVUSP(ATD0_BASE + 0xE) /* 16 bit (0x02DE ATD0DR7H, 0x02DF ATD0DR7L) */ /* SpareADC/SPARE on my JimStim setup		*/
+#define ATD0DR0 DVUSP(ATD0_BASE + 0x0) /* 16 bit (0x02D0 ATD0DR0H, 0x02D1 ATD0DR0L) */
+#define ATD0DR1 DVUSP(ATD0_BASE + 0x2) /* 16 bit (0x02D2 ATD0DR1H, 0x02D3 ATD0DR1L) */
+#define ATD0DR2 DVUSP(ATD0_BASE + 0x4) /* 16 bit (0x02D4 ATD0DR2H, 0x02D5 ATD0DR2L) */
+#define ATD0DR3 DVUSP(ATD0_BASE + 0x6) /* 16 bit (0x02D6 ATD0DR3H, 0x02D7 ATD0DR3L) */
+#define ATD0DR4 DVUSP(ATD0_BASE + 0x8) /* 16 bit (0x02D8 ATD0DR4H, 0x02D9 ATD0DR4L) */
+#define ATD0DR5 DVUSP(ATD0_BASE + 0xA) /* 16 bit (0x02DA ATD0DR5H, 0x02DB ATD0DR5L) */
+#define ATD0DR6 DVUSP(ATD0_BASE + 0xC) /* 16 bit (0x02DC ATD0DR6H, 0x02DD ATD0DR6L) */
+#define ATD0DR7 DVUSP(ATD0_BASE + 0xE) /* 16 bit (0x02DE ATD0DR7H, 0x02DF ATD0DR7L) */
 
 
 /* VREG unit, Low Voltage Interrupt and Autonomous Periodical Interrupt */
@@ -832,14 +832,14 @@
 #define PWMCNT5 DVUCP(0x0311) /*					*/
 #define PWMCNT6 DVUCP(0x0312) /*					*/
 #define PWMCNT7 DVUCP(0x0313) /* PWM 8 bit counter	*/
-#define PWMPER0 DVUCP(0x0314) /* PWM period value	*/ /* Ign LED 6 on my JimStim */
-#define PWMPER1 DVUCP(0x0315) /*					*/ /* Ign LED 4 on my JimStim */
-#define PWMPER2 DVUCP(0x0316) /*					*/ /* Ign LED 2 on my JimStim */
-#define PWMPER3 DVUCP(0x0317) /*					*/ /* Ign LED 1 on my JimStim */
-#define PWMPER4 DVUCP(0x0318) /*					*/ /* Ign LED 3 on my JimStim */
-#define PWMPER5 DVUCP(0x0319) /*					*/ /* Ign LED 5 on my JimStim */
-#define PWMPER6 DVUCP(0x031A) /*					*/ /* NC yet */
-#define PWMPER7 DVUCP(0x031B) /* PWM period value	*/ /* NC yet */
+#define PWMPER0 DVUCP(0x0314) /* PWM period value	*/
+#define PWMPER1 DVUCP(0x0315) /*					*/
+#define PWMPER2 DVUCP(0x0316) /*					*/
+#define PWMPER3 DVUCP(0x0317) /*					*/
+#define PWMPER4 DVUCP(0x0318) /*					*/
+#define PWMPER5 DVUCP(0x0319) /*					*/
+#define PWMPER6 DVUCP(0x031A) /*					*/
+#define PWMPER7 DVUCP(0x031B) /* PWM period value	*/
 #define PWMDTY0 DVUCP(0x031C) /* PWM duty cycle value	*/
 #define PWMDTY1 DVUCP(0x031D) /*						*/
 #define PWMDTY2 DVUCP(0x031E) /*						*/
