@@ -82,12 +82,12 @@ typedef struct {
 	unsigned short presetBRV;   ///< @copydoc presetIAT
 
 	unsigned short failsafeIATIgnition;  ///< Value to fall back on if a sensor fault is detected
-	unsigned short failsafeIATInjection; ///< @copydoc failsafeIAT
-	unsigned short failsafeCHT; ///< @copydoc failsafeIAT
-	unsigned short failsafeBRV; ///< @copydoc failsafeIAT
-	unsigned short failsafeMAP; ///< @copydoc failsafeIAT
-	unsigned short failsafeAAP; ///< @copydoc failsafeIAT
-	unsigned short failsafeTPS; ///< @copydoc failsafeIAT
+	unsigned short failsafeIATInjection; ///< @copydoc failsafeIATIgnition
+	unsigned short failsafeCHT; ///< @copydoc failsafeIATIgnition
+	unsigned short failsafeBRV; ///< @copydoc failsafeIATIgnition
+	unsigned short failsafeMAP; ///< @copydoc failsafeIATIgnition
+	unsigned short failsafeAAP; ///< @copydoc failsafeIATIgnition
+	unsigned short failsafeTPS; ///< @copydoc failsafeIATIgnition
 } sensorPreset;
 
 
