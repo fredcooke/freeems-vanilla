@@ -57,7 +57,7 @@ typedef struct {
 #define MAINTABLE_MAX_MAIN_LENGTH 462 ///< 924B 462 shorts maximum main table length
 
 
-/**	Main Table Structure definition
+/** Main Table Structure definition
  *
  * Use this table descriptor to manage the
  * - main VE table

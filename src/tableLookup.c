@@ -251,8 +251,8 @@ unsigned short lookupTwoDTableUS(twoDTableUS * Table, unsigned short Value){
  * @return An error code. Zero means success, anything else is a failure.
  */
 unsigned short validateMainTable(mainTable* Table){
-	/* If required and only if required extend this to take r and f pages and check	*/
-	/* any main table, not just a freshly received untrusted ones in linear space	*/
+	/* If required and only if required extend this to take r and f pages and check */
+	/* any main table, not just a freshly received untrusted ones in linear space   */
 
 	if(Table->RPMLength > MAINTABLE_MAX_RPM_LENGTH){
 		return invalidMainTableRPMLength;

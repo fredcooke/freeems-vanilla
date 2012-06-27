@@ -366,8 +366,8 @@ void PrimaryRPMISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
-	edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
+	edgeTimeStamp = TC0;                   /* Save the edge time stamp */
+	unsigned char PTITCurrentState = PTIT; // TODO invert tests and other behaviour in this code base and remove this not. /* Save the values on port T regardless of the state of DDRT */
 
 	KeyUserDebugs.primaryTeethSeen++;
 
@@ -502,8 +502,8 @@ void SecondaryRPMISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT1, PORTB);
 
 	/* Save all relevant available data here */
-	edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
+	edgeTimeStamp = TC1;                   /* Save the timestamp */
+	unsigned char PTITCurrentState = PTIT; // TODO invert tests and other behaviour in this code base and remove this not. /* Save the values on port T regardless of the state of DDRT */
 
 	KeyUserDebugs.secondaryTeethSeen++;
 	// remember that this is both edges, though... 8 per cycle, 4 per rev for the outter wheel, 2/1 for this wheel.
@@ -563,7 +563,7 @@ void SecondaryRPMISR(){
 			resetToNonRunningState(STATE_MISMATCH_IN_SECONDARY_RPM_ISR);
 			return;
 		}
-	}else{	// If not synced, sync, as in this ISR we always know where we are.
+	}else{ // If not synced, sync, as in this ISR we always know where we are.
 		KeyUserDebugs.currentEvent = correctEvent;
 		lastEvent = KeyUserDebugs.currentEvent - 1;
 		SET_SYNC_LEVEL_TO(CAM_SYNC);

@@ -127,9 +127,9 @@ void generateCoreVars(){
 
 	// TODO This might get done somewhere else, separation of concerns, etc
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&& Average the variables as per the configuration &&&&&&&&&&&&&&&&&&&&&&&&&&*/
-	/* Strictly speaking only the primary variables need to be averaged. After that, the derived ones are	*/
-	/* already averaged in a way. However, there may be some advantage to some short term averaging on the	*/
-	/* derived ones also, so it is something to look into later.											*/
+	/* Strictly speaking only the primary variables need to be averaged. After that, the derived ones are   */
+	/* already averaged in a way. However, there may be some advantage to some short term averaging on the  */
+	/* derived ones also, so it is something to look into later.                                            */
 
 	/// @todo TODO average the generated values here
 

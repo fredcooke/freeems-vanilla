@@ -48,8 +48,8 @@ void PrimaryRPMISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
-	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned short edgeTimeStamp = TC0;    /* Save the edge time stamp */
+	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 	// Prevent main from clearing values before sync is obtained!
 	Clocks.timeoutADCreadingClock = 0;
@@ -147,8 +147,8 @@ void SecondaryRPMISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT1, PORTB);
 
 	/* Save all relevant available data here */
-	unsigned short edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned short edgeTimeStamp = TC1;    /* Save the timestamp */
+	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 	if(!(PTITCurrentState & 0x02)){ // TODO Remove this once the configuration can be adjusted to only fire on one edge!
 		// Only count one edge, the other is irrelevant, and this comment will be two once the above todo is completed.
@@ -195,7 +195,7 @@ void SecondaryRPMISR(){
 			}else if(KeyUserDebugs.currentEvent > (numberOfRealEvents -1)){
 				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_HIGH_NOISE);
 			} // ELSE do nothing, and be happy :-)
-		}else{	// If not synced, sync, as this is our reference point.
+		}else{ // If not synced, sync, as this is our reference point.
 			SET_SYNC_LEVEL_TO(CAM_SYNC);
 		}
 		KeyUserDebugs.currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable

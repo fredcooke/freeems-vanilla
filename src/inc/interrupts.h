@@ -40,15 +40,15 @@
  */
 
 
-/* Header file multiple inclusion protection courtesy eclipse Header Template	*/
-/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
+/* Header file multiple inclusion protection courtesy eclipse Header Template */
+/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_INTERRUPTS_H_SEEN
 #define FILE_INTERRUPTS_H_SEEN
 
 
-/* http://www.gnu.org/software/m68hc11/m68hc11_gcc.html Section 1.4.1	*/
-/* http://gcc.gnu.org/onlinedocs/gcc-4.0.0/gcc/Function-Attributes.html	*/
-/* http://gcc.gnu.org/onlinedocs/gcc-4.0.0/gcc/Variable-Attributes.html	*/
+/* http://www.gnu.org/software/m68hc11/m68hc11_gcc.html Section 1.4.1   */
+/* http://gcc.gnu.org/onlinedocs/gcc-4.0.0/gcc/Function-Attributes.html */
+/* http://gcc.gnu.org/onlinedocs/gcc-4.0.0/gcc/Variable-Attributes.html */
 
 /* Interrupt attribute shortcut */
 #define INT __attribute__((interrupt))
@@ -58,8 +58,8 @@
 /* writing all vars to a block ready for reading and logging etc. The link below is for avrs, but goes */
 /* into some detail about clearing and setting interrupts during important operations. */
 /* http://hubbard.engr.scu.edu/embedded/avr/doc/avr-libc/avr-libc-user-manual/group__avr__interrupts.html */
-#define ATOMIC_START() __asm__ __volatile__ ("sei")	/* set global interrupt mask */
-#define ATOMIC_END() __asm__ __volatile__ ("cli")	/* clear global interrupt mask */
+#define ATOMIC_START() __asm__ __volatile__ ("sei") /* set global interrupt mask   */
+#define ATOMIC_END()   __asm__ __volatile__ ("cli") /* clear global interrupt mask */
 
 /* Interrupt vector memory management */
 #define VECTORS __attribute__ ((section (".vectors")))

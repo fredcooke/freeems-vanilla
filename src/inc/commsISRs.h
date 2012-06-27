@@ -53,25 +53,25 @@
  *
  * From left most/most significant to right most/least significant.
  *
- * Abrev  Description					  Actions/Meaning
- * TRDE - Transmit Data Register Empty	- Load with more data if there is any			- Main Flag
- * TC   - Transmit Complete				- Nothing being sent and nothing loaded ready	- unused
- * RDRF - Receive Data Register Full	- Store data in buffer until packet complete	- Main Flag
- * IDLE - Idle Line						- Receive line is quiet							- unused
- * OR   - Overrun						- Discard partial data received and increment counter
- * NF   - Noise Flag					- Discard partial data received and increment counter
- * FE   - Framing Error					- Discard partial data received and increment counter
- * PF   - Parity Error					- Discard partial data received and increment counter
+ * Abrev  Description                  	 Actions/Meaning
+ * TRDE - Transmit Data Register Empty - Load with more data if there is any         - Main Flag
+ * TC   - Transmit Complete            - Nothing being sent and nothing loaded ready - unused
+ * RDRF - Receive Data Register Full   - Store data in buffer until packet complete  - Main Flag
+ * IDLE - Idle Line                    - Receive line is quiet                       - unused
+ * OR   - Overrun                      - Discard partial data received and increment counter
+ * NF   - Noise Flag                   - Discard partial data received and increment counter
+ * FE   - Framing Error                - Discard partial data received and increment counter
+ * PF   - Parity Error                 - Discard partial data received and increment counter
  *
  * SCISR1 flag masks */
-#define SCISR1_TX_REGISTER_EMPTY	BIT7
-#define SCISR1_TX_COMPLETE			BIT6
-#define SCISR1_RX_REGISTER_FULL		BIT5
-#define SCISR1_RX_IDLE_LINE			BIT4
-#define SCISR1_RX_OVERRUN			BIT3
-#define SCISR1_RX_NOISE				BIT2
-#define SCISR1_RX_FRAMING			BIT1
-#define SCISR1_RX_PARITY			BIT0
+#define SCISR1_TX_REGISTER_EMPTY BIT7
+#define SCISR1_TX_COMPLETE       BIT6
+#define SCISR1_RX_REGISTER_FULL  BIT5
+#define SCISR1_RX_IDLE_LINE      BIT4
+#define SCISR1_RX_OVERRUN        BIT3
+#define SCISR1_RX_NOISE          BIT2
+#define SCISR1_RX_FRAMING        BIT1
+#define SCISR1_RX_PARITY         BIT0
 
 
 /* TX/RX state variables */

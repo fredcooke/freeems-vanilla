@@ -176,17 +176,17 @@
 #define PIFJ DVUCP(0x026F) /* interrupt flag, write a 1 to clear it */
 
 
-/* #define ATD0PT1 DVUCP(0x0271)	we don't want to use valuable ATD pins as normal IO, but if we did, r/w here */
+/* #define ATD0PT1 DVUCP(0x0271)  we don't want to use valuable ATD pins as normal IO, but if we did, r/w here */
 /* #define ATD0DDR1 DVUCP(0x0273) for use as an input, ATD0DIEN has to be set to 1. for use as an output? */
 /* #define ATD0RDR1 DVUCP(0x0275) reduced drive register when used as output, 0 = full drive, 1 = reduced drive */
 #define ATD0PER1 DVUCP(0x0277) /* pull up enable when used as an input, 0 = no pull up, 1 = pull up on */
 
-/* #define ATD1PT1 DVUCP(0x0279)	we don't want to use valuable ATD pins as normal IO, but if we did, r/w here */
-/* #define ATD1DDR1 DVUCP(0x027B)	for use as an input, ATD1DIEN1 has to be set to 1. for use as an output? */
-/* #define ATD1RDR1 DVUCP(0x027D)	reduced drive register when used as output, 0 = full drive, 1 = reduced drive */
-/* #define ATD1PER1 DVUCP(0x027F)	pull up enable when used as an input, 0 = no pull up, 1 = pull up on */
+/* #define ATD1PT1 DVUCP(0x0279)  we don't want to use valuable ATD pins as normal IO, but if we did, r/w here */
+/* #define ATD1DDR1 DVUCP(0x027B) for use as an input, ATD1DIEN1 has to be set to 1. for use as an output? */
+/* #define ATD1RDR1 DVUCP(0x027D) reduced drive register when used as output, 0 = full drive, 1 = reduced drive */
+/* #define ATD1PER1 DVUCP(0x027F) pull up enable when used as an input, 0 = no pull up, 1 = pull up on */
 
-/* Not available on 112 pin version	*/
+/* Not available on 112 pin version */
 /* #define ATD1DDR0 DVUCP(0x027A) */
 /* 0x0278 #define ATD1PT0 DVUCP() */
 /* 0x027C #define ATD1RDR0 DVUCP() */
@@ -260,12 +260,12 @@
 #define OC7M DVUCP(0x0042) /* Channel 7 output compare other pins control mask */
 #define OC7D DVUCP(0x0043) /* Channel 7 output compare other pins states */
 
-/*	Timer output compare action control registers
- *	OMx	OLx	Action
- *	0	0	Timer disconnected from output pin logic
- *	0	1	Toggle OCx output line
- *	1	0	Clear OCx output line to zero
- *	1	1	Set OCx output line to one */
+/* Timer output compare action control registers
+ * OMx  OLx  Action
+ * 0    0    Timer disconnected from output pin logic
+ * 0    1    Toggle OCx output line
+ * 1    0    Clear OCx output line to zero
+ * 1    1    Set OCx output line to one */
 #define TCTL1 DVUCP(0x0048) /* (M,L) 77,66,55,44 */
 #define TCTL2 DVUCP(0x0049) /* (M,L) 33,22,11,00 */
 #define TCTL1_ADDR AVUCP(0x0048) /* (M,L) 77,66,55,44 */
@@ -277,12 +277,12 @@
 #define ICSYS DVUCP(0x006B) /* Input capture behaviour control register */
 #define ICOVW DVUCP(0x006A) /* Input capture overwrite allow */
 
-/*	Timer input capture edge detection control registers
- *	EDGxB	EDGxA	Configuration
- *	0		0		Capture disabled
- *	0		1		Capture on rising edges only
- *	1		0		Capture on falling edges only
- *	1		1		Capture on any edge (rising or falling) */
+/* Timer input capture edge detection control registers
+ * EDGxB EDGxA Configuration
+ * 0     0     Capture disabled
+ * 0     1     Capture on rising edges only
+ * 1     0     Capture on falling edges only
+ * 1     1     Capture on any edge (rising or falling) */
 #define TCTL3 DVUCP(0x004A) /* (B,A) 77,66,55,44 */
 #define TCTL4 DVUCP(0x004B) /* (B,A) 33,22,11,00 */
 
@@ -313,8 +313,9 @@
 
 /* Pulse accumulator control registers */
 #define ICPAR DVUCP(0x0068)
-/*	(PACTL) 7   6    5     4     3    2    1    0
-	 		  PAEN PAMOD PEDGE CLK1 CLK0 PAOVI PAI */
+// Bits for PACTL
+//         7     6     5     4     3     2     1     0
+//  RESERVED  PAEN PAMOD PEDGE  CLK1  CLK0 PAOVI   PAI
 #define PACTL DVUCP(0x0060)
 #define PAFLG DVUCP(0x0061)
 #define PBCTL DVUCP(0x0070)
@@ -361,14 +362,14 @@
 //0x008F ATD1PTAD1 DVUCP() /* digital use only */
 // one short for each hi lo par based on hi address. label with WORD for consistency
 #define ATD1_BASE 0x0090
-#define ATD1DR0 DVUSP(ATD1_BASE + 0x0) /* 16 bit (0x0090 ATD1DR0H, 0x0091 ATD1DR0L) */ /* SpareADC (NC)		*/
-#define ATD1DR1 DVUSP(ATD1_BASE + 0x2) /* 16 bit (0x0092 ATD1DR1H, 0x0093 ATD1DR1L) */ /* SpareADC (NC)		*/
-#define ATD1DR2 DVUSP(ATD1_BASE + 0x4) /* 16 bit (0x0094 ATD1DR2H, 0x0095 ATD1DR2L) */ /* SpareADC (NC)		*/
-#define ATD1DR3 DVUSP(ATD1_BASE + 0x6) /* 16 bit (0x0096 ATD1DR3H, 0x0097 ATD1DR3L) */ /* SpareADC (NC)		*/
-#define ATD1DR4 DVUSP(ATD1_BASE + 0x8) /* 16 bit (0x0098 ATD1DR4H, 0x0099 ATD1DR4L) */ /* SpareADC (NC)		*/
-#define ATD1DR5 DVUSP(ATD1_BASE + 0xA) /* 16 bit (0x009A ATD1DR5H, 0x009B ATD1DR5L) */ /* SpareADC (NC)		*/
-#define ATD1DR6 DVUSP(ATD1_BASE + 0xC) /* 16 bit (0x009C ATD1DR6H, 0x009D ATD1DR6L) */ /* SpareADC (NC)		*/
-#define ATD1DR7 DVUSP(ATD1_BASE + 0xE) /* 16 bit (0x009E ATD1DR7H, 0x009F ATD1DR7L) */ /* SpareADC (NC)		*/
+#define ATD1DR0 DVUSP(ATD1_BASE + 0x0) /* 16 bit (0x0090 ATD1DR0H, 0x0091 ATD1DR0L) */ /* SpareADC (NC) */
+#define ATD1DR1 DVUSP(ATD1_BASE + 0x2) /* 16 bit (0x0092 ATD1DR1H, 0x0093 ATD1DR1L) */ /* SpareADC (NC) */
+#define ATD1DR2 DVUSP(ATD1_BASE + 0x4) /* 16 bit (0x0094 ATD1DR2H, 0x0095 ATD1DR2L) */ /* SpareADC (NC) */
+#define ATD1DR3 DVUSP(ATD1_BASE + 0x6) /* 16 bit (0x0096 ATD1DR3H, 0x0097 ATD1DR3L) */ /* SpareADC (NC) */
+#define ATD1DR4 DVUSP(ATD1_BASE + 0x8) /* 16 bit (0x0098 ATD1DR4H, 0x0099 ATD1DR4L) */ /* SpareADC (NC) */
+#define ATD1DR5 DVUSP(ATD1_BASE + 0xA) /* 16 bit (0x009A ATD1DR5H, 0x009B ATD1DR5L) */ /* SpareADC (NC) */
+#define ATD1DR6 DVUSP(ATD1_BASE + 0xC) /* 16 bit (0x009C ATD1DR6H, 0x009D ATD1DR6L) */ /* SpareADC (NC) */
+#define ATD1DR7 DVUSP(ATD1_BASE + 0xE) /* 16 bit (0x009E ATD1DR7H, 0x009F ATD1DR7L) */ /* SpareADC (NC) */
 
 
 /* NOT bonded on the 112 pin package!! Left here in case of 144 pin FreeEMS later on. */
@@ -430,18 +431,18 @@
 /* SCI0 debug/comms/datalogging TODO this is our primary serial interface for flash loading, setup serial comms software to communicate with MTX or similar for testing. */
 #define SCI0_BASE 0x00C8
 
-#define SCI0BD DVUSP(SCI0_BASE + 0x0)		/* #define SCI0BDH DVUCP(0x00C8), #define SCI0BDL DVUCP(0x00C9) (IR and baud control) */
-#define SCI0CR1 DVUCP(SCI0_BASE + 0x2)	/* Control reg 1 */
+#define SCI0BD DVUSP(SCI0_BASE + 0x0)   /* #define SCI0BDH DVUCP(0x00C8), #define SCI0BDL DVUCP(0x00C9) (IR and baud control) */
+#define SCI0CR1 DVUCP(SCI0_BASE + 0x2)  /* Control reg 1 */
 
-#define SCI0ASR1 DVUCP(SCI0_BASE + 0x0)	/* Status reg 1a (rx flags) */
-#define SCI0ACR1 DVUCP(SCI0_BASE + 0x1)	/* Control reg 1a (rx conf) */
-#define SCI0ACR2 DVUCP(SCI0_BASE + 0x2)	/* Control reg 2a (rx conf) */
+#define SCI0ASR1 DVUCP(SCI0_BASE + 0x0) /* Status reg 1a (rx flags) */
+#define SCI0ACR1 DVUCP(SCI0_BASE + 0x1) /* Control reg 1a (rx conf) */
+#define SCI0ACR2 DVUCP(SCI0_BASE + 0x2) /* Control reg 2a (rx conf) */
 
-#define SCI0CR2 DVUCP(SCI0_BASE + 0x3)	/* Control reg 2 */
-#define SCI0SR1 DVUCP(SCI0_BASE + 0x4)	/* Status reg 1 (isr flags) */
-#define SCI0SR2 DVUCP(SCI0_BASE + 0x5)	/* Status reg 2 (config/control) */
-#define SCI0DRH DVUCP(SCI0_BASE + 0x6)	/* Data reg high (9th bit bit 7 receive bit 6 send) */
-#define SCI0DRL DVUCP(SCI0_BASE + 0x7)	/* Data reg low (read and write for receive and send respectively)*/
+#define SCI0CR2 DVUCP(SCI0_BASE + 0x3)  /* Control reg 2 */
+#define SCI0SR1 DVUCP(SCI0_BASE + 0x4)  /* Status reg 1 (isr flags) */
+#define SCI0SR2 DVUCP(SCI0_BASE + 0x5)  /* Status reg 2 (config/control) */
+#define SCI0DRH DVUCP(SCI0_BASE + 0x6)  /* Data reg high (9th bit bit 7 receive bit 6 send) */
+#define SCI0DRL DVUCP(SCI0_BASE + 0x7)  /* Data reg low (read and write for receive and send respectively)*/
 
 
 /* SCI1 debug/comms/datalogging TODO this is our secondary serial interface, setup serial comms software to communicate with MTX or similar for testing. */
@@ -493,16 +494,16 @@
 
 
 /* Flash Control Registers */
-#define FCLKDIV DVUCP(0x0100)	/* Flash Clock Divider Register R/W		*/
-#define FSEC DVUCP(0x0101)		/* Flash Security Register R			*/
-#define FCNFG DVUCP(0x0103)		/* Flash Configuration Register R/W		*/
-#define FPROT DVUCP(0x0104)		/* Flash Protection Register R/W		*/
-#define FSTAT DVUCP(0x0105)		/* Flash Status Register R/W			*/
-#define FCMD DVUCP(0x0106)		/* Flash Command Register R/W			*/
-#define FCTL DVUCP(0x0107)		/* Flash Control Register R				*/
+#define FCLKDIV DVUCP(0x0100) /* Flash Clock Divider Register R/W */
+#define FSEC    DVUCP(0x0101) /* Flash Security Register      R   */
+#define FCNFG   DVUCP(0x0103) /* Flash Configuration Register R/W */
+#define FPROT   DVUCP(0x0104) /* Flash Protection Register    R/W */
+#define FSTAT   DVUCP(0x0105) /* Flash Status Register        R/W */
+#define FCMD    DVUCP(0x0106) /* Flash Command Register       R/W */
+#define FCTL    DVUCP(0x0107) /* Flash Control Register       R   */
 
-#define FADDR DVUSP(0x0108)		/* Flash Low Address Register R (0x0108 FADDRHI, 0x0109 FADDRLO)	*/
-#define FDATA DVUSP(0x010A)		/* Flash High Data Register R (0x010A FDATAHI, 0x010B FDATALO)		*/
+#define FADDR DVUSP(0x0108) /* Flash Low Address Register R (0x0108 FADDRHI, 0x0109 FADDRLO) */
+#define FDATA DVUSP(0x010A) /* Flash High Data Register R (0x010A FDATAHI, 0x010B FDATALO)   */
 
 
 /* EEPROM Control Registers TODO learn how to use these to write data to the eeprom through serial comms. */
@@ -824,50 +825,50 @@
 #define PWMCTL DVUCP(0x0305) /* PWM Concatenate, stop, wait, freeze register */
 #define PWMSCLA DVUCP(0x0308) /* PWM Scale A register */
 #define PWMSCLB DVUCP(0x0309) /* PWM Scale B register */
-#define PWMCNT0 DVUCP(0x030C) /* PWM 8 bit counter	*/
-#define PWMCNT1 DVUCP(0x030D) /*					*/
-#define PWMCNT2 DVUCP(0x030E) /*					*/
-#define PWMCNT3 DVUCP(0x030F) /*					*/
-#define PWMCNT4 DVUCP(0x0310) /*					*/
-#define PWMCNT5 DVUCP(0x0311) /*					*/
-#define PWMCNT6 DVUCP(0x0312) /*					*/
-#define PWMCNT7 DVUCP(0x0313) /* PWM 8 bit counter	*/
-#define PWMPER0 DVUCP(0x0314) /* PWM period value	*/
-#define PWMPER1 DVUCP(0x0315) /*					*/
-#define PWMPER2 DVUCP(0x0316) /*					*/
-#define PWMPER3 DVUCP(0x0317) /*					*/
-#define PWMPER4 DVUCP(0x0318) /*					*/
-#define PWMPER5 DVUCP(0x0319) /*					*/
-#define PWMPER6 DVUCP(0x031A) /*					*/
-#define PWMPER7 DVUCP(0x031B) /* PWM period value	*/
-#define PWMDTY0 DVUCP(0x031C) /* PWM duty cycle value	*/
-#define PWMDTY1 DVUCP(0x031D) /*						*/
-#define PWMDTY2 DVUCP(0x031E) /*						*/
-#define PWMDTY3 DVUCP(0x031F) /*						*/
-#define PWMDTY4 DVUCP(0x0320) /*						*/
-#define PWMDTY5 DVUCP(0x0321) /*						*/
-#define PWMDTY6 DVUCP(0x0322) /*						*/
-#define PWMDTY7 DVUCP(0x0323) /* PWM duty cycle value	*/
+#define PWMCNT0 DVUCP(0x030C) /* PWM 8 bit counter    */
+#define PWMCNT1 DVUCP(0x030D) /*                      */
+#define PWMCNT2 DVUCP(0x030E) /*                      */
+#define PWMCNT3 DVUCP(0x030F) /*                      */
+#define PWMCNT4 DVUCP(0x0310) /*                      */
+#define PWMCNT5 DVUCP(0x0311) /*                      */
+#define PWMCNT6 DVUCP(0x0312) /*                      */
+#define PWMCNT7 DVUCP(0x0313) /* PWM 8 bit counter    */
+#define PWMPER0 DVUCP(0x0314) /* PWM period value     */
+#define PWMPER1 DVUCP(0x0315) /*                      */
+#define PWMPER2 DVUCP(0x0316) /*                      */
+#define PWMPER3 DVUCP(0x0317) /*                      */
+#define PWMPER4 DVUCP(0x0318) /*                      */
+#define PWMPER5 DVUCP(0x0319) /*                      */
+#define PWMPER6 DVUCP(0x031A) /*                      */
+#define PWMPER7 DVUCP(0x031B) /* PWM period value     */
+#define PWMDTY0 DVUCP(0x031C) /* PWM duty cycle value */
+#define PWMDTY1 DVUCP(0x031D) /*                      */
+#define PWMDTY2 DVUCP(0x031E) /*                      */
+#define PWMDTY3 DVUCP(0x031F) /*                      */
+#define PWMDTY4 DVUCP(0x0320) /*                      */
+#define PWMDTY5 DVUCP(0x0321) /*                      */
+#define PWMDTY6 DVUCP(0x0322) /*                      */
+#define PWMDTY7 DVUCP(0x0323) /* PWM duty cycle value */
 #define PWMSDN DVUCP(0x0324) /* PWM shutdown behaviour register */
 
 
 /* Periodic Interupt Timer with down counter */
-#define PITCFLMT DVUCP(0x0340)	/* PIT Control and Force Load Micro Timer Register, high bit enables, low 2 bits force load micro timers */
-#define PITFLT DVUCP(0x0341)	/* PIT Force Load Timer Register, low 4 bits force load timers */
-#define PITCE DVUCP(0x0342)		/* PIT Channel Enable Register, low 4 bits let the channel count */
-#define PITMUX DVUCP(0x0343)	/* PIT Multiplex Register, low 4 bits set which micro time base is used */
-#define PITINTE DVUCP(0x0344)	/* PIT Interrupt Enable Register, low four bits control the ISRs */
-#define PITTF DVUCP(0x0345)		/* PIT Time-Out Flag Register, low 4 bits set when each counter reaches 0 */
-#define PITMTLD0 DVUCP(0x0346)	/* PIT Micro Timer Load Register 0, time to start counting from when reaching zero */
-#define PITMTLD1 DVUCP(0x0347)	/* PIT Micro Timer Load Register 1, time to start counting from when reaching zero */
-#define PITLD0 DVUSP(0x0348)	/* PIT Load Register 0, time to start counting from when reaching zero (0x0348 PITLD0 (hi), 0x0349 PITLD0 (lo)) */
-#define PITLD1 DVUSP(0x034C)	/* PIT Load Register 1, time to start counting from when reaching zero (0x034C PITLD1 (hi), 0x034D PITLD1 (lo)) */
-#define PITLD2 DVUSP(0x0350)	/* PIT Load Register 2, time to start counting from when reaching zero (0x0350 PITLD2 (hi), 0x0351 PITLD2 (lo)) */
-#define PITLD3 DVUSP(0x0354)	/* PIT Load Register 3, time to start counting from when reaching zero (0x0354 PITLD3 (hi), 0x0355 PITLD3 (lo)) */
-#define PITCNT0 DVUSP(0x034A)	/* PIT Count Register 0, current value of down counter (0x034A PITCNT0 (hi), 0x034B PITCNT0 (lo)) */
-#define PITCNT1 DVUSP(0x034E)	/* PIT Count Register 1, current value of down counter (0x034E PITCNT1 (hi), 0x034F PITCNT1 (lo)) */
-#define PITCNT2 DVUSP(0x0352)	/* PIT Count Register 2, current value of down counter (0x0352 PITCNT2 (hi), 0x0353 PITCNT2 (lo)) */
-#define PITCNT3 DVUSP(0x0356)	/* PIT Count Register 3, current value of down counter (0x0356 PITCNT3 (hi), 0x0357 PITCNT3 (lo)) */
+#define PITCFLMT DVUCP(0x0340) /* PIT Control and Force Load Micro Timer Register, high bit enables, low 2 bits force load micro timers */
+#define PITFLT DVUCP(0x0341)   /* PIT Force Load Timer Register, low 4 bits force load timers */
+#define PITCE DVUCP(0x0342)    /* PIT Channel Enable Register, low 4 bits let the channel count */
+#define PITMUX DVUCP(0x0343)   /* PIT Multiplex Register, low 4 bits set which micro time base is used */
+#define PITINTE DVUCP(0x0344)  /* PIT Interrupt Enable Register, low four bits control the ISRs */
+#define PITTF DVUCP(0x0345)    /* PIT Time-Out Flag Register, low 4 bits set when each counter reaches 0 */
+#define PITMTLD0 DVUCP(0x0346) /* PIT Micro Timer Load Register 0, time to start counting from when reaching zero */
+#define PITMTLD1 DVUCP(0x0347) /* PIT Micro Timer Load Register 1, time to start counting from when reaching zero */
+#define PITLD0 DVUSP(0x0348)   /* PIT Load Register 0, time to start counting from when reaching zero (0x0348 PITLD0 (hi), 0x0349 PITLD0 (lo)) */
+#define PITLD1 DVUSP(0x034C)   /* PIT Load Register 1, time to start counting from when reaching zero (0x034C PITLD1 (hi), 0x034D PITLD1 (lo)) */
+#define PITLD2 DVUSP(0x0350)   /* PIT Load Register 2, time to start counting from when reaching zero (0x0350 PITLD2 (hi), 0x0351 PITLD2 (lo)) */
+#define PITLD3 DVUSP(0x0354)   /* PIT Load Register 3, time to start counting from when reaching zero (0x0354 PITLD3 (hi), 0x0355 PITLD3 (lo)) */
+#define PITCNT0 DVUSP(0x034A)  /* PIT Count Register 0, current value of down counter (0x034A PITCNT0 (hi), 0x034B PITCNT0 (lo)) */
+#define PITCNT1 DVUSP(0x034E)  /* PIT Count Register 1, current value of down counter (0x034E PITCNT1 (hi), 0x034F PITCNT1 (lo)) */
+#define PITCNT2 DVUSP(0x0352)  /* PIT Count Register 2, current value of down counter (0x0352 PITCNT2 (hi), 0x0353 PITCNT2 (lo)) */
+#define PITCNT3 DVUSP(0x0356)  /* PIT Count Register 3, current value of down counter (0x0356 PITCNT3 (hi), 0x0357 PITCNT3 (lo)) */
 
 
 // TODO XGATE Set up stuff
@@ -954,53 +955,53 @@
 /* 0x030B PWMSCNTB PWM test register 4 */
 
 
-/* 0x001D Reserved				*/
-/* 0x001F Reserved				*/
-/* 0x0012 Reserved				*/
-/* 0x0014 - 0x0015 : Reserved	*/
-/* 0x0018 - 0x0019 : Reserved	*/
-/* 0x0031 Reserved				*/
-/* 0x006C Reserved				*/
-/* 0x00B5 - 0x00B7 : Reserved	*/
-/* 0x0087 Reserved				*/
-/* 0x00DC Reserved				*/
-/* 0x00DE - 0x00DF : Reserved	*/
-/* 0x00E5 - 0x00EF : Reserved	*/
-/* 0x00F4 Reserved				*/
-/* 0x00F6 Reserved				*/
-/* 0x00F7 Reserved				*/
-/* 0x00FC Reserved				*/
-/* 0x00FE - 0x00FF : Reserved	*/
-/* 0x010C - 0x010F : Reserved	*/
-/* 0x0111 Reserved				*/
-/* 0x0112 Reserved				*/
-/* 0x0117 Reserved				*/
-/* 0x0120 Reserved				*/
-/* 0x0122 - 0x0125 : Reserved	*/
-/* 0x014C Reserved				*/
-/* 0x018C Reserved				*/
-/* 0x01CC Reserved				*/
-/* 0x020C - 0x020D : Reserved	*/
-/* 0x0246 - 0x0247 : Reserved	*/
-/* 0x024F Reserved				*/
-/* 0x0270 Reserved				*/
-/* 0x0272 Reserved				*/
-/* 0x0274 Reserved				*/
-/* 0x0276 Reserved				*/
-/* 0x028C Reserved				*/
-/* 0x02C7 Reserved				*/
-/* 0x02CA Reserved				*/
-/* 0x02CC Reserved				*/
-/* 0x02CE Reserved				*/
-/* 0x02E0 – 0x02EF : Reserved	*/
-/* 0x02F6 – 0x02FF : Reserved	*/
-/* 0x0325 – 0x033F : Reserved	*/
-/* 0x0358 – 0x037F : Reserved	*/
-/* 0x0383 Reserved				*/
-/* 0x039C Reserved				*/
-/* 0x03A0 Reserved				*/
-/* 0x03A1 Reserved				*/
-/* 0x03B0 – 0x07FF : Reserved	*/
+/* 0x001D Reserved */
+/* 0x001F Reserved */
+/* 0x0012 Reserved */
+/* 0x0014 - 0x0015 : Reserved */
+/* 0x0018 - 0x0019 : Reserved */
+/* 0x0031 Reserved */
+/* 0x006C Reserved */
+/* 0x00B5 - 0x00B7 : Reserved */
+/* 0x0087 Reserved */
+/* 0x00DC Reserved */
+/* 0x00DE - 0x00DF : Reserved */
+/* 0x00E5 - 0x00EF : Reserved */
+/* 0x00F4 Reserved */
+/* 0x00F6 Reserved */
+/* 0x00F7 Reserved */
+/* 0x00FC Reserved */
+/* 0x00FE - 0x00FF : Reserved */
+/* 0x010C - 0x010F : Reserved */
+/* 0x0111 Reserved */
+/* 0x0112 Reserved */
+/* 0x0117 Reserved */
+/* 0x0120 Reserved */
+/* 0x0122 - 0x0125 : Reserved */
+/* 0x014C Reserved */
+/* 0x018C Reserved */
+/* 0x01CC Reserved */
+/* 0x020C - 0x020D : Reserved */
+/* 0x0246 - 0x0247 : Reserved */
+/* 0x024F Reserved */
+/* 0x0270 Reserved */
+/* 0x0272 Reserved */
+/* 0x0274 Reserved */
+/* 0x0276 Reserved */
+/* 0x028C Reserved */
+/* 0x02C7 Reserved */
+/* 0x02CA Reserved */
+/* 0x02CC Reserved */
+/* 0x02CE Reserved */
+/* 0x02E0 – 0x02EF : Reserved */
+/* 0x02F6 – 0x02FF : Reserved */
+/* 0x0325 – 0x033F : Reserved */
+/* 0x0358 – 0x037F : Reserved */
+/* 0x0383 Reserved */
+/* 0x039C Reserved */
+/* 0x03A0 Reserved */
+/* 0x03A1 Reserved */
+/* 0x03B0 – 0x07FF : Reserved */
 
 
 /* Clear any accidental use of Reserved from typing mistakes. */

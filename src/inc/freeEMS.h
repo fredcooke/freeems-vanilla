@@ -41,8 +41,8 @@
  */
 
 
-/* Header file multiple inclusion protection courtesy eclipse Header Template	*/
-/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
+/* Header file multiple inclusion protection courtesy eclipse Header Template */
+/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_FREEEMS_H_SEEN
 #define FILE_FREEEMS_H_SEEN
 

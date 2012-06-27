@@ -98,11 +98,11 @@ void init(){
  * @author Fred Cooke
  */
 void initPLL(){
-	CLKSEL &= PLLSELOFF;	/* Switches to base external OSCCLK to ensure PLL is not being used (off out of reset, but not sure if the monitor turns it on before passing control or not) */
-	PLLCTL &= PLLOFF;		/* Turn the PLL device off to adjust its speed (on by default out of reset) */
-	REFDV = PLLDIVISOR;		/* 16MHz / (3 + 1) = 4MHz Bus frequency */
-	SYNR = PLLMULTIPLIER;	/* 4MHz * (9 + 1) = 40MHz Bus frequency */
-	PLLCTL |= PLLON;		/* Turn the PLL device back on again at 80MHz */
+	CLKSEL &= PLLSELOFF;  /* Switches to base external OSCCLK to ensure PLL is not being used (off out of reset, but not sure if the monitor turns it on before passing control or not) */
+	PLLCTL &= PLLOFF;     /* Turn the PLL device off to adjust its speed (on by default out of reset) */
+	REFDV = PLLDIVISOR;   /* 16MHz / (3 + 1) = 4MHz Bus frequency */
+	SYNR = PLLMULTIPLIER; /* 4MHz * (9 + 1) = 40MHz Bus frequency */
+	PLLCTL |= PLLON;      /* Turn the PLL device back on again at 80MHz */
 
 	while (!(CRGFLG & PLLLOCK)){
 		/* Do nothing while we wait till the PLL loop locks onto the target frequency. */
@@ -110,22 +110,22 @@ void initPLL(){
 		/* Bus frequency is half PLL frequency and given by ((crystal frequency / (REFDV + 1)) * (SYNR + 1)) */
 	}
 
-	CLKSEL = PLLSELON;		/* Switches to PLL clock for internal bus frequency	*/
-	/* from MC9S12XDP512V2.pdf Section 2.4.1.1.2 page 101 Third paragraph		*/
-	/* "This takes a MAXIMUM of 4 OSCCLK clock cylces PLUS 4 PLL clock cycles"	*/
-	/* "During this time ALL clocks freeze, and CPU activity ceases"			*/
-	/* Therefore there is no point waiting for this to occur, we already are...	*/
+	CLKSEL = PLLSELON; /* Switches to PLL clock for internal bus frequency      */
+	/* from MC9S12XDP512V2.pdf Section 2.4.1.1.2 page 101 Third paragraph       */
+	/* "This takes a MAXIMUM of 4 OSCCLK clock cylces PLUS 4 PLL clock cycles"  */
+	/* "During this time ALL clocks freeze, and CPU activity ceases"            */
+	/* Therefore there is no point waiting for this to occur, we already are... */
 }
 
 
 /* Configure all the I/O to default values to keep power use down etc */
 void initIO(){
-	/* for now, hard code all stuff to be outputs as per Freescale documentation,	*/
-	/* later what to do will be pulled from flash configuration such that all		*/
-	/* things are setup at once, and not messed with thereafter. when the port		*/
-	/* something uses is changed via the tuning interface, the confuration will be	*/
-	/* done on the fly, and the value burned to flash such that next boot happens	*/
-	/* correctly and current running devices are used in that way.					*/
+	/* for now, hard code all stuff to be outputs as per Freescale documentation,  */
+	/* later what to do will be pulled from flash configuration such that all      */
+	/* things are setup at once, and not messed with thereafter. when the port     */
+	/* something uses is changed via the tuning interface, the confuration will be */
+	/* done on the fly, and the value burned to flash such that next boot happens  */
+	/* correctly and current running devices are used in that way.                 */
 
 	/* Turn off and on and configure all the modules in an explicit way */
 	// TODO set up and turn off all modules (CAN,SCI,SPI,IIC,etc)
@@ -244,14 +244,14 @@ void initLookupAddresses(){
  */
 void initFuelAddresses(){
 	/* Setup addresses within the page to avoid warnings */
-	VETableMainFlashLocation		= (void*)&VETableMainFlash;
-	VETableSecondaryFlashLocation	= (void*)&VETableSecondaryFlash;
-	VETableTertiaryFlashLocation	= (void*)&VETableTertiaryFlash;
-	LambdaTableFlashLocation		= (void*)&LambdaTableFlash;
-	VETableMainFlash2Location		= (void*)&VETableMainFlash2;
-	VETableSecondaryFlash2Location	= (void*)&VETableSecondaryFlash2;
-	VETableTertiaryFlash2Location	= (void*)&VETableTertiaryFlash2;
-	LambdaTableFlash2Location		= (void*)&LambdaTableFlash2;
+	VETableMainFlashLocation       = (void*)&VETableMainFlash;
+	VETableSecondaryFlashLocation  = (void*)&VETableSecondaryFlash;
+	VETableTertiaryFlashLocation   = (void*)&VETableTertiaryFlash;
+	LambdaTableFlashLocation       = (void*)&LambdaTableFlash;
+	VETableMainFlash2Location      = (void*)&VETableMainFlash2;
+	VETableSecondaryFlash2Location = (void*)&VETableSecondaryFlash2;
+	VETableTertiaryFlash2Location  = (void*)&VETableTertiaryFlash2;
+	LambdaTableFlash2Location      = (void*)&LambdaTableFlash2;
 }
 
 
@@ -264,15 +264,15 @@ void initFuelAddresses(){
 void initPagedRAMFuel(void){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_FUEL_ONE;
-	memcpy((void*)&TablesA,	VETableMainFlashLocation,		sizeof(mainTable));
-	memcpy((void*)&TablesB,	VETableSecondaryFlashLocation,	sizeof(mainTable));
-	memcpy((void*)&TablesC,	VETableTertiaryFlashLocation,	sizeof(mainTable));
-	memcpy((void*)&TablesD,	LambdaTableFlashLocation,		sizeof(mainTable));
+	memcpy((void*)&TablesA, VETableMainFlashLocation,       sizeof(mainTable));
+	memcpy((void*)&TablesB, VETableSecondaryFlashLocation,  sizeof(mainTable));
+	memcpy((void*)&TablesC, VETableTertiaryFlashLocation,   sizeof(mainTable));
+	memcpy((void*)&TablesD, LambdaTableFlashLocation,       sizeof(mainTable));
 	RPAGE = RPAGE_FUEL_TWO;
-	memcpy((void*)&TablesA,	VETableMainFlash2Location,		sizeof(mainTable));
-	memcpy((void*)&TablesB,	VETableSecondaryFlash2Location,	sizeof(mainTable));
-	memcpy((void*)&TablesC,	VETableTertiaryFlash2Location,	sizeof(mainTable));
-	memcpy((void*)&TablesD,	LambdaTableFlash2Location,		sizeof(mainTable));
+	memcpy((void*)&TablesA, VETableMainFlash2Location,      sizeof(mainTable));
+	memcpy((void*)&TablesB, VETableSecondaryFlash2Location, sizeof(mainTable));
+	memcpy((void*)&TablesC, VETableTertiaryFlash2Location,  sizeof(mainTable));
+	memcpy((void*)&TablesD, LambdaTableFlash2Location,      sizeof(mainTable));
 }
 
 
@@ -286,14 +286,14 @@ void initPagedRAMFuel(void){
  */
 void initTimingAddresses(){
 	/* Setup addresses within the page to avoid warnings */
-	IgnitionAdvanceTableMainFlashLocation			= (void*)&IgnitionAdvanceTableMainFlash;
-	IgnitionAdvanceTableSecondaryFlashLocation		= (void*)&IgnitionAdvanceTableSecondaryFlash;
-	InjectionAdvanceTableMainFlashLocation			= (void*)&InjectionAdvanceTableMainFlash;
-	InjectionAdvanceTableSecondaryFlashLocation		= (void*)&InjectionAdvanceTableSecondaryFlash;
-	IgnitionAdvanceTableMainFlash2Location			= (void*)&IgnitionAdvanceTableMainFlash2;
-	IgnitionAdvanceTableSecondaryFlash2Location		= (void*)&IgnitionAdvanceTableSecondaryFlash2;
-	InjectionAdvanceTableMainFlash2Location			= (void*)&InjectionAdvanceTableMainFlash2;
-	InjectionAdvanceTableSecondaryFlash2Location	= (void*)&InjectionAdvanceTableSecondaryFlash2;
+	IgnitionAdvanceTableMainFlashLocation        = (void*)&IgnitionAdvanceTableMainFlash;
+	IgnitionAdvanceTableSecondaryFlashLocation   = (void*)&IgnitionAdvanceTableSecondaryFlash;
+	InjectionAdvanceTableMainFlashLocation       = (void*)&InjectionAdvanceTableMainFlash;
+	InjectionAdvanceTableSecondaryFlashLocation  = (void*)&InjectionAdvanceTableSecondaryFlash;
+	IgnitionAdvanceTableMainFlash2Location       = (void*)&IgnitionAdvanceTableMainFlash2;
+	IgnitionAdvanceTableSecondaryFlash2Location  = (void*)&IgnitionAdvanceTableSecondaryFlash2;
+	InjectionAdvanceTableMainFlash2Location      = (void*)&InjectionAdvanceTableMainFlash2;
+	InjectionAdvanceTableSecondaryFlash2Location = (void*)&InjectionAdvanceTableSecondaryFlash2;
 }
 
 
@@ -306,15 +306,15 @@ void initTimingAddresses(){
 void initPagedRAMTime(){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TIME_ONE;
-	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlashLocation,			sizeof(mainTable));
-	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlashLocation,		sizeof(mainTable));
-	memcpy((void*)&TablesC,	InjectionAdvanceTableMainFlashLocation,			sizeof(mainTable));
-	memcpy((void*)&TablesD,	InjectionAdvanceTableSecondaryFlashLocation,	sizeof(mainTable));
+	memcpy((void*)&TablesA, IgnitionAdvanceTableMainFlashLocation,        sizeof(mainTable));
+	memcpy((void*)&TablesB, IgnitionAdvanceTableSecondaryFlashLocation,   sizeof(mainTable));
+	memcpy((void*)&TablesC, InjectionAdvanceTableMainFlashLocation,       sizeof(mainTable));
+	memcpy((void*)&TablesD, InjectionAdvanceTableSecondaryFlashLocation,  sizeof(mainTable));
 	RPAGE = RPAGE_TIME_TWO;
-	memcpy((void*)&TablesA,	IgnitionAdvanceTableMainFlash2Location,			sizeof(mainTable));
-	memcpy((void*)&TablesB,	IgnitionAdvanceTableSecondaryFlash2Location,	sizeof(mainTable));
-	memcpy((void*)&TablesC,	InjectionAdvanceTableMainFlash2Location,		sizeof(mainTable));
-	memcpy((void*)&TablesD,	InjectionAdvanceTableSecondaryFlash2Location,	sizeof(mainTable));
+	memcpy((void*)&TablesA, IgnitionAdvanceTableMainFlash2Location,       sizeof(mainTable));
+	memcpy((void*)&TablesB, IgnitionAdvanceTableSecondaryFlash2Location,  sizeof(mainTable));
+	memcpy((void*)&TablesC, InjectionAdvanceTableMainFlash2Location,      sizeof(mainTable));
+	memcpy((void*)&TablesD, InjectionAdvanceTableSecondaryFlash2Location, sizeof(mainTable));
 }
 
 
@@ -329,14 +329,14 @@ void initPagedRAMTime(){
  */
 void initTunableAddresses(){
 	/* Setup addresses within the page to avoid warnings */
-	SmallTablesAFlashLocation 	= (void*)&SmallTablesAFlash;
-	SmallTablesBFlashLocation 	= (void*)&SmallTablesBFlash;
-	SmallTablesCFlashLocation 	= (void*)&SmallTablesCFlash;
-	SmallTablesDFlashLocation 	= (void*)&SmallTablesDFlash;
-	SmallTablesAFlash2Location	= (void*)&SmallTablesAFlash2;
-	SmallTablesBFlash2Location	= (void*)&SmallTablesBFlash2;
-	SmallTablesCFlash2Location	= (void*)&SmallTablesCFlash2;
-	SmallTablesDFlash2Location	= (void*)&SmallTablesDFlash2;
+	SmallTablesAFlashLocation  = (void*)&SmallTablesAFlash;
+	SmallTablesBFlashLocation  = (void*)&SmallTablesBFlash;
+	SmallTablesCFlashLocation  = (void*)&SmallTablesCFlash;
+	SmallTablesDFlashLocation  = (void*)&SmallTablesDFlash;
+	SmallTablesAFlash2Location = (void*)&SmallTablesAFlash2;
+	SmallTablesBFlash2Location = (void*)&SmallTablesBFlash2;
+	SmallTablesCFlash2Location = (void*)&SmallTablesCFlash2;
+	SmallTablesDFlash2Location = (void*)&SmallTablesDFlash2;
 
 	/* TablesA */
 	dwellDesiredVersusVoltageTableLocation    = (void*)&SmallTablesAFlash.dwellDesiredVersusVoltageTable;
@@ -384,10 +384,10 @@ void initTunableAddresses(){
 void initPagedRAMTune(){
 	/* Copy the tables from flash to RAM */
 	RPAGE = RPAGE_TUNE_ONE;
-	memcpy((void*)&TablesA,	SmallTablesAFlashLocation,	sizeof(mainTable));
-	memcpy((void*)&TablesB,	SmallTablesBFlashLocation,	sizeof(mainTable));
-	memcpy((void*)&TablesC,	SmallTablesCFlashLocation,	sizeof(mainTable));
-	memcpy((void*)&TablesD,	SmallTablesDFlashLocation,	sizeof(mainTable));
+	memcpy((void*)&TablesA, SmallTablesAFlashLocation, sizeof(mainTable));
+	memcpy((void*)&TablesB, SmallTablesBFlashLocation, sizeof(mainTable));
+	memcpy((void*)&TablesC, SmallTablesCFlashLocation, sizeof(mainTable));
+	memcpy((void*)&TablesD, SmallTablesDFlashLocation, sizeof(mainTable));
 	RPAGE = RPAGE_TUNE_TWO;
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& WARNING &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& //
 	//    You will get garbage if you use table switching at this time!!!    //
@@ -397,10 +397,10 @@ void initPagedRAMTune(){
 	//memcpy(xgateSchedRAMAddress, xgateSchedFlashAddress, (xgateSchedEnd - xgateSched));
 	//memcpy(xgateInjectorsOnRAMAddress, xgateInjectorsOnFlashAddress, (xgateInjectorsOnEnd - xgateInjectorsOn));
 	//memcpy(xgateInjectorsOffRAMAddress, xgateInjectorsOffFlashAddress, (xgateInjectorsOffEnd - xgateInjectorsOff));
-//	memcpy((void*)&TablesA,	SmallTablesAFlash2Location,	sizeof(mainTable));
-//	memcpy((void*)&TablesB,	SmallTablesBFlash2Location,	sizeof(mainTable));
-//	memcpy((void*)&TablesC,	SmallTablesCFlash2Location,	sizeof(mainTable));
-//	memcpy((void*)&TablesD,	SmallTablesDFlash2Location,	sizeof(mainTable));
+//	memcpy((void*)&TablesA,	SmallTablesAFlash2Location, sizeof(mainTable));
+//	memcpy((void*)&TablesB,	SmallTablesBFlash2Location, sizeof(mainTable));
+//	memcpy((void*)&TablesC,	SmallTablesCFlash2Location, sizeof(mainTable));
+//	memcpy((void*)&TablesD,	SmallTablesDFlash2Location, sizeof(mainTable));
 }
 
 
@@ -454,7 +454,7 @@ void initAllPagedRAM(){
 
 
 /* Initialise and set up all running variables that require a non-zero start value here */
-/* All other variables are initialised to zero by the premain built in code				*/
+/* All other variables are initialised to zero by the premain built in code             */
 void initVariables(){
 	/* And the opposite for the other halves */
 	CoreVars = &CoreVars0;
@@ -538,9 +538,9 @@ void initVariables(){
  *          damage your flash module or get corrupt data written to it.
  */
 void initFlash(){
-	FCLKDIV = 0x4A;                  	/* Set the flash clock frequency	*/
-	FPROT = 0xFF;                    	/* Disable all flash protection 	*/
-	FSTAT = FSTAT | (PVIOL | ACCERR);	/* Clear any errors             	*/
+	FCLKDIV = 0x4A;                   /* Set the flash clock frequency */
+	FPROT = 0xFF;                     /* Disable all flash protection  */
+	FSTAT = FSTAT | (PVIOL | ACCERR); /* Clear any errors              */
 }
 
 
@@ -675,10 +675,10 @@ void initConfiguration(){
 
 	/* Add in tunable physical parameters at boot time TODO move to init.c TODO duplicate for secondary fuel? or split somehow?
 	 *nstant = ((masterConst * perCylinderVolume) / (stoichiometricAFR * injectorFlow));
-	 *nstant = ((139371764	 * 16384			) / (15053			   * 4096		 ));
+	 *nstant = ((139371764 * 16384) / (15053 * 4096));
 	 * OR
 	 *nstant = ((masterConst / injectorFlow) * perCylinderVolume) / stoichiometricAFR;
-	 *nstant = ((139371764	 / 4096		   ) * 16384			) / 15053			 ;
+	 *nstant = ((139371764 /  4096) * 16384) / 15053;
 	 * http://duckduckgo.com/?q=%28%28139371764++%2F+4096%29+*+16384%29+%2F+15053 */
 	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.engineSettings.injectorFlow) * fixedConfigs1.engineSettings.perCylinderVolume) / fixedConfigs1.engineSettings.stoichiometricAFR;
 

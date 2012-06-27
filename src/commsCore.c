@@ -318,7 +318,7 @@ void decodePacketAndRespond(){
 	/* This is where all the communication logic resides.
 	 *
 	 * Please Note: Length and it's flag should be set by each return packet
-	 * type handler if required or desired.	If an ack has been requested,
+	 * type handler if required or desired. If an ack has been requested,
 	 * ensure the negative ack flag is set if the operation failed.
 	 */
 	switch (RXHeaderPayloadID){

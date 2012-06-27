@@ -192,12 +192,12 @@
 #define TIMETABLES_PPAGE 0xFC
 
 /* General Purpose Page with PPAGE = 0xFE */
-#define FPAGE_FE FFAR(".ppageFE")	/* This is the block that is present in the page window using linear addressing, represents 0x8000 - 0xBFFF ("text2" paged) */
-#define DPAGE_FE DFAR(".ppageFE")	/* This is the block that is present in the page window using linear addressing, represents 0x8000 - 0xBFFF ("text2" paged) */
-//#define FPAGE_FD FFAR(".ppageFD")	/* Represents 0x4000 - 0x7FFF ("text1" paged) */
-//#define DPAGE_FD DFAR(".ppageFD")	/* Represents 0x4000 - 0x7FFF ("text1" paged) */
-//#define FPAGE_FF FFAR(".ppageFF")	/* Represents 0xC000 - 0xFFFF ("text" paged) */
-//#define DPAGE_FF DFAR(".ppageFF")	/* Represents 0xC000 - 0xFFFF ("text" paged) */
+#define FPAGE_FE FFAR(".ppageFE") /* This is the block that is present in the page window using linear addressing, represents 0x8000 - 0xBFFF ("text2" paged) */
+#define DPAGE_FE DFAR(".ppageFE") /* This is the block that is present in the page window using linear addressing, represents 0x8000 - 0xBFFF ("text2" paged) */
+//#define FPAGE_FD FFAR(".ppageFD") /* Represents 0x4000 - 0x7FFF ("text1" paged) */
+//#define DPAGE_FD DFAR(".ppageFD") /* Represents 0x4000 - 0x7FFF ("text1" paged) */
+//#define FPAGE_FF FFAR(".ppageFF") /* Represents 0xC000 - 0xFFFF ("text" paged)  */
+//#define DPAGE_FF DFAR(".ppageFF") /* Represents 0xC000 - 0xFFFF ("text" paged)  */
 /* The previous four lines are included for clarity only. */
 /* Changes to the memory layout should be reflected in memory.x and Makefile also */
 

@@ -30,8 +30,8 @@
  */
 
 
-/* Header file multiple inclusion protection courtesy eclipse Header Template	*/
-/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
+/* Header file multiple inclusion protection courtesy eclipse Header Template */
+/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_FLASHWRITE_H_SEEN
 #define FILE_FLASHWRITE_H_SEEN
 
@@ -50,9 +50,9 @@
 
 
 /// @todo TODO add mass erase function and replace ?? with the real value
-#define MASS_ERASE  	0x?? /* Used to erase 128k flash blocks */
-#define WORD_PROGRAM	0x20 /* Word = 2 bytes, this is the minimum write size, 64K of these per block, 512 per sector	*/
-#define SECTOR_ERASE	0x40 /* Sector = 1024 bytes, there are 128 sectors to a block, and 4 blocks to the chip			*/
+#define MASS_ERASE   0x?? /* Used to erase 128k flash blocks */
+#define WORD_PROGRAM 0x20 /* Word = 2 bytes, this is the minimum write size, 64K of these per block, 512 per sector	*/
+#define SECTOR_ERASE 0x40 /* Sector = 1024 bytes, there are 128 sectors to a block, and 4 blocks to the chip			*/
 /// @todo TODO CBEIF mask hash define - is this still needed?
 
 

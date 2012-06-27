@@ -50,9 +50,9 @@
 #include "inc/commsISRs.h"
 
 
-/* The C89 standard is used in the 3.3.6 GCC compiler, please	*
- * see the following URL for more info on inline functions :	*
- * http://gcc.gnu.org/onlinedocs/gcc-3.3.6/Inline.html#Inline	*/
+/* The C89 standard is used in the 3.3.6 GCC compiler, please *
+ * see the following URL for more info on inline functions :  *
+ * http://gcc.gnu.org/onlinedocs/gcc-3.3.6/Inline.html#Inline */
 
 
 /** @brief Reset Receive State
@@ -75,8 +75,8 @@ void resetReceiveState(unsigned char sourceIDState){
 	/* Set the source ID state (clear all or all but one flag(s)) */
 	RXBufferContentSourceID = sourceIDState;
 
-	/* Which ever interface we are setting is the one we came from. By definition	*/
-	/* it must be on and we want it to stay on, so just turn off all the others.	*/
+	/* Which ever interface we are setting is the one we came from. By definition */
+	/* it must be on and we want it to stay on, so just turn off all the others.  */
 	if(sourceIDState & COM_SET_SCI0_INTERFACE_ID){
 		/* Turn off all others here */
 		/// @todo TODO CAN0CTL1 &= CANCTL1_RX_DISABLE;

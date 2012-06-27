@@ -30,8 +30,8 @@
  */
 
 
-/* Header file multiple inclusion protection courtesy eclipse Header Template	*/
-/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
+/* Header file multiple inclusion protection courtesy eclipse Header Template */
+/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_FUELANDIGNITIONCALCS_H_SEEN
 #define FILE_FUELANDIGNITIONCALCS_H_SEEN
 
@@ -67,33 +67,33 @@ EXTERN void calculateFuelAndIgnition(void) FPAGE_FE;
 /******************** The full calculations in an unusable form ******************/
 
 /* Full calcs on a single line */
-//	final master PW = ((msToTicks * (molarMassOfAir/ molarMassOfAirDivisor) * (airPressure / airPressureDivisor) * (lookedUpVE / (lookedUpVEDivisor * VEpercentageDivisor)) * (perCylinderVolume / perCylinderVolumeDivisor)) / ((universalGasConstant / universalGasConstantDivisor) * (airInletTemp / airInletTempDivisor) * (stoichiometricAFR / stoichiometricAFRDivisor) * (desiredLambda / desiredLambdaDivisor) * (densityOfFuel / (densityOfFuelDivisor * densityOfFuelUnitDivisor)) * (injectorFlow / (injectorFlowUnitDivisor * injectorFlowDivisor))));
+// final master PW = ((msToTicks * (molarMassOfAir/ molarMassOfAirDivisor) * (airPressure / airPressureDivisor) * (lookedUpVE / (lookedUpVEDivisor * VEpercentageDivisor)) * (perCylinderVolume / perCylinderVolumeDivisor)) / ((universalGasConstant / universalGasConstantDivisor) * (airInletTemp / airInletTempDivisor) * (stoichiometricAFR / stoichiometricAFRDivisor) * (desiredLambda / desiredLambdaDivisor) * (densityOfFuel / (densityOfFuelDivisor * densityOfFuelUnitDivisor)) * (injectorFlow / (injectorFlowUnitDivisor * injectorFlowDivisor))));
 
 /* stripped with only variables and divisors left.*/
-//	finalMasterPulseWidth = (((airPressure / airPressureDivisor) * (lookedUpVE / (lookedUpVEDivisor * VEpercentageDivisor))) / ((airInletTemp / airInletTempDivisor) * (desiredLambda / desiredLambdaDivisor) * (densityOfFuel / (densityOfFuelDivisor * densityOfFuelUnitDivisor))));
+// finalMasterPulseWidth = (((airPressure / airPressureDivisor) * (lookedUpVE / (lookedUpVEDivisor * VEpercentageDivisor))) / ((airInletTemp / airInletTempDivisor) * (desiredLambda / desiredLambdaDivisor) * (densityOfFuel / (densityOfFuelDivisor * densityOfFuelUnitDivisor))));
 
 /* stripped with only divisors left.*/
-//	finalMasterPulseWidth = (airInletTempDivisor * oneLambdaDivisor * densityOfFuelTotalDivisor) / (airPressureDivisor * VETotalDivisor) ;
+// finalMasterPulseWidth = (airInletTempDivisor * oneLambdaDivisor * densityOfFuelTotalDivisor) / (airPressureDivisor * VETotalDivisor) ;
 
 /* stripped with only divisors left.*/
-//	divisors = 1;
+// divisors = 1;
 
 /* totally stripped with no divisors */
-//	finalMasterPulseWidth = ((airPressure * lookedUpVE) / (airInletTemp * desiredLambda * densityOfFuel));
+// finalMasterPulseWidth = ((airPressure * lookedUpVE) / (airInletTemp * desiredLambda * densityOfFuel));
 
 /**************************** The constant calculations **************************/
 
-//	unsigned short constant;
-	/* stripped with only constants and divisors left.*/
-//	constant = ((msToTicks * (molarMassOfAir/ molarMassOfAirDivisor) * (perCylinderVolume / perCylinderVolumeDivisor)) / ((universalGasConstant / universalGasConstantDivisor) * (stoichiometricAFR / stoichiometricAFRDivisor) * (injectorFlow / (injectorFlowUnitDivisor * injectorFlowDivisor))));
+// unsigned short constant;
+/* stripped with only constants and divisors left.*/
+// constant = ((msToTicks * (molarMassOfAir/ molarMassOfAirDivisor) * (perCylinderVolume / perCylinderVolumeDivisor)) / ((universalGasConstant / universalGasConstantDivisor) * (stoichiometricAFR / stoichiometricAFRDivisor) * (injectorFlow / (injectorFlowUnitDivisor * injectorFlowDivisor))));
 
-	/* stripped with only divisors left. Top divisors go on bottom and bottom on top! */
-//	constDiv = (universalGasConstantDivisor * stoichiometricAFRDivisor * injectorFlowTotalDivisor) / (molarMassOfAirDivisor * perCylinderVolumeDivisor);
-	//1310720= (4096						* 1024					   * 1024000				 ) / (100					* 32768					  );
+/* stripped with only divisors left. Top divisors go on bottom and bottom on top! */
+// constDiv = (universalGasConstantDivisor * stoichiometricAFRDivisor * injectorFlowTotalDivisor) / (molarMassOfAirDivisor * perCylinderVolumeDivisor);
+//  1310720 = (4096                        * 1024                     * 1024000                 ) / (100                   * 32768                   );
 
-	/* stripped with only constants left.*/
-//	constant = ((msToTicks * molarMassOfAir * perCylinderVolume) / (universalGasConstant * stoichiometricAFR * injectorFlow));
-	//nstant = ((1250	   * 2897			* 16384			   ) / (34056				 * 15053			 * 4096		   ));
+/* stripped with only constants left.*/
+// constant = ((msToTicks * molarMassOfAir * perCylinderVolume) / (universalGasConstant * stoichiometricAFR * injectorFlow));
+// constant = ((1250   	  * 2897           * 16384            ) / (34056                * 15053             * 4096        ));
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 

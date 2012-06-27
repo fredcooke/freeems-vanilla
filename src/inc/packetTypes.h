@@ -30,8 +30,8 @@
  */
 
 
-/* Header file multiple inclusion protection courtesy eclipse Header Template	*/
-/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
+/* Header file multiple inclusion protection courtesy eclipse Header Template */
+/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_PACKET_TYPES_H_SEEN
 #define FILE_PACKET_TYPES_H_SEEN
 
@@ -42,7 +42,7 @@
 /* the odd number immediately above the original request ID. There are a few  */
 /* examples where either a request is not required or a response not sent. In */
 /* such cases the odd ID may be used for an packet asyncronously sent from    */
-/* the EMS to the PC. These will be well commented when present.			  */
+/* the EMS to the PC. These will be well commented when present.              */
 
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&  Protocol Payload Type IDs  &&&&&&&&&&&&&&&&&&&&&&&*/

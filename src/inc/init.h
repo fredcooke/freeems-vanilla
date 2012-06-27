@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke
+ * Copyright 2008-2010 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -30,8 +30,8 @@
  */
 
 
-/* Header file multiple inclusion protection courtesy eclipse Header Template	*/
-/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual		*/
+/* Header file multiple inclusion protection courtesy eclipse Header Template */
+/* and http://gcc.gnu.org/onlinedocs/gcc-3.1.1/cpp/ C pre processor manual    */
 #ifndef FILE_INIT_H_SEEN
 #define FILE_INIT_H_SEEN
 
@@ -78,27 +78,27 @@ void initPagedRAMTune(void) TUNETABLESF;
 #endif
 
 
-/* Other function declarations are private and present in the C		*/
-/* source file purely to assign them to a particular memory region.	*/
+/* Other function declarations are private and present in the C     */
+/* source file purely to assign them to a particular memory region. */
 EXTERN void init(void) FPAGE_FE;
 
 
-/* Various masks and values used for initialising the contents of control registers.	*/
-/* For information on how these are being used, try this link :							*/
-/* http://www.vipan.com/htdocs/bitwisehelp.html											*/
+/* Various masks and values used for initialising the contents of control registers. */
+/* For information on how these are being used, try this link :                      */
+/* http://www.vipan.com/htdocs/bitwisehelp.html                                      */
 
 
 // PLL control values
-#define PLLLOCK			0x08 /* Mask for checking to see when the PLL loop is locked onto its target */
-#define PLLSELOFF		0x7F /* Mask for switching to base external OSCCLK clock 0b_0111_1111 */
-#define PLLSELON		0x80 /* Mask for switching to internally multiplied PLL clock 0b_1000_0000 */
-#define PLLOFF			0xBF /* Mask for turning the PLLON bit to ZERO 0b_1011_1111, IE, turning PLL off */
-#define PLLON			0x40 /* Mask for setting PLLON bit to ONE  0b_0100_0000, IE, turning PLL on */
-#define PLLDIVISOR		0x03 /* Input crystal frequency is divided by this number */
-#define PLLMULTIPLIER	0x09 /* The result of the above is multiplied by this number to give the bus frequency */
+#define PLLLOCK       0x08 /* Mask for checking to see when the PLL loop is locked onto its target */
+#define PLLSELOFF     0x7F /* Mask for switching to base external OSCCLK clock 0b_0111_1111 */
+#define PLLSELON      0x80 /* Mask for switching to internally multiplied PLL clock 0b_1000_0000 */
+#define PLLOFF        0xBF /* Mask for turning the PLLON bit to ZERO 0b_1011_1111, IE, turning PLL off */
+#define PLLON         0x40 /* Mask for setting PLLON bit to ONE  0b_0100_0000, IE, turning PLL on */
+#define PLLDIVISOR    0x03 /* Input crystal frequency is divided by this number */
+#define PLLMULTIPLIER 0x09 /* The result of the above is multiplied by this number to give the bus frequency */
 
 // Flash control values
-#define PRDIV8			0x40 /* Mask for flash module to divide the oscillator clock by 8  */
+#define PRDIV8        0x40 /* Mask for flash module to divide the oscillator clock by 8 */
 
 
 /// @todo TODO define other macros such that raw values aren't used in the code

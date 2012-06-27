@@ -249,7 +249,7 @@ unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress
 }
 
 
-/**	@brief Program Command
+/** @brief Program Command
  *
  * This will write 1 word to an empty(0xFFFF) flash address. If you try to
  * write to an address containing data(not 0xFFFF),an error will register at

@@ -79,8 +79,8 @@ void PrimaryRPMISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
-	unsigned short edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = PTIT;			/* Save the values on port T regardless of the state of DDRT */
+	unsigned short edgeTimeStamp = TC0;    /* Save the edge time stamp */
+	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 	KeyUserDebugs.primaryTeethSeen++;
 

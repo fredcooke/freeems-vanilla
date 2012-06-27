@@ -96,7 +96,7 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 
 	// Run forever repeating.
 	while(TRUE){
-	//	unsigned short start = realTimeClockMillis;
+		//unsigned short start = realTimeClockMillis;
 		/* If ADCs require forced sampling, sample now */
 		if(coreStatusA & FORCE_READING){
 			ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -191,7 +191,7 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 						TXBufferInUseFlags |= COM_SET_SCI0_INTERFACE_ID;
 						// SCI0 only for now...
 
-						// headers including length...						*length = configuredBasicDatalogLength;
+						// headers including length...                 *length = configuredBasicDatalogLength;
 						TXBufferCurrentPositionHandler = (unsigned char*)&TXBuffer;
 
 						/* Initialised here such that override is possible */
@@ -245,7 +245,7 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 						TXBufferInUseFlags |= COM_SET_SCI0_INTERFACE_ID;
 						// SCI0 only for now...
 
-						// headers including length...						*length = configuredBasicDatalogLength;
+						// headers including length...                 *length = configuredBasicDatalogLength;
 						TXBufferCurrentPositionHandler = (unsigned char*)&TXBuffer;
 
 						/* Initialised here such that override is possible */
