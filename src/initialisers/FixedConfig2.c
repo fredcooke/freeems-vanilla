@@ -77,9 +77,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif SLATER
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
-//#elif JOSHBROWN
-//		MAPMinimum:    MPXH6400AMin,
-//		MAPRange:      MPXH6400ARange,
+#elif JOSHBROWN
+		MAPMinimum:    MPXH6400AMin,
+		MAPRange:      MPXH6400ARange,
 #elif DEUCECOUPE
 		MAPMinimum:    MPX4100AMin,
 		MAPRange:      MPX4100ARange,
