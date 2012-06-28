@@ -197,8 +197,13 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	},
 	cutAndLimiterSettings:{
 		InjectionRPM:{
+#ifdef SLATER
+			disableThreshold:  RPM(7000),
+			reenableThreshold: RPM(6900)
+#else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4900)  // Come back on before ignition does
+#endif
 		},
 		IgnitionRPM:{
 #ifdef HOTEL
@@ -207,6 +212,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif SNOTROCKET
 			disableThreshold:  RPM(6300),
 			reenableThreshold: RPM(6200)
+#elif SLATER
+			disableThreshold:  RPM(7000),
+			reenableThreshold: RPM(6850)
 #else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4800)  // Come back on after injection does
