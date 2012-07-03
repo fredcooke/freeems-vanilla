@@ -39,6 +39,8 @@
 #ifndef FILE_SYNC_LOSS_IDS_H_SEEN
 #define FILE_SYNC_LOSS_IDS_H_SEEN
 
+// Special case for buggy code
+#define BUG_REACHED_UNREACHABLE_CODE           0xFF
 
 // Special case for timeout
 #define EVENT_ARRIVAL_TIMEOUT                  0
