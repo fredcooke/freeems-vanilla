@@ -69,6 +69,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif CONFIG == SLATER_ID
 #include "../data/tables/axis/Slater-RPM.h"
+#elif CONFIG == PETERJSERIES_ID
+#include "../data/tables/axis/PetersJSeries-RPM.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-RPM.h"
 #elif CONFIG == DEFAULT_ID
@@ -88,6 +90,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif CONFIG == SLATER_ID
 #include "../data/tables/axis/Slater-Load.h"
+#elif CONFIG == PETERJSERIES_ID
+#include "../data/tables/axis/PetersJSeries-Load.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-Load.h"
 #elif CONFIG == DEFAULT_ID
@@ -107,6 +111,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/ve/flat80Percent.h"
 #elif CONFIG == SLATER_ID
 #include "../data/tables/ve/SlaterVE.h"
+#elif CONFIG == PETERJSERIES_ID
+#include "../data/tables/ve/PetersJSeriesVE.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/ve/flat60Percent.h"
 #elif CONFIG == DEFAULT_ID

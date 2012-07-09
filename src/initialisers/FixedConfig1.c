@@ -160,6 +160,14 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:         12, // See three lines above
 		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, for now.
 
+#elif CONFIG == PETERTRUCK_ID // Firing order 1-5-3-6-2-4
+		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
+		outputEventPinNumbers:       {0,4,2,5,1,3}, // An example of wiring your engine with cylinder one on output one, harder to grok
+		schedulingConfigurationBits: {0,0,0,0,0,0}, // Ones represent scheduling for injection, zeros represent scheduling for ignition
+		decoderEngineOffset:           ANGLE(0.00), // Trim fuel injection END point with this value.
+		numberOfConfiguredOutputEvents:          6, // THESE ARE IGN, THEY ARE NOT FUEL
+		numberOfInjectionsPerEngineCycle:        1  // Sequential, baby, yeah!
+
 #else // Nothing scheduled by default, no sensible default for all possible vehicle setups.
 		anglesOfTDC:                            {}, // Depends on cylinder count and other variables
 		outputEventPinNumbers:       {0,1,2,3,4,5}, // Default to a variety of pins for testing purposes. Note: Won't do anything without
@@ -189,6 +197,12 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SLATER_ID
 			disableThreshold:  RPM(7000),
 			reenableThreshold: RPM(6850)
+#elif CONFIG == PETERJSERIES_ID
+			disableThreshold:  RPM(6000),
+			reenableThreshold: RPM(5950)
+#elif CONFIG == PETERTRUCK_ID
+			disableThreshold:  RPM(5000),
+			reenableThreshold: RPM(4950)
 #else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4800)  // Come back on after injection does

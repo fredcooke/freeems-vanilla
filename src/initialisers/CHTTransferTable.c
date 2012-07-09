@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -32,8 +32,6 @@
  *
  * This file exists solely to contain the Coolant/Head Temperature thermistor
  * transfer function lookup table.
- *
- * @author Fred Cooke
  */
 
 
@@ -60,7 +58,11 @@ const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
 #include "../data/thermistors/GM-2k4Bias.h"
 #elif CONFIG == SLATER_ID
 #include "../data/thermistors/BoschM12H-2k6Bias.h"
+#elif CONFIG == PETERJSERIES_ID
+#include "../data/thermistors/HondaJSeries-2k4Bias.h"
 #elif CONFIG == DEUCECOUPE_ID
+#include "../data/thermistors/GM-2k4Bias.h"
+#elif CONFIG == PETERTRUCK_ID
 #include "../data/thermistors/GM-2k4Bias.h"
 #else // Default to correctly biased Jap sensor.
 #include "../data/thermistors/Denso-2k7Bias.h"
