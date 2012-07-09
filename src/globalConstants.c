@@ -56,7 +56,7 @@ const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = { INTERFACE_VER
  *
  * This should change every time the code is changed at all (even a little) before each release.
  */
-const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH] = { FIRMWARE_VERSION }; // TODO shorten the comments here, add docs and refer to them
+const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH + FIRMWARE_CONFIG_LENGTH + 1] = { FIRMWARE_VERSION "-" BUILD_CONFIG }; // TODO shorten the comments here, add docs and refer to them
 const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH] = { FIRMWARE_BUILD_DATE }; ///< GCC supplied compiler version
 const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };             ///< GCC supplied compiler version
 const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH] = { OPERATING_SYSTEM };        ///< Operating system type

@@ -1,18 +1,18 @@
 #!/bin/bash
 
-CLIFLAGS="-D CHECKDEFAULT=1" make clean s19
+CLIFLAGS="-D DEFAULT=1" make clean s19
 sleep 1
-CLIFLAGS="-D XGATE=1" make clean  s19
+CLIFLAGS="-D XGATE=1" make clean s19
 sleep 1
-CLIFLAGS="-D TRUCK=1" make clean  s19
+CLIFLAGS="-D TRUCK=1" make clean s19
 sleep 1
-CLIFLAGS="-D HOTEL=1" make clean  s19
+CLIFLAGS="-D HOTEL=1" make clean s19
 sleep 1
-CLIFLAGS="-D PRESTO=1" make clean  s19
+CLIFLAGS="-D PRESTO=1" make clean s19
 sleep 1
-CLIFLAGS="-D SEANKR1=1" make clean  s19
+CLIFLAGS="-D SEANKR1=1" make clean s19
 sleep 1
-CLIFLAGS="-D SEANKLT1=1" make clean  s19
+CLIFLAGS="-D SEANKLT1=1" make clean s19
 sleep 1
 CLIFLAGS="-D JOSHBROWN=1" make clean s19
 sleep 1

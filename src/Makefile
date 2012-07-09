@@ -85,6 +85,10 @@ else
 MD5SUM = md5sum
 endif
 
+ifdef CLIFLAGS
+CLIBUILD = -D CLIFLAGS=1
+endif
+
 # Directories here
 DISTRIBUTIONDIR = ../tmp/$(LABEL)
 FIRMWAREDISTRIBUTIONDIR = $(DISTRIBUTIONDIR)/$(LABEL)-firmware
@@ -257,7 +261,7 @@ GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
 # include debug info, optimise , 16 bit ints, hcs12 platform
 GCCOPTS1 = -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
 GCCOPTS2 = -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
-GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS) -D FIRMWARE_VERSION=\"$(FIRMWARE_VERSION)\" -D FIRMWARE_BUILD_DATE=\"$(BUILD_DATE)\" -D OPERATING_SYSTEM=\"$(OS)\"
+GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIBUILD) $(CLIFLAGS) -D FIRMWARE_VERSION=\"$(FIRMWARE_VERSION)\" -D FIRMWARE_BUILD_DATE=\"$(BUILD_DATE)\" -D OPERATING_SYSTEM=\"$(OS)\"
 # -ffunction-sections option splits out the functions such that the garbage collection can get
 # them on a per section basis. I'm not sure, but this could be harmful to paged code so may
 # have to review this at a later date perhaps splitting paged functions from nonpaged ones.
@@ -717,10 +721,10 @@ dependencies: dependenciesmsg $(DEPENDENCIES) $(DEPENDENCIESRPM) $(DDEPENDENCIES
 
 # Generate dependency files for recompilation on change semantics
 $(DEPENDENCIES) $(DEPENDENCIESRPM): $(DEPDIR)/%.d: %.c $(ALLH)
-	$(GCC) $(CLIFLAGS) -MM -MF $@ -MT $(PPCDIR)/$*.pp.c $<
+	$(GCC) $(CLIBUILD) $(CLIFLAGS) -MM -MF $@ -MT $(PPCDIR)/$*.pp.c $<
 # Generate dependency files for the dependency files...
 $(DDEPENDENCIES) $(DDEPENDENCIESRPM): $(DEPDIR)/%.dd: %.c $(ALLH)
-	$(GCC) $(CLIFLAGS) -MM -MF $@ -MT $(DEPDIR)/$*.d $<
+	$(GCC) $(CLIBUILD) $(CLIFLAGS) -MM -MF $@ -MT $(DEPDIR)/$*.d $<
 
 
 preprocessmsg:

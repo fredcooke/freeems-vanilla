@@ -173,19 +173,6 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:         12, // See three lines above
 		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, for now.
 
-// Looking forward to there being links to threads here soon! In no particular order:
-//#elif LEV8N
-//#elif SEANKR1
-//#elif TTV8SUPRA
-//#elif SECRETSQUIRREL // Shhhhhh! :-p
-//#elif HOTCAT
-//#elif MICROTECHSUCKS // Yes, that's you, John "I love MicroTech" Tramp
-//#elif QUAKE86 // Yep, this one too! :-)
-//#elif CRAIGB2200
-//#elif DAILYRAVAGE // No pun intended!
-//#elif QUICKRAVAGE // No pun intended here either!
-// No pressure guys! <cough, cough> :-)
-
 #else // Nothing scheduled by default, no sensible default for all possible vehicle setups.
 		anglesOfTDC:                            {}, // Depends on cylinder count and other variables
 		outputEventPinNumbers:       {0,1,2,3,4,5}, // Default to a variety of pins for testing purposes. Note: Won't do anything without
