@@ -29,8 +29,6 @@
  * @ingroup dataInitialisers
  *
  * @brief Fred's truck's rough tuned ignition timing table
- *
- * This file only contains the data to be hash included into some timing tables
  */
 
 
@@ -54,47 +52,6 @@
  IT(10), IT(15), IT(15), IT(15), IT(15), IT(15), IT(19), IT(19), IT(19), IT(19), IT(19), IT(19), IT(19), IT(19), IT(19), IT(19), // 195
  IT(10), IT(15), IT(15), IT(15), IT(15), IT(15), IT(17), IT(17), IT(17), IT(17), IT(17), IT(17), IT(17), IT(17), IT(17), IT(17), // 210
  IT(10), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), // 225
-  IT(0),  IT(0), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), // 240
+  IT(0),  IT(0), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10), IT(10)  // 240
 //  250     700    1000    1600    2200    2800    3400    4000    4600    5200    5800    6400    7000    7600    8200    8800  // Boost
 //  Low RPM                                                                                                            High RPM
-
-
-
-
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
-
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
-
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
-
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15),
-
-
-
-
-
-
-
-
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
-
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15), IT(15),
- IT(15), IT(15), IT(15), IT(15), IT(15), IT(15)

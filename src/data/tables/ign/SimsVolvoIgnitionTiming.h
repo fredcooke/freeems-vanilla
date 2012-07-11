@@ -32,7 +32,6 @@
  *
  * Under development
  *
- * This file only contains the data to be hash included into some timing tables
  * Based in part on Fred's truck table and Nick Sayler's research:
  * http://blog.nsfabrication.com/2010/03/10/taking-a-look-at-lh-22-ignition-curves/
  */

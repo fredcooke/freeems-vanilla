@@ -28,13 +28,9 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief Will eventually contain Sean's pre-canned tune
+ * @brief Sean's very very rough IDE-only tune!
  *
- * For now this will be used to ID that tables are being parsed and rendered
- * correctly in mtx 16 by 16
- *
- * This file only contains the data to be hash included into the VE tables
- * in the fuel table files for car specific builds.
+ * @warning MUST be used with 16x16 axis dimensions!!!
  */
 
 
@@ -58,36 +54,6 @@ VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), 
 VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(90), VE(100), // 195
 VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(80), VE(90), VE(100), // 210
 VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(90), VE(100), // 225
-VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(90), VE(100), // 240
+VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(99), VE(90), VE(100)  // 240
 // 100     500     900    1300    1800    2250    2700    3150    3600    4050    4500    4950    5400    5850    6300     6750  // Boost
 // Low RPM                                                                                                             High RPM
-
-
-// The rest are UNUSED until we get full variable size table tuning, firmware can handle it, tuning currently can't :
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0),
-
-
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0), VE(0),
-VE(0), VE(0), VE(0), VE(0), VE(0), VE(0)

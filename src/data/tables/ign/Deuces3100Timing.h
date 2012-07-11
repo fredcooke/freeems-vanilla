@@ -29,10 +29,6 @@
  * @ingroup dataInitialisers
  *
  * @brief A fairly standard naturally aspirated 16x16 ignition curve.
- *
- * This file only contains the data to be hash included into some timing tables
- *
- * @author Fred Cooke
  */
 
 //  Low RPM                                                                                                            High RPM
@@ -55,51 +51,6 @@
   IT(0), IT(10), IT(10),  IT(9), IT(12), IT(14), IT(21), IT(25), IT(29), IT(29), IT(29), IT(29), IT(29), IT(29), IT(29), IT(29), //  92
   IT(0), IT(10), IT(10),  IT(7), IT(10), IT(13), IT(19), IT(24), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), //  98
   IT(0), IT(10), IT(10),  IT(6),  IT(8), IT(12), IT(18), IT(24), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), // 104
-  IT(0), IT(10), IT(10),  IT(6),  IT(8), IT(12), IT(18), IT(24), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), // 110
+  IT(0), IT(10), IT(10),  IT(6),  IT(8), IT(12), IT(18), IT(24), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28), IT(28)  // 110
 //  100     500     700    1300    1700    2100    2500    2900    3300    3700    4100    4500    4900    5300    5800    6300  // WOT
 //  Low RPM                                                                                                            High RPM
-
-
-
-
-
-
-
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),
-
-
-
-
-
-
-
-
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),  IT(0),
-
