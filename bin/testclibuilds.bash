@@ -13,6 +13,9 @@ do
   if ((${results[i]} != 0)); then
     failures=$(($failures+1))
   fi
+  if [ -d firmware ]; then
+    mv firmware firmware-${builds[i]}
+  fi
 done
 
 # Report it all
