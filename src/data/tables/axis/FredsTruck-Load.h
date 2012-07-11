@@ -28,13 +28,11 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief A 16 long set of loads for my truck before mtx supports full tables
- *
- * This file only contains the data to be hash included into all mainTable Load sections
+ * @brief The Load axis values for my truck's very rough tune.
  */
 
 
-// 21 load values of which only 16 are used due to current tuning software limitations
+// 16 Load values due to limitation in previous tuner
  KPA(15),
  KPA(30),
  KPA(45),

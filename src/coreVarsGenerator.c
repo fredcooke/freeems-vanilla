@@ -52,7 +52,7 @@ void generateCoreVars(){
 	unsigned short localBRV;
 	if(!(fixedConfigs2.sensorSources.BRV)){
 /// @todo TODO WARNING: HACK!!! Remove ASAP!!! IE, As Soon As Preston (get's a new cpu on the TA card!)
-#ifdef HOTEL
+#if CONFIG == HOTEL_ID
 		localBRV = (((unsigned long)ADCBuffers->MAT * fixedConfigs2.sensorRanges.BRVRange) / ADC_DIVISIONS) + fixedConfigs2.sensorRanges.BRVMinimum;
 #else
 		localBRV = (((unsigned long)ADCBuffers->BRV * fixedConfigs2.sensorRanges.BRVRange) / ADC_DIVISIONS) + fixedConfigs2.sensorRanges.BRVMinimum;

@@ -50,10 +50,10 @@ typedef struct {
 } twoDTableUS;
 
 
-#define MAINTABLE_RPM_LENGTH 16       ///< How many cells on the X axis Should be, will be and was 24
-#define MAINTABLE_LOAD_LENGTH 16      ///< How many cells on the Y axis Should be, will be and was 19
-#define MAINTABLE_MAX_RPM_LENGTH 27   ///< How many cells on the X axis max
-#define MAINTABLE_MAX_LOAD_LENGTH 21  ///< How many cells on the Y axis max
+#define MAINTABLE_RPM_LENGTH       24 ///< How many cells on the X axis
+#define MAINTABLE_LOAD_LENGTH      19 ///< How many cells on the Y axis
+#define MAINTABLE_MAX_RPM_LENGTH   27 ///< Max number of cells on the X axis
+#define MAINTABLE_MAX_LOAD_LENGTH  21 ///< Max number of cells on the Y axis
 #define MAINTABLE_MAX_MAIN_LENGTH 462 ///< 924B 462 shorts maximum main table length
 
 

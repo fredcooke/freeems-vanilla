@@ -60,22 +60,22 @@
 
 const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 
-#if SEANKLT1
+#if CONFIG == SEANKLT1_ID
 		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00)}
 		},
-#elif SNOTROCKET
+#elif CONFIG == SNOTROCKET_ID
 		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
 		},
-#elif HOTEL
+#elif CONFIG == HOTEL_ID
 		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: {T(29.10), T(23.00), T(18.60), T(17.00), T(15.80), T(14.70), T(13.90), T(13.00), T(12.30), T(11.50), T(10.96), T(10.40),  T(9.90),  T(7.60),  T(5.70),  T(4.00)}
 		},
-#elif DEUCECOUPE
+#elif CONFIG == DEUCECOUPE_ID
 		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00)}
@@ -87,7 +87,7 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 		},
 #endif
 
-#if JOSHBROWN
+#if JOSHBROWN // No ID assigned yet!
 		injectorDeadTimeTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: {T(6.40), T(5.06), T(4.09), T(3.74), T(3.48), T(3.23), T(3.06), T(2.86), T(2.71), T(2.53), T(2.41), T(2.29), T(2.18), T(1.67), T(1.25), T(0.88)}

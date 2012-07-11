@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -28,37 +28,29 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief A default set of RPMs for a typical jap engine.
- *
- * This file only contains the data to be hash included into all mainTable RPM sections
+ * @brief Default load values spaced at 10kPa from 20kPa to 100kPa and 20kPa from 100kPa up.
  */
 
 
-// 27 RPM values of which only 16 are used due to current tuning software limitations
-   RPM(0),
- RPM(200),
- RPM(700),
-RPM(1050),
-RPM(1400),
-RPM(1750),
-RPM(2100),
-RPM(2450),
-RPM(2800),
-RPM(3150),
-RPM(3500),
-RPM(3850),
-RPM(4200),
-RPM(4550),
-RPM(4900),
-RPM(5250),
-RPM(5600),
-RPM(5950),
-RPM(6300),
-RPM(6650),
-RPM(7000),
-RPM(7350),
-RPM(7700),
-RPM(8050),
-RPM(8400),
-RPM(8750),
-RPM(9100)
+// 21 load values of which 19 are used by default
+ KPA(20),
+ KPA(30),
+ KPA(40),
+ KPA(50),
+ KPA(60),
+ KPA(70),
+ KPA(80),
+ KPA(90),
+ KPA(100),
+ KPA(120),
+KPA(140),
+KPA(160),
+KPA(180),
+KPA(200),
+KPA(220),
+KPA(240),
+KPA(260),
+KPA(280),
+KPA(300),
+KPA(320),
+KPA(340)

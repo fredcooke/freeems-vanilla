@@ -29,12 +29,10 @@
  * @ingroup dataInitialisers
  *
  * @brief A 16 long set of loads for my hyundai before we have tuning software that supports full tables
- *
- * This file only contains the data to be hash included into all mainTable Load sections
  */
 
 
-// 21 load values of which only 16 are used due to current tuning software limitations
+// 16 Load values due to limitation in previous tuner
  KPA(20),
  KPA(26),
  KPA(32),

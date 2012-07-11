@@ -29,14 +29,12 @@
  * @ingroup dataInitialisers
  *
  * @brief A default set of RPMs for a B21A engine.
- *
- * This file only contains the data to be hash included into all mainTable RPM sections
  */
 
 
-// 27 RPM values of which only 16 are used due to current tuning software limitations
-RPM(200),
-RPM(500),
+// 12 RPM values for relatively low rev limit
+ RPM(200),
+ RPM(500),
 RPM(1000),
 RPM(1600),
 RPM(2200),
@@ -47,12 +45,12 @@ RPM(4600),
 RPM(5200),
 RPM(5800),
 RPM(6400),
+
+// spare:
 RPM(7000),
 RPM(7600),
 RPM(8200),
 RPM(8800),
-
-// spare:
 RPM(9000),
 RPM(9001),
 RPM(9002),

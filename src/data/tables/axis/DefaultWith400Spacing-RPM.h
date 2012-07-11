@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -28,31 +28,35 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief A default set of loads for a boosted engine.
- *
- * This file only contains the data to be hash included into all mainTable Load sections
+ * @brief Default RPM values spaced at 400RPM after the cranking and idling rows.
  */
 
 
-// 21 load values of which only 16 are used due to current tuning software limitations
- KPA(16),
- KPA(32),
- KPA(48),
- KPA(64),
- KPA(80),
- KPA(96),
-KPA(112),
-KPA(128),
-KPA(144),
-KPA(160),
-KPA(176),
-KPA(192),
-KPA(208),
-KPA(224),
-KPA(240),
-KPA(256),
-KPA(272),
-KPA(288),
-KPA(304),
-KPA(320),
-KPA(336)
+// 27 RPM values of which 24 are used by default
+  RPM(200),
+  RPM(700),
+ RPM(1100),
+ RPM(1500),
+ RPM(1900),
+ RPM(2300),
+ RPM(2700),
+ RPM(3100),
+ RPM(3500),
+ RPM(3900),
+ RPM(4300),
+ RPM(4700),
+ RPM(5100),
+ RPM(5500),
+ RPM(5900),
+ RPM(6300),
+ RPM(6700),
+ RPM(7100),
+ RPM(7500),
+ RPM(7900),
+ RPM(8300),
+ RPM(8700),
+ RPM(9100),
+ RPM(9500),
+ RPM(9800),
+RPM(10200),
+RPM(10600)

@@ -62,25 +62,25 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	},
 	sensorRanges:{
 // MAP Sensor Configuration
-#ifdef HOTEL
+#if CONFIG == HOTEL_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
-#elif PRESTO
+#elif CONFIG == PRESTO_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
-#elif SNOTROCKET
+#elif CONFIG == SNOTROCKET_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
-#elif SEANKLT1
+#elif CONFIG == SEANKLT1_ID
 		MAPMinimum:    GM2BarMin,
 		MAPRange:      GM2BarRange,
-#elif SLATER
+#elif CONFIG == SLATER_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
-#elif JOSHBROWN
+#elif JOSHBROWN // No ID assigned yet!
 		MAPMinimum:    MPXH6400AMin,
 		MAPRange:      MPXH6400ARange,
-#elif DEUCECOUPE
+#elif CONFIG == DEUCECOUPE_ID
 		MAPMinimum:    MPX4100AMin,
 		MAPRange:      MPX4100ARange,
 #else
@@ -88,24 +88,24 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		MAPRange:      MPX4250ARange,
 #endif
 // AAP Sensor Configuration
-#ifdef SNOTROCKET
+#if CONFIG == SNOTROCKET_ID
 		AAPMinimum:    HondaDenso183kPaMin,
 		AAPRange:      HondaDenso183kPaRange,
 #else
 		AAPMinimum:    MPX4100AMin,
 		AAPRange:      MPX4100ARange,
 #endif
-#ifdef SEANKLT1
+#if CONFIG == SEANKLT1_ID
 		EGOMinimum:    AFR1020LambdaMin,
 		EGORange:      AFR1020LambdaRange,
 #else
 		EGOMinimum:    LC1LambdaMin,
 		EGORange:      LC1LambdaRange,
 #endif
-#ifdef HOTEL
+#if CONFIG == HOTEL_ID
 		BRVMinimum:    VOLTS(0),
 		BRVRange:      VOLTS(25.082),
-#elif SNOTROCKET
+#elif CONFIG == SNOTROCKET_ID
 		BRVMinimum:    VOLTS(0),
 		BRVRange:      VOLTS(24.777),
 #else
@@ -125,10 +125,10 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		algorithmType: ALGO_SPEED_DENSITY
 	},
 	decoderSettings:{
-#ifdef HOTEL
+#if CONFIG == HOTEL_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100)
-#elif SNOTROCKET
+#elif CONFIG == SNOTROCKET_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100)
 #else

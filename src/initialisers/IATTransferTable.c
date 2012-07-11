@@ -48,21 +48,21 @@
  * @author FreeTherm
  */
 const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
-#ifdef TRUCK
+#if CONFIG == TRUCK_ID
 #include "../data/thermistors/Bosch.h"
-#elif PRESTO
+#elif CONFIG == PRESTO_ID
 #include "../data/thermistors/Bosch.h"
-#elif SEANKLT1
+#elif CONFIG == SEANKLT1_ID
 #include "../data/thermistors/Bosch.h"
-#elif SEANKR1
+#elif SEANKR1 // No ID assigned yet!
 #include "../data/thermistors/Bosch.h"
-#elif JOSHBROWN
+#elif JOSHBROWN // No ID assigned yet!
 #include "../data/thermistors/Bosch.h"
-#elif SNOTROCKET
+#elif CONFIG == SNOTROCKET_ID
 #include "../data/thermistors/GM-2k4Bias.h"
-#elif SLATER
+#elif CONFIG == SLATER_ID
 #include "../data/thermistors/GM-2k6Bias.h"
-#elif DEUCECOUPE
+#elif CONFIG == DEUCECOUPE_ID
 #include "../data/thermistors/GM-2k4Bias.h"
 #else // Default to correctly biased Jap sensor.
 #include "../data/thermistors/Denso-2k7Bias.h"

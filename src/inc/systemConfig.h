@@ -49,7 +49,7 @@
 #define HOTEL_ID         3 // So reliable, we've not heard from him in months
 #define PRESTO_ID        4 // Lost in service
 #define SEANKLT1_ID      5 // Driven yearly, maybe
-//efine MARCOS_ID        6 // Only idled for one minute, never since
+//efine MARCOS_ID        6 // Only idled for one minute, never since. No config available for this vehicle. http://forum.diyefi.org/viewtopic.php?f=55&t=1303
 #define SNOTROCKET_ID    7 // Another one that's too reliable
 #define SPUDMN_ID        8 // Occasionally comes out of the garage to race
 #define SLATER_ID        9 // Occasionally comes out of the garage to do burnouts
@@ -120,8 +120,9 @@
 
 // Make sure people know what they're getting themselves in for
 #ifdef XGATE
-#warning "XGATE is currently not recommended, nor thoroughly tested! Use at your own risk and without support!" // Remove this line to build
+#warning "XGATE is currently not recommended, nor thoroughly tested! Use at your own risk and without support! goo.gl/LCOMR" // Remove this line to build. See http://forum.diyefi.org/viewtopic.php?f=8&t=1700
 #define BUILD_CONFIG PRELIM_CONFIG "-XGATE"
+
 #else
 #define BUILD_CONFIG PRELIM_CONFIG
 #endif

@@ -29,12 +29,10 @@
  * @ingroup dataInitialisers
  *
  * @brief A default set of RPMs for a typical sohc engine.
- *
- * This file only contains the data to be hash included into all mainTable RPM sections
  */
 
 
-// 16 RPM values starting at 100 and ending at 6100, only the first 16 are used at the moment
+// 16 RPM values due to limitation in previous tuner
  RPM(100),
  RPM(500),
  RPM(700),

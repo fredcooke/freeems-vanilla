@@ -163,7 +163,13 @@ CASSERT(W(399.993896484375) == SHORTMAX, WARMUP) // Centre == max
 CASSERT(W(399.990844726563) == SHORTMAX, WARMUP) // Lowest to round up
 CASSERT(W(399.996948242187) == SHORTMAX, WARMUP) // Highest to round down
 
-// TODO IT() macro once new format is setup
+CASSERT(AP(29.4) > SHORTMAX, AFR) // Overflow gets caught
+CASSERT(AP(14.7) == LR(1.0), AFR) // Matches lambda macro
+CASSERT(AP(7.35) == LR(0.5), AFR) // Matches lambda macro
+CASSERT(AP(0) == 0, AFR)          // Minimum is OK
+
+
+// TODO Add checks for the IT() macro once new format is setup
 
 
 #else

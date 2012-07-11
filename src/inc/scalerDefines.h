@@ -93,6 +93,7 @@
 #define IT(TIMING_BTDC)               (unsigned long)ROUND((TIMING_BTDC) * (double)IGNITION_TIMING_FACTOR)
 #define VE(VOLUMETRIC_EFFICIENCY)     (unsigned long)ROUND((VOLUMETRIC_EFFICIENCY) * (double)VE_FACTOR)
 #define LR(LAMBDA_RATIO)              LAMBDA(LAMBDA_RATIO)   // Shortcut for table use, same as above
+#define AP(AFR)                       LR((double)AFR / 14.7) // AFR Petrol, alternative unit for table use
 #define PC(PERCENTAGE)                PERCENT(PERCENTAGE)    // Shortcut for table use, same as above
 #define C(TEMPERATURE)                DEGREES_C(TEMPERATURE) // Shortcut for table use, same as below
 #define V(VOLTAGE)                    VOLTS(VOLTAGE)         // Shortcut for table use, same as above

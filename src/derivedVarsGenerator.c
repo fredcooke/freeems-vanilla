@@ -90,7 +90,7 @@ void generateDerivedVars(){
 // max % dwell
 // minimum spark time
 // a setting to choose which behaviour (don't limit/% dwell limit/min spark time/other?)
-#ifdef HOTEL
+#if CONFIG == HOTEL_ID
 	/// @bug hack for hyundai! 135 = 3/4 of 180 = one cycle...
 	unsigned long threeQuartersOfAvailableTime = ((unsigned long)CoreVars->DRPM * 135 * ANGLE_FACTOR) / ticks_per_degree_multiplier;
 	if(DerivedVars->Dwell > threeQuartersOfAvailableTime){
