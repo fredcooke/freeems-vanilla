@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -76,6 +76,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-RPM.h"
+#elif CONFIG == SLATER_ID
+#include "../data/tables/axis/Slater-RPM.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-RPM.h"
 #elif CONFIG == DEFAULT_ID
@@ -97,6 +99,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-Load.h"
+#elif CONFIG == SLATER_ID
+#include "../data/tables/axis/Slater-Load.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-Load.h"
 #elif CONFIG == DEFAULT_ID
@@ -119,6 +123,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/ign/flat0degrees.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/ign/SimsVolvoIgnitionTiming.h"
+#elif CONFIG == SLATER_ID
+#include "../data/tables/ign/SlaterTiming.h"
 #elif CONFIG == DEUCECOUPE_ID
 //#include "../data/tables/ign/TestDIS.h" // Use for verifying your DIS timing
 #include "../data/tables/ign/Deuces3100Timing.h"
