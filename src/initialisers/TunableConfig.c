@@ -87,11 +87,7 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 		},
 #endif
 
-#if JOSHBROWN // No ID assigned yet!
-		injectorDeadTimeTable: {
-			Axis:   ARRAY_OF_16_VOLTAGES,
-			Values: {T(6.40), T(5.06), T(4.09), T(3.74), T(3.48), T(3.23), T(3.06), T(2.86), T(2.71), T(2.53), T(2.41), T(2.29), T(2.18), T(1.67), T(1.25), T(0.88)}
-		},
+#if 0
 #else
 		injectorDeadTimeTable: {
 			Axis: ARRAY_OF_16_VOLTAGES,

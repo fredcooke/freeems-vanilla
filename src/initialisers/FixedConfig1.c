@@ -55,9 +55,6 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif SEANKR1 // No ID assigned yet!
 		perCylinderVolume:  CYLINDER_VOLUME(250),
 		injectorFlow:       CC_PER_MINUTE(230), // http://www.witchhunter.com/flowdatapix/bcdh210.jpg
-#elif JOSHBROWN // No ID assigned yet!
-		perCylinderVolume:  CYLINDER_VOLUME(575),
-		injectorFlow:       CC_PER_MINUTE(1600),
 #elif CONFIG == SLATER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(324),
 		injectorFlow:       CC_PER_MINUTE(320),
@@ -122,14 +119,6 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		decoderEngineOffset:               ANGLE(0.00), // Decoder has a true zero zero mechanically hard coded
 		numberOfConfiguredOutputEvents:             16, // First half ignition, second half injection
 		numberOfInjectionsPerEngineCycle:            2  // Full sync semi-sequential
-
-#elif JOSHBROWN // Josh's 2.3 turbo volvo with 1600cc injectors making shit loads of power etc. Never ran, but nearly... hw issues
-		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
-		outputEventPinNumbers:       {0,1,0,1,2,3,4,5}, // Wasted spark setup with full sync AND sequential
-		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // ignition = 0, injection = 1
-		decoderEngineOffset:             ANGLE(570.00), // May not be perfect, had ignitor/Puma issues... Stockish Volvo B230FT with DSM/Miata CAS + 24+1 disk.
-		numberOfConfiguredOutputEvents:              8, // First half ignition, second half injection
-		numberOfInjectionsPerEngineCycle:            1  // Sequential
 
 #elif CONFIG == SNOTROCKET_ID // http://forum.diyefi.org/viewtopic.php?f=3&t=1263 Sim's 2.1 Volvo, carbed with CNP using LS1 coils.
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)}, // 1,2,3,4: Firing order: 1-3-4-2 set up in loom

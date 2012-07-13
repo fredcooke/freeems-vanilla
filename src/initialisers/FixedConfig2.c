@@ -77,9 +77,6 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SLATER_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
-#elif JOSHBROWN // No ID assigned yet!
-		MAPMinimum:    MPXH6400AMin,
-		MAPRange:      MPXH6400ARange,
 #elif CONFIG == DEUCECOUPE_ID
 		MAPMinimum:    MPX4100AMin,
 		MAPRange:      MPX4100ARange,
