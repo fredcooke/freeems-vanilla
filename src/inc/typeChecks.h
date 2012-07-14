@@ -95,12 +95,6 @@ CASSERT((sizeof(SmallTables4) == flashSectorSize), SmallTables4)
 CASSERT((sizeof(fixedConfig1) == flashSectorSize), fixedConfig1)
 CASSERT((sizeof(fixedConfig2) == flashSectorSize), fixedConfig2)
 
-// The following is just a reminder that updates to MTX and OLV are required
-CASSERT(maxBasicDatalogLength == 98, DatalogLength) // Sum of the ones below
-CASSERT(sizeof(CoreVar) == 32, CoreVar)
-CASSERT(sizeof(DerivedVar) == 26, DerivedVar)
-CASSERT(sizeof(KeyUserDebug) == 40, KeyUserDebug)
-
 // Check the fixed point readability macros for correct behaviour
 CASSERT(KPA(655.36) > SHORTMAX, PRESSURE)          // Overflow gets caught
 CASSERT(KPA(655.35) == SHORTMAX, PRESSURE)         // Centre == max

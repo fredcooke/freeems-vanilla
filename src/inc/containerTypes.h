@@ -193,10 +193,6 @@ typedef struct { // BIT7 at the top
 } ignitionCutFlags; // BIT0 at the bottom
 
 
-// Any changes to the above that don't maintain the same size will change the packet size
-#define maxBasicDatalogLength (sizeof(CoreVar) + sizeof(DerivedVar) + sizeof(KeyUserDebug))
-
-
 #else
 	/* let us know if we are being untidy with headers */
 	#warning "Header file CONTAINER_TYPES_H seen before, sort it out!"

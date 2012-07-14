@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -141,7 +141,22 @@ const volatile SmallTables2 SmallTablesBFlashV TUNETABLESDV2 = {
 		loggingSettings: {
 			datalogStreamType:                    asyncDatalogBasic,
 			datalogPollingType:                   asyncDatalogBasic,
-			basicDatalogLength:                   maxBasicDatalogLength,
+			firstChunk: 0,
+			numberOfChunks: 3,
+			logChunks: {
+				[0] = {
+					address: &CoreVars0,
+					size: sizeof(CoreVar)
+				},
+				[1] = {
+					address: &DerivedVars0,
+					size: sizeof(DerivedVar)
+				},
+				[2] = {
+					address: &KeyUserDebugs,
+					size: sizeof(KeyUserDebug)
+				}
+			},
 			datalogByteStreamSourceAddress:       (void*)&PTIT,     // Port T state for default
 			datalogWordStreamSourceAddress:       (void*)&ATD0DR4,  // MAP sensor for default
 			datalogLongStreamSourceAddressFirst:  (void*)&PORTS_BA, // Port B and A combined with...
@@ -149,8 +164,6 @@ const volatile SmallTables2 SmallTablesBFlashV TUNETABLESDV2 = {
 		},
 		perCylinderFuelTrims: {32768, 32768, 32768, 32768, 32768, 32768}, // TODO YAGNI unused, format could change
 		filler: {0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

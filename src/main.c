@@ -207,11 +207,11 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 						TXBufferCurrentPositionHandler += 2;
 
 						/* Set the length */
-						*((unsigned short*)TXBufferCurrentPositionHandler) = TablesB.SmallTablesB.loggingSettings.basicDatalogLength;
+						unsigned short* localLength = (unsigned short*)TXBufferCurrentPositionHandler;
 						TXBufferCurrentPositionHandler += 2;
 
 						/* populate data log */
-						populateBasicDatalog();
+						*localLength = populateBasicDatalog();
 						finaliseAndSend(0);
 						break;
 					}

@@ -68,7 +68,7 @@ EXTERN void sendDebugIfClear(unsigned char*) FPAGE_FE;
 EXTERN void resetReceiveState(unsigned char) FPAGE_FE;
 EXTERN void finaliseAndSend(unsigned short) FPAGE_FE;
 
-EXTERN void populateBasicDatalog(void) FPAGE_FE;
+EXTERN unsigned short populateBasicDatalog(void) FPAGE_FE;
 
 
 /* Global variables for TX (one set per interface) */
