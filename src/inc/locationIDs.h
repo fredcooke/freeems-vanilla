@@ -142,13 +142,16 @@
 #define engineSettingsLocationID                       0xC000
 #define serialSettingsLocationID                       0xC001
 #define coarseBBSettingsLocationID                     0xC002
-#define userTextFieldLocationID                        0xC004
+#define schedulingSettingsLocationID                   0xC003
+#define cutAndLimiterSettingsLocationID                0xC004
+#define simpleGPIOSettingsLocationID                   0xC005
+#define userTextFieldLocationID                        0xC006
 
 /* Fixed config 2 sub sections */
-#define sensorRangesLocationID                         0xC005
-#define sensorPresetsLocationID                        0xC006
-#define sensorSettingsLocationID                       0xC007
-#define userTextField2LocationID                       0xC008
+#define sensorRangesLocationID                         0xC020
+#define sensorPresetsLocationID                        0xC021
+#define sensorSettingsLocationID                       0xC022
+#define userTextField2LocationID                       0xC023
 
 #ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
 #define FixedConfigSubBlocks_Border_ReadOnlyVarBlocks  0xF000

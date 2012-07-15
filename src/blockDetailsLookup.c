@@ -482,6 +482,24 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = (void*)&(fixedConfigs1.coarseBitBangSettings);
 		details->parent = FixedConfig1LocationID;
 		break;
+	case schedulingSettingsLocationID:
+		details->size = sizeof(schedulingSetting);
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.schedulingSettings);
+		details->parent = FixedConfig1LocationID;
+		break;
+	case cutAndLimiterSettingsLocationID:
+		details->size = sizeof(cutAndLimiterSetting);
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.cutAndLimiterSettings);
+		details->parent = FixedConfig1LocationID;
+		break;
+	case simpleGPIOSettingsLocationID:
+		details->size = sizeof(simpleGPIOSetting);
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs1.simpleGPIOSettings);
+		details->parent = FixedConfig1LocationID;
+		break;
 	case userTextFieldLocationID:
 		details->size = userTextFieldArrayLength1;
 		details->FlashPage = PPAGE;
