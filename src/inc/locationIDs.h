@@ -148,10 +148,12 @@
 #define userTextFieldLocationID                        0xC006
 
 /* Fixed config 2 sub sections */
-#define sensorRangesLocationID                         0xC020
+#define sensorSourcesLocationID                        0xC020
 #define sensorPresetsLocationID                        0xC021
-#define sensorSettingsLocationID                       0xC022
-#define userTextField2LocationID                       0xC023
+#define sensorRangesLocationID                         0xC022
+#define sensorSettingsLocationID                       0xC023
+#define algorithmSettingsLocationID                    0xC024
+#define userTextField2LocationID                       0xC025
 
 #ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
 #define FixedConfigSubBlocks_Border_ReadOnlyVarBlocks  0xF000
@@ -161,9 +163,10 @@
 #define ADCRegistersLocationID                         0xF000
 #define coreVarsLocationID                             0xF001
 #define DerivedVarsLocationID                          0xF002
-#define CountersLocationID                             0xF003
-#define ClocksLocationID                               0xF004
-#define FlaggablesLocationID                           0xF005
+#define KeyUserDebugLocationID                         0xF003
+#define CountersLocationID                             0xF004
+#define ClocksLocationID                               0xF005
+#define FlaggablesLocationID                           0xF006
 
 
 #else

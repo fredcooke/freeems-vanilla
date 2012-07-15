@@ -508,10 +508,10 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		break;
 
 	/* Fixed conf 2 small chunks */
-	case sensorRangesLocationID:
-		details->size = sizeof(sensorRange);
+	case sensorSourcesLocationID:
+		details->size = sizeof(sensorSource);
 		details->FlashPage = PPAGE;
-		details->FlashAddress = (void*)&(fixedConfigs2.sensorRanges);
+		details->FlashAddress = (void*)&(fixedConfigs2.sensorSources);
 		details->parent = FixedConfig2LocationID;
 		break;
 	case sensorPresetsLocationID:
@@ -520,10 +520,22 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorPresets);
 		details->parent = FixedConfig2LocationID;
 		break;
+	case sensorRangesLocationID:
+		details->size = sizeof(sensorRange);
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.sensorRanges);
+		details->parent = FixedConfig2LocationID;
+		break;
 	case sensorSettingsLocationID:
 		details->size = sizeof(sensorSetting);
 		details->FlashPage = PPAGE;
 		details->FlashAddress = (void*)&(fixedConfigs2.sensorSettings);
+		details->parent = FixedConfig2LocationID;
+		break;
+	case algorithmSettingsLocationID:
+		details->size = sizeof(algorithmSetting);
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.algorithmSettings);
 		details->parent = FixedConfig2LocationID;
 		break;
 	case userTextField2LocationID:
@@ -548,6 +560,11 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->size = sizeof(DerivedVar);
 		details->RAMPage = RPAGE_LINEAR;
 		details->RAMAddress = (void*)DerivedVars;
+		break;
+	case KeyUserDebugLocationID:
+		details->size = sizeof(KeyUserDebug);
+		details->RAMPage = RPAGE_LINEAR;
+		details->RAMAddress = &KeyUserDebugs;
 		break;
 	case CountersLocationID:
 		details->size = sizeof(Counter);
