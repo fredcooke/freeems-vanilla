@@ -107,6 +107,7 @@
 #define PRELIM_CONFIG "PETERTRUCK"
 #elif defined CLIFLAGS && !(defined XGATE)
 #error "CLIFLAGS defined, but no build matched! Not allowing config to fall back to default!"
+#define CONFIG -1
 #else
 #define CONFIG DEFAULT_ID
 #define PRELIM_CONFIG "Default"
