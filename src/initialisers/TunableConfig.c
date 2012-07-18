@@ -60,32 +60,21 @@
 
 const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 
-#if CONFIG == SEANKLT1_ID
 		dwellDesiredVersusVoltageTable: {
-			Axis:   ARRAY_OF_16_VOLTAGES,
-			Values: { T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00),  T(2.00)}
-		},
-#elif CONFIG == SNOTROCKET_ID
-		dwellDesiredVersusVoltageTable: {
+#if CONFIG == SNOTROCKET_ID
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
-		},
 #elif CONFIG == HOTEL_ID
-		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: {T(29.10), T(23.00), T(18.60), T(17.00), T(15.80), T(14.70), T(13.90), T(13.00), T(12.30), T(11.50), T(10.96), T(10.40),  T(9.90),  T(7.60),  T(5.70),  T(4.00)}
-		},
 #elif CONFIG == DEUCECOUPE_ID
-		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00)}
-		},
 #else
-		dwellDesiredVersusVoltageTable: {
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: ARRAY_OF_16_DWELLS
-		},
 #endif
+		},
 
 #if 0
 #else
@@ -104,7 +93,7 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 		},
 		engineTempEnrichmentTableFixed: { // TODO YAGNI currently unused
 			Axis:   ARRAY_OF_16_TEMPS,
-			Values: ARRAY_OF_16_ZEROS
+			Values: ARRAY_OF_16_PERCENTS
 		},
 		primingVolumeTable: {
 			Axis:   ARRAY_OF_16_TEMPS,
@@ -114,9 +103,9 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 			Axis:   ARRAY_OF_16_TEMPS,
 			Values: ARRAY_OF_16_PERCENTS
 		},
-		dwellMaxVersusRPMTable: {         // TODO YAGNI currently unused
+		dwellVersusRPMTable: {
 			Axis:   ARRAY_OF_16_RPMS,
-			Values: ARRAY_OF_16_DWELLS
+			Values: ARRAY_OF_16_DIS6_DWELLS
 		},
 		filler: {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

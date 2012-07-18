@@ -97,7 +97,7 @@ typedef struct {
 	twoDTableUS engineTempEnrichmentTableFixed;   ///< Unused at this time.
 	twoDTableUS primingVolumeTable;               ///< @todo TODO define units. perhaps micro litres (cubic milli meters) would be good, 5 - 100 seem to be the norm 327.68 = 65535/200
 	twoDTableUS engineTempEnrichmentTablePercent; ///< Engine temperature enrichment by percent, AKA warmup curve.
-	twoDTableUS dwellMaxVersusRPMTable;           ///< Unused at this time.
+	twoDTableUS dwellVersusRPMTable;              ///< Useful for certain setups, will generalise later.
 	unsigned char filler[SMALL_TABLES_1_FILLER_SIZE];
 } SmallTables1;
 

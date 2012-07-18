@@ -232,10 +232,17 @@ typedef struct {
 #define ALGO_ALPHA_N       1
 #define ALGO_MAF           2
 
+#define DWELL_BRV   0
+#define DWELL_RPM   1
+#define DWELL_FIXED 2
+
 /// Settings for fueling algorithms
 typedef struct {
 	unsigned char loadType;
 	unsigned char algorithmType;
+	unsigned char dwellType;
+	unsigned char padding;
+	unsigned short dwellFixedPeriod;
 } algorithmSetting;
 
 #define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting) + sizeof(cutAndLimiterSetting) + sizeof(simpleGPIOSetting)))

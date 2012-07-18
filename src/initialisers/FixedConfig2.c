@@ -119,7 +119,20 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	},
 	algorithmSettings:{
 		loadType:      LOAD_MAP,
-		algorithmType: ALGO_SPEED_DENSITY
+		algorithmType: ALGO_SPEED_DENSITY,
+#if CONFIG == DEUCECOUPE_ID
+		dwellType:     DWELL_RPM,
+#elif CONFIG == SEANKLT1_ID
+		dwellType:     DWELL_FIXED,
+#else
+		dwellType:     DWELL_BRV,
+#endif
+		padding:       0,
+#if CONFIG == SEANKLT1_ID
+		dwellFixedPeriod: T(2)
+#else
+		dwellFixedPeriod: T(3)
+#endif
 	},
 	decoderSettings:{
 #if CONFIG == HOTEL_ID
@@ -133,5 +146,19 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(50)
 #endif
 	},
-	userTextField2:        "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you keep the information stored here purely related to the vehicle that this system is installed on and relevant to the state of tune and configuration of settings. Lastly, please remember that this field WILL be shrinking in length from it's currently large size to something more reasonable in future. I would like to attempt to keep it at least thirty two characters long though, so writing that much is a non issue, not more!"
+	userTextField2: "Place your personal notes about whatever you like in here!"
+			" Don't hesitate to tell us a story about something interesting."
+			" Do keep in mind though that when you upload your settings file to "
+			"the forum this message WILL be visible to all and sundry, so don't "
+			"be putting too many personal details, bank account numbers, "
+			"passwords, PIN numbers, license plates, national insurance numbers, "
+			"IRD numbers, social security numbers, phone numbers, email addresses,"
+			" love stories and other private information in this field. In fact it"
+			" is probably best if you keep the information stored here purely "
+			"related to the vehicle that this system is installed on and relevant "
+			"to the state of tune and configuration of settings. Lastly, please "
+			"remember that this field WILL be shrinking in length from it's "
+			"currently large size to something more reasonable in future. I would "
+			"like to attempt to keep it at least thirty two characters long though,"
+			" so writing that much is a non issue, yay!!"
 };

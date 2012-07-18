@@ -247,7 +247,7 @@ EXTERN unsigned char currentTimeRPage;
 //EXTERN twoDTableUS* engineTempEnrichmentTableFixed;
 //EXTERN twoDTableUS* primingVolumeTable;
 //EXTERN twoDTableUS* engineTempEnrichmentTablePercent;
-//EXTERN twoDTableUS* dwellMaxVersusRPMTable;
+//EXTERN twoDTableUS* dwellVersusRPMTable;
 /* Pointers to SmallTablesB */
 /* Pointers to SmallTablesC */
 /* Pointers to SmallTablesD */

@@ -356,20 +356,20 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = engineTempEnrichmentTablePercent2Location;
 		details->parent = SmallTablesA2LocationID;
 		break;
-	case dwellMaxVersusRPMTableLocationID:
+	case dwellVersusRPMTableLocationID:
 		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellMaxVersusRPMTable;
-		details->FlashAddress = dwellMaxVersusRPMTableLocation;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellVersusRPMTable;
+		details->FlashAddress = dwellVersusRPMTableLocation;
 		details->parent = SmallTablesALocationID;
 		break;
-	case dwellMaxVersusRPMTable2LocationID:
+	case dwellVersusRPMTable2LocationID:
 		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellMaxVersusRPMTable;
-		details->FlashAddress = dwellMaxVersusRPMTable2Location;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellVersusRPMTable;
+		details->FlashAddress = dwellVersusRPMTable2Location;
 		details->parent = SmallTablesA2LocationID;
 		break;
 

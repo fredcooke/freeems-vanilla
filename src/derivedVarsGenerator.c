@@ -78,8 +78,16 @@ void generateDerivedVars(){
 	/* Look up injector dead time with battery voltage */
 	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
-	// temp dwell and advance vars...
-	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
+	if(!(fixedConfigs2.algorithmSettings.dwellType)){
+		DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
+	}else if(fixedConfigs2.algorithmSettings.dwellType == DWELL_RPM){
+		DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellVersusRPMTable, CoreVars->RPM);
+	}else if(fixedConfigs2.algorithmSettings.dwellType == DWELL_FIXED){
+		DerivedVars->Dwell = fixedConfigs2.algorithmSettings.dwellFixedPeriod;
+	}else{
+		DerivedVars->Dwell = 0;
+	}
+
 	unsigned long tempAdvance = ANGLE_FACTOR * (unsigned long)lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID);
 	DerivedVars->Advance = (unsigned short)(tempAdvance / 1024); // This calculation will change when the timing tables get shrunk to a more reasonable 8 bit size with appropriate scaling
 	// Move this magic number to an appropriate place and/or refactor timing calcs/values/etc

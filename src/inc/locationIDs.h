@@ -73,8 +73,8 @@
 #define primingVolumeTable2LocationID                  0x0109
 #define engineTempEnrichmentTablePercentLocationID     0x010A
 #define engineTempEnrichmentTablePercent2LocationID    0x010B
-#define dwellMaxVersusRPMTableLocationID               0x010C
-#define dwellMaxVersusRPMTable2LocationID              0x010D
+#define dwellVersusRPMTableLocationID                  0x010C
+#define dwellVersusRPMTable2LocationID                 0x010D
 
 #ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
 #define TwoDTableUS_SmallTableFullBlocks_Border        0x3000

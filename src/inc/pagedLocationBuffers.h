@@ -111,8 +111,8 @@ EXTERN void* primingVolumeTableLocation;
 EXTERN void* primingVolumeTable2Location;
 EXTERN void* engineTempEnrichmentTablePercentLocation;
 EXTERN void* engineTempEnrichmentTablePercent2Location;
-EXTERN void* dwellMaxVersusRPMTableLocation;
-EXTERN void* dwellMaxVersusRPMTable2Location;
+EXTERN void* dwellVersusRPMTableLocation;
+EXTERN void* dwellVersusRPMTable2Location;
 
 /* Small chunks of TablesB here */
 EXTERN void* loggingSettingsLocation;

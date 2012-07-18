@@ -156,7 +156,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600), ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
 		outputEventPinNumbers:       {0,0,0,0,0,0,2,3,4,2,3,4}, // DIS E-dizzy and semi-sequential, for now.
 		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Six E-dizzy style DIS ignition outputs and six injection events, two per cycle, semi sequential
-		decoderEngineOffset:           ANGLE(0.00), // Nothing for now, so as to be able to figure out what is going on.
+		decoderEngineOffset:          ANGLE(60.00), // Nothing for now, so as to be able to figure out what is going on.
 		numberOfConfiguredOutputEvents:         12, // See three lines above
 		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, for now.
 
@@ -233,25 +233,60 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	},
 	simpleGPIOSettings:{
 		outputConfigs:{
+#if CONFIG == DEUCECOUPE_ID
+			[0] = {
+				variable: &CoreVars0.RPM,
+				upperValue: RPM(800),
+				lowerValue: RPM(700),
+				port: (unsigned char*)&PORTT,
+				mask: BIT3,
+				flags: 0
+			},
+#else
 			[0] = {
 				variable: &CoreVars0.RPM,
 				upperValue: RPM(5000),
 				lowerValue: RPM(4000),
 				port: (unsigned char*)&PORTK,
-				mask: 0x08,
+				mask: BIT3,
 				flags: 0
 			},
+#endif
 			[1] = {
 				variable: &CoreVars0.CHT,
 				upperValue: DEGREES_C(100),
 				lowerValue: DEGREES_C(90),
 				port: (unsigned char*)&PORTK,
-				mask: 0x10,
+				mask: BIT4,
 				flags: 0
 			}
 		},
 		numberConfigured: 2,
 		spare: 0
 	},
-	userTextField:          "Place your personal notes about whatever you like in here! Don't hesitate to tell us a story about something interesting. Do keep in mind though that when you upload your settings file to the forum this message WILL be visible to all and sundry, so don't be putting too many personal details, bank account numbers, passwords, PIN numbers, license plates, national insurance numbers, IRD numbers, social security numbers, phone numbers, email addresses, love stories and other private information in this field. In fact it is probably best if you kee"
+	userTextField:  "Place your personal notes about whatever you like in here!"
+			" Don't hesitate to tell us a story about something interesting."
+			" Do keep in mind though that when you upload your settings file to "
+			"the forum this message WILL be visible to all and sundry, so don't "
+			"be putting too many personal details, bank account numbers, "
+			"passwords, PIN numbers, license plates, national insurance numbers, "
+			"IRD numbers, social security numbers, phone numbers, email addresses,"
+			" love stories and other private information in this field. In fact it"
+			" is probably best if you kee"
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

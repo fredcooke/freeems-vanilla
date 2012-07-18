@@ -132,20 +132,6 @@ EXTERN const volatile SmallTables4 SmallTablesDFlash2;
 EXTERN const volatile fixedConfig1 fixedConfigs1;
 EXTERN const volatile fixedConfig2 fixedConfigs2;
 
-//EXTERN const twoDTableUS ; // ?
-
-/* Fuel correction tables */
-EXTERN const volatile twoDTableUS primingVolumeTableFlash; // perhaps micro litres (cubic milli meters) would be good, 5 - 100 seem to be the norm 327.68 = 65535/200
-EXTERN const volatile twoDTableUS injectorDeadTimeTableFlash; // display as ms, units in native 0.8us ticks
-EXTERN const volatile twoDTableUS postStartEnrichmentTableFlash; // ?
-EXTERN const volatile twoDTableUS engineTempEnrichmentTableFixedFlash; // ?
-EXTERN const volatile twoDTableUS engineTempEnrichmentTablePercentFlash; // ?
-
-
-/* Ignition correction tables */
-EXTERN const volatile twoDTableUS dwellDesiredVersusVoltageTableFlash; // desired dwell vs voltage
-EXTERN const volatile twoDTableUS dwellMaxVersusRPMTableFlash; // maximum dwell vs rpm
-
 
 /* Fueling constants */
 EXTERN const unsigned long masterFuelConstant;
