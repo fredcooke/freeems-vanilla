@@ -98,6 +98,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = LOOKUP_PPAGE;
 		details->FlashAddress = CHTTransferTableLocation;
 		break;
+#ifdef ALL_CONFIG
 	case MAFTransferTableLocationID:
 		details->size = sizeof(MAFTransferTable);
 		details->FlashPage = LOOKUP_PPAGE;
@@ -108,7 +109,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashPage = LOOKUP_PPAGE;
 		details->FlashAddress = TestTransferTableLocation;
 		break;
-
+#endif
 	/* fuel tables */
 	case VETableMainLocationID:
 		details->RAMPage = RPAGE_FUEL_ONE;
@@ -116,23 +117,12 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesA;
 		details->FlashAddress = VETableMainFlashLocation;
 		break;
-	case VETableMain2LocationID:
-		details->RAMPage = RPAGE_FUEL_TWO;
-		details->FlashPage = FUELTABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA;
-		details->FlashAddress = VETableMainFlash2Location;
-		break;
+#ifdef ALL_CONFIG
 	case VETableSecondaryLocationID:
 		details->RAMPage = RPAGE_FUEL_ONE;
 		details->FlashPage = FUELTABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB;
 		details->FlashAddress = VETableSecondaryFlashLocation;
-		break;
-	case VETableSecondary2LocationID:
-		details->RAMPage = RPAGE_FUEL_TWO;
-		details->FlashPage = FUELTABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesB;
-		details->FlashAddress = VETableSecondaryFlash2Location;
 		break;
 	case VETableTertiaryLocationID:
 		details->RAMPage = RPAGE_FUEL_ONE;
@@ -140,17 +130,31 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesC;
 		details->FlashAddress = VETableTertiaryFlashLocation;
 		break;
-	case VETableTertiary2LocationID:
-		details->RAMPage = RPAGE_FUEL_TWO;
-		details->FlashPage = FUELTABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesC;
-		details->FlashAddress = VETableTertiaryFlash2Location;
-		break;
+#endif
 	case LambdaTableLocationID:
 		details->RAMPage = RPAGE_FUEL_ONE;
 		details->FlashPage = FUELTABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD;
 		details->FlashAddress = LambdaTableFlashLocation;
+		break;
+#ifdef ALL_CONFIG
+	case VETableMain2LocationID:
+		details->RAMPage = RPAGE_FUEL_TWO;
+		details->FlashPage = FUELTABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA;
+		details->FlashAddress = VETableMainFlash2Location;
+		break;
+	case VETableSecondary2LocationID:
+		details->RAMPage = RPAGE_FUEL_TWO;
+		details->FlashPage = FUELTABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesB;
+		details->FlashAddress = VETableSecondaryFlash2Location;
+		break;
+	case VETableTertiary2LocationID:
+		details->RAMPage = RPAGE_FUEL_TWO;
+		details->FlashPage = FUELTABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesC;
+		details->FlashAddress = VETableTertiaryFlash2Location;
 		break;
 	case LambdaTable2LocationID:
 		details->RAMPage = RPAGE_FUEL_TWO;
@@ -158,6 +162,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesD;
 		details->FlashAddress = LambdaTableFlash2Location;
 		break;
+#endif
 
 	/* timing tables */
 	case IgnitionAdvanceTableMainLocationID:
@@ -166,23 +171,12 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesA;
 		details->FlashAddress = IgnitionAdvanceTableMainFlashLocation;
 		break;
-	case IgnitionAdvanceTableMain2LocationID:
-		details->RAMPage = RPAGE_TIME_TWO;
-		details->FlashPage = TIMETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA;
-		details->FlashAddress = IgnitionAdvanceTableMainFlash2Location;
-		break;
+#ifdef ALL_CONFIG
 	case IgnitionAdvanceTableSecondaryLocationID:
 		details->RAMPage = RPAGE_TIME_ONE;
 		details->FlashPage = TIMETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB;
 		details->FlashAddress = IgnitionAdvanceTableSecondaryFlashLocation;
-		break;
-	case IgnitionAdvanceTableSecondary2LocationID:
-		details->RAMPage = RPAGE_TIME_TWO;
-		details->FlashPage = TIMETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesB;
-		details->FlashAddress = IgnitionAdvanceTableSecondaryFlash2Location;
 		break;
 	case InjectionAdvanceTableMainLocationID:
 		details->RAMPage = RPAGE_TIME_ONE;
@@ -190,17 +184,29 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesC;
 		details->FlashAddress = InjectionAdvanceTableMainFlashLocation;
 		break;
-	case InjectionAdvanceTableMain2LocationID:
-		details->RAMPage = RPAGE_TIME_TWO;
-		details->FlashPage = TIMETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesC;
-		details->FlashAddress = InjectionAdvanceTableMainFlash2Location;
-		break;
 	case InjectionAdvanceTableSecondaryLocationID:
 		details->RAMPage = RPAGE_TIME_ONE;
 		details->FlashPage = TIMETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD;
 		details->FlashAddress = InjectionAdvanceTableSecondaryFlashLocation;
+		break;
+	case IgnitionAdvanceTableMain2LocationID:
+		details->RAMPage = RPAGE_TIME_TWO;
+		details->FlashPage = TIMETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA;
+		details->FlashAddress = IgnitionAdvanceTableMainFlash2Location;
+		break;
+	case IgnitionAdvanceTableSecondary2LocationID:
+		details->RAMPage = RPAGE_TIME_TWO;
+		details->FlashPage = TIMETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesB;
+		details->FlashAddress = IgnitionAdvanceTableSecondaryFlash2Location;
+		break;
+	case InjectionAdvanceTableMain2LocationID:
+		details->RAMPage = RPAGE_TIME_TWO;
+		details->FlashPage = TIMETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesC;
+		details->FlashAddress = InjectionAdvanceTableMainFlash2Location;
 		break;
 	case InjectionAdvanceTableSecondary2LocationID:
 		details->RAMPage = RPAGE_TIME_TWO;
@@ -208,6 +214,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesD;
 		details->FlashAddress = InjectionAdvanceTableSecondaryFlash2Location;
 		break;
+#endif
 
 	/* small table full blocks */
 	case SmallTablesALocationID:
@@ -216,35 +223,18 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesA;
 		details->FlashAddress = SmallTablesAFlashLocation;
 		break;
-	case SmallTablesA2LocationID:
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA;
-		details->FlashAddress = SmallTablesAFlash2Location;
-		break;
 	case SmallTablesBLocationID:
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesB;
 		details->FlashAddress = SmallTablesBFlashLocation;
 		break;
-	case SmallTablesB2LocationID:
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesB;
-		details->FlashAddress = SmallTablesBFlash2Location;
-		break;
+#ifdef ALL_CONFIG
 	case SmallTablesCLocationID:
 		details->RAMPage = RPAGE_TUNE_ONE;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC;
 		details->FlashAddress = SmallTablesCFlashLocation;
-		break;
-	case SmallTablesC2LocationID:
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesC;
-		details->FlashAddress = SmallTablesCFlash2Location;
 		break;
 	case SmallTablesDLocationID:
 		details->RAMPage = RPAGE_TUNE_ONE;
@@ -252,12 +242,31 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesD;
 		details->FlashAddress = SmallTablesDFlashLocation;
 		break;
+	case SmallTablesA2LocationID:
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA;
+		details->FlashAddress = SmallTablesAFlash2Location;
+		break;
+	case SmallTablesB2LocationID:
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesB;
+		details->FlashAddress = SmallTablesBFlash2Location;
+		break;
+	case SmallTablesC2LocationID:
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesC;
+		details->FlashAddress = SmallTablesCFlash2Location;
+		break;
 	case SmallTablesD2LocationID:
 		details->RAMPage = RPAGE_TUNE_TWO;
 		details->FlashPage = TUNETABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesD;
 		details->FlashAddress = SmallTablesDFlash2Location;
 		break;
+#endif
 
 	/* TablesA small tables */
 	case dwellDesiredVersusVoltageTableLocationID:
@@ -268,14 +277,6 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = dwellDesiredVersusVoltageTableLocation;
 		details->parent = SmallTablesALocationID;
 		break;
-	case dwellDesiredVersusVoltageTable2LocationID:
-		details->size = sizeof(twoDTableUS);
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
-		details->FlashAddress = dwellDesiredVersusVoltageTable2Location;
-		details->parent = SmallTablesA2LocationID;
-		break;
 	case injectorDeadTimeTableLocationID:
 		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
@@ -284,14 +285,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = injectorDeadTimeTableLocation;
 		details->parent = SmallTablesALocationID;
 		break;
-	case injectorDeadTimeTable2LocationID:
-		details->size = sizeof(twoDTableUS);
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.injectorDeadTimeTable;
-		details->FlashAddress = injectorDeadTimeTable2Location;
-		details->parent = SmallTablesA2LocationID;
-		break;
+#ifdef ALL_CONFIG
 	case postStartEnrichmentTableLocationID:
 		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
@@ -299,14 +293,6 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
 		details->FlashAddress = postStartEnrichmentTableLocation;
 		details->parent = SmallTablesALocationID;
-		break;
-	case postStartEnrichmentTable2LocationID:
-		details->size = sizeof(twoDTableUS);
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
-		details->FlashAddress = postStartEnrichmentTable2Location;
-		details->parent = SmallTablesA2LocationID;
 		break;
 	case engineTempEnrichmentTableFixedLocationID:
 		details->size = sizeof(twoDTableUS);
@@ -316,14 +302,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = engineTempEnrichmentTableFixedLocation;
 		details->parent = SmallTablesALocationID;
 		break;
-	case engineTempEnrichmentTableFixed2LocationID:
-		details->size = sizeof(twoDTableUS);
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
-		details->FlashAddress = engineTempEnrichmentTableFixed2Location;
-		details->parent = SmallTablesA2LocationID;
-		break;
+#endif
 	case primingVolumeTableLocationID:
 		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
@@ -331,14 +310,6 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
 		details->FlashAddress = primingVolumeTableLocation;
 		details->parent = SmallTablesALocationID;
-		break;
-	case primingVolumeTable2LocationID:
-		details->size = sizeof(twoDTableUS);
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
-		details->FlashAddress = primingVolumeTable2Location;
-		details->parent = SmallTablesA2LocationID;
 		break;
 	case engineTempEnrichmentTablePercentLocationID:
 		details->size = sizeof(twoDTableUS);
@@ -348,14 +319,6 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = engineTempEnrichmentTablePercentLocation;
 		details->parent = SmallTablesALocationID;
 		break;
-	case engineTempEnrichmentTablePercent2LocationID:
-		details->size = sizeof(twoDTableUS);
-		details->RAMPage = RPAGE_TUNE_TWO;
-		details->FlashPage = TUNETABLES_PPAGE;
-		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
-		details->FlashAddress = engineTempEnrichmentTablePercent2Location;
-		details->parent = SmallTablesA2LocationID;
-		break;
 	case dwellVersusRPMTableLocationID:
 		details->size = sizeof(twoDTableUS);
 		details->RAMPage = RPAGE_TUNE_ONE;
@@ -363,6 +326,55 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellVersusRPMTable;
 		details->FlashAddress = dwellVersusRPMTableLocation;
 		details->parent = SmallTablesALocationID;
+		break;
+#ifdef ALL_CONFIG
+	case dwellDesiredVersusVoltageTable2LocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable;
+		details->FlashAddress = dwellDesiredVersusVoltageTable2Location;
+		details->parent = SmallTablesA2LocationID;
+		break;
+	case injectorDeadTimeTable2LocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.injectorDeadTimeTable;
+		details->FlashAddress = injectorDeadTimeTable2Location;
+		details->parent = SmallTablesA2LocationID;
+		break;
+	case postStartEnrichmentTable2LocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.postStartEnrichmentTable;
+		details->FlashAddress = postStartEnrichmentTable2Location;
+		details->parent = SmallTablesA2LocationID;
+		break;
+	case engineTempEnrichmentTableFixed2LocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTableFixed;
+		details->FlashAddress = engineTempEnrichmentTableFixed2Location;
+		details->parent = SmallTablesA2LocationID;
+		break;
+	case primingVolumeTable2LocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.primingVolumeTable;
+		details->FlashAddress = primingVolumeTable2Location;
+		details->parent = SmallTablesA2LocationID;
+		break;
+	case engineTempEnrichmentTablePercent2LocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.engineTempEnrichmentTablePercent;
+		details->FlashAddress = engineTempEnrichmentTablePercent2Location;
+		details->parent = SmallTablesA2LocationID;
 		break;
 	case dwellVersusRPMTable2LocationID:
 		details->size = sizeof(twoDTableUS);
@@ -372,6 +384,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = dwellVersusRPMTable2Location;
 		details->parent = SmallTablesA2LocationID;
 		break;
+#endif
 
 	/* TablesB small tables */
 	case loggingSettingsLocationID:
@@ -382,6 +395,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = loggingSettingsLocation;
 		details->parent = SmallTablesBLocationID;
 		break;
+#ifdef ALL_CONFIG
 	case loggingSettings2LocationID:
 		details->size = sizeof(loggingSetting);
 		details->RAMPage = RPAGE_TUNE_TWO;
@@ -390,6 +404,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = loggingSettings2Location;
 		details->parent = SmallTablesB2LocationID;
 		break;
+#endif
 
 	/* TablesC small tables */
 		// TODO add data chunks from TablesC when some are put in
@@ -397,6 +412,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 	/* TablesD small tables */
 		// TODO add data chunks from TablesD when some are put in
 
+#ifdef ALL_CONFIG
 	/* filler block entries */
 	case fillerALocationID:
 		details->size = SMALL_TABLES_1_FILLER_SIZE;
@@ -462,6 +478,7 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = fillerD2Location;
 		details->parent = SmallTablesD2LocationID;
 		break;
+#endif
 
 	/* Fixed conf 1 small chunks */
 	case engineSettingsLocationID:
