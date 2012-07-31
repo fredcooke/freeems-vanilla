@@ -551,6 +551,18 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = (void*)&(fixedConfigs2.algorithmSettings);
 		details->parent = FixedConfig2LocationID;
 		break;
+	case inputOutputSettingsLocationID:
+		details->size = sizeof(inputOutputSetting);
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.inputOutputSettings);
+		details->parent = FixedConfig2LocationID;
+		break;
+	case decoderSettingsLocationID:
+		details->size = sizeof(decoderSetting);
+		details->FlashPage = PPAGE;
+		details->FlashAddress = (void*)&(fixedConfigs2.decoderSettings);
+		details->parent = FixedConfig2LocationID;
+		break;
 	case userTextField2LocationID:
 		details->size = userTextFieldArrayLength2;
 		details->FlashPage = PPAGE;

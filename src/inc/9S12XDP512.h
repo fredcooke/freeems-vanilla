@@ -70,8 +70,8 @@
 #define PORTB DVUCP(0x0001)
 #define PORTE DVUCP(0x0008)
 #define PORTK DVUCP(0x0032)
-/* #define PORTC DVUCP(0x0004) these pins are not bonded on the 112 pin package */
-/* #define PORTD DVUCP(0x0005) these pins are not bonded on the 112 pin package */
+#define PORTC DVUCP(0x0004) // These pins are not bonded on the 112 pin package
+#define PORTD DVUCP(0x0005) // These pins are not bonded on the 112 pin package
 
 
 /* Plain ports Data Direction Registers */

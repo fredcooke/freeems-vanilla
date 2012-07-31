@@ -61,7 +61,7 @@
 void init(){
 	ATOMIC_START();         /* Disable ALL interrupts while we configure the board ready for use */
 	initPLL();              /* Set up the PLL and use it */
-	initIO();               /* TODO make this config dependent. Set up all the pins and modules to be in low power harmless states */
+	initIO();               // Set up all the pins and modules as per configuration
 	initAllPagedRAM();      /* Copy table and config blocks of data from flash to the paged RAM blocks for fast data lookup */
 	initVariables();        /* Initialise the rest of the running variables etc */
 	initFlash();            /* TODO, finalise this */
@@ -112,17 +112,12 @@ void initPLL(){
 }
 
 
-/* Configure all the I/O to default values to keep power use down etc */
+/// Configure all the I/O related registers
 void initIO(){
-	/* for now, hard code all stuff to be outputs as per Freescale documentation,  */
-	/* later what to do will be pulled from flash configuration such that all      */
-	/* things are setup at once, and not messed with thereafter. when the port     */
+	/* Currently not true, and may never be: TODO When the port     */
 	/* something uses is changed via the tuning interface, the confuration will be */
 	/* done on the fly, and the value burned to flash such that next boot happens  */
 	/* correctly and current running devices are used in that way.                 */
-
-	/* Turn off and on and configure all the modules in an explicit way */
-	// TODO set up and turn off all modules (CAN,SCI,SPI,IIC,etc)
 
 	/* Digital input buffers on the ATD channels are off by default, leave them this way! */
 	//ATD0DIEN = ZEROS; /* You are out of your mind if you waste this on digital Inputs */
@@ -146,66 +141,68 @@ void initIO(){
 	ATD0CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. Writing to this causes conversions to begin */
 
 #ifndef NO_INIT
-	/* Set up the PWM component and initialise its values to off */
-	PWME = 0x7F; /* Turn on PWM 0 - 6 (7 is user LED on main board) */
-	PWMCLK = ZEROS; /* The fastest we can go for all channels */
-	PWMPRCLK = ZEROS; /* The fastest prescaler we can go for all channels */
-	PWMSCLA = ZEROS; /* The fastest we can go */
-	PWMSCLB = ZEROS; /* The fastest we can go */
+	// Set up the PWM module and initialise its values
+	PWMCLK   = fixedConfigs2.inputOutputSettings.PWMClock;
+	PWMPRCLK = fixedConfigs2.inputOutputSettings.PWMClockPrescaler;
+	PWMSCLA  = fixedConfigs2.inputOutputSettings.PWMScalerA;
+	PWMSCLB  = fixedConfigs2.inputOutputSettings.PWMScalerB;
+	PWMPOL   = fixedConfigs2.inputOutputSettings.PWMPolarity;
+	PWMCAE   = fixedConfigs2.inputOutputSettings.PWMCenterAlign;
+	PWMCTL   = fixedConfigs2.inputOutputSettings.PWMControl & 0xF0; // Disallow access to power saving and reserved bits
+	PWME     = fixedConfigs2.inputOutputSettings.PWMEnable; // MUST be done after concatenation with PWMCTL
+
 	/* TODO PWM channel concatenation for high resolution */
 	// join channel pairs together here (needs 16 bit regs enabled too)
 	/* TODO Initialise pwm channels with frequency, and initial duty for real use */
 	// initial PWM settings for testing
-	/* PWM periods */
-	PWMPER0 = 0xFF; // 255 for ADC0 testing
-	PWMPER1 = 0xFF; // 255 for ADC1 testing
-	PWMPER2 = 0xFF; // 255 for ADC1 testing
-	PWMPER3 = 0xFF; // 255 for ADC1 testing
-	PWMPER4 = 0xFF; // 255 for ADC1 testing
-	PWMPER5 = 0xFF; // 255 for ADC1 testing
-	PWMPER6 = 0xFF; // 255 for ADC1 testing
-	PWMPER7 = 0xFF; // 255 for ADC1 testing
-	/* PWM duties */
-	PWMDTY0 = 0;
-	PWMDTY1 = 0;
-	PWMDTY2 = 0;
-	PWMDTY3 = 0;
-	PWMDTY4 = 0;
-	PWMDTY5 = 0;
-	PWMDTY6 = 0;
-	PWMDTY7 = 0;
 
+	PWMPER0 = fixedConfigs2.inputOutputSettings.PWMPeriod0;
+	PWMPER1 = fixedConfigs2.inputOutputSettings.PWMPeriod1;
+	PWMPER2 = fixedConfigs2.inputOutputSettings.PWMPeriod2;
+	PWMPER3 = fixedConfigs2.inputOutputSettings.PWMPeriod3;
+	PWMPER4 = fixedConfigs2.inputOutputSettings.PWMPeriod4;
+	PWMPER5 = fixedConfigs2.inputOutputSettings.PWMPeriod5;
+	PWMPER6 = fixedConfigs2.inputOutputSettings.PWMPeriod6;
+	PWMPER7 = fixedConfigs2.inputOutputSettings.PWMPeriod7;
 
-	/* Initialise the state of pins configured as output */
-	/* Initialise to low such that transistor grounded things are all turned off by default. */
-	PORTA = BIT7; /* Set fuel pump on at boot time. The serial monitor pin is on 0x40, and could cause problems if capacitance at the output is large when a reset occurs. */
-	PORTB = ZEROS; /* Init the rest of the spark outputs as off */
-	PORTE = 0x1F; /* 0b_0001_1111 : when not in use 0b_1001_1111 PE7 should be high PE5 and PE6 should be low, the rest high */
-	PORTK = ZEROS;
-	PORTS = 0x02; // Set TX0 pin to high between transmissions!
-	PORTT = ZEROS; /* All pins in off state at boot up (only matters for 2 - 7) */
-	PORTM = ZEROS;
-	PORTP = ZEROS; // TODO hook these up to the adc channels such that you can vary the brightness of an led with a pot.
-	PORTH = ZEROS;
-	PORTJ = ZEROS;
+	PWMDTY0 = fixedConfigs2.inputOutputSettings.PWMInitialDuty0;
+	PWMDTY1 = fixedConfigs2.inputOutputSettings.PWMInitialDuty1;
+	PWMDTY2 = fixedConfigs2.inputOutputSettings.PWMInitialDuty2;
+	PWMDTY3 = fixedConfigs2.inputOutputSettings.PWMInitialDuty3;
+	PWMDTY4 = fixedConfigs2.inputOutputSettings.PWMInitialDuty4;
+	PWMDTY5 = fixedConfigs2.inputOutputSettings.PWMInitialDuty5;
+	PWMDTY6 = fixedConfigs2.inputOutputSettings.PWMInitialDuty6;
+	PWMDTY7 = fixedConfigs2.inputOutputSettings.PWMInitialDuty7;
+
+	// Set the initial pin state of pins configured as output
+	PORTA = fixedConfigs2.inputOutputSettings.PortInitialValueA | BIT6 | BIT7; // Mask the fuel pump relay and CEL pins on
+	PORTB = fixedConfigs2.inputOutputSettings.PortInitialValueB;
+	PORTC = fixedConfigs2.inputOutputSettings.PortInitialValueC;
+	PORTD = fixedConfigs2.inputOutputSettings.PortInitialValueD;
+	PORTE = (fixedConfigs2.inputOutputSettings.PortInitialValueE | BIT7) & (NBIT5 & NBIT6); // 7 should be high, and 5 and 6 low, to reduce current draw. The rest don't matter. 0 and 1 are not outputs.
+	PORTH = fixedConfigs2.inputOutputSettings.PortInitialValueH;
+	PORTJ = fixedConfigs2.inputOutputSettings.PortInitialValueJ;
+	PORTK = fixedConfigs2.inputOutputSettings.PortInitialValueK;
+	PORTM = fixedConfigs2.inputOutputSettings.PortInitialValueM;
+	PORTP = fixedConfigs2.inputOutputSettings.PortInitialValueP;
+	PORTS = fixedConfigs2.inputOutputSettings.PortInitialValueS | 0x02; // Mask the SCI0 TX pin to high between transmissions!
+	PORTT = 0x00; // Set all ECT pins to off state, only matters for 2-7, and only if being used. TODO mask this dynamically based on decoder type and configured channels.
 	/* AD0PT1 You are out of your mind if you waste this on digital Inputs */
 	/* AD1PT1 You are out of your mind if you waste this on digital Inputs */
 
-	/* Initialise the Data Direction Registers */
-	/* To outputs based on the note at the end of chapter 1.2.2 of MC9S12XDP512V2.pdf */
-	DDRA = ONES; /* GPIO (8) */
-	DDRB = ONES; /* GPIO (8) */
-	DDRE = 0xFC; /* 0b_1111_1100 : Clock and mode pins PE0,PE1 are input only pins, the rest are GPIO */
-	DDRK = ONES; /* Only 0,1,2,3,4,5,7, NOT 6 (7) */
-	DDRS = 0xFE; /* RX0 as input: SCI0 (RX,TX), SCI1 (RX,TX), SPI0 (MISO,MOSI,SCK,SS) (8) */
-	DDRT = 0xFC; /* 0b_1111_1100 set ECT pins 0,1 to IC and 2:7 to OC (8) */
-	DDRM = ONES; /* CAN 0 - 3 (8) */
-	DDRP = ONES; /* PWM pins (8) */
-	DDRH = ZEROS; /* All pins configured as input for misc isrs (SPI1, SPI2) (8) */
-	DDRJ = ONES; /* Only 0,1,6,7 are brought out on the 112 pin chip (4) */
-	/* Configure the non bonded pins to output to avoid current drain (112 pin package) */
-	DDRC = ONES; /* NON-bonded external data bus pins */
-	DDRD = ONES; /* NON-bonded external data bus pins */
+	// Initialise the Data Direction Registers
+	DDRA = fixedConfigs2.inputOutputSettings.PortDirectionA | BIT6 | BIT7; // Mask the fuel pump relay and CEL pins as outputs
+	DDRB = fixedConfigs2.inputOutputSettings.PortDirectionB;
+	DDRC = fixedConfigs2.inputOutputSettings.PortDirectionC;
+	DDRD = fixedConfigs2.inputOutputSettings.PortDirectionD;
+	DDRE = fixedConfigs2.inputOutputSettings.PortDirectionE; // No need to mask off bits 0 and 1, they have no effect and are always inputs.
+	DDRH = fixedConfigs2.inputOutputSettings.PortDirectionH;
+	DDRJ = fixedConfigs2.inputOutputSettings.PortDirectionJ;
+	DDRK = fixedConfigs2.inputOutputSettings.PortDirectionK;
+	DDRM = fixedConfigs2.inputOutputSettings.PortDirectionM;
+	DDRP = fixedConfigs2.inputOutputSettings.PortDirectionP;
+	DDRS = fixedConfigs2.inputOutputSettings.PortDirectionS & 0xFE; // Mask the SCI0 RX pin as input between receiving
+	DDRT = 0xFC; // Set ECT pins 0,1 to IC and 2:7 to OC (8) TODO mask this dynamically based on decoder type and configured channels.
 	/* AD0DDR1 You are out of your mind if you waste this on digital Inputs */
 	/* AD1DDR1 You are out of your mind if you waste this on digital Inputs */
 #endif

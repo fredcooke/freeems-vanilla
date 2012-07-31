@@ -134,6 +134,67 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		dwellFixedPeriod: T(3)
 #endif
 	},
+	inputOutputSettings:{
+//		PullUpEnable:      0x00, // Unused right now
+//		ReducedDrive:      0x00, // Unused right now
+
+		PWMEnable:         0xFF, // Enable all PWM channels by default
+		PWMPolarity:       0x00, // Default to "duty is high portion" for all pins
+		PWMClock:          0x00, // The fastest we can go for all channels
+		PWMClockPrescaler: 0x00, // The fastest prescaler we can go for all channels
+		PWMCenterAlign:    0x00, // Default to left aligned
+		PWMControl:        0x00, // Default to all 8 bit channels
+		PWMScalerA:        0x00, // The fastest we can go
+		PWMScalerB:        0x00, // The fastest we can go
+
+		// Default to ~0.4% granularity
+		PWMPeriod0: 0xFF,
+		PWMPeriod1: 0xFF,
+		PWMPeriod2: 0xFF,
+		PWMPeriod3: 0xFF,
+		PWMPeriod4: 0xFF,
+		PWMPeriod5: 0xFF,
+		PWMPeriod6: 0xFF,
+		PWMPeriod7: 0xFF,
+
+		// Default to pins all low/off
+		PWMInitialDuty0: 0x00,
+		PWMInitialDuty1: 0x00,
+		PWMInitialDuty2: 0x00,
+		PWMInitialDuty3: 0x00,
+		PWMInitialDuty4: 0x00,
+		PWMInitialDuty5: 0x00,
+		PWMInitialDuty6: 0x00,
+		PWMInitialDuty7: 0x00,
+
+		// Mostly default to low/off state
+		PortInitialValueA: 0x00, // Overridden for fuel pump and CEL outputs
+		PortInitialValueB: 0x00,
+		PortInitialValueC: 0x00,
+		PortInitialValueD: 0x00,
+		PortInitialValueE: 0x00, // TODO necessary to override???
+		PortInitialValueH: 0x00,
+		PortInitialValueJ: 0x00,
+		PortInitialValueK: 0x00,
+		PortInitialValueM: 0x00,
+		PortInitialValueP: 0x00,
+		PortInitialValueS: 0x00, // Overridden for main communications on SCI0
+		PortInitialValueT: 0x00, // Ignored! TODO: Overridden for precision timed outputs
+
+		// Mostly default to outputs to reduce power consumption and heat. See the note at the end of chapter 1.2.2 of MC9S12XDP512V2.pdf
+		PortDirectionA: 0xFF, // Overridden for fuel pump and CEL outputs
+		PortDirectionB: 0xFF,
+		PortDirectionC: 0xFF,
+		PortDirectionD: 0xFF,
+		PortDirectionE: 0xFF,
+		PortDirectionH: 0x00, // All pins configured as inputs for misc isrs
+		PortDirectionJ: 0xFF,
+		PortDirectionK: 0xFF,
+		PortDirectionM: 0xFF,
+		PortDirectionP: 0xFF,
+		PortDirectionS: 0xFF, // Overridden for main communications on SCI0
+		PortDirectionT: 0xFF  // Ignored! TODO: Overridden for precision timed outputs
+	},
 	decoderSettings:{
 #if CONFIG == HOTEL_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
@@ -159,6 +220,5 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 			"to the state of tune and configuration of settings. Lastly, please "
 			"remember that this field WILL be shrinking in length from it's "
 			"currently large size to something more reasonable in future. I would "
-			"like to attempt to keep it at least thirty two characters long though,"
-			" so writing that much is a non issue, yay!!"
+			"like to attempt to keep it at least thirty two characters long "
 };

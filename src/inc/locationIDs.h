@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -145,7 +145,7 @@
 #define schedulingSettingsLocationID                   0xC003
 #define cutAndLimiterSettingsLocationID                0xC004
 #define simpleGPIOSettingsLocationID                   0xC005
-#define userTextFieldLocationID                        0xC006
+#define userTextFieldLocationID                        0xC100
 
 /* Fixed config 2 sub sections */
 #define sensorSourcesLocationID                        0xC020
@@ -153,7 +153,9 @@
 #define sensorRangesLocationID                         0xC022
 #define sensorSettingsLocationID                       0xC023
 #define algorithmSettingsLocationID                    0xC024
-#define userTextField2LocationID                       0xC025
+#define inputOutputSettingsLocationID                  0xC025
+#define decoderSettingsLocationID                      0xC026
+#define userTextField2LocationID                       0xC101
 
 #ifdef BLOCK_DETAILS_LOOKUP_C // only for here, external stuff should use the flags field for determining what to do/not do.
 #define FixedConfigSubBlocks_Border_ReadOnlyVarBlocks  0xF000
