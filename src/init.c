@@ -684,35 +684,6 @@ void initConfiguration(){
 
 	/* The ADC range used to generate TPS percentage */
 	TPSADCRange = fixedConfigs2.sensorRanges.TPSMaximumADC - fixedConfigs2.sensorRanges.TPSMinimumADC;
-
-
-	/* Use like flags for now, just add one for each later */
-	unsigned char cumulativeConfigErrors = 0;
-
-	/* Check various aspects of config which will cause problems */
-
-	/* BRV max bigger than variable that holds it */
-	if(((unsigned long)fixedConfigs2.sensorRanges.BRVMinimum + fixedConfigs2.sensorRanges.BRVRange) > 65535){
-		//sendError(BRV_MAX_TOO_LARGE);
-		cumulativeConfigErrors++;
-	}
-
-	// TODO check all critical variables here!
-
-	/*
-	 * check ignition settings for range etc, possibly check some of those on the fly too
-	 * check fuel settings for being reasonable
-	 * check all variable tables for correct sizing
-	 * etc
-	 */
-
-	while(cumulativeConfigErrors > 0){
-		sleep(1000);
-		/// @todo TODO send an async error of some sort here, perhaps upgrade errors to handle args for this purpose, or perhaps send an async error for each error, inc this var, then send a "errors occurred, reset and listen to see what they were" packet?
-		//send("There were ");
-		//sendUC(cumulativeConfigErrors);
-		//send(" config errors, init aborted!");
-	} /// @todo TODO ensure that we can recieve config and settings via serial while this is occuring! If not a bad config will lock us out all together.
 }
 
 
