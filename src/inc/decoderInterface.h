@@ -33,8 +33,6 @@
  *
  * This file contains the declarations of objects used as a common interface
  * between all of the different wheel decoders and the main loop scheduler.
- *
- * @author Fred Cooke
  */
 
 

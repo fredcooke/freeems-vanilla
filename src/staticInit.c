@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -34,8 +34,6 @@
  * initialised here are placed together by the compiler in flash and copied up
  * to RAM as a linear block before the main method runs. This is significantly
  * more efficient than doing them one-by-one in an init routine.
- *
- * @author Fred Cooke
  */
 
 

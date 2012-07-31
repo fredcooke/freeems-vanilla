@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -33,8 +33,6 @@
  * The number of these required is fairly significant and thus is best placed
  * in its own header file. Their only function is to prevent warnings from the
  * linker due to accessing paged addresses in linear space.
- *
- * @author Fred Cooke
  */
 
 

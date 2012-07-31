@@ -31,8 +31,6 @@
  * @brief A stepped timing test for GM DIS use.
  *
  * This file only contains the data to be hash included into some timing tables
- *
- * @author Fred Cooke
  */
 
 

@@ -37,8 +37,6 @@
  *
  * This is useful to get a smooth logic analyser or other high speed log free
  * of gaps in the stream.
- *
- * @author Fred Cooke
  */
 
 

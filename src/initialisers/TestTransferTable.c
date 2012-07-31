@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -32,8 +32,6 @@
  * @brief Test data for comms
  *
  * An array of bytes from 0 - 255 repeated 8 times for testing serial comms.
- *
- * @author Fred Cooke
  */
 
 

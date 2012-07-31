@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -32,8 +32,6 @@
  * @brief Global constant declarations
  *
  * All global constants are declared in this file for use throughout the program.
- *
- * @author Fred Cooke
  */
 
 

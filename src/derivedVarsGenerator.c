@@ -31,8 +31,6 @@
  * @brief Generate the derived variables.
  *
  * Second level variables are derived from the core variables and generated here.
- *
- * @author Fred Cooke
  */
 
 

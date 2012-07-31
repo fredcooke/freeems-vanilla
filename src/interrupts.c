@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -33,8 +33,6 @@
  * This file contains the definition of the interrupt vector table. This
  * table consists only of pointers to void(void) functions that will be
  * called by the hardware when an interrupt of a certain type occurs.
- *
- * @author Fred Cooke
  */
 
 

@@ -37,8 +37,6 @@
  * - Configure and enable interrupts
  * - Copy tunable data up to RAM from flash
  * - Configure peripheral module behaviour
- *
- * @author Fred Cooke
  */
 
 
@@ -59,8 +57,6 @@
  * The main init function to be called from main.c before entering the main
  * loop. This function is simply a delegator to the finer grained special
  * purpose init functions.
- *
- * @author Fred Cooke
  */
 void init(){
 	ATOMIC_START();         /* Disable ALL interrupts while we configure the board ready for use */
@@ -94,8 +90,6 @@ void init(){
  *
  * Set the Phase Locked Loop to our desired frequency (80MHz) and switch to
  * using it for clock (40MHz bus speed).
- *
- * @author Fred Cooke
  */
 void initPLL(){
 	CLKSEL &= PLLSELOFF;  /* Switches to base external OSCCLK to ensure PLL is not being used (off out of reset, but not sure if the monitor turns it on before passing control or not) */
@@ -221,10 +215,6 @@ void initIO(){
 /** @brief Buffer lookup tables addresses
  *
  * Save pointers to the lookup tables which live in paged flash.
- *
- * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
- *
- * @author Fred Cooke
  */
 void initLookupAddresses(){
 	IATTransferTableLocation = (void*)&IATTransferTable;
@@ -237,10 +227,6 @@ void initLookupAddresses(){
 /** @brief Buffer fuel tables addresses
  *
  * Save pointers to the fuel tables which live in paged flash.
- *
- * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
- *
- * @author Fred Cooke
  */
 void initFuelAddresses(){
 	/* Setup addresses within the page to avoid warnings */
@@ -258,8 +244,6 @@ void initFuelAddresses(){
 /** @brief Copy fuel tables to RAM
  *
  * Initialises the fuel tables in RAM by copying them up from flash.
- *
- * @author Fred Cooke
  */
 void initPagedRAMFuel(void){
 	/* Copy the tables from flash to RAM */
@@ -279,10 +263,6 @@ void initPagedRAMFuel(void){
 /** @brief Buffer timing tables addresses
  *
  * Save pointers to the timing tables which live in paged flash.
- *
- * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
- *
- * @author Fred Cooke
  */
 void initTimingAddresses(){
 	/* Setup addresses within the page to avoid warnings */
@@ -300,8 +280,6 @@ void initTimingAddresses(){
 /** @brief Copy timing tables to RAM
  *
  * Initialises the timing tables in RAM by copying them up from flash.
- *
- * @author Fred Cooke
  */
 void initPagedRAMTime(){
 	/* Copy the tables from flash to RAM */
@@ -322,10 +300,6 @@ void initPagedRAMTime(){
  *
  * Save pointers to the tunable tables which live in paged flash and their
  * sub-sections too.
- *
- * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
- *
- * @author Fred Cooke
  */
 void initTunableAddresses(){
 	/* Setup addresses within the page to avoid warnings */
@@ -414,8 +388,6 @@ void initPagedRAMTune(){
  * prevent those warnings.
  *
  * @note Many thanks to Jean Bélanger for the inspiration/idea to do this!
- *
- * @author Fred Cooke
  */
 void initAllPagedAddresses(){
 	/* Setup pointers to lookup tables */
@@ -436,8 +408,6 @@ void initAllPagedAddresses(){
  *
  * This function is simply a delegator to the ones for each flash page. Each
  * one lives in the same paged space as the data it is copying up.
- *
- * @author Fred Cooke
  */
 void initAllPagedRAM(){
 	/* Setup the flash block pointers before copying flash to RAM using them */

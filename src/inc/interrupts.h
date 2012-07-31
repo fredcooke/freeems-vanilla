@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke, Jared Harvey
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -35,8 +35,6 @@
  * used in one place and it doesn't make sense to spread them out over N files
  * for N functions. ISR headers only exist where there is a requirement for
  * local variables and constants etc.
- *
- * @author Fred Cooke
  */
 
 

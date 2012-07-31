@@ -36,8 +36,6 @@
  * input allowing a sequential and/or COP/CNP setup to be used.
  *
  * @see EvenTeeth-Both-Nand1.c
- *
- * @author Fred Cooke
  */
 
 

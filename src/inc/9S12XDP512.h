@@ -36,8 +36,6 @@
  *
  * These are the full basic register definitions for the Freescale 9S12XDP512
  * processor as taken from MC9S12XDP512V2.pdf Appendix G
- *
- * @author Fred Cooke
  */
 
 

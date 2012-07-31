@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke, Sean Keys
+ * Copyright 2008-2012 Fred Cooke, Sean Keys
  *
  * This file is part of the FreeEMS project.
  *
@@ -48,8 +48,6 @@
  *
  * Handles time keeping, including all internal clocks, and generic periodic
  * tasks that run quickly and must be done on time.
- *
- * @author Fred Cooke
  */
 void RTIISR(){
 	/* Clear the RTI flag */
@@ -162,8 +160,6 @@ void RTIISR(){
  * 68HC11 reference manual for more information on this technique!
  *
  * @warning The extension var should be incremented before the flag is cleared!
- *
- * @author Fred Cooke
  */
 void TimerOverflow(){
 	/* Increment the timer extension variable */

@@ -355,8 +355,6 @@ total period = 1062
 
 From file http://stuff.fredcooke.com/logic.test.flat.battery.5.log.la
 
- *
- * @author Fred Cooke
  */
 
 

@@ -37,8 +37,6 @@
  *
  * @todo TODO function to setup a packet and send it fn(populateBodyFunctionPointer(), header, other, fields, here, and, use, or, not, within){}
  * @todo TODO factor many things into functions and move the receive delegator to its own file
- *
- * @author Fred Cooke
  */
 
 
@@ -144,8 +142,6 @@ unsigned short populateBasicDatalog(){
  * runs a checksum over the packet data and tags it to the end before
  * configuring the various ISRs that need to send the data out.
  *
- * @author Fred Cooke
- *
  * @bug http://issues.freeems.org/view.php?id=81
  * @todo TODO fix the double/none start byte bug and remove the hack!
  */
@@ -214,8 +210,6 @@ void finaliseAndSend(unsigned short errorID){
  * This is the core function that controls which functionality is run when a
  * packet is received in full by the ISR code and control is passed back to the
  * main loop code. The vast majority of communications action happens here.
- *
- * @author Fred Cooke
  */
 void decodePacketAndRespond(){
 	/* Extract and build up the header fields */
@@ -1383,8 +1377,6 @@ void decodePacketAndRespond(){
  *
  * This is a wrapper for use outside the communication handler function. The error will only be sent if the buffer is empty and available, if not, it will be discarded.
  *
- * @author Fred Cooke
- *
  * @warning Use of this function signifies that the error you are trying to propagate is not urgent and can be forgotten.
  *
  * @note Consider not throwing an error if it seems appropriate to use this.
@@ -1410,8 +1402,6 @@ void sendErrorIfClear(unsigned short errorID){
  * function will block until the error is able to be sent. This behaviour is
  * not recommended as it will interfere with engine operation somewhat.
  *
- * @author Fred Cooke
- *
  * @warning Use of this function signifies that the error you are trying to propagate is extremely urgent and can not be forgotten.
  *
  * @note Using this function blocks other main loop code from execution. Consider handling the error in another way if it seems appropriate to use this.
@@ -1430,8 +1420,6 @@ void sendErrorIfClear(unsigned short errorID){
  * This function is only for use inside the communication handling function.
  * Use of it outside this environment is not supported and behaviour when used
  * as such is undefined.
- *
- * @author Fred Cooke
  *
  * @warning ONLY use this function from within the communication handler.
  *
@@ -1483,8 +1471,6 @@ void sendErrorInternal(unsigned short errorID){
  *
  * This is a wrapper for use outside the communication handler function. The debug message will only be sent if the buffer is empty and available, if not, it will be discarded.
  *
- * @author Fred Cooke
- *
  * @note This function exists as a convenience to developers, do not publish code that calls this function.
  *
  * @param message is a pointer to the null terminated debug message string.
@@ -1504,8 +1490,6 @@ void sendDebugIfClear(unsigned char* message){
  * This is a wrapper for use outside the communication handler function. This
  * function will block until the debug message is able to be sent.
  *
- * @author Fred Cooke
- *
  * @note This function exists as a convenience to developers, do not publish code that calls this function.
  *
  * @param message is a pointer to the null terminated debug message string.
@@ -1520,8 +1504,6 @@ void sendDebugIfClear(unsigned char* message){
 /** @brief Send a debug message
  *
  * Sends a null terminated debug message out on the broadcast address of all available interfaces.
- *
- * @author Fred Cooke
  *
  * @warning ONLY use this function from within the communication handler.
  *

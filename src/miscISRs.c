@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -32,8 +32,6 @@
  *
  * Various non-descript interrupt handlers that don't really fit anywhere else
  * and aren't big enough to live on their own just yet.
- *
- * @author Fred Cooke
  */
 
 
@@ -46,7 +44,6 @@
  * Unimplemented interrupt service routine for calls  we weren't expecting.
  * Currently this simply counts bad calls like any other event type.
  *
- * @author Fred Cooke
  * @todo TODO Split this into its own file, create one for each, and clear flags for all, and increment shared counter as is.
  * @todo TODO Currently not a problem, but as indirectly pointed out by johntramp, if no flag clearing is being done, then this code will run continuously, which is not a good idea...
  */
@@ -60,8 +57,6 @@ void UISR(void){
 /** @brief Port P pins ISR
  *
  * Interrupt handler for edge events on port P pins. Not currently used.
- *
- * @author Fred Cooke
  */
 void PortPISR(void){
 	/* Clear all port P flags (we only want one at a time) */
@@ -75,8 +70,6 @@ void PortPISR(void){
 /** @brief Port J pins ISR
  *
  * Interrupt handler for edge events on port J pins. Not currently used.
- *
- * @author Fred Cooke
  */
 void PortJISR(void){
 	/* Clear all port H flags (we only want one at a time) */
@@ -90,8 +83,6 @@ void PortJISR(void){
 /** @brief Port H pins ISR
  *
  * Interrupt handler for edge events on port H pins. Not currently used.
- *
- * @author Fred Cooke
  */
 void PortHISR(void)
 {
@@ -183,8 +174,6 @@ void PortHISR(void)
 /** @brief IRQ/PE1 pin ISR
  *
  * Interrupt handler for edge events on the IRQ/PE1 pin. Not currently used.
- *
- * @author Fred Cooke
  */
 void IRQISR(void){
 	/* Clear the flag */
@@ -198,8 +187,6 @@ void IRQISR(void){
 /** @brief XIRQ/PE0 pin ISR
  *
  * Interrupt handler for edge events on the XIRQ/PE0 pin. Not currently used.
- *
- * @author Fred Cooke
  */
 void XIRQISR(void){
 	/* Clear the flag */
@@ -213,8 +200,6 @@ void XIRQISR(void){
 /** @brief Low Voltage Counter
  *
  * Count how often our voltage drops lower than it should without resetting.
- *
- * @author Fred Cooke
  */
 void LowVoltageISR(void){
 	/* Clear the flag */

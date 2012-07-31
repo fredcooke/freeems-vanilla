@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Sean Keys, Fred Cooke
+ * Copyright 2008-2012 Sean Keys, Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -64,7 +64,7 @@
  */
 unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
 
-	if (((unsigned short)flashAddr % flashSectorSize) != 0){
+	if(((unsigned short)flashAddr % flashSectorSize) != 0){
 		return addressNotSectorAligned;
 	}
 	unsigned char currentPage = PPAGE;
@@ -99,8 +99,6 @@ unsigned short eraseSector(unsigned char PPage, unsigned short *flashAddr){
  * |     From RAM     |    From Flash     |
  *
  * @warning Limited to 63k per write! (obviously)
- *
- * @author Fred Cooke
  *
  * @param details contains the RAM address and page to be read from, the flash address and page to be burned to and the size to be read.
  * @param buffer is a pointer to a block of RAM at least 1024 bytes long used to allow small chunks to be burned independently.
@@ -209,7 +207,7 @@ unsigned short writeBlock(blockDetails* details, void* buffer){
 unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress, unsigned char PPage , unsigned short* flashDestinationAddress){
 
 	if(((unsigned short)flashDestinationAddress % flashSectorSize) != 0){
-			return addressNotSectorAligned;
+		return addressNotSectorAligned;
 	}
 
 	if(((unsigned short)flashDestinationAddress) < 0x4000){
@@ -231,14 +229,14 @@ unsigned short writeSector(unsigned char RPage, unsigned short* RAMSourceAddress
 
 	while (wordCount > 0)
 	{
-    	unsigned short sourceData = *RAMSourceAddress; /*Convert the RAMAddr to data(dereference) */
-    	unsigned short errorID = writeWord(flashDestinationAddress, sourceData);
-        if(errorID != 0){
+		unsigned short sourceData = *RAMSourceAddress; /*Convert the RAMAddr to data(dereference) */
+		unsigned short errorID = writeWord(flashDestinationAddress, sourceData);
+		if(errorID != 0){
 			return errorID;
 		}
 		RAMSourceAddress++;
 		flashDestinationAddress++;
-	 	wordCount--; /* Decrement our word counter */
+		wordCount--; /* Decrement our word counter */
 	}
 
 	/* Restore pages */
@@ -274,8 +272,8 @@ unsigned short writeWord(unsigned short* flashDestination, unsigned short data){
 	FSTAT=(ACCERR | PVIOL);
 	*flashDestination = data;
 	FCMD = WORD_PROGRAM;        //Load Flash Command Register With Word_Program mask
-    StackBurner();
+	StackBurner();
 
 	// @todo TODO verify the write? necessary??
-    return 0;
+	return 0;
 }

@@ -37,8 +37,6 @@
  * will be the only decoder that will be usable with just a cpu and comms interface.
  *
  * @todo TODO setup the timer registers as required.
- *
- * @author Fred Cooke
  */
 
 

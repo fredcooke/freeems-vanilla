@@ -34,8 +34,6 @@
  * This file is solely for the definition of compiler memory usage directives.
  * Each one is just a short form of the larger statements DFAR and FFAR found
  * near the top of this file.
- *
- * @author Fred Cooke
  */
 
 

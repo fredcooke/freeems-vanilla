@@ -30,8 +30,6 @@
  * @ingroup enginePositionRPMDecoders
  *
  * @brief Unique MitsiCAS-4and1 setup data and variables
- *
- * @author Fred Cooke
  */
 
 

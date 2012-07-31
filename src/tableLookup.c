@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -29,8 +29,6 @@
  * @brief Table access functions
  *
  * Functions for writing to and reading from all of the different table types.
- *
- * @author Fred Cooke
  */
 
 
@@ -100,8 +98,6 @@ signed char lookup8Bit3D( */
  * @warning This function relies on the axis values being a sorted
  * list from low to high. If this is not the case behaviour is
  * undefined and could include memory corruption and engine damage.
- *
- * @author Fred Cooke
  *
  * @param realRPM is the current RPM for which a table value is required.
  * @param realLoad is the current load for which a table value is required.
@@ -199,8 +195,6 @@ unsigned short lookupMainTable(unsigned short realRPM, unsigned short realLoad, 
  *
  * Looks up a value from a two D table using interpolation.
  *
- * @author Fred Cooke
- *
  * @param Table is a pointer to the table to read from.
  * @param Value is the position value used to lookup the return value.
  *
@@ -244,8 +238,6 @@ unsigned short lookupTwoDTableUS(twoDTableUS * Table, unsigned short Value){
  * Check that the configuration of the table is valid. Assumes pages are
  * correctly set. @todo more detail here....
  *
- * @author Fred Cooke
- *
  * @param Table is a pointer to the table to be validated.
  *
  * @return An error code. Zero means success, anything else is a failure.
@@ -285,8 +277,6 @@ unsigned short validateMainTable(mainTable* Table){
  *
  * Check that the order of the axis values is correct and therefore that the
  * table is valid too.
- *
- * @author Fred Cooke
  *
  * @param Table is a pointer to the table to be validated.
  *

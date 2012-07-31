@@ -36,8 +36,6 @@
  * constant declarations, all type definitions and all global variables. Other
  * variables that are actually in global space but only shared between a few
  * select files should be placed in the header for the main file that uses them.
- *
- * @author Fred Cooke
  */
 
 

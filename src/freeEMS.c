@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -33,8 +33,6 @@
  * various parts of the program. This is required because the RX/TX
  * buffers and main paged RAM unions show up as occupied data space
  * even though they are actually in RAM and not flash.
- *
- * @author Fred Cooke
  */
 
 

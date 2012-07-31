@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009, 2010 Fred Cooke, Philip L Johnson
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -31,8 +31,6 @@
  * General purpose utility functions that are used in various places throughout
  * the code base. Functions should only be placed here if they are not strongly
  * related to any other set of functionality.
- *
- * @author Fred Cooke
  */
 
 
@@ -46,8 +44,6 @@
 /** @brief Add two unsigned shorts safely
  *
  * This will either return short max or the sum of the two arguments.
- *
- * @author Fred Cooke
  *
  * @param addend1
  * @param addend2
@@ -64,8 +60,6 @@ unsigned short safeAdd(unsigned short addend1, unsigned short addend2){
 /** @brief Add signed short to an unsigned short safely
  *
  * This will either return short max, zero, or the sum of the two arguments.
- *
- * @author Fred Cooke
  *
  * @param addend1
  * @param addend2
@@ -96,8 +90,6 @@ unsigned short safeTrim(unsigned short addend1, signed short addend2){
  * and 0xFFFF/65535 means 200%, and returns the baseValue multiplied, in effect, by the
  * resulting percentage figure.
  *
- * @author Fred Cooke
- *
  * @param baseValue
  * @param dividend
  * @param divisor
@@ -122,8 +114,6 @@ unsigned short safeScale(unsigned short baseValue, unsigned short dividend, unsi
  *
  * @todo TODO change parameter style to be a pointer to a register and a mask?
  *
- * @author Fred Cooke
- *
  * @param bool which set of data to enable.
  */
 void setupPagedRAM(unsigned char bool){
@@ -144,8 +134,6 @@ void setupPagedRAM(unsigned char bool){
 /** @brief Demonstrate PWM
  *
  * Demonstrate basic PWM module usage by setting duty to scaled ADC inputs.
- *
- * @author Fred Cooke
  */
 void adjustPWM(){
 	PWMDTY0 = ATD0DR0 >> 2; // scale raw adc to a duty
@@ -162,8 +150,6 @@ void adjustPWM(){
 /** @brief Read ADCs one at a time
  *
  * Read ADCs into the correct bank one at a time by name.
- *
- * @author Fred Cooke
  *
  * @param Arrays a pointer to an ADCBuffer struct to store ADC values in.
  */
@@ -194,8 +180,6 @@ void sampleEachADC(ADCBuffer *Arrays){
  *
  * Read ADCs into the correct bank in a loop using pointers.
  *
- * @author Fred Cooke
- *
  * @param Arrays a pointer to an ADCBuffer struct to store ADC values in.
  */
 void sampleLoopADC(ADCBuffer *Arrays){
@@ -222,8 +206,6 @@ void sampleLoopADC(ADCBuffer *Arrays){
  *
  * Read ADCs into the correct bank using two fixed calls to memcpy()
  *
- * @author Fred Cooke
- *
  * @param Arrays a pointer to an ADCBuffer struct to store ADC values in.
  *
  * @warning this will corrupt your comms if you use it... don't use it
@@ -238,8 +220,6 @@ void sampleBlockADC(ADCBuffer *Arrays){
 /** @brief Sleep for X milli seconds
  *
  * Run in a nested loop repeatedly for X milli seconds.
- *
- * @author Fred Cooke
  *
  * @param ms the number of milli seconds to kill
  */
@@ -258,8 +238,6 @@ void sleep(unsigned short ms){
  *
  * @note Very approximate...
  *
- * @author Fred Cooke
- *
  * @param us the number of micro seconds to kill
  */
 void sleepMicro(unsigned short us){
@@ -274,8 +252,6 @@ void sleepMicro(unsigned short us){
 /** @brief Simple checksum
  *
  * Generate a simple additive checksum for a block of data.
- *
- * @author Fred Cooke
  *
  * @param block a pointer to a memory region to checksum.
  * @param length how large the memory region to checksum is.
@@ -294,8 +270,6 @@ unsigned char checksum(unsigned char *block, unsigned short length){
 /** @brief Homebrew strcpy()
  *
  * strcpy() wouldn't compile for me for some reason so I wrote my own.
- *
- * @author Fred Cooke
  *
  * @param dest where to copy the null terminated string to.
  * @param source where to copy the null terminated string from.

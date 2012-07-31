@@ -47,7 +47,6 @@
  * @todo TODO bring this up to date and/or find a better way to do it.
  *
  * @param uniqueLossID 0 is reserved for system use, within your decoder never use the same value twice.
- * @author Fred Cooke
  */
 void resetToNonRunningState(unsigned char uniqueLossID){
 	if(uniqueLossID){
@@ -80,7 +79,6 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 
 /** Schedule an ignition output event on port T
  *
- * @author Fred Cooke
  * @warning If you do not handle the skipEventFlags then excess advance may occur!
  */
 void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){

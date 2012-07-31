@@ -44,9 +44,9 @@
  * @b Details:
  * - All new files should be based on the gpl.template.* files and have documentation about their intended use
  * - All files should have the GPL header inside them
- * - When you work on a file that exists, add your name to the copyright (unless the edit is extremely minor)
- * - If the the copyright year is not the current year, add the copyright
- * - eg Copyright 2008, 2009 Fred Cooke, Sean Keys
+ * - When you work on a file that exists, add your name to the copyright (unless the edit is extremely minor http://www.gnu.org/prep/maintain/html_node/Legally-Significant.html)
+ * - If the the copyright year is not the current year, extend the range
+ * - eg Copyright 2008-2012 Fred Cooke, Sean Keys
  * - Dates in the code should be DD/MM/YY for easy reading
  * - Dates in file names should be YYYY-MM-DD for easy sorting
  * - Use Doxygen style comments

@@ -32,8 +32,6 @@
  *
  * This file holds the single function lookupBlockDetails() which
  * functions as a sort of address book for logical blocks of memory.
- *
- * @author Fred Cooke
  */
 
 
@@ -50,8 +48,6 @@
  * Flash only blocks leave the RAM address and page values
  * set to zero. ID's that don't exist leave all set to zero.
  * Error handling is to be done externally based on that.
- *
- * @author Fred Cooke
  *
  * @note This function is an exception to the style rule switch statement
  * blocks of using a {} pair for each case statement. Readability is better

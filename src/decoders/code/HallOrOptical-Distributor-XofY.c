@@ -41,8 +41,6 @@
  *
  * To effectively reverse the polarity, just subtract your angle from 180 and
  * it will then be correct, assuming that either angle is correct.
- *
- * @author Fred Cooke
  */
 
 
