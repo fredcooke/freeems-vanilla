@@ -53,6 +53,7 @@
 typedef struct {
 	unsigned short accelerationInputEventTimeTolerance; ///< This will be replaced: http://issues.freeems.org/view.php?id=118
 	unsigned short decelerationInputEventTimeTolerance; ///< This will be replaced: http://issues.freeems.org/view.php?id=118
+	unsigned short missingToothTolerance; ///< The future of this variable is uncertain!
 } decoderSetting;
 
 

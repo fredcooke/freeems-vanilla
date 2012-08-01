@@ -198,14 +198,15 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	decoderSettings:{
 #if CONFIG == HOTEL_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
-		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100)
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #elif CONFIG == SNOTROCKET_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
-		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100)
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #else
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(50),
-		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(50)
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(50),
 #endif
+		missingToothTolerance: 2048 // 2048 is 50% right now...
 	},
 	userTextField2: "Place your personal notes about whatever you like in here!"
 			" Don't hesitate to tell us a story about something interesting."

@@ -112,7 +112,7 @@ void PrimaryRPMISR(void) {
 				}
 
 				// Calculate tolerance, then add and subtract it from whatever required
-				unsigned long tolerance = (smaller * TOLERANCE_LEVEL) / 4096; // TODO un hard code this. currently 25% tolerance
+				unsigned long tolerance = (smaller * MISSING_TEETH * fixedConfigs2.decoderSettings.missingToothTolerance) / 4096;
 				// div by 4k = fairly high minimum RPM for low teeth wheels
 				// perhaps provide some options for different tolerance on different types of expected widths
 				// the wide one on larger missing counts has more time to get to a higher RPM and needs a wider tolerance
