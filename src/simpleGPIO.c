@@ -35,6 +35,7 @@
 
 #define SIMPLE_GPIO_C
 #include "inc/freeEMS.h"
+#include "inc/interrupts.h"
 #include "inc/simpleGPIO.h"
 
 
