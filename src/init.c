@@ -82,10 +82,6 @@ void init(){
 #endif
 
 
-/* used to chop out all the init stuff at compile time for hardware testing. */
-//#define NO_INIT
-
-
 /** @brief Set the PLL clock frequency
  *
  * Set the Phase Locked Loop to our desired frequency (80MHz) and switch to
@@ -140,7 +136,6 @@ void initIO(){
 	ATD0CTL4 = 0x73; /* Set the ADC clock and sample period for best accuracy */
 	ATD0CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. Writing to this causes conversions to begin */
 
-#ifndef NO_INIT
 	// Set up the PWM module and initialise its values
 	PWMCLK   = fixedConfigs2.inputOutputSettings.PWMClock;
 	PWMPRCLK = fixedConfigs2.inputOutputSettings.PWMClockPrescaler;
@@ -205,7 +200,6 @@ void initIO(){
 	DDRT = 0xFC; // Set ECT pins 0,1 to IC and 2:7 to OC (8) TODO mask this dynamically based on decoder type and configured channels.
 	/* AD0DDR1 You are out of your mind if you waste this on digital Inputs */
 	/* AD1DDR1 You are out of your mind if you waste this on digital Inputs */
-#endif
 }
 
 
@@ -530,7 +524,6 @@ void initECTTimer(){
 	// TODO rearrange the order of this stuff and pull enable and interrupt enable out to the last function call of init.
 
 
-#ifndef NO_INIT
 	/* Timer channel interrupts */
 	TIE = 0x03; /* 0,1 IC interrupts enabled for reading engine position and RPM, 6 OC channels disabled such that no injector switching happens till scheduled */
 	TFLG = ONES; /* Clear all the flags such that we are up and running before they first occur */
@@ -565,14 +558,11 @@ void initECTTimer(){
 //	MCFLG = 0x80; // clear the flag up front
 
 	decoderInitPreliminary();
-#endif
 }
 
 
 /* Configure the PIT timers for their various uses. */
 void initPITTimer(){
-#ifndef NO_INIT
-//	/*  */
 //	// set micro periods
 //	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
 //	PITMTLD1 = 0x1F; /* ditto */
@@ -588,7 +578,6 @@ void initPITTimer(){
 //	PITINTE = 0x01;
 //	// clear flags
 //	//PITFLT = ONES;
-#endif
 }
 
 /* Setup the sci module(s) that we need to use. */
@@ -665,16 +654,13 @@ void initInterrupts(){
 	CRGINT |= 0x80; /* Enable the RTI */
 	CRGFLG = 0x80; /* Clear the RTI flag */
 
-#ifndef NO_INIT
 	// set up port H for testing
 	PPSH = ZEROS; // falling edge/pull up for all
 	PIEH = ONES; // enable all pins interrupts
 	PIFH = ONES; // clear all port H interrupt flags
-#endif
 
 	// TODO set up irq and xirq for testing
 	// IRQCR for IRQ
-	//
 
 	/* VReg API setup (only for wait mode? i think so) */
 //	VREGAPIR = 0x09C3; /* For 500ms period : (500ms - 0.2ms) / 0.2ms = 0b100111000011 = 2499 */
