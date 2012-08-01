@@ -41,7 +41,7 @@
 /**
  * Perform GP outputs based on values of assigned variables. Compare upper and
  * lower thresholds with the value of the selected variable and switch on or off
- * as appropriate.
+ * as appropriate. Atomic blocks ensure no concurrency issues with current ECT.
  */
 void performSimpleGPIO(){
 	unsigned char i;
@@ -49,15 +49,23 @@ void performSimpleGPIO(){
 		unsigned short value = *(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].variable);
 		if(value >= fixedConfigs1.simpleGPIOSettings.outputConfigs[i].upperValue){
 			if(!(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].flags)){
+				ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				*(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].port) |= fixedConfigs1.simpleGPIOSettings.outputConfigs[i].mask;
+				ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 			}else{
+				ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				*(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].port) &= (unsigned char)~(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].mask);
+				ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 			}
 		}else if(value <= fixedConfigs1.simpleGPIOSettings.outputConfigs[i].lowerValue){
 			if(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].flags){
+				ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				*(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].port) |= fixedConfigs1.simpleGPIOSettings.outputConfigs[i].mask;
+				ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 			}else{
+				ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 				*(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].port) &= (unsigned char)~(fixedConfigs1.simpleGPIOSettings.outputConfigs[i].mask);
+				ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 			}
 		} // Do nothing if in hysteresis region
 	}
