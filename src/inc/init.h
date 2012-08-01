@@ -48,7 +48,9 @@
 
 /* Keep this non ISR stuff out of linear flash space */
 void initPLL(void) FPAGE_FE;
-void initIO(void) FPAGE_FE;
+void initADC(void) FPAGE_FE;
+void initPWM(void) FPAGE_FE;
+void initGPIO(void) FPAGE_FE;
 void initAllPagedRAM(void) FPAGE_FE;
 void initAllPagedAddresses(void) FPAGE_FE;
 void initVariables(void) FPAGE_FE;

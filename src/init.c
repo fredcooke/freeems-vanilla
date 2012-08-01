@@ -61,7 +61,9 @@
 void init(){
 	ATOMIC_START();         /* Disable ALL interrupts while we configure the board ready for use */
 	initPLL();              /* Set up the PLL and use it */
-	initIO();               // Set up all the pins and modules as per configuration
+	initGPIO();
+	initPWM();
+	initADC();
 	initAllPagedRAM();      /* Copy table and config blocks of data from flash to the paged RAM blocks for fast data lookup */
 	initVariables();        /* Initialise the rest of the running variables etc */
 	initFlash();            /* TODO, finalise this */
@@ -108,12 +110,12 @@ void initPLL(){
 }
 
 
-/// Configure all the I/O related registers
-void initIO(){
-	/* Currently not true, and may never be: TODO When the port     */
-	/* something uses is changed via the tuning interface, the confuration will be */
-	/* done on the fly, and the value burned to flash such that next boot happens  */
-	/* correctly and current running devices are used in that way.                 */
+/// Set up the analogue inputs
+void initADC(){
+	// Currently not true, and may never be: TODO When the port something uses
+	// is changed via the tuning interface, the configuration will be done on
+	// the fly, and the value burned to flash such that next boot happens
+	// correctly and current running devices are used in that way.
 
 	/* Digital input buffers on the ATD channels are off by default, leave them this way! */
 	//ATD0DIEN = ZEROS; /* You are out of your mind if you waste this on digital Inputs */
@@ -135,17 +137,11 @@ void initIO(){
 	ATD1CTL3 = 0x40; /* Set sequence length = 8 */
 	ATD0CTL4 = 0x73; /* Set the ADC clock and sample period for best accuracy */
 	ATD0CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. Writing to this causes conversions to begin */
+}
 
-	// Set up the PWM module and initialise its values
-	PWMCLK   = fixedConfigs2.inputOutputSettings.PWMClock;
-	PWMPRCLK = fixedConfigs2.inputOutputSettings.PWMClockPrescaler;
-	PWMSCLA  = fixedConfigs2.inputOutputSettings.PWMScalerA;
-	PWMSCLB  = fixedConfigs2.inputOutputSettings.PWMScalerB;
-	PWMPOL   = fixedConfigs2.inputOutputSettings.PWMPolarity;
-	PWMCAE   = fixedConfigs2.inputOutputSettings.PWMCenterAlign;
-	PWMCTL   = fixedConfigs2.inputOutputSettings.PWMControl & 0xF0; // Disallow access to power saving and reserved bits
-	PWME     = fixedConfigs2.inputOutputSettings.PWMEnable; // MUST be done after concatenation with PWMCTL
 
+/// Set up the PWM module from configuration
+void initPWM(){
 	/* TODO PWM channel concatenation for high resolution */
 	// join channel pairs together here (needs 16 bit regs enabled too)
 	/* TODO Initialise pwm channels with frequency, and initial duty for real use */
@@ -169,6 +165,19 @@ void initIO(){
 	PWMDTY6 = fixedConfigs2.inputOutputSettings.PWMInitialDuty6;
 	PWMDTY7 = fixedConfigs2.inputOutputSettings.PWMInitialDuty7;
 
+	PWMCLK   = fixedConfigs2.inputOutputSettings.PWMClock;
+	PWMPRCLK = fixedConfigs2.inputOutputSettings.PWMClockPrescaler;
+	PWMSCLA  = fixedConfigs2.inputOutputSettings.PWMScalerA;
+	PWMSCLB  = fixedConfigs2.inputOutputSettings.PWMScalerB;
+	PWMPOL   = fixedConfigs2.inputOutputSettings.PWMPolarity;
+	PWMCAE   = fixedConfigs2.inputOutputSettings.PWMCenterAlign;
+	PWMCTL   = fixedConfigs2.inputOutputSettings.PWMControl & 0xF0; // Disallow access to power saving and reserved bits
+	PWME     = fixedConfigs2.inputOutputSettings.PWMEnable; // MUST be done after concatenation with PWMCTL
+}
+
+
+/// Set up all the pin states as per configuration, but protect key states.
+void initGPIO(){
 	// Set the initial pin state of pins configured as output
 	PORTA = fixedConfigs2.inputOutputSettings.PortInitialValueA | BIT6 | BIT7; // Mask the fuel pump relay and CEL pins on
 	PORTB = fixedConfigs2.inputOutputSettings.PortInitialValueB;
