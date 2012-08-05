@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -76,7 +76,7 @@ void PrimaryRPMISR(){
 			thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / eventAngles[1]); // with current scale range for 60/12000rpm is largest ticks per degree = 3472, smallest = 17 with largish error
 		}
 
-		if(KeyUserDebugs.decoderFlags & CAM_SYNC){
+		if(KeyUserDebugs.decoderFlags & CONFIGURED_SYNC){
 			KeyUserDebugs.currentEvent++;
 			if(KeyUserDebugs.currentEvent == numberOfRealEvents){
 				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_HIGH_NOISE);
@@ -171,7 +171,7 @@ void SecondaryRPMISR(){
 		}
 
 		// This sets currentEvent to 255 such that when the primary ISR runs it is rolled over to zero!
-		if(KeyUserDebugs.decoderFlags & CAM_SYNC){
+		if(KeyUserDebugs.decoderFlags & CONFIGURED_SYNC){
 			/* If the count is less than 23, then we know that the electrical pulse that triggered
 			 * this ISR execution was almost certainly in error and it is NOT valid to stay in sync.
 			 *
@@ -196,7 +196,7 @@ void SecondaryRPMISR(){
 				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_HIGH_NOISE);
 			} // ELSE do nothing, and be happy :-)
 		}else{ // If not synced, sync, as this is our reference point.
-			SET_SYNC_LEVEL_TO(CAM_SYNC);
+			SET_SYNC_LEVEL_TO(CONFIGURED_SYNC);
 		}
 		KeyUserDebugs.currentEvent = 0xFF; // TODO reset always, and catch noise induced errors below, this behaviour (now some lines above) may be bad/not fussy enough, or could be good, depending upon determinate nature of the inter event timing between primary and secondary, or not, perhaps move "lose sync or correct sync" as a configuration variable
 	}

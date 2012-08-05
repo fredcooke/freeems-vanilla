@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2012 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -29,31 +29,37 @@
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief For evenly spaced teeth on the camshaft with a single second input.
+ * @brief Template showing how to setup each available type of even tooth decoder.
  *
- * This is suitable for engines such as the GM DIS Wasted Spark Ignition engines
- * with 3x TACH output which would equal 3 teeth on the crank
- * and equal for something with 6 on the cam. Sync is provided by the second
- * input from the CAM 1x sensor allowing a sequential and/or COP/CNP setup to be used.
+ * If copying this file to make a new decoder variant, please edit this comment block to describe the purpose.
  *
- * @see EvenTeeth-Both-Nand1.c
- *
- * @author Andy Goss
+ * @see EvenTeeth-Xand1.c
  */
 
 
 #define DECODER_IMPLEMENTATION_C
-#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
-#define NUMBER_OF_REAL_EVENTS     6
-#define NUMBER_OF_VIRTUAL_EVENTS  6
 
-#include "../inc/freeEMS.h"
-#include "../inc/utils.h"
-#include "../inc/interrupts.h"
-#include "../inc/decoderInterface.h"
 
-const unsigned short eventAngles[] = {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)};
-const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1}; // Unused for now, but correct anyway.
+// Uncomment ONE of these ONLY! Edit values to suit.
 
-// Bring in the actual code.
-#include "code/EvenTeeth-Both-Xand1.c"
+// TEST dizzy 4 cyl use (early 4AGE engine)
+//#define WITH_COMBUSTION_SYNC
+//#define NUMBER_OF_EVENTS_PER_SYNC 6
+//#define CYLINDER_COUNT 4
+//#define TOTAL_EVENT_COUNT 24
+
+// OR
+
+// TEST crank use
+//#define WITH_CRANK_SYNC
+//#define NUMBER_OF_EVENTS_ON_CRANK 12
+
+// OR
+
+// TEST cam use
+//#define WITH_CAM_SYNC
+//#define NUMBER_OF_EVENTS_ON_CAM 24
+
+
+#include "inc/EvenTeeth-Xand1.h"
+#include "code/EvenTeeth-Xand1.c"

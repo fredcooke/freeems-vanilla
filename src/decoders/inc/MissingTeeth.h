@@ -460,9 +460,6 @@ E0 // Always this event...
 // degree cycle and duplicating the events with 360 offset is not necessary.
 #ifndef CAM_ONLY
 ,E0_2
-// The following ifs are not strictly necessary as the array is only read up to
-// where it should be read, and the balance, which would otherwise be random
-// values in flash, are ignored. However it is consistent.
 #if (NUMBER_OF_WHEEL_EVENTS > 1)
 ,E1_2
 #if (NUMBER_OF_WHEEL_EVENTS > 2)

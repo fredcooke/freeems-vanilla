@@ -29,28 +29,17 @@
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief For evenly spaced teeth on the camshaft with a single second input.
+ * @brief Even teeth setup for the early 4AGE distributors.
  *
- * This is suitable for engines with 24 evenly spaced teeth on the cam shaft which
- * is equivalent to 12 on the crank shaft. Sync is provided by the second input
- * allowing a sequential and/or COP/CNP setup to be used.
- *
- * @see EvenTeeth-Both-Nand1.c
+ * @see EvenTeeth-Xand1.c
  */
 
 
 #define DECODER_IMPLEMENTATION_C
-#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
-#define NUMBER_OF_REAL_EVENTS     24
-#define NUMBER_OF_VIRTUAL_EVENTS  24
+#define WITH_COMBUSTION_SYNC
+#define NUMBER_OF_EVENTS_PER_SYNC 6
+#define CYLINDER_COUNT 4
+#define TOTAL_EVENT_COUNT 24
 
-#include "../inc/freeEMS.h"
-#include "../inc/utils.h"
-#include "../inc/interrupts.h"
-#include "../inc/decoderInterface.h"
-
-const unsigned short eventAngles[] = {ANGLE(0), ANGLE(30), ANGLE(60), ANGLE(90), ANGLE(120), ANGLE(150), ANGLE(180), ANGLE(210), ANGLE(240), ANGLE(270), ANGLE(300), ANGLE(330), ANGLE(360), ANGLE(390), ANGLE(420), ANGLE(450), ANGLE(480), ANGLE(510), ANGLE(540), ANGLE(570), ANGLE(600), ANGLE(630), ANGLE(660), ANGLE(690)};
-const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
-
-// Bring in the actual code.
-#include "code/EvenTeeth-Both-Xand1.c"
+#include "inc/EvenTeeth-Xand1.h"
+#include "code/EvenTeeth-Xand1.c"

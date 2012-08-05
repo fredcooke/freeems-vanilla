@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -31,26 +31,19 @@
  *
  * @brief For evenly spaced teeth on the camshaft with a single second input.
  *
- * This is suitable for engines such as the Yamaha R1 with 8 teeth on the crank
- * and equally for something with 16 on the cam. Sync is provided by the second
- * input allowing a sequential and/or COP/CNP setup to be used.
+ * This is suitable for engines such as the GM DIS Wasted Spark Ignition engines
+ * with 3x TACH output which would equal 3 teeth on the crank and equal for
+ * something with 6 on the cam. Sync is provided by the second input from the
+ * CAM 1x sensor allowing a sequential and/or COP/CNP setup to be used.
  *
- * @see EvenTeeth-Both-Nand1.c
+ * @see EvenTeeth-Xand1.c
  */
 
 
 #define DECODER_IMPLEMENTATION_C
-#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
-#define NUMBER_OF_REAL_EVENTS     16
-#define NUMBER_OF_VIRTUAL_EVENTS  16
+#define WITH_CAM_SYNC
+#define NUMBER_OF_EVENTS_ON_CAM 6
 
-#include "../inc/freeEMS.h"
-#include "../inc/utils.h"
-#include "../inc/interrupts.h"
-#include "../inc/decoderInterface.h"
-
-const unsigned short eventAngles[] = {ANGLE(0), ANGLE(45), ANGLE(90), ANGLE(135), ANGLE(180), ANGLE(225), ANGLE(270), ANGLE(315), ANGLE(360), ANGLE(405), ANGLE(450), ANGLE(495), ANGLE(540), ANGLE(585), ANGLE(630), ANGLE(675)};
-const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // Unused for now, but correct anyway.
-
-// Bring in the actual code.
-#include "code/EvenTeeth-Both-Xand1.c"
+#include "inc/EvenTeeth-Xand1.h"
+const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1}; // Unused for now, but correct anyway.
+#include "code/EvenTeeth-Xand1.c"
