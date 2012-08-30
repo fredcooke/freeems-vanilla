@@ -58,7 +58,7 @@ match matches;
 
 
 void decoderInitPreliminary(){
-	TCTL4 = 0x02; /* Capture on falling edge of T0 only, capture off for 1,2,3 */
+	TCTL4 = 0x01; /* Capture on rising edge of T0 only, capture off for 1,2,3 */
 }
 
 
@@ -90,7 +90,7 @@ void PrimaryRPMISR(void) {
 	}
 	unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
-	if(!(PTITCurrentState & 0x01)){
+	if(PTITCurrentState & 0x01){
 		// Calc this period
 		unsigned char lastEvent = 0;
 		unsigned long thisInterEventPeriod = 0;

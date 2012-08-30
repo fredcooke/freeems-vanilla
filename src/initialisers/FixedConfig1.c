@@ -135,7 +135,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC: {ANGLE(0), ANGLE(180)}, // 1 and 4, 2 and 3
 		outputEventPinNumbers:               {0,1}, // Ignition only
 		schedulingConfigurationBits:         {0,0}, // Ditto
-		decoderEngineOffset:           ANGLE(0.00), // Yet to be checked with timing light
+		decoderEngineOffset:           ANGLE(5.00), // To verify from source build!
 		numberOfConfiguredOutputEvents:          2, // Wasted spark
 		numberOfInjectionsPerEngineCycle:        1  // Ditto
 
