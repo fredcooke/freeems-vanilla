@@ -58,6 +58,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SLATER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(324),
 		injectorFlow:       CC_PER_MINUTE(320),
+#elif CONFIG == PETERJSERIES_ID
+		perCylinderVolume:  CYLINDER_VOLUME(585),
+		injectorFlow:       CC_PER_MINUTE(320),
 #elif CONFIG == DEUCECOUPE_ID
 		perCylinderVolume:  CYLINDER_VOLUME(522),
 		injectorFlow:       CC_PER_MINUTE(235),
