@@ -365,7 +365,7 @@ void PrimaryRPMISR(){
 
 	/* Save all relevant available data here */
 	edgeTimeStamp = TC0;                   /* Save the edge time stamp */
-	unsigned char PTITCurrentState = PTIT; // TODO invert tests and other behaviour in this code base and remove this not. /* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 	KeyUserDebugs.primaryTeethSeen++;
 
@@ -501,7 +501,7 @@ void SecondaryRPMISR(){
 
 	/* Save all relevant available data here */
 	edgeTimeStamp = TC1;                   /* Save the timestamp */
-	unsigned char PTITCurrentState = PTIT; // TODO invert tests and other behaviour in this code base and remove this not. /* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 	KeyUserDebugs.secondaryTeethSeen++;
 	// remember that this is both edges, though... 8 per cycle, 4 per rev for the outter wheel, 2/1 for this wheel.
