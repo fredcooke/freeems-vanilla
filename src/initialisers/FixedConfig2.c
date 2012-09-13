@@ -144,8 +144,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		PWMClockPrescaler: 0x00, // The fastest prescaler we can go for all channels
 		PWMCenterAlign:    0x00, // Default to left aligned
 		PWMControl:        0x00, // Default to all 8 bit channels
-		PWMScalerA:        0x00, // The fastest we can go
-		PWMScalerB:        0x00, // The fastest we can go
+		PWMScalerA:        0x00, // 0 = 256, 1 = 1, 255 = 255, 0x00 is the slowest we can go
+		PWMScalerB:        0x00, // 0 = 256, 1 = 1, 255 = 255, 0x00 is the slowest we can go
 
 		// Default to ~0.4% granularity
 		PWMPeriod0: 0xFF,
