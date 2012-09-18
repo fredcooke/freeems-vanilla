@@ -481,11 +481,11 @@ help:
 	@echo $(Q)#                                                                              #$(Q)
 	@echo $(Q)#   Common goals:                                                              #$(Q)
 	@echo $(Q)#                                                                              #$(Q)
-	@echo $(Q)#   You most likely just want to run "make s19" or "make clean", do that!      #$(Q)
+	@echo $(Q)#   You most likely just want to run \"make s19\" or \"make clean\", do that!      #$(Q)
 	@echo $(Q)#                                                                              #$(Q)
 	@echo $(Q)#   To build with a specific compiled in configuration do this instead:        #$(Q)
 	@echo $(Q)#                                                                              #$(Q)
-	@echo $(Q)#   CLIFLAGS="-D YOURBUILDNAME=1" make clean s19                               #$(Q)
+	@echo $(Q)#   CLIFLAGS=\"-D YOURBUILDNAME=1\" make clean s19                               #$(Q)
 	@echo $(Q)#                                                                              #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
