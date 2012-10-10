@@ -6,7 +6,9 @@ FreeEMS - The open source engine management system!
 
 Please see [FreeEMS.org](http://freeems.org) for the most up to date information and links!
 
-Before using FreeEMS read the [disclaimer](http://www.diyefi.org/disclaimer.htm)!
+To casually follow the highlights you can subscribe to our [facebook page](http://www.facebook.com/FreeEMS)!
+
+Before using FreeEMS, please read the [disclaimer](http://www.diyefi.org/disclaimer.htm)!
 
 If you're wondering why this project was started have a look at [this page](http://www.diyefi.org/why.htm).
 
@@ -17,6 +19,8 @@ Ensure that you have the latest release or latest code from the [github reposito
 To build this firmware you need the latest build environment from the [tools site](http://tools.diyefi.org).
 
 You also need an up to date version of git available on the command line.
+
+With these prerequisites met, simply type 'make' and choose an option!
 
 ### Loading the firmware
 
