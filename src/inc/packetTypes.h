@@ -60,10 +60,10 @@
 //efine replytoReInitOfSystem       0x000D /* This is reserved */
 
 
-//efine requestAsyncErrorCode       0x000C /* This is reserved */
-#define asyncErrorCodePacket        0x000D /* NOTE : Unrequested error event code packet */
 //efine requestAsyncDebugInfo       0x000E /* This is reserved */
 #define asyncDebugInfoPacket        0x000F /* NOTE : Unrequested debug information packet */
+//efine requestAsyncErrorCode       0x0010 /* This is reserved */
+#define asyncErrorCodePacket        0x0011 /* NOTE : Unrequested error event code packet */
 
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&  Firmware Payload Type IDs  &&&&&&&&&&&&&&&&&&&&&&&*/
@@ -88,7 +88,7 @@
 #define requestUnitTestOverSerial   0x6666
 
 // Bench testing init calls
-#define startBenchTestSequence      0x7777
+#define startBenchTestSequence      0x8888
 
 // Data interrogation gold
 #define retrieveListOfLocationIDs   0xDA5E // Idea is Dave's, impl is Fred's
