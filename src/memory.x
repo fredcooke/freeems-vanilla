@@ -1,7 +1,7 @@
 /*	FreeEMS - the open source engine management system
 
 	Copyright 2008, 2009 Fred Cooke
-	
+
 	This file is part of the FreeEMS project.
 
 	FreeEMS software is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@
  * Memory region location definition file for inclusion into the linker
  * script. It defines the names, types, start addresses and lengths of
  * each memory region available for the linker to populate with code and
- * data. See hc9s12xdp512elfb.x and regions.x for more information. 
+ * data. See hc9s12xdp512elfb.x and regions.x for more information.
  *
  * A description of what some of this means can be found at the following URLs:
  * - http://www.gnu.org/software/m68hc11/m68hc11_binutils.html
@@ -64,7 +64,7 @@
 
 	/* These are correct as of the 0.0.17 release */
     ppageE0S	(rx)	: ORIGIN = 0x390000, LENGTH = 0x0800
-    ppageE0X	(rx)	: ORIGIN = 0x390800, LENGTH = 0x3800 
+    ppageE0X	(rx)	: ORIGIN = 0x390800, LENGTH = 0x3800
     ppageE1		(rx)	: ORIGIN = 0x9000, LENGTH = 0x4000 /* we intend all data in E1 to hold the address it will end up with in RAM 0x9000 would be RAM at RPAGE_2*/
     ppageE2	(rx)	: ORIGIN = 0x398000, LENGTH = 0x4000
     ppageE3	(rx)	: ORIGIN = 0x39C000, LENGTH = 0x4000

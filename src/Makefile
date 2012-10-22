@@ -144,7 +144,7 @@ LINKER = memory.x regions.x hc9s12xdp512elfb.x
 # Let's keep this to a bare minimum! If you write ASM code
 # please provide an matching alternate C implementation too.
 HANDASMS = flashBurn.s
-#RPMHANDASMS = 
+#RPMHANDASMS =
 
 ALLH = $(LINKER) $(MFILE) $(INCDIR)/$(ASMH)
 
@@ -180,7 +180,7 @@ RPMSPECIAL = Listener.c BenchTest.c
 RPMEVENTEETH = EvenTeeth-Cam-24and1.c EvenTeeth-Cam-16and1.c EvenTeeth-Cam-6and1.c EvenTeeth-Distributor-4of6and1.c
 RPMMISSINGTEETH = MissingTeeth-TestFile.c MissingTeeth-Cam-24minus1.c MissingTeeth-Crank-8minus1.c MissingTeeth-Crank-12minus1.c MissingTeeth-Crank-36minus1.c MissingTeeth-Crank-60minus2.c MissingTeeth-Cam-6minus2.c MissingTeeth-Crank-30minus2.c MissingTeeth-Cam-12minus1.c
 RPMHALLOROPTICAL = HallOrOptical-Distributor-4of64.c HallOrOptical-Distributor-4of69.c
-RPMVRDISTRIBUTOR = 
+RPMVRDISTRIBUTOR =
 # Specific purpose per engine stuff here
 RPMSPECIFICENGINE1 = MitsiAndMazda-CAS-4and1.c GM-LT1-CAS-360and8.c JSeries-12CrankWith6-2Cam.c
 # Insert your file above and get coding!
@@ -517,7 +517,7 @@ publishnodoxy: packagenodoxy deploy
 packagenodoxy: relbuildfirmware relpack1 relpack2
 relbuildfull: clean cleandoxy gendoxy s19
 relbuildfirmware: clean s19
-relpack1: md5sums  sha1sums  s19zips 
+relpack1: md5sums  sha1sums  s19zips
 relpack2: zipdocs zipmain zipsrc
 
 
@@ -735,9 +735,9 @@ preprocessmsg:
 preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
 
 # Generate preprocessed source files to examine
-$(PREPROCESSED): $(PPCDIR)/%.pp.c: %.c $(ALLH) 
+$(PREPROCESSED): $(PPCDIR)/%.pp.c: %.c $(ALLH)
 	$(GCC) $(GCCOPTS) -D BASE_FILE_NAME=\"$*\" -E $< > $@
-$(PREPROCESSEDRPM): $(PPCDIR)/decoders/%.pp.c: decoders/%.c $(ALLH) 
+$(PREPROCESSEDRPM): $(PPCDIR)/decoders/%.pp.c: decoders/%.c $(ALLH)
 	$(GCC) $(GCCOPTS) -D BASE_FILE_NAME=\"$*\" -E $< > $@
 
 

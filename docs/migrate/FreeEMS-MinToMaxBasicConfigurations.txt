@@ -6,7 +6,7 @@ The following words are used to describe the inclusion of various properties and
 
 May: The word may, or the adjective optional, mean that conforming FreeEMS designs are permitted to, but need not contain properties or features as described.
 Should: The word should, or the adjective recommended, mean that there could be reasons for a FreeEMS design to deviate from the specification described, but that such deviation could prevent various functionality from working correctly or at all and should therefore be advertised with appropriate notice.
-Must: The word must, or the term required or shall, mean that the property or feature described is an absolute requirement of the specification. 
+Must: The word must, or the term required or shall, mean that the property or feature described is an absolute requirement of the specification.
 
 
 cpu inputs:
