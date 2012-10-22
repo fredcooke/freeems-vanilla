@@ -30,7 +30,7 @@
  * @ingroup enginePositionRPMDecoders
  *
  * To be included in decoders that do not use the secondary RPM ISR.
- * 
+ *
  * Reduces duplication and the chance for errors.
  */
 

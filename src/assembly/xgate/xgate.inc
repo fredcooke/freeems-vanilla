@@ -23,7 +23,7 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/* Flag Masks */ 
+/* Flag Masks */
 .equ	SW_ISR_ZERO_CFLAG_MASK, 0x0100
 .equ	PIT0_CFLAG_MASK, 0x0001
 .equ	PIT1_CFLAG_MASK, 0x0002
@@ -43,6 +43,6 @@
 .equ	ZERO_OFFSET, 0x0000
 
 /* Bit Masks */
-.equ	PORTBA_PROTECTION_MASK, 0x0FFF ; only use the first 12 pins on PORTBA 
+.equ	PORTBA_PROTECTION_MASK, 0x0FFF ; only use the first 12 pins on PORTBA
 
 

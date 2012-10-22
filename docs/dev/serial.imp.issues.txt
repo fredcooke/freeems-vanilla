@@ -27,7 +27,7 @@ currently :
 
 (twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable
 
-Could be 
+Could be
 
 (twoDTableUS*)&(TablesA->injectorDeadTimeTable)
 
@@ -42,7 +42,7 @@ if it was just a pointer...
 
 not serial :
 5)  Look at configuration errors and see if they can be done a better way, ie without possibility for an error
-3)  Async errors and debugs should be done by saving the count each send period <user defined> and send a 
+3)  Async errors and debugs should be done by saving the count each send period <user defined> and send a
     packet for each count with the appropriate code in it and perhaps a count difference or count total
     too. this could be masked in a similar way to that intended for logging packets.
 4)  Standardise the naming of error values, match their ordering to aid in 3)

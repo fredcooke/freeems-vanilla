@@ -48,7 +48,7 @@ SEARCH_DIR("/usr/m68hc11/lib");
 /* Get memory banks definition from some user configuration file.
    This file must be located in some linker directory (search path
    with -L<dir>). See fixed memory banks emulation script.  */
-   
+
 INCLUDE memory.x;
 INCLUDE regions.x;
 
