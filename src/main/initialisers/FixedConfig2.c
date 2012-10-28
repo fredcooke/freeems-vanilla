@@ -45,7 +45,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	sensorSources:{
 		BRV: SOURCE_NORMAL,
 		CHT: SOURCE_NORMAL,
-		IAT: SOURCE_NORMAL,
+		IAT: 66, // Default to hard coded temp
 	},
 	sensorPresets:{
 		presetIAT:  DEGREES_C(20), // Room temperature
@@ -98,6 +98,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #if CONFIG == SEANKLT1_ID
 		EGOMinimum:    AFR1020LambdaMin,
 		EGORange:      AFR1020LambdaRange,
+#elif CONFIG == SCAVENGER_ID // http://www.schnitzracing.com/manuals/AEMWBK.pdf
+		EGOMinimum:    LAMBDA(0.683),
+		EGORange:      (LAMBDA(1.365) - LAMBDA(0.683)),
 #else
 		EGOMinimum:    LC1LambdaMin,
 		EGORange:      LC1LambdaRange,
@@ -219,6 +222,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #elif CONFIG == SNOTROCKET_ID
+		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
+#elif CONFIG == SCAVENGER_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #else
