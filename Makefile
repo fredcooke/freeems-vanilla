@@ -19,25 +19,25 @@ TEST_AND_SAVE_ALL:
 # Special builds
 
 DEFAULT:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 TRUCK:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 HOTEL:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 PRESTO:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 SEANKLT1:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 SNOTROCKET:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 SPUDMN:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 SLATER:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 PETERJSERIES:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 DEUCECOUPE:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 PETERTRUCK:
-	cd src; CLIFLAGS="-D $@=1" make clean s19	
+	cd src; CLIFLAGS="$@" make clean s19	
 
