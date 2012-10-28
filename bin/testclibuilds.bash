@@ -8,7 +8,7 @@ failures=0
 # Perform the tests
 for ((i=0; i<${#builds[*]}; i++))
 do
-  CLIFLAGS="-D ${builds[i]}=1" make clean s19
+  CLIFLAGS="${builds[i]}" make clean s19
   results[i]=$?
   if ((${results[i]} != 0)); then
     failures=$(($failures+1))
