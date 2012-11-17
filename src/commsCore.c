@@ -69,7 +69,6 @@ unsigned short populateBasicDatalog(){
 
 	// Done here to overwrite cheeky custom users data:
 	KeyUserDebugs.coreStatusA = coreStatusA;
-	KeyUserDebugs.tempClock++;
 	KeyUserDebugs.clockIn8thsOfAMilli = Clocks.realTimeClockMain;
 	KeyUserDebugs.clockInMilliSeconds = Clocks.realTimeClockMillis;
 
@@ -86,6 +85,8 @@ unsigned short populateBasicDatalog(){
 		memcpy(TXBufferCurrentPositionHandler, TablesB.SmallTablesB.loggingSettings.logChunks[chunks].address, localSize);
 		TXBufferCurrentPositionHandler += localSize;
 	}
+	// After copying data, otherwise tempClock is NEVER zero and reset detection does NOT work
+	KeyUserDebugs.tempClock++;
 	return confSize;
 }
 
