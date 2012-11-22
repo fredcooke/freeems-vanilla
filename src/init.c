@@ -135,8 +135,8 @@ void initADC(){
 	//ATD0CTL1 = 0x07/* Trigger and interrupt configuration, unused for now. */
 	ATD1CTL2 = 0xC0; /* Turns on the ADC block and sets auto flag clear */
 	ATD1CTL3 = 0x40; /* Set sequence length = 8 */
-	ATD0CTL4 = 0x73; /* Set the ADC clock and sample period for best accuracy */
-	ATD0CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. Writing to this causes conversions to begin */
+	ATD1CTL4 = 0x73; /* Set the ADC clock and sample period for best accuracy */
+	ATD1CTL5 = 0xB0; /* Sets justification to right, multiplex and scan all channels. Writing to this causes conversions to begin */
 }
 
 
