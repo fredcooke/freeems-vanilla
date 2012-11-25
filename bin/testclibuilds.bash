@@ -1,20 +1,23 @@
 #!/bin/bash
 
 builds=('DEFAULT' 'XGATE' 'TRUCK' 'HOTEL' 'PRESTO' 'SEANKLT1' 'SNOTROCKET' 'SPUDMN' 'SLATER' 'PETERJSERIES' 'DEUCECOUPE' 'PETERTRUCK')
+builds19s=('BenchTest' 'GM-LT1-CAS-360and8' 'MitsiAndMazda-CAS-4and1' 'HallOrOptical-Distributor-4of69' 'EvenTeeth-Cam-24and1' 'GM-LT1-CAS-360and8' 'EvenTeeth-Cam-24and1' 'MissingTeeth-Crank-8minus1' 'MissingTeeth-Crank-12minus1' 'JSeries-12CrankWith6-2Cam' 'EvenTeeth-Cam-6and1' 'MissingTeeth-Cam-12minus1')
 
 results[${#builds[*]} - 1]=0
 failures=0
 
+mkdir firmware-all
+
 # Perform the tests
 for ((i=0; i<${#builds[*]}; i++))
 do
-  CLIFLAGS="${builds[i]}" make clean s19
+  CLIFLAGS="${builds[i]}" make clean ${builds19s[i]}
   results[i]=$?
   if ((${results[i]} != 0)); then
     failures=$(($failures+1))
   fi
   if [ -d firmware ]; then
-    mv firmware firmware-${builds[i]}
+    mv firmware/* firmware-all
   fi
 done
 
