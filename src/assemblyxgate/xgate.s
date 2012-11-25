@@ -23,7 +23,7 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-include "assembly/xgate/xgate.inc"
+include "assemblyxgate/xgate.inc"
 ; *****************************************************************************
 ;
 ; Thanks to Edward Karpicz for help with getting all the xgate registers sorted.

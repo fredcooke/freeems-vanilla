@@ -110,9 +110,10 @@ BUGDIR = debug
 OUTDIR = output
 OBJDIR = objects
 ASMDIR = assembly
+XGASMDIR = assemblyxgate
+HANDASMDIR = assemblyhand
 S19DIR = firmware
 PPCDIR = preprocessedc
-XGASMDIR = $(ASMDIR)$(PATHSEP)xgate
 XGOBJDIR = $(OBJDIR)$(PATHSEP)xgate
 
 # Release tag message file
@@ -254,6 +255,27 @@ GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
 GCDSIZES = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt,$(GCDS19S))
 GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
+
+
+
+
+################################################################################
+#                            Single Decoder Builds                             #
+################################################################################
+
+
+Listener: $(S19DIR)/$(LABEL)-Listener.s19
+BenchTest: $(S19DIR)/$(LABEL)-BenchTest.s19
+EvenTeeth-Cam-24and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-24and1.s19
+EvenTeeth-Cam-16and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-16and1.s19
+EvenTeeth-Cam-6and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-6and1.s19
+MissingTeeth-Crank-8minus1:  $(S19DIR)/$(LABEL)-MissingTeeth-Crank-8minus1.s19
+MissingTeeth-Crank-12minus1: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-12minus1.s19
+MissingTeeth-Cam-12minus1:   $(S19DIR)/$(LABEL)-MissingTeeth-Cam-12minus1.s19
+HallOrOptical-Distributor-4of69: $(S19DIR)/$(LABEL)-HallOrOptical-Distributor-4of69.s19
+MitsiAndMazda-CAS-4and1: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and1.s19
+GM-LT1-CAS-360and8: $(S19DIR)/$(LABEL)-GM-LT1-CAS-360and8.s19 
+JSeries-12CrankWith6-2Cam: $(S19DIR)/$(LABEL)-JSeries-12CrankWith6-2Cam.s19
 
 
 
@@ -544,9 +566,9 @@ mapsmsg:
 	@echo $(Q)#                          Generating memory maps....                          #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-maps: link $(BUGDIR) mapsmsg $(ALLMAPS)
+maps: link mapsmsg $(ALLMAPS)
 
-$(ALLMAPS): $(BUGDIR)/%.map: $(OUTDIR)/%.elf
+$(BUGDIR)/%.map: $(OUTDIR)/%.elf $(BUGDIR)
 	$(NM) $< | sort > $@
 
 
@@ -555,9 +577,9 @@ reesmsg:
 	@echo $(Q)#                           Reading all elf files...                           #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-rees: link $(BUGDIR) reesmsg $(ALLREAD)
+rees: link reesmsg $(ALLREAD)
 
-$(ALLREAD): $(BUGDIR)/%.ree: $(OUTDIR)/%.elf
+$(BUGDIR)/%.ree: $(OUTDIR)/%.elf $(BUGDIR)
 	$(RE) -a -W $< > $@
 
 
@@ -566,9 +588,9 @@ elfdmpsmsg:
 	@echo $(Q)#                           Dumping all elf files...                           #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-elfdmps: link $(BUGDIR) elfdmpsmsg $(ALLDMPS)
+elfdmps: link elfdmpsmsg $(ALLDMPS)
 
-$(ALLDMPS): $(BUGDIR)/%.dmp: $(OUTDIR)/%.elf
+$(BUGDIR)/%.dmp: $(OUTDIR)/%.elf $(BUGDIR)
 	$(DUMP) -spSd $< > $@
 
 
@@ -577,9 +599,9 @@ objdmpmsg:
 	@echo $(Q)#                         Dumping all object files....                         #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-objdmps: assemble $(BUGDIR) objdmpmsg $(DUMPS) $(DUMPSRPM)
+objdmps: assemble objdmpmsg $(DUMPS) $(DUMPSRPM)
 
-$(DUMPS) $(DUMPSRPM): $(BUGDIR)/%.dmp: $(OBJDIR)/%.o
+$(BUGDIR)/%.dmp: $(OBJDIR)/%.o $(BUGDIR)
 	$(DUMP) -spSd $< > $@
 
 
@@ -595,10 +617,10 @@ linkmsg:
 	@echo $(Q)#                      Linking the Objects into an ELF...                      #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-link: assemble $(OUTDIR) linkmsg $(ALLELFS)
+link: assemble linkmsg $(ALLELFS)
 
 # link the object files into an elf executable
-$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS)
+$(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS) $(OUTDIR)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
@@ -610,10 +632,10 @@ gclinkmsg:
 	@echo $(Q)#                      Linking the Objects into an ELF...                      #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-gclink: assemble $(OUTDIR) linkmsg $(GCDELFS)
+gclink: assemble linkmsg $(GCDELFS)
 
 # link the object files into an elf executable with gc enabled
-$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS)
+$(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS) $(OUTDIR)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
@@ -628,11 +650,11 @@ s19msg:
 	@echo $(Q)#                          Building The S19 Files....                          #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-s19: link $(S19DIR) s19msg $(ALLS19S)
+s19: link s19msg $(ALLS19S)
 # the gc dependency is temporary until i figure out if the .tramp removal is an issue or not.
 
 # Generate the loadable s19 firmware files
-$(ALLS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
+$(S19DIR)/%.s19: $(OUTDIR)/%.elf $(S19DIR)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Building $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
@@ -644,15 +666,16 @@ sizesmsg:
 	@echo $(Q)#                          Measuring The S19 Files...                          #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-sizes: s19 $(OUTDIR) sizesmsg $(ALLDUMMY)
+sizes: s19 sizesmsg $(ALLSIZES) $(ALLDUMMY)
+
 
 # Roughly measure the s19 sizes
-$(ALLSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
-	@echo $(shell cat $< | wc -l) $(Q)* 16$(Q) > $@
+$(OUTDIR)/%.txt: $(S19DIR)/% $(OUTDIR)
+	echo $(shell cat $< | wc -l) $(Q)* 16$(Q) > $@
 
 # Have to do this in two stages to allow $(shell exp) use and portability to windows
-$(ALLDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
-	@echo $(Q)Flash image size is$(Q) $(shell cat $< | bc -l) $(Q)bytes for $<$(Q)
+$(OUTDIR)/%.dummy: $(OUTDIR)/% $(OUTDIR)
+	echo $(Q)Flash image size is$(Q) $(shell cat $< | bc -l) $(Q)bytes for $<$(Q)
 
 
 gcs19msg:
@@ -660,10 +683,10 @@ gcs19msg:
 	@echo $(Q)#                        Building The GC S19 Files....                         #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-gcs19: gclink $(S19DIR) gcs19msg  $(GCDS19S)
+gcs19: gclink gcs19msg  $(GCDS19S)
 
 # Generate the garbage collected s19 files temporarily
-$(GCDS19S): $(S19DIR)/%.s19: $(OUTDIR)/%.elf
+$(S19DIR)/%.s19: $(OUTDIR)/%.elf $(S19DIR)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Building $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
@@ -674,14 +697,14 @@ gcsizesmsg:
 	@echo $(Q)#                        Measuring The GC S19 Files...                         #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-gcsizes: gcs19 $(OUTDIR) gcsizesmsg $(GCDDUMMY)
+gcsizes: gcs19 gcsizesmsg $(GCDSIZES) $(GCDDUMMY)
 
 # Roughly measure the gc s19 sizes
-$(GCDSIZES): $(OUTDIR)/%.txt: $(S19DIR)/%
+$(OUTDIR)/%.txt: $(S19DIR)/% $(OUTDIR)
 	@echo $(shell cat $< | wc -l) $(Q)* 16$(Q) > $@
 
 # Have to do this in two stages to allow $(shell exp) use and portability to windows
-$(GCDDUMMY): $(OUTDIR)/%.dummy: $(OUTDIR)/%
+$(OUTDIR)/%.dummy: $(OUTDIR)/% $(OUTDIR)
 	@echo $(Q)Flash image size is$(Q) $(shell cat $< | bc -l) $(Q)bytes for $<$(Q)
 
 
@@ -740,12 +763,12 @@ preprocessmsg:
 	@echo $(Q)#                        Running the C Pre Processor...                        #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
+preprocess: preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
 
 # Generate preprocessed source files to examine
-$(PREPROCESSED): $(PPCDIR)/%.pp.c: %.c $(ALLH) 
+$(PPCDIR)/%.pp.c: %.c $(ALLH) $(PPCDIR)
 	$(GCC) $(GCCOPTS) -D BASE_FILE_NAME=\"$*\" -E $< > $@
-$(PREPROCESSEDRPM): $(PPCDIR)/decoders/%.pp.c: decoders/%.c $(ALLH) 
+$(PPCDIR)/decoders/%.pp.c: decoders/%.c $(ALLH) $(PPCDIR)
 	$(GCC) $(GCCOPTS) -D BASE_FILE_NAME=\"$*\" -E $< > $@
 
 
@@ -757,7 +780,7 @@ compilemsg:
 compile: preprocess compilemsg $(ASSEMBLIES) $(ASSEMBLIESRPM)
 
 # Generate assembly files to examine
-$(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
+$(ASMDIR)/%.s: $(PPCDIR)/%.pp.c $(ASMDIR)
 	$(GCC) -g $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
@@ -766,16 +789,16 @@ assemblemsg:
 	@echo $(Q)#                          Assembling Object Files...                          #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-assemble: compile $(OBJDIR) $(XGOBJDIR) assemblemsg $(OBJECTS) $(HANDOBJECTS) $(OBJECTSRPM) $(XGOBJECTS)
+assemble: compile assemblemsg $(OBJECTS) $(HANDOBJECTS) $(OBJECTSRPM) $(XGOBJECTS)
 
 # Generate object files to link
-$(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
+$(OBJDIR)/%.o: $(ASMDIR)/%.s $(OBJDIR)
 	$(GCC) $(GCCOPTS) -c -o $@ $<
 
-$(HANDOBJECTS): $(OBJDIR)/%.o: $(ASMDIR)/%.s
+$(OBJDIR)/%.o: $(HANDASMDIR)/%.s $(OBJDIR)
 	$(GCC) -g $(GCCOPTS) -c -o $@ $<
 
-$(XGOBJECTS): $(XGOBJDIR)/%.o: $(XGASMDIR)/%.s
+$(XGOBJDIR)/%.o: $(XGASMDIR)/%.s $(XGOBJDIR)
 	$(XGAS) -o $@ $<
 
 
@@ -807,9 +830,9 @@ md5sumsmsg:
 	@echo $(Q)#                            Generating MD5 Sums...                            #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-md5sums: s19 distributiondir md5sumsmsg $(ALLMD5S)
+md5sums: s19 md5sumsmsg $(ALLMD5S)
 
-$(ALLMD5S): $(FIRMWAREDISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19
+$(FIRMWAREDISTRIBUTIONDIR)/%.s19.md5: $(S19DIR)/%.s19 distributiondir
 	$(MD5SUM) $< > $@
 
 
@@ -818,9 +841,9 @@ sha1sumsmsg:
 	@echo $(Q)#                           Generating SHA1 Sums...                            #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-sha1sums: s19 distributiondir sha1sumsmsg $(ALLSHA1S)
+sha1sums: s19 sha1sumsmsg $(ALLSHA1S)
 
-$(ALLSHA1S): $(FIRMWAREDISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19
+$(FIRMWAREDISTRIBUTIONDIR)/%.s19.sha1: $(S19DIR)/%.s19 distributiondir
 	$(SHASUM) $< > $@
 
 
@@ -831,9 +854,9 @@ s19zipsmsg:
 	@echo $(Q)#                                Zipping S19s...                               #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-s19zips: s19 distributiondir s19zipsmsg $(ALLS19ZIPS)
+s19zips: s19 s19zipsmsg $(ALLS19ZIPS)
 
-$(ALLS19ZIPS): $(FIRMWAREDISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19
+$(FIRMWAREDISTRIBUTIONDIR)/%.s19.zip: $(S19DIR)/%.s19 distributiondir
 	zip -j $@ $<
 
 
@@ -880,7 +903,7 @@ deploydoxy: zipsite
 
 # Assembly, release and inc directories don't get removed.
 
-dirs: $(BUGDIR) $(S19DIR) $(PPCDIR) $(OUTDIR) $(OBJDIR) $(XGOBJDIR)
+dirs: $(BUGDIR) $(S19DIR) $(PPCDIR) $(OUTDIR) $(OBJDIR) $(XGOBJDIR) $(ASMDIR)
 
 $(BUGDIR):
 	@echo $(Q)################################################################################$(Q)
@@ -906,6 +929,15 @@ $(PPCDIR):
 	rmdir $(PPCDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
 	$(MKDIR) $(PPCDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
 	rmdir $(PPCDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
+
+$(ASMDIR):
+	@echo $(Q)################################################################################$(Q)
+	@echo $(Q)#                      Creating the assembly directory...                      #$(Q)
+	@echo $(Q)################################################################################$(Q)
+	$(MKDIR) $(ASMDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	rmdir $(ASMDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
+	$(MKDIR) $(ASMDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
+	rmdir $(ASMDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
 
 $(OUTDIR):
 	@echo $(Q)################################################################################$(Q)
@@ -948,7 +980,7 @@ cleanasm:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                     Removing generated assembly files....                    #$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(RM) $(ASSEMBLIES) $(ASSEMBLIESRPM)
+	$(RM) $(ASMDIR)
 
 cleandep:
 	@echo $(Q)################################################################################$(Q)
