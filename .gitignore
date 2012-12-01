@@ -16,6 +16,7 @@ docs/latex/*.toc
 
 src/dependencies/
 src/firmware/
+src/firmware-all/
 src/output/
 src/preprocessedc/
 src/objects/

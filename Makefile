@@ -19,7 +19,11 @@ TEST_AND_SAVE_ALL:
 BLANK:
 	cd src; make clean s19
 
-# Special builds
+SPECIAL: # Can use a dependency here instead. 
+	cd src; make clean EvenTeeth-Distributor-4of6and1
+
+
+# Other special builds
 
 BENCHTEST:
 	cd src; CLIFLAGS="DEFAULT" make clean BenchTest
