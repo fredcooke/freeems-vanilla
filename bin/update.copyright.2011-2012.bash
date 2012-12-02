@@ -2,9 +2,7 @@
 
 #	FreeEMS - the open source engine management system
 #
-#	filename here
-#
-#	Copyright 2010 Fred Cooke
+#	Copyright 2010-2012 Fred Cooke
 #
 #	This file is part of the FreeEMS project.
 #
@@ -26,8 +24,24 @@
 #
 #	Thank you for choosing FreeEMS to run your engine!
 
+if [ $# -ne 1 ]; then 
+	echo "Wrong arg count! $#"
+	exit 1
+fi
 
-# The following line takes a file with the formate <num><space><num><space><filename/path> and looks for years that need updating.
-#for f in $(perl -lne '/^\d+\s+\d+\s+(.*)/ && print $1' files.2009); do perl -i.bkp -lpe 's/2008 /2008, 2009 /g unless /2009/' "$f"; done
-# update to new fliename, yearset etc before using, hence commented out. list generated with git diff --numstat hash1 hash2
+if [ ! -e "$1" ]; then
+	echo "$1 doesn't exist!"
+	exit 1
+fi
+
+if [ ! -f "$1" ]; then
+	echo "$1 is not a file"
+	exit 1
+fi
+
+
+# The following two lines take a file with format <num><space><num><space><path/filename> and look for years that need updating.
+for f in $(perl -lne '/^\d+\s+\d+\s+(.*)/ && print $1' $1); do perl -i -lpe 's/-2011/-2012/g' "$f"; done      # Update existing ranges
+for f in $(perl -lne '/^\d+\s+\d+\s+(.*)/ && print $1' $1); do perl -i -lpe 's/2011 /2011-2012 /g' "$f"; done # Update singular years to ranges
+# Update to yearset before using, list generated with git diff --numstat lasthashpreviousyear lasthashcurrentyear -- src
 
