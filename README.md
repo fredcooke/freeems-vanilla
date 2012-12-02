@@ -12,7 +12,13 @@ Before using FreeEMS, please read the [disclaimer](http://www.diyefi.org/disclai
 
 If you're wondering why this project was started have a look at [this page](http://www.diyefi.org/why.htm).
 
+### Obtaining the firmware
+
+The best way to get the latest development firmware is from the [build server!](http://builds.freeems.org)
+
 ### Building the firmware
+
+If you want to build your own firmware for some reason such as customisations, read below.
 
 Ensure that you have the latest release or latest code from the [github repository](http://github.com/fredcooke/freeems-vanilla).
 
