@@ -41,9 +41,9 @@
 #define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
 
 
-#include "../inc/freeEMS.h"
-#include "../inc/utils.h"
-#include "../inc/interrupts.h"
+#include "../../inc/freeEMS.h"
+#include "../../inc/utils.h"
+#include "../../inc/interrupts.h"
 
 
 #if defined(WITH_COMBUSTION_SYNC) // ###########################################
@@ -88,7 +88,7 @@
 #endif
 
 
-#include "../inc/decoderInterface.h"
+#include "../../inc/decoderInterface.h"
 
 
 // Evenly spaced event angles defined recursively and ready for use
