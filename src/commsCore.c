@@ -52,7 +52,6 @@
 #include "inc/commsCore.h"
 #include "inc/init.h"
 #include <string.h> /// @todo TODO this is pulling in the system string.h not the m68hc1x version, and functions other than memcpy do not work because they are not in crt1.o or other included-by-default libs
-#include <datalogPopulator.c>
 #include "decoders/inc/BenchTest.h"
 
 
@@ -64,10 +63,21 @@
 unsigned short populateBasicDatalog(){
 	/// @todo TODO setup proper sequence and clock with some sort of differential measurement log to log. insert in front of actual data because these are part of the log itself.
 
-	// By default, default values are populated, but if you drop code into the custom directory, that replaces the defaults.
-	populateCustomDatalog();
+	// Log scheduling data by default for the time being.
+	CoreVars->DTPS = Counters.normalSchedule;
+	CoreVars->DMAP = Counters.timerStretchedToSchedule;
+//	CoreVars->DRPM = ?; currently in use logging *ticksPerDegree 27 December 2012, see line ~123 of coreVarsGenerator.c
+//	CoreVars->DDRPM = ?;
 
-	// Done here to overwrite cheeky custom users data:
+	KeyUserDebugs.zsp3 = Counters.pinScheduledToGoHigh;
+	KeyUserDebugs.zsp4 = Counters.pinScheduledAlready;
+	KeyUserDebugs.zsp5 = Counters.pinScheduledToSelfSchedule;
+	KeyUserDebugs.zsp6 = Counters.pinScheduledAgainToStayOn;
+	KeyUserDebugs.zsp7 = Counters.pinScheduledToToggleError;
+	KeyUserDebugs.zsp8 = Counters.pinScheduledToDoNothing;
+	KeyUserDebugs.zsp9 = Counters.pinScheduledFromCold;
+	KeyUserDebugs.zsp10 = Counters.pinScheduledWithTimerExtension;
+
 	KeyUserDebugs.coreStatusA = coreStatusA;
 	KeyUserDebugs.clockIn8thsOfAMilli = Clocks.realTimeClockMain;
 	KeyUserDebugs.clockInMilliSeconds = Clocks.realTimeClockMillis;
