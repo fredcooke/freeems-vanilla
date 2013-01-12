@@ -14,23 +14,23 @@ docs/latex/*.pdf
 docs/latex/*.ps
 docs/latex/*.toc
 
-src/dependencies/
-src/firmware/
-src/firmware-all/
-src/output/
-src/preprocessedc/
-src/objects/
-src/debug/
+src/main/dependencies/
+src/main/firmware/
+src/main/firmware-all/
+src/main/output/
+src/main/preprocessedc/
+src/main/objects/
+src/main/debug/
 
-# src/assembly is static and not cleaned and contains some hand coded files along with all the generated files
-src/assembly/*.s
-!src/assembly/flashBurn.s
-src/assembly/decoders/*.s
-src/assembly/initialisers/*.s
+# src/main/assembly is static and not cleaned and contains some hand coded files along with all the generated files
+src/main/assembly/*.s
+!src/main/assembly/flashBurn.s
+src/main/assembly/decoders/*.s
+src/main/assembly/initialisers/*.s
 
 # For johntramp's (and others) vim swap files
 *.swp
 
 # For Dave's single line loader script until I add something generic to the makefile
-src/load
+src/main/load
 

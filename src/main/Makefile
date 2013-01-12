@@ -98,9 +98,9 @@ LABEL := $(OUTPREFIX)-$(FIRMWARE_VERSION)
 endif
 
 # Directories here
-DISTRIBUTIONDIR = ../tmp/$(LABEL)
+DISTRIBUTIONDIR = ../../tmp/$(LABEL)
 FIRMWAREDISTRIBUTIONDIR = $(DISTRIBUTIONDIR)/$(LABEL)-firmware
-DOXYDOCDIR = ../docs/doxygen-html
+DOXYDOCDIR = ../../docs/doxygen-html
 MAINDIR = freeems-vanilla
 INCDIR = inc
 DEPDIR = dependencies
@@ -873,19 +873,19 @@ tagrelease: tagname tagmessage
 
 
 zipmain: distributiondir
-	cd ../ ; git archive --format=zip --prefix=$(LABEL)/ HEAD > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-full.zip;cd -
+	cd ../../ ; git archive --format=zip --prefix=$(LABEL)/ HEAD > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-full.zip;cd -
 
 zipdocs: distributiondir
-	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-docs.zip;cd -
+	cd ../../ ; git archive --format=zip --prefix=$(LABEL)- HEAD docs/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-docs.zip;cd -
 
 gendoxy: clean
-	cd ../ ; ( cat docs/Doxyfile ; echo "PROJECT_NUMBER=$(FIRMWARE_VERSION)" ) | doxygen - | grep Warning > src/doxygen.output;cd -
+	cd ../../ ; ( cat docs/Doxyfile ; echo "PROJECT_NUMBER=$(FIRMWARE_VERSION)" ) | doxygen - | grep Warning > src/doxygen.output;cd -
 
 zipsite: distributiondir gendoxy
-	cd ../docs/ ; zip -r  $(DISTRIBUTIONDIR)/$(LABEL)-doxygen-html.zip doxygen-html/;cd -
+	cd ../../docs/ ; zip -r  $(DISTRIBUTIONDIR)/$(LABEL)-doxygen-html.zip doxygen-html/;cd -
 
 zipsrc: distributiondir
-	cd ../ ; git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-src.zip;cd -
+	cd ../../ ; git archive --format=zip --prefix=$(LABEL)- HEAD src/ > ./tmp/$(DISTRIBUTIONDIR)/$(LABEL)-src.zip;cd -
 
 deploy: distributiondir
 	scp -r $(DISTRIBUTIONDIR) raptor:/home/firmware/releases/
@@ -1025,7 +1025,7 @@ cleandoxy:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                            Removing Doxygen HTML...                          #$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(RM) ../docs/doxygen-html/
+	$(RM) ../../docs/doxygen-html/
 
 
 ################################################################################
