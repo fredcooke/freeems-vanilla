@@ -2,7 +2,7 @@
 #
 #	Makefile
 #
-#	Copyright 2008-2012 Fred Cooke
+#	Copyright 2008-2013 Fred Cooke
 #
 #	This Makefile is part of the FreeEMS project.
 #

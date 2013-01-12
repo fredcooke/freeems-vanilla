@@ -7,14 +7,14 @@ Help:
 	@echo "To build, choose a target from the below list and type 'make target'!"
 	@echo "For example, to build blank unconfigured firmware type 'make BLANK'"
 	@echo "Note: For BenchTest to work you MUST build using the BENCHTEST target!"
-	@echo "Advanced users will find more options available in the src/main directory!"
+	@echo "Advanced users can find more options available in the src/main directory!"
 	@echo
 	@echo "Options:"
 	@echo
 	@make -qp | awk -F':' '/^[a-zA-Z0-9][^$$#\/\t=]*:([^=]|$$)/ {split($$1,A,/ /);for(i in A)print A[i]}'
 
 TEST_AND_SAVE_ALL:
-	cd src/main; ../bin/testclibuilds.bash
+	cd src/main; ../../bin/testclibuilds.bash
 
 BLANK:
 	cd src/main; make clean s19
