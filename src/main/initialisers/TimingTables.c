@@ -59,6 +59,9 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #elif CONFIG == SNOTROCKET_ID
 	RPMLength:  12,
 	LoadLength: 8,
+#elif CONFIG == DEUCES10_ID
+	RPMLength:  13,
+	LoadLength: 10,
 #else
 	RPMLength:  16,
 	LoadLength: 16,
@@ -80,6 +83,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/Slater-RPM.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-RPM.h"
+#elif CONFIG == DEUCES10_ID
+#include "../data/tables/axis/Deuces3100-RPM.h"
 #elif CONFIG == PETERTRUCK_ID
 #include "../data/tables/axis/HotelHyundai-RPM.h"
 #elif CONFIG == DEFAULT_ID
@@ -105,6 +110,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/Slater-Load.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-Load.h"
+#elif CONFIG == DEUCES10_ID
+#include "../data/tables/axis/Deuces3100-Load.h"
 #elif CONFIG == PETERTRUCK_ID
 #include "../data/tables/axis/HotelHyundai-Load.h"
 #elif CONFIG == DEFAULT_ID
@@ -132,6 +139,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #elif CONFIG == DEUCECOUPE_ID
 //#include "../data/tables/ign/TestDIS.h" // Use for verifying your DIS timing
 #include "../data/tables/ign/Deuces3100Timing.h"
+#elif CONFIG == DEUCES10_ID
+#include "../data/tables/ign/DeucesS10Timing.h"
 #elif CONFIG == PETERTRUCK_ID
 #include "../data/tables/ign/HotelHyundaiIgnitionTiming.h"
 #elif CONFIG == DEFAULT_ID

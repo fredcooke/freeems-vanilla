@@ -56,6 +56,7 @@
 #define PETERJSERIES_ID 10 // Winter thrasher, works so well he refuses to whinge
 #define DEUCECOUPE_ID   11 // Work in progress, ignition not setup yet
 #define PETERTRUCK_ID   12 // Work horse vehicle, about to get boosted
+#define DEUCES10_ID     16 // Work in progress
 // Looking forward to there being links to threads here soon! In no particular order:
 //#define LEV8N
 //#define SEANKR1
@@ -105,6 +106,9 @@
 #elif defined PETERTRUCK
 #define CONFIG PETERTRUCK_ID
 #define PRELIM_CONFIG "PETERTRUCK"
+#elif defined DEUCES10
+#define CONFIG DEUCES10_ID
+#define PRELIM_CONFIG "DEUCES10"
 #elif defined CLIFLAGS && !(defined XGATE)
 #error "CLIFLAGS defined, but no build matched! Not allowing config to fall back to default!"
 #define CONFIG -1

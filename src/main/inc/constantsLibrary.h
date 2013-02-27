@@ -92,6 +92,11 @@
 #define ToyotaNA227kPaRange      (ToyotaNA227kPaMax - ToyotaNA227kPaMin)
 // NOTE: The accuracy of this calibration is highly questionable. Please use the Honda units which is configured above and known to be accurate
 
+/* GM 1bar found on naturally aspirated vehicles. Taken from http://www.robietherobot.com/storm/mapsensor.htm */
+#define GM1BarMin                KPA( 10.0)     /* Pressure read at lowest ADC reading */
+#define GM1BarMax                KPA(105.0)     /* Pressure read at highest ADC reading */
+#define GM1BarRange              (GM1BarMax - GM1BarMin)
+
 /* GM 2bar found on Cyclone Turbo V6 and probably other cars too. TODO These numbers are probably not that accurate... */
 #define GM2BarMin                KPA(  1.5)     /* Pressure read at lowest ADC reading */
 #define GM2BarMax                KPA(200.0)     /* Pressure read at highest ADC reading */

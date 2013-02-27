@@ -80,6 +80,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == DEUCECOUPE_ID
 		MAPMinimum:    MPX4100AMin,
 		MAPRange:      MPX4100ARange,
+#elif CONFIG == DEUCES10_ID
+		MAPMinimum:    GM1BarMin,
+		MAPRange:      GM1BarRange,
 #else
 		MAPMinimum:    MPX4250AMin,
 		MAPRange:      MPX4250ARange,
@@ -105,12 +108,24 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SNOTROCKET_ID
 		BRVMinimum:    VOLTS(0),
 		BRVRange:      VOLTS(24.777),
+#elif CONFIG == DEUCES10_ID
+		BRVMinimum:    VOLTS(0),
+		BRVRange:      VOLTS(24.65), // This is calibrated for the Jaguar A2 in the 1997 S10 on 01-12-2013.
 #else
 		BRVMinimum:    VOLTS(0),
 		BRVRange:      VOLTS(24.5), // Standard 3.9k and 1k values.
 #endif
+#if CONFIG == DEUCECOUPE_ID  // This is calibrated for the Deuce Coupe TPS.
+		TPSMinimumADC: 81,  // This is to correct for the TPS reading at closed throttle.
+		TPSMaximumADC: 574  // This is to correct for the TPS reading at wide open throttle.
+
+#elif CONFIG == DEUCES10_ID   // This is an estimate for the S10 TPS.
+		TPSMinimumADC: 120,  // This is to correct for the TPS reading at closed throttle.
+		TPSMaximumADC: 560  // This is to correct for the TPS reading at wide open throttle.
+#else
 		TPSMinimumADC: 0,
 		TPSMaximumADC: ADC_MAX_VALUE
+#endif
 	},
 	sensorSettings:{ // Warning, until the following mods are made to ADC use, setting this lower than your cranking rpm will result in a pulsing fuel pump.
 		readingTimeout: 500, /** Default to 0.5 of a second 120rpm for a 4 cylinder @todo TODO new method of ADC sampling, Always sample ADC async, If no sync, use async ADC readings, otherwise use synced. Do this with pointer to array set at beginning of math */
@@ -121,6 +136,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		loadType:      LOAD_MAP,
 		algorithmType: ALGO_SPEED_DENSITY,
 #if CONFIG == DEUCECOUPE_ID
+		dwellType:     DWELL_RPM,
+#elif CONFIG == DEUCES10_ID
 		dwellType:     DWELL_RPM,
 #elif CONFIG == SEANKLT1_ID
 		dwellType:     DWELL_FIXED,

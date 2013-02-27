@@ -70,6 +70,10 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #elif CONFIG == DEUCECOUPE_ID
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00)}
+#elif CONFIG == DEUCES10_ID
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: { T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00),  T(1.00)}
+
 #else
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: ARRAY_OF_16_DWELLS
@@ -96,8 +100,13 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 			Values: ARRAY_OF_16_PERCENTS
 		},
 		primingVolumeTable: {
+#if CONFIG == DEUCES10_ID
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: {T(14.00), T(13.00), T(12.00), T(11.00), T(10.00), T(10.00), T(9.00), T(9.00), T(8.00), T(8.00), T(7.00), T(7.00), T(6.50), T(6.00), T(6.00), T(5.00)}
+#else
 			Axis:   ARRAY_OF_16_TEMPS,
 			Values: ARRAY_OF_16_VOLUMES
+#endif
 		},
 		engineTempEnrichmentTablePercent: {
 			Axis:   ARRAY_OF_16_TEMPS,
