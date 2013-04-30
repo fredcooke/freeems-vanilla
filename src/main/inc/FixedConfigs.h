@@ -222,7 +222,7 @@ typedef struct {
 typedef struct {
 	unsigned short readingTimeout; ///< How often an ADC reading MUST occur.
 	unsigned char numberOfADCsToRead;
-	unsigned char spare8bitConfig;
+	unsigned char fuelPumpPrimePeriod;
 } sensorSetting;
 
 
