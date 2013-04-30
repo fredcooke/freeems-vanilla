@@ -28,7 +28,7 @@
 [remote "raptor"]
 	url = git:freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/raptor/*
-	push = refs/heads/*:refs/heads/*
+	push = refs/heads/master:refs/heads/dev
 [remote "freeems"]
 	url = git@github.com:FreeEMS/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/freeems/*
@@ -46,37 +46,8 @@
 	fetch = +refs/heads/*:refs/remotes/repoorcz/*
 	push = refs/heads/master:refs/heads/dev
 
-# Others forks
-[remote "olli"]
-	url = git://github.com/ohollmen/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/olli/*
-[remote "seansrepo"]
-        url = git://github.com/seank/freeems-vanilla.git
-        fetch = +refs/heads/*:refs/remotes/seansrepo/*
-[remote "philj"]
-	url = git://github.com/johnsop1/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/johnsop1/*
-[remote "mtxman"]
-	url = git://github.com/djandruczyk/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/djandruczyk/*
-[remote "marcos"]
-	url = git://github.com/nitrousnrg/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/nitrousnrg/*
-[remote "jaredh"]
-	url = git://github.com/jharvey/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/jharvey/*
-[remote "johnhowe"]
-	url = git://github.com/johnhowe/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/johnhowe/*
-[remote "simis"]
-	url = git://github.com/simeonveldstra/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/simis/*
-
-# Local inspection branches
+# Local working reference branch
 [branch "master"]
 	remote = origin
 	merge = refs/heads/dev
-[branch "seank"]
-	remote = seansrepo
-	merge = refs/heads/master
 
