@@ -657,9 +657,10 @@ s19: link s19msg $(ALLS19S)
 # Generate the loadable s19 firmware files
 $(S19DIR)/%.s19: $(OUTDIR)/%.elf $(S19DIR)
 	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#               Building $@ ...$(Q)
+	@echo $(Q)#               Building $(@F) ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(COPY) $(COPYOPTS) $< $@
+	$(COPY) $(COPYOPTS) $< $(@F)
+	mv $(@F) $@
 
 
 sizesmsg:
@@ -689,9 +690,10 @@ gcs19: gclink gcs19msg  $(GCDS19S)
 # Generate the garbage collected s19 files temporarily
 $(S19DIR)/%.s19: $(OUTDIR)/%.elf $(S19DIR)
 	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#               Building $@ ...$(Q)
+	@echo $(Q)#               Building $(@F) ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(COPY) $(COPYOPTS) $< $@
+	$(COPY) $(COPYOPTS) $< $(@F)
+	mv $(@F) $@
 
 gcsizesmsg:
 	@echo $(Q)################################################################################$(Q)
