@@ -173,6 +173,7 @@ void PrimaryRPMISR(void){
 		}
 	}
 
+	// Not an else block because the if block above can change the state of its own condition
 	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 		KeyUserDebugs.currentEvent++;
 		if(KeyUserDebugs.currentEvent == numberOfRealEvents){ /* roll our event over if we are at the end */
@@ -229,9 +230,13 @@ void PrimaryRPMISR(void){
 		}else if((cumulativeBastardTeeth > MAX_CUMULATIVE_BASTARD_TEETH) || (cumulativeBastardTeeth < -MAX_CUMULATIVE_BASTARD_TEETH)){
 			resetToNonRunningState(BASTARD_CUMULATIVE_SYNC_LOSS_ID_BASE + cumulativeBastardTeeth); // TODO move this to the syncLossIDs.h header
 			return;
-		}else{
+		}else{ // Tooth count was within spec
+			if(!(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE)) {
+				SET_SYNC_LEVEL_TO(CAM_SYNC); // Add confirmation until it is
+			}
+
 			/* TODO all required calcs etc as shown in other working decoders */
-			if((KeyUserDebugs.currentEvent % 2) == 1){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the cacls */
+			if((KeyUserDebugs.currentEvent % 2) == 1){ /* if we captured on a rising edge that is to say an evenly spaced edge perform the calcs */
 				// temporary data from inputs
 				unsigned long primaryLeadingEdgeTimeStamp = timeStamp.timeLong;
 				unsigned long timeBetweenSuccessivePrimaryPulses = primaryLeadingEdgeTimeStamp - lastPrimaryEventTimeStamp;

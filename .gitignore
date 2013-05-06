@@ -31,6 +31,9 @@ src/main/assembly/initialisers/*.s
 # For johntramp's (and others) vim swap files
 *.swp
 
-# For Dave's single line loader script until I add something generic to the makefile
-src/main/load
+# Ignore Xcode project files for apple fanboys
+.DS_Store
+*.pbxproj
+*.xcworkspacedata
+*.xcuserstate
 

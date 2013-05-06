@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2012-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -29,13 +29,15 @@
  * @ingroup allHeaders
  * @ingroup enginePositionRPMDecoders
  *
- * @brief Unique MitsiCAS-4and1 setup data and variables
+ * @brief Unique MitsiCAS-4and2 setup data and variables
+ *
+ * Development thread: http://forum.diyefi.org/viewtopic.php?f=56&t=1110
  */
 
 
 #define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
-#define NUMBER_OF_REAL_EVENTS     10
-#define NUMBER_OF_VIRTUAL_EVENTS  10
+#define NUMBER_OF_REAL_EVENTS     12
+#define NUMBER_OF_VIRTUAL_EVENTS  12
 
 
 #include "../../inc/freeEMS.h"
@@ -47,30 +49,35 @@
 // Variables unique to this decoder, should be kept to a minimum!
 static unsigned short edgeTimeStamp; /// @todo TODO why is this here, and why is it static/shared, investigate
 static LongTime timeStamp; /// @todo TODO why is this here, and why is it static/shared, investigate
-unsigned char unknownLeadingEdges = 0;
+unsigned char doubleHighSeen = 0;
 
 
-// Event angle setup via defines to minimise the opportunity for human error when changing values
-#define OuterSlotAngle ANGLE( 69.74) // BUT 69 is too high, and 68 is even more too low = need to refactor to specify these angles accurately enough for perfect RPM/scheduling
-#define InnerSlotAngle ANGLE(140.00) // WAS 138 // WAS 139 // WAS 137 // Speculation: 140? Close to it... ignore my affection for round numbers... :-) HA! I was close to right this time, the other was right first guess and wants to be a little lower.
+// Slot angles used below
+#define OuterSlotAngle ANGLE( 69.74)
+#define LargeInnerSlotAngle ANGLE(140.00)
+#define SmallInnerSlotAngle ANGLE(70.00) // TODO @todo fine tune!
 
 // Outer slot fixed events - these are, by definition, correct!
 #define E0 ANGLE(  0)
-#define E2 ANGLE(180)
-#define E4 ANGLE(360)
-#define E7 ANGLE(540)
+#define E3 ANGLE(180)
+#define E6 ANGLE(360)
+#define E9 ANGLE(540)
 
 // These are offset from the fixed ones by the angle of the slot
-#define E1 (E0 + OuterSlotAngle)
-#define E3 (E2 + OuterSlotAngle)
-#define E5 (E4 + OuterSlotAngle)
-#define E8 (E7 + OuterSlotAngle)
+#define  E1 (E0 + OuterSlotAngle)
+#define  E5 (E3 + OuterSlotAngle)
+#define  E7 (E6 + OuterSlotAngle)
+#define E10 (E9 + OuterSlotAngle)
 
-// Inner slot events
-#define E6 ANGLE(525.50) // WAS 527 // WAS 526 // Start position measured, just like outer on/off duty.
-#define E9 (E6 + InnerSlotAngle)
+// Large inner slot events
+#define E8 ANGLE(525.50)
+#define E11 (E8 + LargeInnerSlotAngle)
+
+// Small inner slot events
+#define E2 E8 - ANGLE(360) // TODO verify this is really exactly 360 including diffraction effects
+#define E4 (E2 + SmallInnerSlotAngle)
 
 
 // Definitions of decoder interface constants
-const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9}; // needs to be shared with other decoders, defined here and referenced by the scheduler or similar
+const unsigned short eventAngles[] = {E0, E1, E2, E3, E4, E5, E6, E7, E8, E9, E10, E11};
 const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,0,1,1,0}; // Unused for now, but correct anyway.

@@ -202,23 +202,19 @@ unsigned short lookupMainTable(unsigned short realRPM, unsigned short realLoad, 
  */
 unsigned short lookupTwoDTableUS(twoDTableUS * Table, unsigned short Value){
 
-	/* Find the bounding axis indices, axis values and lookup values */
-	unsigned char lowIndex = 0;
-	unsigned char highIndex = 15;
 	/* If never set in the loop, low value will equal high value and will be on the edge of the map */
 	unsigned short lowAxisValue = Table->Axis[0];
 	unsigned short highAxisValue = Table->Axis[15];
 	unsigned short lowLookupValue = Table->Values[0];
 	unsigned short highLookupValue = Table->Values[15];
 
+	/* Find the bounding axis values and lookup values */
 	unsigned char Index;
 	for(Index=0;Index<16;Index++){
 		if(Table->Axis[Index] < Value){
-			lowIndex = Index;
 			lowAxisValue = Table->Axis[Index];
 			lowLookupValue = Table->Values[Index];
 		}else if(Table->Axis[Index] > Value){
-			highIndex = Index;
 			highAxisValue = Table->Axis[Index];
 			highLookupValue = Table->Values[Index];
 			break;
@@ -226,7 +222,6 @@ unsigned short lookupTwoDTableUS(twoDTableUS * Table, unsigned short Value){
 			return Table->Values[Index]; // If right on, just return the value
 		}
 	}
-
 
 	/* Interpolate and return the value */
 	return lowLookupValue + (((signed long)((signed long)highLookupValue - lowLookupValue) * (Value - lowAxisValue))/ (highAxisValue - lowAxisValue));
@@ -256,14 +251,14 @@ unsigned short validateMainTable(mainTable* Table){
 		/* Check the order of the RPM axis */
 		unsigned char i;
 		for(i=0;i<(Table->RPMLength - 1);i++){
-			if(Table->RPM[i] > Table->RPM[i+1]){
+			if(Table->RPM[i] >= Table->RPM[i+1]){
 				return invalidMainTableRPMOrder;
 			}
 		}
 		/* Check the order of the Load axis */
 		unsigned char j;
 		for(j=0;j<(Table->LoadLength - 1);j++){
-			if(Table->Load[j] > Table->Load[j+1]){
+			if(Table->Load[j] >= Table->Load[j+1]){
 				return invalidMainTableLoadOrder;
 			}
 		}
@@ -286,7 +281,7 @@ unsigned short validateTwoDTable(twoDTableUS* Table){
 	/* Check the order of the axis */
 	unsigned char i;
 	for(i=0;i<(TWODTABLEUS_LENGTH - 1);i++){
-		if(Table->Axis[i] > Table->Axis[i+1]){
+		if(Table->Axis[i] >= Table->Axis[i+1]){
 			return invalidTwoDTableAxisOrder;
 		}
 	}

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2011-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -53,13 +53,25 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 		KeyUserDebugs.syncResetCalls++;
 	}
 
+	// Reset the safe re-sync counters.
+	if(fixedConfigs2.decoderSettings.syncConfirmationsRunning == 0xFF){ // Prevent overflow to zero
+		syncConfirmationsRunningCounter = 0xFF;
+	}else{ // Ensure at least 1 cycle is confirmed
+		syncConfirmationsRunningCounter = fixedConfigs2.decoderSettings.syncConfirmationsRunning + 1;
+	}
+	syncConfirmationsStartingCounter = fixedConfigs2.decoderSettings.syncConfirmationsStarting;
+
 	/* Reset RPM to zero */
 	ticksPerDegree0 = 0;
 	ticksPerDegree1 = 0;
 
 	// Keep track of lost sync in counters
 	if(KeyUserDebugs.decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
-		FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_LOSSES_OFFSET);
+		if(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE){
+			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_LOSSES_OFFSET);
+		}else{
+			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNCS_NOT_CONFIRMED_OFFSET);
+		}
 	}else{
 		FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_STATE_CLEARS_OFFSET);
 	}

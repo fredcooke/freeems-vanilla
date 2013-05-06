@@ -26,11 +26,11 @@
 
 #define DECODER_IMPLEMENTATION_C
 
-#include "inc/MitsiAndMazda-CAS-4and1.h"
+#include "inc/MitsiAndMazda-CAS-4and2.h"
 
 void decoderInitPreliminary(){} // This decoder works with the defaults
 void perDecoderReset(){
-	unknownLeadingEdges = 0;
+	doubleHighSeen = 0;
 }
 
 
@@ -39,12 +39,12 @@ void perDecoderReset(){
  * @ingroup interruptHandlers
  * @ingroup enginePositionRPMDecoders
  *
- * @brief Reads Mitsi 4 and 1 CAS units
+ * @brief Reads Mitsi 4 and 2 CAS units
  *
  * Two interrupts share state and cross communicate to
  * find and maintain sync and position information.
  *
- * Development thread: http://forum.diyefi.org/viewtopic.php?f=56&t=1078
+ * Development thread: http://forum.diyefi.org/viewtopic.php?f=56&t=1110
  */
 
 
@@ -74,7 +74,6 @@ void PrimaryRPMISR(){
 		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
 	}
 
-	// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr
 	// Always sample in this ISR
 	sampleEachADC(ADCBuffers);
 	Counters.syncedADCreadings++;
@@ -89,17 +88,18 @@ void PrimaryRPMISR(){
 	unsigned char correctEvent = 0;
 	if(PTITCurrentState & 0x01){
 		if(!(PTITCurrentState & 0x02)){
-			correctEvent = 8;
+			correctEvent = 10;
+		}else{ // Occurs three times
+			doubleHighSeen = 1;
 		}
 	}else{
 		if(PTITCurrentState & 0x02){
-			unknownLeadingEdges++;
-			if(unknownLeadingEdges == 3){
-				correctEvent = 4;
+			// Only this one is not intercepted by a clear
+			if(doubleHighSeen == 1){
+				correctEvent = 6;
 			}
-		}else{
-			correctEvent = 7;
-			unknownLeadingEdges = 0;
+		}else{ // Clear on double low
+			doubleHighSeen = 0;
 		}
 	}
 
@@ -111,7 +111,7 @@ void PrimaryRPMISR(){
 			KeyUserDebugs.currentEvent = 0;
 		}
 
-		// ...and, if known, check that it's correct
+		// ...and check that it's correct
 		if(correctEvent != 0){
 			if(KeyUserDebugs.currentEvent != correctEvent){
 				resetToNonRunningState(STATE_MISMATCH_IN_PRIMARY_RPM_ISR);
@@ -204,12 +204,14 @@ void SecondaryRPMISR(){
 	}
 
 	// Determine the correct event based on post transition state (and toggle debug pins)
-	unsigned char correctEvent;
+	unsigned char correctEvent = 0;
 	if(PTITCurrentState & 0x02){
-		correctEvent = 9;
-	}else{
-		correctEvent = 6;
-	}
+		if(PTITCurrentState & 0x01){
+			correctEvent = 11;
+		}else{
+			correctEvent = 4;
+		}
+	} // else the leading edge of the slot is ambiguous
 
 	// Only sample if not synced, cleans up readings.
 	if(!(KeyUserDebugs.decoderFlags & CAM_SYNC)){
@@ -229,13 +231,15 @@ void SecondaryRPMISR(){
 		KeyUserDebugs.currentEvent++;
 
 		// ...and check that it's correct
-		if(KeyUserDebugs.currentEvent != correctEvent){
-			resetToNonRunningState(STATE_MISMATCH_IN_SECONDARY_RPM_ISR);
-			return;
-		}else if(!(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE)){
-			SET_SYNC_LEVEL_TO(CAM_SYNC);
-		} // Else do nothing, we're running!
-	}else{ // If not synced, sync, as in this ISR we always know where we are.
+		if(correctEvent != 0){
+			if(KeyUserDebugs.currentEvent != correctEvent){
+				resetToNonRunningState(STATE_MISMATCH_IN_SECONDARY_RPM_ISR);
+				return;
+			}else if(!(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE)){
+				SET_SYNC_LEVEL_TO(CAM_SYNC);
+			} // Else do nothing, we're running!
+		}
+	}else if(correctEvent != 0){
 		KeyUserDebugs.currentEvent = correctEvent;
 		lastEvent = KeyUserDebugs.currentEvent - 1;
 		SET_SYNC_LEVEL_TO(CAM_SYNC);

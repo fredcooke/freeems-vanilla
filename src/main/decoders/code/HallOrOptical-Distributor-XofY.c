@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2011-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -173,9 +173,7 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	if(KeyUserDebugs.decoderFlags & COMBUSTION_SYNC){
-		SCHEDULE_ECT_OUTPUTS();
-	}
+	SCHEDULE_ECT_OUTPUTS();
 
 	OUTPUT_COARSE_BBS();
 

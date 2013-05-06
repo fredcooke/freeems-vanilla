@@ -186,12 +186,12 @@ CLASSES = $(SOURCE) $(DATA)
 # Special decoders are not for use running an engine
 RPMSPECIAL = Listener.c BenchTest.c
 # TODO: Automate file naming for the following 4 lines
-RPMEVENTEETH = EvenTeeth-Cam-24and1.c EvenTeeth-Cam-16and1.c EvenTeeth-Cam-6and1.c EvenTeeth-Distributor-4of6and1.c
+RPMEVENTEETH = EvenTeeth-Cam-24and1.c EvenTeeth-Cam-16and1.c EvenTeeth-Cam-6and1.c EvenTeeth-Distributor-4of6and1.c EvenTeeth-Cam-4and1.c
 RPMMISSINGTEETH = MissingTeeth-TestFile.c MissingTeeth-Cam-24minus1.c MissingTeeth-Crank-8minus1.c MissingTeeth-Crank-12minus1.c MissingTeeth-Crank-36minus1.c MissingTeeth-Crank-60minus2.c MissingTeeth-Cam-6minus2.c MissingTeeth-Crank-30minus2.c MissingTeeth-Cam-12minus1.c
 RPMHALLOROPTICAL = HallOrOptical-Distributor-4of64.c HallOrOptical-Distributor-4of69.c
 RPMVRDISTRIBUTOR = 
 # Specific purpose per engine stuff here
-RPMSPECIFICENGINE1 = MitsiAndMazda-CAS-4and1.c GM-LT1-CAS-360and8.c JSeries-12CrankWith6-2Cam.c
+RPMSPECIFICENGINE1 = MitsiAndMazda-CAS-4and1.c MitsiAndMazda-CAS-4and2.c JSeries-12CrankWith6-2Cam.c GM-LT1-CAS-360and8.c
 # Insert your file above and get coding!
 RPMCLASSESRAW = $(RPMSPECIAL) $(RPMEVENTEETH) $(RPMMISSINGTEETH) $(RPMHALLOROPTICAL) $(RPMVRDISTRIBUTOR) $(RPMSPECIFICENGINE1)
 RPMCLASSES = $(patsubst %.c,$(DECDIR)/%.c,$(RPMCLASSESRAW))
@@ -269,11 +269,13 @@ BenchTest: $(S19DIR)/$(LABEL)-BenchTest.s19
 EvenTeeth-Cam-24and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-24and1.s19
 EvenTeeth-Cam-16and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-16and1.s19
 EvenTeeth-Cam-6and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-6and1.s19
+EvenTeeth-Cam-4and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-4and1.s19
 MissingTeeth-Crank-8minus1:  $(S19DIR)/$(LABEL)-MissingTeeth-Crank-8minus1.s19
 MissingTeeth-Crank-12minus1: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-12minus1.s19
 MissingTeeth-Cam-12minus1:   $(S19DIR)/$(LABEL)-MissingTeeth-Cam-12minus1.s19
 HallOrOptical-Distributor-4of69: $(S19DIR)/$(LABEL)-HallOrOptical-Distributor-4of69.s19
 MitsiAndMazda-CAS-4and1: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and1.s19
+MitsiAndMazda-CAS-4and2: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and2.s19
 GM-LT1-CAS-360and8: $(S19DIR)/$(LABEL)-GM-LT1-CAS-360and8.s19 
 JSeries-12CrankWith6-2Cam: $(S19DIR)/$(LABEL)-JSeries-12CrankWith6-2Cam.s19
 EvenTeeth-Distributor-4of6and1: $(S19DIR)/$(LABEL)-EvenTeeth-Distributor-4of6and1.s19

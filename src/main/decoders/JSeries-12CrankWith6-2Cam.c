@@ -1,7 +1,7 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2012 Fred Cooke
- * 
+ * Copyright 2012-2013 Fred Cooke
+ *
  * This file is part of the FreeEMS project.
  *
  * FreeEMS software is free software: you can redistribute it and/or modify
@@ -178,17 +178,21 @@ void SecondaryRPMISR(){
 		if(crankTeethSinceLastCamTooth != 4 && crankTeethSinceLastCamTooth != 12){
 			if(crankTeethSinceLastCamTooth < 4){
 				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_LOW_NOISE);
+				return;
 			}else{
 				resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_HIGH_NOISE);
+				return;
 			}
 		}
-	}else{
+	}
+
+	if(!(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE)){
 		if(camTeethSeen == 0){
 			camTeethSeen = 1;
-			previousCrankTeethSeen =  KeyUserDebugs.primaryTeethSeen;
+			previousCrankTeethSeen = KeyUserDebugs.primaryTeethSeen;
 		}else if(camTeethSeen == 1){
 			camTeethSeen = 2;
-			crankTeethSinceLastCamTooth =  KeyUserDebugs.primaryTeethSeen - previousCrankTeethSeen;
+			crankTeethSinceLastCamTooth = KeyUserDebugs.primaryTeethSeen - previousCrankTeethSeen;
 			previousCrankTeethSeen =  KeyUserDebugs.primaryTeethSeen;
 			if(crankTeethSinceLastCamTooth == 12){ // 12 Crank teeth in the 2 missing Cam teeth
 				SET_SYNC_LEVEL_TO(CAM_SYNC);
@@ -199,10 +203,10 @@ void SecondaryRPMISR(){
 				}else{
 					resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_LOW_NOISE);
 				}
-			}
+			} // Else fall through and wait for a 12
 		}else if(camTeethSeen == 2){
 			camTeethSeen = 3;
-			crankTeethSinceLastCamTooth =  KeyUserDebugs.primaryTeethSeen - previousCrankTeethSeen;
+			crankTeethSinceLastCamTooth = KeyUserDebugs.primaryTeethSeen - previousCrankTeethSeen;
 			previousCrankTeethSeen =  KeyUserDebugs.primaryTeethSeen;
 			if(crankTeethSinceLastCamTooth == 12){
 				SET_SYNC_LEVEL_TO(CAM_SYNC);
@@ -213,10 +217,10 @@ void SecondaryRPMISR(){
 				}else{
 					resetToNonRunningState(COUNT_OF_EVENTS_IMPOSSIBLY_LOW_NOISE);
 				}
-			}
+			} // Else fall through and wait for a 12
 		}else if(camTeethSeen == 3){
 			camTeethSeen = 4;
-			crankTeethSinceLastCamTooth =   KeyUserDebugs.primaryTeethSeen - previousCrankTeethSeen;
+			crankTeethSinceLastCamTooth = KeyUserDebugs.primaryTeethSeen - previousCrankTeethSeen;
 			previousCrankTeethSeen =  KeyUserDebugs.primaryTeethSeen;
 			if(crankTeethSinceLastCamTooth == 12){
 				SET_SYNC_LEVEL_TO(CAM_SYNC);
@@ -231,6 +235,9 @@ void SecondaryRPMISR(){
 				SET_SYNC_LEVEL_TO(CAM_SYNC); // Set the sync on the eventAngle[12] 360 degrees
 				KeyUserDebugs.currentEvent = 12;
 			}
+		}else if(camTeethSeen == 4){ // Guaranteed to have already synced
+			// If this crank teeth seen wasn't a valid number, it would have never made it here, having returned in the block near the top of the ISR
+			SET_SYNC_LEVEL_TO(CAM_SYNC); // Add sync confirmation point
 		}else{
 			resetToNonRunningState(BUG_REACHED_UNREACHABLE_CODE);
 		}

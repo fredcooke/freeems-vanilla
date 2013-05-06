@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -51,6 +51,8 @@
 
 /// Decoder and scheduling settings
 typedef struct {
+	unsigned char syncConfirmationsRunning;  ///< Upon losing sync while already running, how many sync points are required to consider resync achieved. This should be a relatively high number.
+	unsigned char syncConfirmationsStarting; ///< Upon losing sync while starting, before having gained sync for the first time, how many sync points are required to consider initial sync achieved. This should be a near-zero for fast starts.
 	unsigned short accelerationInputEventTimeTolerance; ///< This will be replaced: http://issues.freeems.org/view.php?id=118
 	unsigned short decelerationInputEventTimeTolerance; ///< This will be replaced: http://issues.freeems.org/view.php?id=118
 	unsigned short missingToothTolerance; ///< The future of this variable is uncertain!
@@ -220,7 +222,7 @@ typedef struct {
 typedef struct {
 	unsigned short readingTimeout; ///< How often an ADC reading MUST occur.
 	unsigned char numberOfADCsToRead;
-	unsigned char spare8bitConfig;
+	unsigned char fuelPumpPrimePeriod;
 } sensorSetting;
 
 
