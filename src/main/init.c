@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -86,8 +86,7 @@ void init(){
 
 /** @brief Set the PLL clock frequency
  *
- * Set the Phase Locked Loop to our desired frequency (80MHz) and switch to
- * using it for clock (40MHz bus speed). Interrupt is enabled elsewhere.
+ * Set the Phase Locked Loop to our desired frequency (80MHz) and enable PLL.
  */
 void initPLL(){
 	CLKSEL &= PLLSELOFF;  /* Switches to base external OSCCLK to ensure PLL is not being used (off out of reset, but not sure if the monitor turns it on before passing control or not) */
@@ -95,7 +94,18 @@ void initPLL(){
 	REFDV = PLLDIVISOR;   /* 16MHz / (3 + 1) = 4MHz Bus frequency */
 	SYNR = PLLMULTIPLIER; /* 4MHz * (9 + 1) = 40MHz Bus frequency */
 	PLLCTL |= PLLON;      /* Turn the PLL device back on again at 80MHz */
+	enablePLL();
+}
 
+/** @brief Switch to using PLL
+ *
+ * Switch to using PLL for clock (40MHz bus speed). Interrupt is enabled elsewhere.
+ *
+ * Note: Requires busy wait loop, only for init and emergency use.
+ *
+ * @todo Should be limited, and have break out with error code and fall back mechanism.
+ */
+void enablePLL(){
 	while (!(CRGFLG & PLLLOCK)){
 		/* Do nothing while we wait till the PLL loop locks onto the target frequency. */
 		/* Target frequency is given by (2 * (crystal frequency / (REFDV + 1)) * (SYNR + 1)) */
@@ -660,8 +670,8 @@ void initInterrupts(){
 	/* Set up the Real Time Interrupt */
 	RTICTL = 0x81; /* 0b_1000_0001 0.125ms/125us period http://duckduckgo.com/?q=1+%2F+%2816MHz+%2F+%282+*+10^3%29+%29 */
 //	RTICTL = 0xF9; /* 0b_1111_1001 0.125s/125ms period http://duckduckgo.com/?q=1+%2F+%2816MHz+%2F+%282*10^6%29+%29 */
-	CRGINT |= (RTIE | PLLLOCKIE); /* Enable the Real Time Interrupt and PLL Lock Interrupt */
-	CRGFLG = (RTIF | PLLLOCKIF); /* Clear the RTI flag and LOCKI flag*/
+	CRGINT |= (RTIE | PLLLOCKIE | SCMIE); /* Enable the Real Time Interrupt, PLL Lock Interrupt, and Self Clock Mode Interrupt */
+	CRGFLG = (RTIF | PLLLOCKIF | SCMIF); /* Clear the RTI, LOCKI, and SCMI flags */
 
 	// set up port H for testing
 	PPSH = ZEROS; // falling edge/pull up for all

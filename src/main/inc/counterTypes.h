@@ -88,11 +88,9 @@ typedef struct {
 #define FLAG_SERIAL_PACKETS_UNDER_LENGTH_OFFSET   13
 
 	unsigned char phaseLockedLoopLockLost;         ///< Incremented when PLL lock is lost
+	unsigned char selfClockModeEntered;            ///< Incremented when the MCU loses main clock
 #define PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET        14
-
-	// Not currently used
-	unsigned char commsErrorMessagesNotSent;       ///< Incremented when an error message can't be sent due to the TX buffer
-#define FLAG_COMMS_ERROR_MESSAGES_NOT_SENT_OFFSET 15
+#define SELF_CLOCK_MODE_ENTERED_OFFSET            15
 } Flaggable;
 
 

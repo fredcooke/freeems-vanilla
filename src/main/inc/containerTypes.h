@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -173,7 +173,7 @@ typedef struct { // BIT7 at the top
 	unsigned Spare6 :1;
 	unsigned Spare5 :1;
 	unsigned Spare4 :1;
-	unsigned Spare3 :1;
+	unsigned InjSelfClock :1; ///< @todo document this
 	unsigned InjLostPLL   :1; ///< @todo document this
 	unsigned InjOverBoost :1; ///< @todo document this
 	unsigned InjectionRPM :1; ///< @todo document this
@@ -186,7 +186,7 @@ typedef struct { // BIT7 at the top
 	unsigned Spare6 :1;
 	unsigned Spare5 :1;
 	unsigned Spare4 :1;
-	unsigned Spare3 :1;
+	unsigned IgnSelfClock :1; ///< @todo document this
 	unsigned IgnLostPLL   :1; ///< @todo document this
 	unsigned IgnOverBoost :1; ///< @todo document this
 	unsigned IgnitionRPM  :1; ///< @todo document this

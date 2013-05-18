@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -38,6 +38,7 @@
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
 #include "inc/decoderInterface.h"
+#include "inc/init.h"
 
 
 /** @brief Unimplemented Interrupt Handler
@@ -71,7 +72,14 @@ void PLLLockISR(void){
 		// Record the loss of PLL lock
 		FLAG_AND_INC_FLAGGABLE(PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET);
 		// Force sync loss with special code to prevent engine damage from incorrect timings
-		resetToNonRunningState(PLL_LOCK_LOST_PRECAUTIONARY);
+		// This is required otherwise we never see the self clock code, as it's immediately over-written by our code
+		if(KeyUserDebugs.syncLostWithThisID == SELF_CLOCK_MODE_PRECAUTIONARY){
+			// Don't over-write the self clock sync loss ID
+			resetToNonRunningState(SELF_CLOCK_MODE_PRECAUTIONARY);
+		}else{
+			// This means ONLY the PLL lock was lost (at this time)
+			resetToNonRunningState(PLL_LOCK_LOST_PRECAUTIONARY);
+		}
 		// Disable outputs as a precaution with dodgy clock
 		((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnLostPLL = 1;
 		((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjLostPLL = 1;
@@ -79,6 +87,35 @@ void PLLLockISR(void){
 	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
+/** @brief Self Clock Mode Entered/Exited
+ *
+ * When the main clock quality drops too low to be used, self clock is entered.
+ *
+ * See section 2.6.3 of the device manual for more information.
+ */
+void SelfClockISR(void){
+	// Clear the flag
+	CRGFLG = SCMIF;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
+	// Check the state of self clock mode flag
+	if(CRGFLG & SCM){ // Self Clock Mode
+		// Record the loss of main clock
+		FLAG_AND_INC_FLAGGABLE(SELF_CLOCK_MODE_ENTERED_OFFSET);
+		// Force sync loss with special code to prevent engine damage from incorrect timings
+		resetToNonRunningState(SELF_CLOCK_MODE_PRECAUTIONARY);
+		// Disable outputs as a precaution with dodgy clock
+		((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnSelfClock = 1;
+		((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjSelfClock = 1;
+	}else{ // Recovered
+		// Disabled when falling back to Self Clock Mode, re-enable here
+		enablePLL(); // Note, busy wait with no limit, danger to the manifold!
+
+		// Re-enable outputs with return of accurate clock
+		((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnSelfClock = 0;
+		((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjSelfClock = 0;
+	}
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
+}
 
 /** @brief Port P pins ISR
  *

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2010 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -82,7 +82,8 @@ void initPagedRAMTune(void) TUNETABLESF;
 
 /* Other function declarations are private and present in the C     */
 /* source file purely to assign them to a particular memory region. */
-EXTERN void init(void) FPAGE_FE;
+extern void init(void) FPAGE_FE;
+extern void enablePLL(void) FPAGE_FE; // Needed in self clock ISR
 
 
 /* Various masks and values used for initialising the contents of control registers. */

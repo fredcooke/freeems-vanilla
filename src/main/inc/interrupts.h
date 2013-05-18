@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -112,7 +112,8 @@ void SCI0ISR(void) INT TEXT1;          /* Serial 0 interrupt service routine */
 
 void LowVoltageISR(void) INT TEXT1;    /* Low voltage counter ISR */
 void VRegAPIISR(void) INT TEXT1;       /* VReg periodic interrupt ISR */
-void PLLLockISR(void) INT TEXT1;       /* PLL lock lost ISR */
+void PLLLockISR(void) INT TEXT1;       /* PLL lock lost/gained ISR */
+void SelfClockISR(void) INT TEXT1;     /* Self Clock mode entered/exited ISR */
 
 typedef void (* interruptTable)(void);
 
