@@ -87,7 +87,7 @@ void init(){
 /** @brief Set the PLL clock frequency
  *
  * Set the Phase Locked Loop to our desired frequency (80MHz) and switch to
- * using it for clock (40MHz bus speed).
+ * using it for clock (40MHz bus speed). Interrupt is enabled elsewhere.
  */
 void initPLL(){
 	CLKSEL &= PLLSELOFF;  /* Switches to base external OSCCLK to ensure PLL is not being used (off out of reset, but not sure if the monitor turns it on before passing control or not) */
@@ -102,7 +102,7 @@ void initPLL(){
 		/* Bus frequency is half PLL frequency and given by ((crystal frequency / (REFDV + 1)) * (SYNR + 1)) */
 	}
 
-	CLKSEL = PLLSELON; /* Switches to PLL clock for internal bus frequency      */
+	CLKSEL = PLLSEL; /* Switches to PLL clock for internal bus frequency        */
 	/* from MC9S12XDP512V2.pdf Section 2.4.1.1.2 page 101 Third paragraph       */
 	/* "This takes a MAXIMUM of 4 OSCCLK clock cylces PLUS 4 PLL clock cycles"  */
 	/* "During this time ALL clocks freeze, and CPU activity ceases"            */
@@ -660,8 +660,8 @@ void initInterrupts(){
 	/* Set up the Real Time Interrupt */
 	RTICTL = 0x81; /* 0b_1000_0001 0.125ms/125us period http://duckduckgo.com/?q=1+%2F+%2816MHz+%2F+%282+*+10^3%29+%29 */
 //	RTICTL = 0xF9; /* 0b_1111_1001 0.125s/125ms period http://duckduckgo.com/?q=1+%2F+%2816MHz+%2F+%282*10^6%29+%29 */
-	CRGINT |= 0x80; /* Enable the RTI */
-	CRGFLG = 0x80; /* Clear the RTI flag */
+	CRGINT |= (RTIE | PLLLOCKIE); /* Enable the Real Time Interrupt and PLL Lock Interrupt */
+	CRGFLG = (RTIF | PLLLOCKIF); /* Clear the RTI flag and LOCKI flag*/
 
 	// set up port H for testing
 	PPSH = ZEROS; // falling edge/pull up for all

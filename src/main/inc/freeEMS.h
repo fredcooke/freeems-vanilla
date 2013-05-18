@@ -57,6 +57,7 @@
 #include "globalDefines.h"
 #include "scalerDefines.h"
 #include "constantsLibrary.h"
+#include "9S12XDP512flags.h"
 
 /* Include data types at the top as other includes use them */
 #include "generalTypes.h"

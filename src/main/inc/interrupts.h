@@ -87,8 +87,6 @@ void Injector6ISR(void) INT TEXT1; ///< @copydoc Injector1ISR
  *
  * For details on any specific decoder implementation, see the documentation for
  * that specific file.
- *
- * @author Various
  */
 void PrimaryRPMISR(void) INT TEXT1;
 void SecondaryRPMISR(void) INT TEXT1;  ///< @copydoc PrimaryRPMISR
@@ -114,6 +112,7 @@ void SCI0ISR(void) INT TEXT1;          /* Serial 0 interrupt service routine */
 
 void LowVoltageISR(void) INT TEXT1;    /* Low voltage counter ISR */
 void VRegAPIISR(void) INT TEXT1;       /* VReg periodic interrupt ISR */
+void PLLLockISR(void) INT TEXT1;       /* PLL lock lost ISR */
 
 typedef void (* interruptTable)(void);
 

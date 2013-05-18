@@ -174,7 +174,7 @@ typedef struct { // BIT7 at the top
 	unsigned Spare5 :1;
 	unsigned Spare4 :1;
 	unsigned Spare3 :1;
-	unsigned Spare2 :1;
+	unsigned InjLostPLL   :1; ///< @todo document this
 	unsigned InjOverBoost :1; ///< @todo document this
 	unsigned InjectionRPM :1; ///< @todo document this
 } injectionCutFlags; // BIT0 at the bottom
@@ -187,7 +187,7 @@ typedef struct { // BIT7 at the top
 	unsigned Spare5 :1;
 	unsigned Spare4 :1;
 	unsigned Spare3 :1;
-	unsigned Spare2 :1;
+	unsigned IgnLostPLL   :1; ///< @todo document this
 	unsigned IgnOverBoost :1; ///< @todo document this
 	unsigned IgnitionRPM  :1; ///< @todo document this
 } ignitionCutFlags; // BIT0 at the bottom

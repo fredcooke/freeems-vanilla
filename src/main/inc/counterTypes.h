@@ -87,10 +87,11 @@ typedef struct {
 #define FLAG_SERIAL_CHECKSUM_MISMATCHES_OFFSET    12
 #define FLAG_SERIAL_PACKETS_UNDER_LENGTH_OFFSET   13
 
+	unsigned char phaseLockedLoopLockLost;         ///< Incremented when PLL lock is lost
+#define PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET        14
+
 	// Not currently used
-	unsigned char commsDebugMessagesNotSent;       ///< Incremented when a debug message can't be sent due to the TX buffer
 	unsigned char commsErrorMessagesNotSent;       ///< Incremented when an error message can't be sent due to the TX buffer
-#define FLAG_COMMS_DEBUG_MESSAGES_NOT_SENT_OFFSET 14
 #define FLAG_COMMS_ERROR_MESSAGES_NOT_SENT_OFFSET 15
 } Flaggable;
 

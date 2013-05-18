@@ -37,6 +37,7 @@
 
 #include "inc/freeEMS.h"
 #include "inc/interrupts.h"
+#include "inc/decoderInterface.h"
 
 
 /** @brief Unimplemented Interrupt Handler
@@ -50,6 +51,31 @@
 void UISR(void){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_CALLS_TO_UISRS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
+}
+
+/** @brief PLL Lock Lost/Gained
+ *
+ * When the Phase Locked Loop is lost or gained, this is called.
+ */
+void PLLLockISR(void){
+	// Clear the flag
+	CRGFLG = PLLLOCKIF;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
+	// Check the state of PLL lock
+	if(CRGFLG & PLLLOCK){ // Recovered
+		// Re-enable outputs with return of accurate clock
+		((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnLostPLL = 0;
+		((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjLostPLL = 0;
+	}else{ // Lock lost
+		// Record the loss of PLL lock
+		FLAG_AND_INC_FLAGGABLE(PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET);
+		// Force sync loss with special code to prevent engine damage from incorrect timings
+		resetToNonRunningState(PLL_LOCK_LOST_PRECAUTIONARY);
+		// Disable outputs as a precaution with dodgy clock
+		((ignitionCutFlags *)&KeyUserDebugs.ignitionCuts)->IgnLostPLL = 1;
+		((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjLostPLL = 1;
+	}
 	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 

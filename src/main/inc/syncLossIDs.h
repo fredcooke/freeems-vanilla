@@ -39,8 +39,9 @@
 #ifndef FILE_SYNC_LOSS_IDS_H_SEEN
 #define FILE_SYNC_LOSS_IDS_H_SEEN
 
-// Special case for buggy code
-#define BUG_REACHED_UNREACHABLE_CODE           0xFF
+// Special cases:
+#define BUG_REACHED_UNREACHABLE_CODE           0xFF // Buggy code indicator, called from places that should not be possible to reach.
+#define PLL_LOCK_LOST_PRECAUTIONARY            0xFE // Don't override count down, perhaps up? this is bad...
 
 // Special case for timeout
 #define EVENT_ARRIVAL_TIMEOUT                  0

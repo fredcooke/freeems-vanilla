@@ -91,11 +91,8 @@ EXTERN void init(void) FPAGE_FE;
 
 
 // PLL control values
-#define PLLLOCK       0x08 /* Mask for checking to see when the PLL loop is locked onto its target */
 #define PLLSELOFF     0x7F /* Mask for switching to base external OSCCLK clock 0b_0111_1111 */
-#define PLLSELON      0x80 /* Mask for switching to internally multiplied PLL clock 0b_1000_0000 */
 #define PLLOFF        0xBF /* Mask for turning the PLLON bit to ZERO 0b_1011_1111, IE, turning PLL off */
-#define PLLON         0x40 /* Mask for setting PLLON bit to ONE  0b_0100_0000, IE, turning PLL on */
 #define PLLDIVISOR    0x03 /* Input crystal frequency is divided by this number */
 #define PLLMULTIPLIER 0x09 /* The result of the above is multiplied by this number to give the bus frequency */
 
