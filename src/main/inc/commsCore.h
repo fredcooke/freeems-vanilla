@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -46,7 +46,6 @@
 #define EXTERN
 /* Internal use without check on buffer, purely here to place functions in paged memory. */
 void sendErrorInternal(unsigned short) FPAGE_FE;
-void sendDebugInternal(unsigned char*) FPAGE_FE;
 #else
 #define EXTERN extern
 #endif
@@ -61,9 +60,6 @@ void sendDebugInternal(unsigned char*) FPAGE_FE;
 EXTERN void decodePacketAndRespond(void) TEXT;
 
 EXTERN void sendErrorIfClear(unsigned short) FPAGE_FE;
-EXTERN void sendDebugIfClear(unsigned char*) FPAGE_FE;
-//EXTERN void sendErrorBusyWait(unsigned short) FPAGE_FE;
-//EXTERN void sendDebugBusyWait(unsigned char*) FPAGE_FE;
 
 EXTERN void resetReceiveState(unsigned char) FPAGE_FE;
 EXTERN void finaliseAndSend(unsigned short) FPAGE_FE;
