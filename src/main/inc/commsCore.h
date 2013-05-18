@@ -44,8 +44,6 @@
 
 #ifdef COMMSCORE_C
 #define EXTERN
-/* Internal use without check on buffer, purely here to place functions in paged memory. */
-void sendErrorInternal(unsigned short) FPAGE_FE;
 #else
 #define EXTERN extern
 #endif
@@ -58,8 +56,6 @@ void sendErrorInternal(unsigned short) FPAGE_FE;
 /* Function declarations */
 /* This function accesses paged flash and thus must be in linear space. Set explicitly to text. */
 EXTERN void decodePacketAndRespond(void) TEXT;
-
-EXTERN void sendErrorIfClear(unsigned short) FPAGE_FE;
 
 EXTERN void resetReceiveState(unsigned char) FPAGE_FE;
 EXTERN void finaliseAndSend(unsigned short) FPAGE_FE;

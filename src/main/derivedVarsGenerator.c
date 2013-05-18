@@ -60,8 +60,6 @@ void generateDerivedVars(){
 		// TODO add maf calc load option here
 	}else{ /* Default to MAP, but throw error */
 		DerivedVars->LoadMain = CoreVars->MAP;
-		/* If anyone is listening, let them know something is wrong */
-		sendErrorIfClear(LOAD_NOT_CONFIGURED_CODE); // or maybe queue it?
 	}
 
 
