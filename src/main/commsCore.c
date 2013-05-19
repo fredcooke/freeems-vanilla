@@ -419,13 +419,13 @@ void decodePacketAndRespond(){
 			}
 
 			unsigned short zeroCounter;
-			unsigned char* counterPointer = (char*) &Counters;
+			unsigned char* counterPointer = (unsigned char*) &Counters;
 			for(zeroCounter = 0;zeroCounter < sizeof(Counter);zeroCounter++){
 				*counterPointer = 0;
 				counterPointer++;
 			}
 			KeyUserDebugs.flaggableFlags = 0;
-			unsigned char* flaggablePointer = (char*) &Flaggables;
+			unsigned char* flaggablePointer = (unsigned char*) &Flaggables;
 			for(zeroCounter = 0;zeroCounter < sizeof(Flaggable);zeroCounter++){
 				*flaggablePointer = 0;
 				flaggablePointer++;
@@ -489,7 +489,7 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			// Don't let anyone write to running variables unless we are running BenchTest firmware!
-			if((details.flags & block_is_read_only) && compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME))){
+			if((details.flags & block_is_read_only) && compare((unsigned char*)&decoderName, (unsigned char*)BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME))){
 				errorID = attemptToWriteToReadOnlyBlock;
 				break;
 			}
@@ -1138,7 +1138,7 @@ void decodePacketAndRespond(){
 		case startBenchTestSequence:
 		{
 			// see TODO on include at top and modify this line appropriately
-			if(!(compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME)))){
+			if(!(compare((unsigned char*)&decoderName, (unsigned char*)BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME)))){
 				if(RXCalculatedPayloadLength < 1){
 					errorID = payloadLengthTypeMismatch;
 					break;
