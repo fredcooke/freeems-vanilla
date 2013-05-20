@@ -123,7 +123,7 @@ const interruptTable _vectors[] VECTORS = {
 /*	RTOutput 6      RTOutput 5      RTOutput 4      RTOutput 3      RTOutput 2      RTOutput 1      Secondary RPM   Primary RPM */
 
 /* 0xFFF0 to 0xFFFF */
-	RTIISR,         IRQISR,         XIRQISR,        UISR,           UISR,           UISR,           UISR,           _start
+	RTIISR,         IRQISR,         XIRQISR,        UISR,           UISR,           _start,         _start,         _start
 /*	RTI             IRQ             XIRQ            SWI             UnimpInstruct   COP Reset       ClockReset      SystemReset */
 /*	                                                                                                                Entry point */
 };
