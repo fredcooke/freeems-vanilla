@@ -206,11 +206,11 @@
 //0x0011 DIRECT DVUCP() /* /* Direct addressing mode control register. I doubt we will use this. */
 
 
-//// MMC 4/4
-//0x011C RAMWPC /* RAM Write Protection register, the pdf document appears to be incorrect for this, best not to touch it. */
-//0x011D RAMXGU /* XGATE Upper region limit, this defines how much RAM we give the xgate to work with. */
-//0x011E RAMSHL /* Shared memory lower boundary register, this defines the lower limit of the overlap between XGATE RAM and CPU RAM */
-//0x011F RAMSHU /* Shared memory upper boundary register, this defines the upper limit of the overlap between XGATE RAM and CPU RAM */
+// MMC 4/4
+#define RAMWPC DVUCP(0x011C) /* RAM Write Protection register, the pdf document appears to be incorrect for this, best not to touch it. */
+#define RAMXGU DVUCP(0x011D) /* XGATE Upper region limit, this defines how much RAM we give the xgate to work with. */
+#define RAMSHL DVUCP(0x011E) /* Shared memory lower boundary register, this defines the lower limit of the overlap between XGATE RAM and CPU RAM */
+#define RAMSHU DVUCP(0x011F) /* Shared memory upper boundary register, this defines the upper limit of the overlap between XGATE RAM and CPU RAM */
 
 
 //// EBI
@@ -869,10 +869,9 @@
 #define PITCNT3 DVUSP(0x0356)  /* PIT Count Register 3, current value of down counter (0x0356 PITCNT3 (hi), 0x0357 PITCNT3 (lo)) */
 
 
-// TODO XGATE Set up stuff
-#define XGMCTL DVUSP(0x0380) /* TODO: 7th bit of this should be set to 0 for now to turn the XGATE off */
+#define XGMCTL DVUSP(0x0380)
 #define XGMCTLHI DVUCP(0x0380)
-#define XGMCTLLO DVUCP(0x0381) /* TODO: or 7th bit of this should be set to 0 for now to turn the XGATE off */
+#define XGMCTLLO DVUCP(0x0381)
 #define XGCHID DVUCP(0x0382)
 // unused on xdp512 #define XGVBR DVUCP(0x0384)
 // unused on xdp512 #define XGVBR DVUCP(0x0385)

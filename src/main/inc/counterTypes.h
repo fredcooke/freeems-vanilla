@@ -89,9 +89,53 @@ typedef struct {
 
 	unsigned char phaseLockedLoopLockLost;         ///< Incremented when PLL lock is lost
 	unsigned char selfClockModeEntered;            ///< Incremented when the MCU loses main clock
-#define PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET        14
-#define SELF_CLOCK_MODE_ENTERED_OFFSET            15
+#define FLAG_PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET   14
+#define FLAG_SELF_CLOCK_MODE_ENTERED_OFFSET       15
 } Flaggable;
+
+
+// Some more Fred Cooke cunning inspired by EssEss
+#define FLAG_AND_INC_FLAGGABLE2(OFFSET)         \
+(*(((unsigned char*)&Flaggables2) + OFFSET))++; \
+KeyUserDebugs.flaggableFlags2 |= (1 << OFFSET);               // End of macro
+
+/// These should all stay at zero, thus they are incremented through a mechanism that also sets a flag in a special variable
+typedef struct {
+	// More error conditions
+	unsigned char spuriousInterrupts;        ///< ? TODO
+	unsigned char unimplementedOpcodes;      ///< ? TODO
+	unsigned char RAMAccessViolations;       ///< ? TODO
+	unsigned char XGATESoftwareErrors;       ///< ? TODO
+#define FLAG_SPURIOUS_INTERRUPTS_OFFSET      0
+#define FLAG_UNIMPLEMENTED_OPCODES_OFFSET    1
+#define FLAG_RAM_ACCESS_VIOLATIONS_OFFSET    2
+#define FLAG_XGATE_SOFTWARE_ERRORS_OFFSET    3
+
+	unsigned char spare4;                    ///< Spare flaggable.
+	unsigned char spare5;                    ///< Spare flaggable.
+	unsigned char spare6;                    ///< Spare flaggable.
+	unsigned char spare7;                    ///< Spare flaggable.
+	unsigned char spare8;                    ///< Spare flaggable.
+	unsigned char spare9;                    ///< Spare flaggable.
+	unsigned char spare10;                   ///< Spare flaggable.
+	unsigned char spare11;                   ///< Spare flaggable.
+	unsigned char spare12;                   ///< Spare flaggable.
+	unsigned char spare13;                   ///< Spare flaggable.
+	unsigned char spare14;                   ///< Spare flaggable.
+	unsigned char spare15;                   ///< Spare flaggable.
+#define FLAG_SPARE_4_OFFSET                  4
+#define FLAG_SPARE_5_OFFSET                  5
+#define FLAG_SPARE_6_OFFSET                  6
+#define FLAG_SPARE_7_OFFSET                  7
+#define FLAG_SPARE_8_OFFSET                  8
+#define FLAG_SPARE_9_OFFSET                  9
+#define FLAG_SPARE_10_OFFSET                10
+#define FLAG_SPARE_11_OFFSET                11
+#define FLAG_SPARE_12_OFFSET                12
+#define FLAG_SPARE_13_OFFSET                13
+#define FLAG_SPARE_14_OFFSET                14
+#define FLAG_SPARE_15_OFFSET                15
+} Flaggable2;
 
 
 /// Use this block to manage the various clocks kept.

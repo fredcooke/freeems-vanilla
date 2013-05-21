@@ -53,7 +53,7 @@ const interruptTable _vectors[] VECTORS = {
 /*	                                                                                                                            */
 
 /* 0xFF10 to 0xFF1F */
-	UISR,           UISR,           UISR,           UISR,           UISR,           UISR,           UISR,           UISR,
+	SpuriousISR,    UISR,           UISR,           UISR,           UISR,           UISR,           UISR,           UISR,
 /*	Spurious        Reserved        Reserved        Reserved        Reserved        Reserved        Reserved        Reserved    */
 /*	                                                                                                                            */
 
@@ -78,7 +78,7 @@ const interruptTable _vectors[] VECTORS = {
 /*	                                                                                                                            */
 
 /* 0xFF60 to 0xFF6F */
-	UISR,           UISR,           UISR,           UISR,           UISR,           UISR,           UISR,           UISR,
+	RAMViolationISR,XGATEErrorISR,  UISR,           UISR,           UISR,           UISR,           UISR,           UISR,
 /*	RAM violation   XGATEsoft error XGATE 7         XGATE 6         XGATE 5         XGATE 4         XGATE 3         XGATE 2     */
 /*	                                                                                                                            */
 
@@ -123,7 +123,7 @@ const interruptTable _vectors[] VECTORS = {
 /*	RTOutput 6      RTOutput 5      RTOutput 4      RTOutput 3      RTOutput 2      RTOutput 1      Secondary RPM   Primary RPM */
 
 /* 0xFFF0 to 0xFFFF */
-	RTIISR,         IRQISR,         XIRQISR,        UISR,           UISR,           _start,         _start,         _start
+	RTIISR,         IRQISR,         XIRQISR,        UISR,           UnimplOpcodeISR,_start,         _start,         _start
 /*	RTI             IRQ             XIRQ            SWI             UnimpInstruct   COP Reset       ClockReset      SystemReset */
 /*	                                                                                                                Entry point */
 };

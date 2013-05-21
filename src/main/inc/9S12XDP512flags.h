@@ -83,6 +83,34 @@
 #define PCE           BIT1 // TODO
 #define SCME          BIT0 // TODO
 
+// RAMWPC
+#define RPWE          BIT7 // TODO
+//#define 0           BIT6 // Reserved
+//#define 0           BIT5 // Reserved
+//#define 0           BIT4 // Reserved
+//#define 0           BIT3 // Reserved
+//#define 0           BIT2 // Reserved
+#define AVIE          BIT1 // TODO
+#define AVIF          BIT0 // TODO
+
+// XGMCTL
+#define XGEM          BIT15_16 // TODO
+#define XGFRZM        BIT14_16 // TODO
+#define XGDBGM        BIT13_16 // TODO
+#define XGSSM         BIT12_16 // TODO
+#define XGFACTM       BIT11_16 // TODO
+//#define 0           BIT10_16 // Reserved
+#define XGSWEIFM      BIT9_16  // TODO
+#define XGIEM         BIT8_16  // TODO
+#define XGE           BIT7_16  // TODO
+#define XGFRZ         BIT6_16  // TODO
+#define XGDBG         BIT5_16  // TODO
+#define XGSS          BIT4_16  // TODO
+#define XGFACT        BIT3_16  // TODO
+//#define 0           BIT2_16  // Reserved
+#define XGSWEIF       BIT1_16  // TODO
+#define XGIE          BIT0_16  // TODO
+
 
 #else
 	/* let us know if we are being untidy with headers */

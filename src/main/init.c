@@ -672,6 +672,7 @@ void initInterrupts(){
 //	RTICTL = 0xF9; /* 0b_1111_1001 0.125s/125ms period http://duckduckgo.com/?q=1+%2F+%2816MHz+%2F+%282*10^6%29+%29 */
 	CRGINT |= (RTIE | PLLLOCKIE | SCMIE); /* Enable the Real Time Interrupt, PLL Lock Interrupt, and Self Clock Mode Interrupt */
 	CRGFLG = (RTIF | PLLLOCKIF | SCMIF); /* Clear the RTI, LOCKI, and SCMI flags */
+	RAMWPC |= AVIE; // Enable the access protection interrupt for XGATE RAM
 
 	// set up port H for testing
 	PPSH = ZEROS; // falling edge/pull up for all

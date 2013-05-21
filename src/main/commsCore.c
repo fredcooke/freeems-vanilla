@@ -76,7 +76,7 @@ unsigned short populateBasicDatalog(){
 	KeyUserDebugs.zsp7 = Counters.pinScheduledToToggleError;
 	KeyUserDebugs.zsp8 = Counters.pinScheduledToDoNothing;
 	KeyUserDebugs.zsp9 = Counters.pinScheduledFromCold;
-	KeyUserDebugs.zsp10 = Counters.pinScheduledWithTimerExtension;
+//	? = Counters.pinScheduledWithTimerExtension;
 
 	KeyUserDebugs.coreStatusA = coreStatusA;
 	KeyUserDebugs.clockIn8thsOfAMilli = Clocks.realTimeClockMain;

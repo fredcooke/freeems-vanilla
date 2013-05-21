@@ -115,6 +115,12 @@ void VRegAPIISR(void) INT TEXT1;       /* VReg periodic interrupt ISR */
 void PLLLockISR(void) INT TEXT1;       /* PLL lock lost/gained ISR */
 void SelfClockISR(void) INT TEXT1;     /* Self Clock mode entered/exited ISR */
 
+void SpuriousISR(void) INT TEXT1;      /* Spurious Interrupt ISR */
+void UnimplOpcodeISR(void) INT TEXT1;  /* Unimplemented Opcode ISR */
+void RAMViolationISR(void) INT TEXT1;  /* CPU RAM Access Violation ISR */
+void XGATEErrorISR(void) INT TEXT1;    /* XGATE Software Error ISR */
+
+
 typedef void (* interruptTable)(void);
 
 

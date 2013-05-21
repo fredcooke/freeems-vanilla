@@ -149,16 +149,18 @@ typedef struct {
 	unsigned char serialAndCommsCodeErrors;    ///< Sum of checksum, escape mismatches, starts inside, and over/under length
 	unsigned short inputEventTimeTolerance;    ///< Required to tune noise rejection over RPM TODO add to LT1 and MissingTeeth
 
-	// replace highest first to avoid hassles for offset based dave/mtx...
-	unsigned short zsp10; ///< Spare US variable
-	unsigned short zsp9;  ///< Spare US variable
+	// TODO move this up above with the other flags post OLV 0.0.3 release
+	unsigned short flaggableFlags2; ///< Flags to go with our flaggables2 struct.
 
+	// replace highest first to avoid hassles for offset based dave/mtx...
+	unsigned short zsp9;  ///< Spare US variable
 	unsigned short zsp8;  ///< Spare US variable
 	unsigned short zsp7;  ///< Spare US variable
 	unsigned short zsp6;  ///< Spare US variable
 	unsigned short zsp5;  ///< Spare US variable
 	unsigned short zsp4;  ///< Spare US variable
 	unsigned short zsp3;  ///< Spare US variable
+
 	// Do we want these recorded at log assembly time, or at recording of ADC time, or at calculation of vars (core and/or deriv) or at enabling of scheduling, or all of the above?
 	unsigned short clockInMilliSeconds; ///< Migrate to start of all large datalogs once analysed
 	unsigned short clockIn8thsOfAMilli; ///< Migrate to start of all large datalogs once analysed

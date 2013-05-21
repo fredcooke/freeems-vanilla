@@ -120,6 +120,7 @@ EXTERN Clock Clocks;                  ///< Timer Clocks for various functions.
 EXTERN Counter Counters;              ///< Execution count for various blocks of code.
 EXTERN KeyUserDebug KeyUserDebugs;    ///< Formalised key logging vars in one place.
 EXTERN Flaggable Flaggables;          ///< The single instance of our flaggable struct.
+EXTERN Flaggable2 Flaggables2;        ///< The single instance of our flaggable2 struct.
 
 /** @page bankedRunningVariables Banked Running Variables
  *

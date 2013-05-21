@@ -55,6 +55,55 @@ void UISR(void){
 	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
 }
 
+/** @brief Spurious Interrupt Handler
+ *
+ * This is fired when the correct vector for an interrupt can not be determined.
+ *
+ * Theoretically this should not happen, and probably indicates a code fault.
+ */
+void SpuriousISR(void){
+	// No flag to clear
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
+	FLAG_AND_INC_FLAGGABLE2(FLAG_SPURIOUS_INTERRUPTS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
+}
+
+/** @brief Unimplemented Opcode Handler
+ *
+ * Unimplemented opcode trap. This should never run and probably indicates an
+ * attempt to execute data instead of code, but could be an assembler issue.
+ */
+void UnimplOpcodeISR(void){
+	// No flag to clear
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
+	FLAG_AND_INC_FLAGGABLE2(FLAG_UNIMPLEMENTED_OPCODES_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
+}
+
+/** @brief CPU RAM Access Violation Handler
+ *
+ * If the CPU tries to access protected XGATE RAM, this is fired.
+ */
+void RAMViolationISR(void){
+	// Clear the flag
+	RAMWPC = AVIF;
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
+	FLAG_AND_INC_FLAGGABLE2(FLAG_RAM_ACCESS_VIOLATIONS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
+}
+
+/** @brief XGATE Software Error Handler
+ *
+ * If buggy code is being executed on the XGATE, this may fire alerting us to it.
+ */
+void XGATEErrorISR(void){
+	// Clear the flag
+	XGMCTL = (XGSWEIFM | XGSWEIF);
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT7, PORTB);
+	FLAG_AND_INC_FLAGGABLE2(FLAG_XGATE_SOFTWARE_ERRORS_OFFSET);
+	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT7, PORTB);
+}
+
 /** @brief PLL Lock Lost/Gained
  *
  * When the Phase Locked Loop is lost or gained, this is called.
@@ -70,7 +119,7 @@ void PLLLockISR(void){
 		((injectionCutFlags *)&KeyUserDebugs.injectionCuts)->InjLostPLL = 0;
 	}else{ // Lock lost
 		// Record the loss of PLL lock
-		FLAG_AND_INC_FLAGGABLE(PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET);
+		FLAG_AND_INC_FLAGGABLE(FLAG_PHASE_LOCKED_LOOP_LOCK_LOST_OFFSET);
 		// Force sync loss with special code to prevent engine damage from incorrect timings
 		// This is required otherwise we never see the self clock code, as it's immediately over-written by our code
 		if(KeyUserDebugs.syncLostWithThisID == SELF_CLOCK_MODE_PRECAUTIONARY){
@@ -100,7 +149,7 @@ void SelfClockISR(void){
 	// Check the state of self clock mode flag
 	if(CRGFLG & SCM){ // Self Clock Mode
 		// Record the loss of main clock
-		FLAG_AND_INC_FLAGGABLE(SELF_CLOCK_MODE_ENTERED_OFFSET);
+		FLAG_AND_INC_FLAGGABLE(FLAG_SELF_CLOCK_MODE_ENTERED_OFFSET);
 		// Force sync loss with special code to prevent engine damage from incorrect timings
 		resetToNonRunningState(SELF_CLOCK_MODE_PRECAUTIONARY);
 		// Disable outputs as a precaution with dodgy clock
