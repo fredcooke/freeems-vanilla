@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -46,8 +46,7 @@
 /** @brief Lookup memory block details.
  *
  * Flash only blocks leave the RAM address and page values
- * set to zero. ID's that don't exist leave all set to zero.
- * Error handling is to be done externally based on that.
+ * set to zero. ID's that don't exist return an error code.
  *
  * @note This function is an exception to the style rule switch statement
  * blocks of using a {} pair for each case statement. Readability is better
@@ -605,6 +604,11 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->size = sizeof(Flaggable);
 		details->RAMPage = RPAGE_LINEAR;
 		details->RAMAddress = &Flaggables;
+		break;
+	case Flaggables2LocationID:
+		details->size = sizeof(Flaggable2);
+		details->RAMPage = RPAGE_LINEAR;
+		details->RAMAddress = &Flaggables2;
 		break;
 
 	default:

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -169,6 +169,7 @@
 #define CountersLocationID                             0xF004
 #define ClocksLocationID                               0xF005
 #define FlaggablesLocationID                           0xF006
+#define Flaggables2LocationID                          0xF007
 
 
 #else
