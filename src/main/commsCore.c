@@ -419,16 +419,26 @@ void decodePacketAndRespond(){
 			}
 
 			unsigned short zeroCounter;
-			unsigned char* counterPointer = (unsigned char*) &Counters;
+			unsigned char* counterPointer;
+
+			counterPointer = (unsigned char*) &Counters;
 			for(zeroCounter = 0;zeroCounter < sizeof(Counter);zeroCounter++){
 				*counterPointer = 0;
 				counterPointer++;
 			}
+
 			KeyUserDebugs.flaggableFlags = 0;
-			unsigned char* flaggablePointer = (unsigned char*) &Flaggables;
+			counterPointer = (unsigned char*) &Flaggables;
 			for(zeroCounter = 0;zeroCounter < sizeof(Flaggable);zeroCounter++){
-				*flaggablePointer = 0;
-				flaggablePointer++;
+				*counterPointer = 0;
+				counterPointer++;
+			}
+
+			KeyUserDebugs.flaggableFlags2 = 0;
+			counterPointer = (unsigned char*) &Flaggables2;
+			for(zeroCounter = 0;zeroCounter < sizeof(Flaggable2);zeroCounter++){
+				*counterPointer = 0;
+				counterPointer++;
 			}
 			break;
 		}
