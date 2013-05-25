@@ -53,7 +53,7 @@ typedef struct {
 	unsigned char callsToUISRs;                    ///< to ensure we aren't accidentally triggering unused ISRs.
 	unsigned char lowVoltageConditions;            ///< low voltage conditions.
 #define FLAG_CALLS_TO_UISRS_OFFSET                 0
-#define FLAG_LOW_VOLTATE_CONDITION_OFFSET          1
+#define FLAG_LOW_VOLTAGE_CONDITION_OFFSET          1
 
 	// RPM/Position input
 	unsigned char decoderSyncLosses;               ///< Number of times cam, crank or combustion sync is lost.
