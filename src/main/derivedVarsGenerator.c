@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -61,10 +61,6 @@ void generateDerivedVars(){
 	}else{ /* Default to MAP, but throw error */
 		DerivedVars->LoadMain = CoreVars->MAP;
 	}
-
-
-	/* Look up VE with RPM and Load */
-	DerivedVars->VEMain = lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, VETableMainLocationID);
 
 
 	/* Look up target Lambda with RPM and Load */

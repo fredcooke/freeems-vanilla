@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -45,7 +45,7 @@
 #ifndef VETableMainFlashV
 #define VETableMainFlashV VETableMainFlash
 #define VETableSecondaryFlashV VETableSecondaryFlash
-#define VETableTertiaryFlashV VETableTertiaryFlash
+#define AirflowTableFlashV AirflowTableFlash
 #define LambdaTableFlashV LambdaTableFlash
 #endif
 
@@ -157,17 +157,17 @@ const volatile mainTable VETableSecondaryFlashV FUELTABLESD = {
 };
 
 
-const volatile mainTable VETableTertiaryFlashV FUELTABLESD = {
+const volatile mainTable AirflowTableFlashV FUELTABLESD = {
 	RPMLength:  MAINTABLE_RPM_LENGTH,
 	LoadLength: MAINTABLE_LOAD_LENGTH,
 	RPM:{
 		#include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
 	},
 	Load:{
-		#include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
+		#include "../data/tables/axis/DefaultForAlphaN-Load.h"
 	},
 	Table:{
-		#include "../data/tables/ve/DefaultVE24RPMx19Load.h"
+		#include "../data/tables/airflow/flat15PercentAirflow.h"
 	}
 };
 

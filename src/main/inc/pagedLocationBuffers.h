@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -62,8 +62,8 @@ EXTERN void* VETableMainFlashLocation;
 EXTERN void* VETableMainFlash2Location;
 EXTERN void* VETableSecondaryFlashLocation;
 EXTERN void* VETableSecondaryFlash2Location;
-EXTERN void* VETableTertiaryFlashLocation;
-EXTERN void* VETableTertiaryFlash2Location;
+EXTERN void* AirflowTableFlashLocation;
+EXTERN void* AirflowTableFlash2Location;
 EXTERN void* LambdaTableFlashLocation;
 EXTERN void* LambdaTableFlash2Location;
 

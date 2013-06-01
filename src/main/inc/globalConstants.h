@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -99,7 +99,7 @@ EXTERN const unsigned char injectorMainGoLowMasks[INJECTION_CHANNELS];
 /* Main lookup tables */ // TODO volatile here or not?
 EXTERN const volatile mainTable VETableMainFlash;
 EXTERN const volatile mainTable VETableSecondaryFlash;
-EXTERN const volatile mainTable VETableTertiaryFlash;
+EXTERN const volatile mainTable AirflowTableFlash;
 EXTERN const volatile mainTable LambdaTableFlash;
 
 EXTERN const volatile mainTable IgnitionAdvanceTableMainFlash;
@@ -109,7 +109,7 @@ EXTERN const volatile mainTable InjectionAdvanceTableSecondaryFlash;
 
 EXTERN const volatile mainTable VETableMainFlash2;
 EXTERN const volatile mainTable VETableSecondaryFlash2;
-EXTERN const volatile mainTable VETableTertiaryFlash2;
+EXTERN const volatile mainTable AirflowTableFlash2;
 EXTERN const volatile mainTable LambdaTableFlash2;
 
 EXTERN const volatile mainTable IgnitionAdvanceTableMainFlash2;

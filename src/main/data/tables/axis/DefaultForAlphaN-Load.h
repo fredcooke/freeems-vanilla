@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2013 Fred Cooke
+ * Copyright 2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -28,20 +28,27 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief Fuel VE and Lambda tables
- *
- * This file contains the definitions of the secondary group VE and lambda
- * tables. The declaration can be found in the global constants header file.
- *
- * @note At least one Doxygen bug prevents the data structures below being show
- *       correctly in the documentation for this file. Please see the source
- *       code itself for more information.
+ * @brief Default Alpha-N load values spaced evenly.
  */
 
 
-#define VETableMainFlashV VETableMainFlash2
-#define VETableSecondaryFlashV VETableSecondaryFlash2
-#define AirflowTableFlashV AirflowTableFlash2
-#define LambdaTableFlashV LambdaTableFlash2
-
-#include "FuelTables.c"
+// 19 TPS % load values
+  PERCENT(0),
+  PERCENT(5),
+ PERCENT(10),
+ PERCENT(15),
+ PERCENT(20),
+ PERCENT(25),
+ PERCENT(30),
+ PERCENT(35),
+ PERCENT(40),
+ PERCENT(46),
+ PERCENT(52),
+ PERCENT(58),
+ PERCENT(64),
+ PERCENT(70),
+ PERCENT(76),
+ PERCENT(82),
+ PERCENT(88),
+ PERCENT(94),
+PERCENT(100)

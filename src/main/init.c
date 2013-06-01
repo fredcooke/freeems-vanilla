@@ -242,11 +242,11 @@ void initFuelAddresses(){
 	/* Setup addresses within the page to avoid warnings */
 	VETableMainFlashLocation       = (void*)&VETableMainFlash;
 	VETableSecondaryFlashLocation  = (void*)&VETableSecondaryFlash;
-	VETableTertiaryFlashLocation   = (void*)&VETableTertiaryFlash;
+	AirflowTableFlashLocation      = (void*)&AirflowTableFlash;
 	LambdaTableFlashLocation       = (void*)&LambdaTableFlash;
 	VETableMainFlash2Location      = (void*)&VETableMainFlash2;
 	VETableSecondaryFlash2Location = (void*)&VETableSecondaryFlash2;
-	VETableTertiaryFlash2Location  = (void*)&VETableTertiaryFlash2;
+	AirflowTableFlash2Location     = (void*)&AirflowTableFlash2;
 	LambdaTableFlash2Location      = (void*)&LambdaTableFlash2;
 }
 
@@ -260,12 +260,12 @@ void initPagedRAMFuel(void){
 	RPAGE = RPAGE_FUEL_ONE;
 	memcpy((void*)&TablesA, VETableMainFlashLocation,       sizeof(mainTable));
 	memcpy((void*)&TablesB, VETableSecondaryFlashLocation,  sizeof(mainTable));
-	memcpy((void*)&TablesC, VETableTertiaryFlashLocation,   sizeof(mainTable));
+	memcpy((void*)&TablesC, AirflowTableFlashLocation,      sizeof(mainTable));
 	memcpy((void*)&TablesD, LambdaTableFlashLocation,       sizeof(mainTable));
 	RPAGE = RPAGE_FUEL_TWO;
 	memcpy((void*)&TablesA, VETableMainFlash2Location,      sizeof(mainTable));
 	memcpy((void*)&TablesB, VETableSecondaryFlash2Location, sizeof(mainTable));
-	memcpy((void*)&TablesC, VETableTertiaryFlash2Location,  sizeof(mainTable));
+	memcpy((void*)&TablesC, AirflowTableFlash2Location,     sizeof(mainTable));
 	memcpy((void*)&TablesD, LambdaTableFlash2Location,      sizeof(mainTable));
 }
 

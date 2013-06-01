@@ -119,13 +119,13 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesB;
 		details->FlashAddress = VETableSecondaryFlashLocation;
 		break;
-	case VETableTertiaryLocationID:
+#endif
+	case AirflowTableLocationID:
 		details->RAMPage = RPAGE_FUEL_ONE;
 		details->FlashPage = FUELTABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC;
-		details->FlashAddress = VETableTertiaryFlashLocation;
+		details->FlashAddress = AirflowTableFlashLocation;
 		break;
-#endif
 	case LambdaTableLocationID:
 		details->RAMPage = RPAGE_FUEL_ONE;
 		details->FlashPage = FUELTABLES_PPAGE;
@@ -145,11 +145,11 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->RAMAddress = (void*)&TablesB;
 		details->FlashAddress = VETableSecondaryFlash2Location;
 		break;
-	case VETableTertiary2LocationID:
+	case AirflowTable2LocationID:
 		details->RAMPage = RPAGE_FUEL_TWO;
 		details->FlashPage = FUELTABLES_PPAGE;
 		details->RAMAddress = (void*)&TablesC;
-		details->FlashAddress = VETableTertiaryFlash2Location;
+		details->FlashAddress = AirflowTableFlash2Location;
 		break;
 	case LambdaTable2LocationID:
 		details->RAMPage = RPAGE_FUEL_TWO;

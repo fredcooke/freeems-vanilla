@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -38,6 +38,8 @@
 #define FUELANDIGNITIONCALCS_C
 #include "inc/freeEMS.h"
 #include "inc/utils.h"
+#include "inc/locationIDs.h"
+#include "inc/tableLookup.h"
 #include "inc/fuelAndIgnitionCalcs.h"
 
 
@@ -52,11 +54,14 @@ void calculateFuelAndIgnition(){
 	unsigned short airInletTemp = CoreVars->IAT; /* All except MAF use this. */
 	/* Determine the type of air flow data */
 	if(!(fixedConfigs2.algorithmSettings.algorithmType)){
+		/* Look up VE with RPM and MAP */
+		DerivedVars->VEMain = lookupMainTable(CoreVars->RPM, CoreVars->MAP, VETableMainLocationID);
 		/* This won't overflow until 512kPa or about 60psi of boost with 128% VE. */
 		DerivedVars->AirFlow = ((unsigned long)CoreVars->MAP * DerivedVars->VEMain) / VE(100);
 		/* Result is 450 - 65535 always. */
 	}else if(fixedConfigs2.algorithmSettings.algorithmType == ALGO_ALPHA_N){
-		DerivedVars->AirFlow = DerivedVars->VEMain; /* Not actually VE, but rather tuned air flow without density information */
+		/* Look up Airflow with RPM and TPS */
+		DerivedVars->AirFlow = lookupMainTable(CoreVars->RPM, CoreVars->TPS, AirflowTableLocationID); /* Tuned air flow without density information */
 	}else if(fixedConfigs2.algorithmSettings.algorithmType == ALGO_MAF){
 		DerivedVars->AirFlow = CoreVars->MAF; /* Just fix temperature at appropriate level to provide correct Lambda */
 		/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!

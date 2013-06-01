@@ -42,8 +42,8 @@
 #define VETableMain2LocationID                         0x0001
 #define VETableSecondaryLocationID                     0x0002
 #define VETableSecondary2LocationID                    0x0003
-#define VETableTertiaryLocationID                      0x0004
-#define VETableTertiary2LocationID                     0x0005
+#define AirflowTableLocationID                         0x0004
+#define AirflowTable2LocationID                        0x0005
 #define LambdaTableLocationID                          0x0006
 #define LambdaTable2LocationID                         0x0007
 /* Timing tables */

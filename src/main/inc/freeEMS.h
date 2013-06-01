@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -200,7 +200,7 @@ typedef union {
 } Tables2;
 
 typedef union {
-	mainTable VETableMainTertiary;
+	mainTable AirflowTable;
 	mainTable InjectionAdvanceTableMain;
 	SmallTables3 SmallTablesC;
 } Tables3;
@@ -232,7 +232,7 @@ EXTERN unsigned char currentTimeRPage;
 ///* Pointers to main tables to aid readability */
 //EXTERN mainTable* VETableMain;
 //EXTERN mainTable* VETableSecondary;
-//EXTERN mainTable* VETableTertiary;
+//EXTERN mainTable* AirflowTable;
 //EXTERN mainTable* LambdaTable;
 //
 //EXTERN mainTable* IgnitionAdvanceTableMain;

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2012 Fred Cooke
+ * Copyright 2012-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -92,6 +92,7 @@
 // For table data
 #define IT(TIMING_BTDC)               (unsigned long)ROUND((TIMING_BTDC) * (double)IGNITION_TIMING_FACTOR)
 #define VE(VOLUMETRIC_EFFICIENCY)     (unsigned long)ROUND((VOLUMETRIC_EFFICIENCY) * (double)VE_FACTOR)
+#define AF(PERCENTAGE)                PERCENT(PERCENTAGE)    // Shortcut for table use, same as above
 #define LR(LAMBDA_RATIO)              LAMBDA(LAMBDA_RATIO)   // Shortcut for table use, same as above
 #define AP(AFR)                       LR((double)AFR / 14.7) // AFR Petrol, alternative unit for table use
 #define PC(PERCENTAGE)                PERCENT(PERCENTAGE)    // Shortcut for table use, same as above
