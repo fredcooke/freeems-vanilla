@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2012 Fred Cooke
+ * Copyright 2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -27,8 +27,6 @@
 /** @file
  *
  * Declarations for simpleGPIO.c implementations.
- * To add a file to the project :
- * - Change all 4 hash defines to the filename uppercased and underscored
  */
 
 
