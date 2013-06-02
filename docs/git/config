@@ -38,7 +38,7 @@
 	fetch = +refs/heads/*:refs/remotes/gitorious/*
 	push = refs/heads/master:refs/heads/dev
 [remote "sourceforge"]
-	url = ssh://fredcooke@freeems.git.sourceforge.net/gitroot/freeems/freeems-vanilla
+	url = ssh://fredcooke@git.code.sf.net/p/freeems/freeems-vanilla
 	fetch = +refs/heads/*:refs/remotes/sourceforge/*
 	push = refs/heads/master:refs/heads/dev
 [remote "repoorcz"]
