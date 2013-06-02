@@ -234,6 +234,7 @@ typedef struct {
 #define ALGO_SPEED_DENSITY 0
 #define ALGO_ALPHA_N       1
 #define ALGO_MAF           2
+#define ALGO_SD_AN_BLEND   3
 
 #define DWELL_BRV   0
 #define DWELL_RPM   1

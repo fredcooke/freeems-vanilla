@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -79,7 +79,7 @@ typedef struct {
 } loggingSetting;
 
 
-#define SMALL_TABLES_1_FILLER_SIZE (flashSectorSize - (sizeof(twoDTableUS) * 8))  // Update this if adding another table!
+#define SMALL_TABLES_1_FILLER_SIZE (flashSectorSize - (sizeof(twoDTableUS) * 9))  // Update this if adding another table!
 /**
  * One of four structs of live tunable data such as small tables and fuel trims
  * etc. If you add something here, please ensure you update all of the following :
@@ -98,6 +98,7 @@ typedef struct {
 	twoDTableUS primingVolumeTable;               ///< @todo TODO define units. perhaps micro litres (cubic milli meters) would be good, 5 - 100 seem to be the norm 327.68 = 65535/200
 	twoDTableUS engineTempEnrichmentTablePercent; ///< Engine temperature enrichment by percent, AKA warmup curve.
 	twoDTableUS dwellVersusRPMTable;              ///< Useful for certain setups, will generalise later.
+	twoDTableUS blendVersusRPMTable;              ///< Used to combine Speed Density and Alpha-N algorithms based on RPM
 	unsigned char filler[SMALL_TABLES_1_FILLER_SIZE];
 } SmallTables1;
 

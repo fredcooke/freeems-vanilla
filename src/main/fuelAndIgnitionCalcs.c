@@ -66,6 +66,21 @@ void calculateFuelAndIgnition(){
 		DerivedVars->AirFlow = CoreVars->MAF; /* Just fix temperature at appropriate level to provide correct Lambda */
 		/// @todo TODO figure out what the correct "temperature" is to make MAF work correctly!
 		airInletTemp = DEGREES_C(20); // Room temperature?
+	}else if(fixedConfigs2.algorithmSettings.algorithmType == ALGO_SD_AN_BLEND){
+		/* Look up VE with RPM and MAP */
+		DerivedVars->VEMain = lookupMainTable(CoreVars->RPM, CoreVars->MAP, VETableMainLocationID);
+		/* This won't overflow until 512kPa or about 60psi of boost with 128% VE. */
+		KeyUserDebugs.speedDensityAirFlow = ((unsigned long)CoreVars->MAP * DerivedVars->VEMain) / VE(100);
+
+		/* Look up Airflow with RPM and TPS */
+		KeyUserDebugs.alphaNAirFlow = lookupMainTable(CoreVars->RPM, CoreVars->TPS, AirflowTableLocationID); /* Tuned air flow without density information */
+
+		KeyUserDebugs.blendAlphaNPercent = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.blendVersusRPMTable, CoreVars->RPM);
+
+		unsigned short airflowSD = safeScale(KeyUserDebugs.speedDensityAirFlow, SHORTMAX - KeyUserDebugs.blendAlphaNPercent, SHORTMAX);
+		unsigned short airflowAN = safeScale(KeyUserDebugs.alphaNAirFlow, KeyUserDebugs.blendAlphaNPercent, SHORTMAX);
+
+		DerivedVars->AirFlow = safeAdd(airflowSD, airflowAN);
 	}else{ /* Default to no fuel delivery and error */
 		DerivedVars->AirFlow = 0;
 	}

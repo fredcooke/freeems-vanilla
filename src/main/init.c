@@ -337,6 +337,8 @@ void initTunableAddresses(){
 	engineTempEnrichmentTablePercent2Location = (void*)&SmallTablesAFlash2.engineTempEnrichmentTablePercent;
 	dwellVersusRPMTableLocation               = (void*)&SmallTablesAFlash.dwellVersusRPMTable;
 	dwellVersusRPMTable2Location              = (void*)&SmallTablesAFlash2.dwellVersusRPMTable;
+	blendVersusRPMTableLocation               = (void*)&SmallTablesAFlash.blendVersusRPMTable;
+	blendVersusRPMTable2Location              = (void*)&SmallTablesAFlash2.blendVersusRPMTable;
 
 	/* TablesB */
 	loggingSettingsLocation       = (void*)&SmallTablesBFlash.loggingSettings;

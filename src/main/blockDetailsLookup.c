@@ -322,6 +322,15 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = dwellVersusRPMTableLocation;
 		details->parent = SmallTablesALocationID;
 		break;
+	case blendVersusRPMTableLocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_ONE;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.blendVersusRPMTable;
+		details->FlashAddress = blendVersusRPMTableLocation;
+		details->parent = SmallTablesALocationID;
+		break;
+
 #ifdef ALL_CONFIG
 	case dwellDesiredVersusVoltageTable2LocationID:
 		details->size = sizeof(twoDTableUS);
@@ -379,8 +388,15 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = dwellVersusRPMTable2Location;
 		details->parent = SmallTablesA2LocationID;
 		break;
+	case blendVersusRPMTable2LocationID:
+		details->size = sizeof(twoDTableUS);
+		details->RAMPage = RPAGE_TUNE_TWO;
+		details->FlashPage = TUNETABLES_PPAGE;
+		details->RAMAddress = (void*)&TablesA.SmallTablesA.blendVersusRPMTable;
+		details->FlashAddress = blendVersusRPMTable2Location;
+		details->parent = SmallTablesA2LocationID;
+		break;
 #endif
-
 	/* TablesB small tables */
 	case loggingSettingsLocationID:
 		details->size = sizeof(loggingSetting);

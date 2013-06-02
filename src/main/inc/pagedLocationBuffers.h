@@ -111,6 +111,8 @@ EXTERN void* engineTempEnrichmentTablePercentLocation;
 EXTERN void* engineTempEnrichmentTablePercent2Location;
 EXTERN void* dwellVersusRPMTableLocation;
 EXTERN void* dwellVersusRPMTable2Location;
+EXTERN void* blendVersusRPMTableLocation;
+EXTERN void* blendVersusRPMTable2Location;
 
 /* Small chunks of TablesB here */
 EXTERN void* loggingSettingsLocation;

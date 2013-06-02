@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2012 Fred Cooke
+ * Copyright 2012-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -140,6 +140,7 @@
 // RPM based small table default data
 #define ARRAY_OF_16_RPMS          {  RPM(500), RPM(1000), RPM(1500), RPM(2000), RPM(2500), RPM(3000), RPM(3500), RPM(4000), RPM(4500), RPM(5000), RPM(5500), RPM(6000), RPM(6500), RPM(7000), RPM(7500), RPM(8000)}
 #define ARRAY_OF_16_DIS6_DWELLS   {   T(5.75),   T(5.50),   T(5.25),   T(5.00),   T(4.75),   T(4.50),   T(4.25),   T(4.00),   T(3.75),   T(3.50),   T(3.25),   T(3.00),   T(2.75),   T(2.50),   T(2.25),   T(2.00)}
+#define ARRAY_OF_16_BLENDS        {  SHORTMAX,  SHORTMAX,  SHORTMAX,   LR(1.5),   LR(1.0),   LR(0.5),   LR(0.0),   LR(0.0),   LR(0.0),   LR(0.0),   LR(0.0),   LR(0.0),   LR(0.0),   LR(0.0),   LR(0.0),   LR(0.0)} // Hacky... TODO migrate TPS to full range and reuse that here too...
 
 // TODO YAGNI currently unused space fillers
 #define ARRAY_OF_16_TIMES         {     0,  4096,  8192, 12288, 16384, 20480, 24576, 28672, 32768, 36864, 40960, 45056, 49152, 53248, 57344, 61440}

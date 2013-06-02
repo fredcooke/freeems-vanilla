@@ -157,9 +157,11 @@ typedef struct {
 	unsigned short zsp8;  ///< Spare US variable
 	unsigned short zsp7;  ///< Spare US variable
 	unsigned short zsp6;  ///< Spare US variable
-	unsigned short zsp5;  ///< Spare US variable
-	unsigned short zsp4;  ///< Spare US variable
-	unsigned short zsp3;  ///< Spare US variable
+
+	// TODO move these:
+	unsigned short blendAlphaNPercent;  ///< TODO migrate to correct place once OLV/EMStudio are flexible...
+	unsigned short speedDensityAirFlow; ///< TODO migrate to correct place once OLV/EMStudio are flexible...
+	unsigned short alphaNAirFlow;       ///< TODO migrate to correct place once OLV/EMStudio are flexible...
 
 	// Do we want these recorded at log assembly time, or at recording of ADC time, or at calculation of vars (core and/or deriv) or at enabling of scheduling, or all of the above?
 	unsigned short clockInMilliSeconds; ///< Migrate to start of all large datalogs once analysed
