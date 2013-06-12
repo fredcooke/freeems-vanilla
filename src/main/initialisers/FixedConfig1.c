@@ -247,7 +247,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		},
 		OverBoost:{
 			disableThreshold:  KPA(250), // Cut close to std sensor max
-			reenableThreshold: KPA(100)  // Re enable when boost gone all together (force driver to lift)
+			reenableThreshold: KPA(105)  // Re enable when boost gone all together (Setting to anything at or below 100kPa can cause a dead engine)
 		},
 		cutsEnabled:{
 			InjectionRPM: 1,
