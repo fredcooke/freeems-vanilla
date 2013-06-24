@@ -159,7 +159,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 //		ReducedDrive:      0x00, // Unused right now
 
 		PWMEnable:         0xFF, // Enable all PWM channels by default
-		PWMPolarity:       0x00, // Default to "duty is high portion" for all pins
+		PWMPolarity:       0xFF, // Default to "duty is high portion" for all pins
 		PWMClock:          0x00, // The fastest we can go for all channels
 		PWMClockPrescaler: 0x00, // The fastest prescaler we can go for all channels
 		PWMCenterAlign:    0x00, // Default to left aligned
