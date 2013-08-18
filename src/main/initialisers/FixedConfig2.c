@@ -110,7 +110,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		BRVRange:      VOLTS(25.082),
 #elif CONFIG == SNOTROCKET_ID
 		BRVMinimum:    VOLTS(0),
-		BRVRange:      VOLTS(24.777),
+		BRVRange:      VOLTS(24.5), // Shoebox build value: 24.777, reverted to 24.5 for Jaguar build.
 #elif CONFIG == DEUCES10_ID
 		BRVMinimum:    VOLTS(0),
 		BRVRange:      VOLTS(24.65), // This is calibrated for the Jaguar A2 in the 1997 S10 on 01-12-2013.
@@ -125,6 +125,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == DEUCES10_ID   // This is an estimate for the S10 TPS.
 		TPSMinimumADC: 120,  // This is to correct for the TPS reading at closed throttle.
 		TPSMaximumADC: 560  // This is to correct for the TPS reading at wide open throttle.
+#elif CONFIG == SNOTROCKET_ID
+		TPSMinimumADC: 185,
+		TPSMaximumADC: 809
 #else
 		TPSMinimumADC: 0,
 		TPSMaximumADC: ADC_MAX_VALUE

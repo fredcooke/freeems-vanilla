@@ -55,6 +55,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif SEANKR1 // No ID assigned yet!
 		perCylinderVolume:  CYLINDER_VOLUME(250),
 		injectorFlow:       CC_PER_MINUTE(230), // http://www.witchhunter.com/flowdatapix/bcdh210.jpg
+#elif CONFIG == SNOTROCKET_ID
+		perCylinderVolume:  CYLINDER_VOLUME(525),
+		injectorFlow:       CC_PER_MINUTE(310),
 #elif CONFIG == SLATER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(324),
 		injectorFlow:       CC_PER_MINUTE(320),
@@ -129,13 +132,13 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:             16, // First half ignition, second half injection
 		numberOfInjectionsPerEngineCycle:            2  // Full sync semi-sequential
 
-#elif CONFIG == SNOTROCKET_ID // http://forum.diyefi.org/viewtopic.php?f=3&t=1263 Sim's 2.1 Volvo, carbed with CNP using LS1 coils.
-		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)}, // 1,2,3,4: Firing order: 1-3-4-2 set up in loom
-		outputEventPinNumbers:           {0,1,2,3}, // COP/CNP ignition only
-		schedulingConfigurationBits:     {0,0,0,0}, // All ignition
+#elif CONFIG == SNOTROCKET_ID // http://forum.diyefi.org/viewtopic.php?f=3&t=1263 Sim's 2.1 Volvo, semi-squential fuel with CNP using LS1 coils.
+		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)}, // 1,2,3,4: Firing order: 1-3-4-2 set up in loom
+		outputEventPinNumbers:           {0,1,2,3,4,5,4,5}, // COP/CNP ignition, semi-sequential fuel
+		schedulingConfigurationBits:     {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
 		decoderEngineOffset:         ANGLE(482.00), // Volvo B21A with DSM/Miata CAS + 24and1 disk
-		numberOfConfiguredOutputEvents:          4, // COP setup
-		numberOfInjectionsPerEngineCycle:        1  // Ditto
+		numberOfConfiguredOutputEvents:                  8, // COP PT2-PT5, injectors drivers wired to PT6 and PT7, pulse-paired, until Xgate
+		numberOfInjectionsPerEngineCycle:                2  // Syncronized semi-sequential
 
 #elif CONFIG == SPUDMN_ID // http://forum.diyefi.org/viewtopic.php?f=55&t=1507 Spudmn's mk1 racing mini in NZ :-)
 		anglesOfTDC: {ANGLE(0), ANGLE(180)}, // 1 and 4, 2 and 3
@@ -204,7 +207,10 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	},
 	cutAndLimiterSettings:{
 		InjectionRPM:{
-#if CONFIG == SLATER_ID
+#if CONFIG == SNOTROCKET_ID
+			disableThreshold:  RPM(6300),
+			reenableThreshold: RPM(6200)
+#elif CONFIG == SLATER_ID
 			disableThreshold:  RPM(7000),
 			reenableThreshold: RPM(6900)
 #elif CONFIG == DEUCES10_ID
@@ -224,7 +230,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			reenableThreshold: RPM(5700) // Nice and close to save the exhaust
 #elif CONFIG == SNOTROCKET_ID
 			disableThreshold:  RPM(6300),
-			reenableThreshold: RPM(6200)
+			reenableThreshold: RPM(6150)
 #elif CONFIG == SLATER_ID
 			disableThreshold:  RPM(7000),
 			reenableThreshold: RPM(6850)
