@@ -92,8 +92,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		AAPMinimum:    HondaDenso183kPaMin,
 		AAPRange:      HondaDenso183kPaRange,
 #else
-		AAPMinimum:    MPX4100AMin,
-		AAPRange:      MPX4100ARange,
+		AAPMinimum:    MPXA6115AMin,
+		AAPRange:      MPXA6115ARange,
 #endif
 #if CONFIG == SEANKLT1_ID
 		EGOMinimum:    AFR1020LambdaMin,

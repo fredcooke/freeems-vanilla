@@ -107,6 +107,11 @@
 #define MPX4100AMax              KPA(107.5)     /* Pressure read at highest ADC reading */
 #define MPX4100ARange            (MPX4100AMax - MPX4100AMin)
 
+/* www.freescale.com/files/sensors/doc/data_sheet/MPXA6115A.pdf */
+#define MPXA6115AMin             KPA( 10.0)     /* Pressure read at lowest ADC reading */
+#define MPXA6115AMax             KPA(120.0)     /* Pressure read at highest ADC reading */
+#define MPXA6115ARange           (MPXA6115AMax - MPXA6115AMin)
+
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4250A.pdf */
 #define MPX4250AMin              KPA(  8)       /* Pressure read at lowest ADC reading */
 #define MPX4250AMax              KPA(260)       /* Pressure read at highest ADC reading */
