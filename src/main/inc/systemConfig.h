@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2012 Fred Cooke
+ * Copyright 2012-2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -56,20 +56,18 @@
 #define PETERJSERIES_ID 10 // Winter thrasher, works so well he refuses to whinge
 #define DEUCECOUPE_ID   11 // Work in progress, ignition not setup yet
 #define PETERTRUCK_ID   12 // Work horse vehicle, about to get boosted
+//efine PIOLIN_ID       13 // Project unlucky
+//efine MIKEC383_ID     14 // Mike's 1987 383 V8 Camaro
 #define SCAVENGER_ID    15 // Hacked up Miata turbo from the south!
 #define DEUCES10_ID     16 // Work in progress
-// Looking forward to there being links to threads here soon! In no particular order:
-//#define LEV8N
-//#define SEANKR1
-//#define TTV8SUPRA
-//#define SECRETSQUIRREL // Shhhhhh! :-p
-//#define HOTCAT
-//#define MICROTECHSUCKS // Yes, that's you, John "I love MicroTech" Tramp
-//#define QUAKE86 // Yep, this one too! :-)
-//#define CRAIGB2200
-//#define DAILYRAVAGE // No pun intended!
-//#define QUICKRAVAGE // No pun intended here either!
-// No pressure guys! <cough, cough> :-)
+//efine SEANKR1_ID      17 // Sean's R1 Turbo powered desert rail
+//efine HOTCAT_ID       18 // HotCat's Citroen ZX
+//efine ELITH_ER12_ID   19 // Elith Racing's 2006 CBR600F engine
+//efine ELITH_ER13_ID   20 // Elith Racing's 2007 CBR600RR powered FSAE car
+//efine ONIONMOBILE_ID  21 // MrOnion's MK2 Golf GTI
+//efine VOLVERC_ID      22 // Em-knaps' 1994 B5234T Volvo engine
+//efine TOXICTACOMA_ID  23 // Jeff's 2003 Toyota Tacoma
+//efine AITOR51_ID      24 // Aitor's 1992 Sierra XR4i 2.0 Turbo
 
 
 // Convert labels into IDs for use in code and set the ID string
@@ -108,12 +106,42 @@
 #elif defined PETERTRUCK
 #define CONFIG PETERTRUCK_ID
 #define PRELIM_CONFIG "PETERTRUCK"
+#elif defined PIOLIN
+#define CONFIG PIOLIN_ID
+#define PRELIM_CONFIG "PIOLIN"
+#elif defined MIKEC383
+#define CONFIG MIKEC383_ID
+#define PRELIM_CONFIG "MIKEC383"
 #elif defined SCAVENGER
 #define CONFIG SCAVENGER_ID
 #define PRELIM_CONFIG "SCAVENGER"
 #elif defined DEUCES10
 #define CONFIG DEUCES10_ID
 #define PRELIM_CONFIG "DEUCES10"
+#elif defined SEANKR1
+#define CONFIG SEANKR1_ID
+#define PRELIM_CONFIG "SEANKR1"
+#elif defined HOTCAT
+#define CONFIG HOTCAT_ID
+#define PRELIM_CONFIG "HOTCAT"
+#elif defined ELITH_ER12
+#define CONFIG ELITH_ER12_ID
+#define PRELIM_CONFIG "ELITH_ER12"
+#elif defined ELITH_ER13
+#define CONFIG ELITH_ER13_ID
+#define PRELIM_CONFIG "ELITH_ER13"
+#elif defined ONIONMOBILE
+#define CONFIG ONIONMOBILE_ID
+#define PRELIM_CONFIG "ONIONMOBILE"
+#elif defined VOLVERC
+#define CONFIG VOLVERC_ID
+#define PRELIM_CONFIG "VOLVERC"
+#elif defined TOXICTACOMA
+#define CONFIG TOXICTACOMA_ID
+#define PRELIM_CONFIG "TOXICTACOMA"
+#elif defined AITOR51
+#define CONFIG AITOR51_ID
+#define PRELIM_CONFIG "AITOR51"
 #elif defined CLIFLAGS && !(defined XGATE)
 #error "CLIFLAGS defined, but no build matched! Not allowing config to fall back to default!"
 #define CONFIG -1

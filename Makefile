@@ -45,9 +45,9 @@ PETERJSERIES:
 	cd src/main; CLIFLAGS="$@" make clean JSeries-12CrankWith6-2Cam
 DEUCECOUPE:
 	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-6and1
-DEUCES10:
-	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-4and1
 PETERTRUCK:
 	cd src/main; CLIFLAGS="$@" make clean MissingTeeth-Cam-12minus1
 SCAVENGER:
 	cd src/main; CLIFLAGS="$@" make clean MitsiAndMazda-CAS-4and2
+DEUCES10:
+	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-4and1
