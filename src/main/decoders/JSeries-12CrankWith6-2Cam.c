@@ -35,7 +35,7 @@
  */
 
 
-#define DECODER_MAX_CODE_TIME    300 // To be optimised (shortened)!
+#define DECODER_MAX_CODE_TIME    100
 #define NUMBER_OF_REAL_EVENTS     24 // 12 Even Crank teeth
 #define NUMBER_OF_VIRTUAL_EVENTS  24 // 24 Crank teeth in 720degrees
 #define DECODER_IMPLEMENTATION_C
@@ -48,13 +48,6 @@
 unsigned char camTeethSeen = 0;
 unsigned char previousCrankTeethSeen = 0;
 unsigned char crankTeethSinceLastCamTooth = 0;
-unsigned char PTITCurrentState;
-unsigned char secondaryPTITCurrentState;
-unsigned long thisEventTimeStamp;
-unsigned short edgeTimeStamp;
-unsigned long thisInterEventPeriod;
-unsigned short thisTicksPerDegree;
-unsigned short ratioBetweenThisAndLast;
 
 const unsigned short eventAngles[] = {ANGLE(  0), ANGLE( 30), ANGLE( 60), ANGLE( 90),
                                       ANGLE(120), ANGLE(150), ANGLE(180), ANGLE(210),
@@ -82,8 +75,8 @@ void PrimaryRPMISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
 
 	/* Save all relevant available data here */
-	edgeTimeStamp = TC0;     /* Save the edge time stamp */
-	PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
+	unsigned short edgeTimeStamp = TC0;     /* Save the edge time stamp */
+	unsigned char PTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 
 	// Prevent main from clearing values before sync is obtained!
 	Clocks.timeoutADCreadingClock = 0;
@@ -99,12 +92,11 @@ void PrimaryRPMISR(){
 	}else{
 		timeStamp.timeShorts[0] = timerExtensionClock;
 	}
-	thisEventTimeStamp = timeStamp.timeLong;
+	unsigned long thisEventTimeStamp = timeStamp.timeLong;
 
-	thisInterEventPeriod = 0;
-	thisTicksPerDegree = 0;
+	unsigned short thisTicksPerDegree = 0;
 	if(KeyUserDebugs.decoderFlags & LAST_TIMESTAMP_VALID){
-		thisInterEventPeriod = thisEventTimeStamp - lastPrimaryEventTimeStamp;
+		unsigned long thisInterEventPeriod = thisEventTimeStamp - lastPrimaryEventTimeStamp;
 		thisTicksPerDegree = (unsigned short)((ticks_per_degree_multiplier * thisInterEventPeriod) / eventAngles[1]);
 	}
 
@@ -120,7 +112,7 @@ void PrimaryRPMISR(){
 		}// Can never be greater than without a code error or genuine noise issue, so give it a miss as we can not guarantee where we are now.
 
 		if(KeyUserDebugs.decoderFlags & LAST_PERIOD_VALID){
-			ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
+			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastPrimaryTicksPerDegree * 1000) / thisTicksPerDegree);
 			KeyUserDebugs.inputEventTimeTolerance = ratioBetweenThisAndLast;
 			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
 				resetToNonRunningState(PRIMARY_EVENT_ARRIVED_TOO_LATE);
@@ -169,7 +161,6 @@ void SecondaryRPMISR(){
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
-	secondaryPTITCurrentState = PTIT; /* Save the values on port T regardless of the state of DDRT */
 	KeyUserDebugs.secondaryTeethSeen++;
 	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
 		// check crankTeethSinceLastCamTooth to see if it's 4 or 12 and if not either of those, lose sync.
