@@ -194,7 +194,7 @@ RPMHALLOROPTICAL = HallOrOptical-Distributor-4of64.c HallOrOptical-Distributor-4
 RPMVRDISTRIBUTOR = 
 # Specific purpose per engine stuff here
 RPMMITSISTYLE = MitsiAndMazda-CAS-4and1.c MitsiAndMazda-CAS-4and2.c
-RPMHONDASTYLE = JSeries-12CrankWith6-2Cam.c
+RPMHONDASTYLE = JSeries-12CrankWith6-2Cam.c R18A1-13CrankWith5Cam.c
 RPMNISSANSTYLE = GM-LT1-CAS-360and8.c
 # Insert your file above and get coding!
 RPMSPECIFICENGINES = $(RPMMITSISTYLE) $(RPMHONDASTYLE) $(RPMNISSANSTYLE)
@@ -524,6 +524,7 @@ GM-LT1-CAS-360and8: $(S19DIR)/$(LABEL)-GM-LT1-CAS-360and8.s19
 JSeries-12CrankWith6-2Cam: $(S19DIR)/$(LABEL)-JSeries-12CrankWith6-2Cam.s19
 EvenTeeth-Distributor-4of6and1: $(S19DIR)/$(LABEL)-EvenTeeth-Distributor-4of6and1.s19
 MissingTeeth-Crank-36minus2: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-36minus2.s19
+R18A1-13CrankWith5Cam: $(S19DIR)/$(LABEL)-R18A1-13CrankWith5Cam.s19
 
 
 
