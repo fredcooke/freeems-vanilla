@@ -79,8 +79,9 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 	// record unique loss ID
 	KeyUserDebugs.syncLostWithThisID = uniqueLossID;
 
-	// record current event
+	// record current event and then clear it
 	KeyUserDebugs.syncLostOnThisEvent = KeyUserDebugs.currentEvent;
+	KeyUserDebugs.currentEvent = 0;
 
 	/* Clear all sync flags to lost state */
 	KeyUserDebugs.decoderFlags = 0; // Nothing should use this except for us anyway!
