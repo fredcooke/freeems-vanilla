@@ -227,7 +227,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		IgnitionRPM:{
 #if CONFIG == HOTEL_ID
 			disableThreshold:  RPM(5800),
-			reenableThreshold: RPM(5700) // Nice and close to save the exhaust
+			reenableThreshold: RPM(5750) // Nice and close to save the exhaust
 #elif CONFIG == SNOTROCKET_ID
 			disableThreshold:  RPM(6300),
 			reenableThreshold: RPM(6150)
