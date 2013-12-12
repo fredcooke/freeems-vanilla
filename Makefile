@@ -33,7 +33,7 @@ BENCHTEST:
 TRUCK:
 	cd src/main; CLIFLAGS="$@" make clean MitsiAndMazda-CAS-4and1
 HOTEL:
-	cd src/main; CLIFLAGS="$@" make clean HallOrOptical-Distributor-4of69
+	cd src/main; CLIFLAGS="$@" make clean HallOrOptical-Distributor-4of90
 PRESTO:
 	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-24and1
 SEANKLT1:

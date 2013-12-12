@@ -43,8 +43,7 @@
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
 
-// 69 is a little too high, and 68 is more than a little too low (or inversed)
-#define E1 (69 * ANGLE_FACTOR) // TODO May need to be 111 instead, needs testing!
+#define E1 (90 * ANGLE_FACTOR)
 
 
 #include "code/HallOrOptical-Distributor-XofY.c"
