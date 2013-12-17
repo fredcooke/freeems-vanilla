@@ -112,7 +112,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC:             {ANGLE(0)}, // Simple dual edge dizzy
 		outputEventPinNumbers:          {0}, // First pin
 		schedulingConfigurationBits:    {0}, // Ignition only
-		decoderEngineOffset:    ANGLE(0.00), // Locked dizzy with timing of TDC on edge, used for static timing during cranking.
+		decoderEngineOffset:  ANGLE(170.00), // Locked dizzy with timing of TDC on edge, used for static timing during cranking.
 		numberOfConfiguredOutputEvents:   1, // One per decoder cycle = 4
 		numberOfInjectionsPerEngineCycle: 1  // Ditto
 
