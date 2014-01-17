@@ -146,6 +146,18 @@
 #elif defined AITOR51
 #define CONFIG AITOR51_ID
 #define PRELIM_CONFIG "AITOR51"
+#elif defined MATTHIJS309T
+#define CONFIG MATTHIJS309T_ID
+#define PRELIM_CONFIG "MATTHIJS309T"
+#elif defined WIKISPEEDR18
+#define CONFIG WIKISPEEDR18_ID
+#define PRELIM_CONFIG "WIKISPEEDR18"
+#elif defined JOSHSB18MINI
+#define CONFIG JOSHSB18MINI_ID
+#define PRELIM_CONFIG "JOSHSB18MINI"
+#elif defined BMSTBO
+#define CONFIG BMSTBO_ID
+#define PRELIM_CONFIG "BMSTBO"
 #elif defined CLIFLAGS && !(defined XGATE)
 #error "CLIFLAGS defined, but no build matched! Not allowing config to fall back to default!"
 #define CONFIG -1
