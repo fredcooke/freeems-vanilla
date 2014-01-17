@@ -68,6 +68,10 @@
 //efine VOLVERC_ID      22 // Em-knaps' 1994 B5234T Volvo engine
 //efine TOXICTACOMA_ID  23 // Jeff's 2003 Toyota Tacoma
 //efine AITOR51_ID      24 // Aitor's 1992 Sierra XR4i 2.0 Turbo
+//efine MATTHIJS309T_ID 25 // Matthijs' Peugeot 309 2.0 Turbo
+//efine WIKISPEEDR18_ID 26 // WikiSpeed's first car with R18A1 Honda
+//efine JOSHSB18MINI_ID 27 // Josh's LS-VTEC powered Mini
+//efine BMSTBO_ID       28 // Piimae's E7 Corolla w/ 4A-GE 16V turbo
 
 
 // Convert labels into IDs for use in code and set the ID string
