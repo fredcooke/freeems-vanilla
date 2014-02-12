@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009-2012 Sean Keys, Fred Cooke
+ * Copyright 2009-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -27,6 +27,8 @@
 /** @file
  *
  * @ingroup allHeaders
+ *
+ * @author Sean Keys
  */
 
 

@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2008-2009 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -32,6 +32,8 @@
  *
  * Because we need to call the assembly flash burning function from C code an
  * extern function declaration is required to allow successful compilation.
+ *
+ * @author Sean Keys
  */
 
 

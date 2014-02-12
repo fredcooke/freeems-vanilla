@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009, 2010 Sean Keys, Fred Cooke
+ * Copyright 2009-2010 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -25,6 +25,8 @@
 
 include "assemblyxgate/xgate.inc"
 ; *****************************************************************************
+;
+; @author Sean Keys
 ;
 ; Thanks to Edward Karpicz for help with getting all the xgate registers sorted.
 ;

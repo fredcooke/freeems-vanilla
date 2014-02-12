@@ -2,7 +2,7 @@
 
 #	FreeEMS - the open source engine management system
 #
-#	Copyright 2010-2012 Fred Cooke
+#	Copyright 2010-2014 Fred Cooke
 #
 #	This file is part of the FreeEMS project.
 #
@@ -41,7 +41,7 @@ fi
 
 
 # The following two lines take a file with format <num><space><num><space><path/filename> and look for years that need updating.
-for f in $(perl -lne '/^\d+\s+\d+\s+(.*)/ && print $1' $1); do perl -i -lpe 's/-2011/-2012/g' "$f"; done      # Update existing ranges
-for f in $(perl -lne '/^\d+\s+\d+\s+(.*)/ && print $1' $1); do perl -i -lpe 's/2011 /2011-2012 /g' "$f"; done # Update singular years to ranges
+for f in $(perl -lne '/^\d+\s+\d+\s+(.*)/ && print $1' $1); do perl -i -lpe 's/-2013/-2014/g' "$f"; done      # Update existing ranges
+for f in $(perl -lne '/^\d+\s+\d+\s+(.*)/ && print $1' $1); do perl -i -lpe 's/2013 /2013-2014 /g' "$f"; done # Update singular years to ranges
 # Update to yearset before using, list generated with git diff --numstat lasthashpreviousyear lasthashcurrentyear -- src
 

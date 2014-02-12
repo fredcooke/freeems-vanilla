@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2009, 2010 Sean Keys, Fred Cooke
+ * Copyright 2009-2010 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -22,6 +22,8 @@
  *
  * Thank you for choosing FreeEMS to run your engine!
  */
+
+/* @author Sean Keys */
 
 /* Flag Masks */ 
 .equ	SW_ISR_ZERO_CFLAG_MASK, 0x0100

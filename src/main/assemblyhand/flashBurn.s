@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Sean Keys
+ * Copyright 2008-2009 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -24,7 +24,10 @@
  */
 
 
-/*See  http://www.cs.nmsu.edu/~pfeiffer/classes/273/notes/stacks-procedures.html for additional information*/
+/* @author Sean Keys
+ *
+ * See  http://www.cs.nmsu.edu/~pfeiffer/classes/273/notes/stacks-procedures.html for additional information
+ */
 
 
 include "inc/9S12XDP512asm.s"

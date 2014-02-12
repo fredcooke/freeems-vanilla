@@ -1,6 +1,6 @@
 ;    9S12XDP512asm.h
 ;
-;    Copyright 2008, 2009 Sean Keys
+;    Copyright 2008-2009 Fred Cooke
 ;
 ;    This file is part of the FreeEMS project.
 ;
@@ -24,6 +24,8 @@
 
 ;    Full basic register definitions for the Freescale S912XDP512 processor
 ;    MC9S12XDP512V2.pdf Appendix G
+
+; @author Sean Keys
 
 ;* Define the cores of the CPU
 
