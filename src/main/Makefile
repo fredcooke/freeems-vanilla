@@ -221,9 +221,6 @@ ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
 OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
 DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
 
-# Bring in all of the generated deps. Note, if these fail on the first pass of parsing, Make will generate them and reparse.
--include $(DEPENDENCIES) $(DEPENDENCIESRPM) $(DDEPENDENCIES) $(DDEPENDENCIESRPM)
-
 # Convert to output files for source
 ALLELFSC = $(patsubst $(DECDIR)/%.c,$(OUTDIR)/$(LABEL)-%.elf,$(RPMCLASSES))
 ALLELFSASM = #$(patsubst %.s,$(OUTDIR)/$(LABEL)-%.elf,$(RPMHANDASMS))
@@ -258,31 +255,6 @@ GCDELFS = $(GCDELFSC) $(GCDELFSASM)
 GCDS19S = $(GCDS19SC) $(GCDELFSASM)
 GCDSIZES = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt,$(GCDS19S))
 GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
-
-
-
-
-################################################################################
-#                            Single Decoder Builds                             #
-################################################################################
-
-
-Listener: $(S19DIR)/$(LABEL)-Listener.s19
-BenchTest: $(S19DIR)/$(LABEL)-BenchTest.s19
-EvenTeeth-Cam-24and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-24and1.s19
-EvenTeeth-Cam-16and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-16and1.s19
-EvenTeeth-Cam-6and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-6and1.s19
-EvenTeeth-Cam-4and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-4and1.s19
-MissingTeeth-Crank-8minus1:  $(S19DIR)/$(LABEL)-MissingTeeth-Crank-8minus1.s19
-MissingTeeth-Crank-12minus1: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-12minus1.s19
-MissingTeeth-Cam-12minus1:   $(S19DIR)/$(LABEL)-MissingTeeth-Cam-12minus1.s19
-HallOrOptical-Distributor-4of69: $(S19DIR)/$(LABEL)-HallOrOptical-Distributor-4of69.s19
-MitsiAndMazda-CAS-4and1: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and1.s19
-MitsiAndMazda-CAS-4and2: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and2.s19
-GM-LT1-CAS-360and8: $(S19DIR)/$(LABEL)-GM-LT1-CAS-360and8.s19 
-JSeries-12CrankWith6-2Cam: $(S19DIR)/$(LABEL)-JSeries-12CrankWith6-2Cam.s19
-EvenTeeth-Distributor-4of6and1: $(S19DIR)/$(LABEL)-EvenTeeth-Distributor-4of6and1.s19
-MissingTeeth-Crank-36minus2: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-36minus2.s19
 
 
 
@@ -421,7 +393,7 @@ COPYOPTS = --output-target=srec \
 
 
 
-.DEFAULT_GOAL := help
+
 help:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                        Dependency And Target Summary                         #$(Q)
@@ -525,6 +497,42 @@ help:
 	@echo $(Q)#   CLIFLAGS=\"YOURBUILDNAME\" make clean s19                                    #$(Q)
 	@echo $(Q)#                                                                              #$(Q)
 	@echo $(Q)################################################################################$(Q)
+
+
+
+
+################################################################################
+#                            Single Decoder Builds                             #
+################################################################################
+
+
+Listener: $(S19DIR)/$(LABEL)-Listener.s19
+BenchTest: $(S19DIR)/$(LABEL)-BenchTest.s19
+EvenTeeth-Cam-24and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-24and1.s19
+EvenTeeth-Cam-16and1: $(S19DIR)/$(LABEL)-EvenTeeth-Cam-16and1.s19
+EvenTeeth-Cam-6and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-6and1.s19
+EvenTeeth-Cam-4and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-4and1.s19
+MissingTeeth-Crank-8minus1:  $(S19DIR)/$(LABEL)-MissingTeeth-Crank-8minus1.s19
+MissingTeeth-Crank-12minus1: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-12minus1.s19
+MissingTeeth-Cam-12minus1:   $(S19DIR)/$(LABEL)-MissingTeeth-Cam-12minus1.s19
+HallOrOptical-Distributor-4of69: $(S19DIR)/$(LABEL)-HallOrOptical-Distributor-4of69.s19
+MitsiAndMazda-CAS-4and1: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and1.s19
+MitsiAndMazda-CAS-4and2: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and2.s19
+GM-LT1-CAS-360and8: $(S19DIR)/$(LABEL)-GM-LT1-CAS-360and8.s19 
+JSeries-12CrankWith6-2Cam: $(S19DIR)/$(LABEL)-JSeries-12CrankWith6-2Cam.s19
+EvenTeeth-Distributor-4of6and1: $(S19DIR)/$(LABEL)-EvenTeeth-Distributor-4of6and1.s19
+MissingTeeth-Crank-36minus2: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-36minus2.s19
+
+
+
+
+################################################################################
+#                            Generated Dependencies                            #
+################################################################################
+
+
+# Bring in all of the generated deps. Note, if these fail on the first pass of parsing, Make will generate them and reparse.
+-include $(DEPENDENCIES) $(DEPENDENCIESRPM) $(DDEPENDENCIES) $(DDEPENDENCIESRPM)
 
 
 
