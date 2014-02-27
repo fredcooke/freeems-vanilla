@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2011-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -33,7 +33,7 @@
  */
 
 
-#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define DECODER_MAX_CODE_TIME    150 // To be optimised (shortened)!
 #define NUMBER_OF_REAL_EVENTS     10
 #define NUMBER_OF_VIRTUAL_EVENTS  10
 

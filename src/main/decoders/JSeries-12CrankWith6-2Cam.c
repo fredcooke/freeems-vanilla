@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2012-2013 Fred Cooke
+ * Copyright 2012-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -35,7 +35,7 @@
  */
 
 
-#define DECODER_MAX_CODE_TIME    100
+#define DECODER_MAX_CODE_TIME    150
 #define NUMBER_OF_REAL_EVENTS     24 // 12 Even Crank teeth
 #define NUMBER_OF_VIRTUAL_EVENTS  24 // 24 Crank teeth in 720degrees
 #define DECODER_IMPLEMENTATION_C

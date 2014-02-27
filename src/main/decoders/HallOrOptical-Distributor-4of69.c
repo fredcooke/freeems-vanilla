@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2011-2012 Fred Cooke
+ * Copyright 2011-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -34,7 +34,7 @@
 
 
 #define DECODER_IMPLEMENTATION_C
-#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define DECODER_MAX_CODE_TIME    150 // To be optimised (shortened)!
 #define NUMBER_OF_REAL_EVENTS      2 // TODO  All three of these should migrate to a generic 4 cyl header...
 #define NUMBER_OF_VIRTUAL_EVENTS   8 // TODO  All three of these should migrate to a generic 4 cyl header...
 
