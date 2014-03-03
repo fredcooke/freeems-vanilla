@@ -1152,11 +1152,16 @@ void decodePacketAndRespond(){
 
 					// Ensure we succeed at stopping it as quickly as possible.
 					ATOMIC_START();
+					// Stash mid-test details for return
+					*((unsigned short*)TXBufferCurrentPositionHandler) = testNumberOfCycles;        // Save and return the remaining cycle count
+					TXBufferCurrentPositionHandler +=2;
+					*((unsigned char*)TXBufferCurrentPositionHandler) = KeyUserDebugs.currentEvent; // Save the current event for the ultra-fussy
+					TXBufferCurrentPositionHandler++;
+					// Setup the test to stop ASAP
 					KeyUserDebugs.currentEvent = testEventsPerCycle - 1; // Gets incremented then compared with testEventsPerCycle
 					testNumberOfCycles = 1;                              // Gets decremented then compared with zero
 					ATOMIC_END();
 
-					// eventually save and return where it got to
 					break;
 				}else if((localTestMode == TEST_MODE_BUMP_UP_CYCLES) && (RXCalculatedPayloadLength == 2)){
 					if(!(coreStatusA & BENCH_TEST_ON)){
