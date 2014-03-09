@@ -1182,6 +1182,10 @@ void decodePacketAndRespond(){
 					testNumberOfCycles += bumpCycles;
 					// Given that this function is only for situations when A it's getting near to
 					// zero and B the user is watching, not checking for overflow is reasonable.
+
+					*((unsigned char*)TXBufferCurrentPositionHandler) = bumpCycles; // Return the bump size for achaelogical purposes
+					TXBufferCurrentPositionHandler++;
+
 					break;
 				}else if((localTestMode == TEST_MODE_ITERATIONS) && (RXCalculatedPayloadLength == 24)){
 					testMode = localTestMode;
