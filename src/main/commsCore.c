@@ -1200,8 +1200,12 @@ void decodePacketAndRespond(){
 					break;
 				}
 
+				// Parse the values and return all but the test packet type
+
 				testEventsPerCycle = *((unsigned char*)RXBufferCurrentPosition); //100;  // @ 10ms  =  1s
 				RXBufferCurrentPosition++;
+				*((unsigned char*)TXBufferCurrentPositionHandler) = testEventsPerCycle;
+				TXBufferCurrentPositionHandler++;
 				if(testEventsPerCycle == 0){
 					errorID = invalidEventsPerCycle;
 					break;
@@ -1209,6 +1213,8 @@ void decodePacketAndRespond(){
 
 				testNumberOfCycles = *((unsigned short*)RXBufferCurrentPosition); //20;   // @ 1s    = 20s
 				RXBufferCurrentPosition += 2;
+				*((unsigned short*)TXBufferCurrentPositionHandler) = testNumberOfCycles;
+				TXBufferCurrentPositionHandler +=2;
 				if(testNumberOfCycles == 0){
 					errorID = invalidNumberOfCycles;
 					break;
@@ -1216,6 +1222,8 @@ void decodePacketAndRespond(){
 
 				testTicksPerEvent = *((unsigned short*)RXBufferCurrentPosition); //12500; // @ 0.8us = 10ms
 				RXBufferCurrentPosition += 2;
+				*((unsigned short*)TXBufferCurrentPositionHandler) = testTicksPerEvent;
+				TXBufferCurrentPositionHandler +=2;
 				if(testTicksPerEvent < decoderMaxCodeTime){
 					errorID = tooShortOfAnEventPeriod;
 					break;
@@ -1226,6 +1234,8 @@ void decodePacketAndRespond(){
 				RXBufferCurrentPosition += 6;
 				unsigned short* testPulseWidths = (unsigned short*)RXBufferCurrentPosition;
 				RXBufferCurrentPosition += 12;
+				memcpy((void*)TXBufferCurrentPositionHandler, (void*)testEventNumbers, 18);
+				TXBufferCurrentPositionHandler += 18;
 
 				// Reset the clock for reading timeout
 				Clocks.timeoutADCreadingClock = 0; // make this optional, such that we can use real inputs to determine pw and/or dwell.
