@@ -424,6 +424,8 @@ void decodePacketAndRespond(){
 			}
 			break;
 		}
+		case requestBuiltByName:
+		case requestSupportEmail:
 		case requestDecoderName:
 		case requestFirmwareBuildDate:
 		case requestCompilerVersion:
@@ -436,6 +438,12 @@ void decodePacketAndRespond(){
 
 			unsigned char* stringToSend = 0;
 			switch (RXHeaderPayloadID) {
+				case requestBuiltByName:
+					stringToSend = (unsigned char*)builtByName;
+					break;
+				case requestSupportEmail:
+					stringToSend = (unsigned char*)supportEmail;
+					break;
 				case requestDecoderName:
 					stringToSend = (unsigned char*)decoderName;
 					break;

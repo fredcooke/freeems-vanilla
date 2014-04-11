@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2013 Fred Cooke
+ * Copyright 2008-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -62,6 +62,8 @@
 #define FIRMWARE_BUILD_DATE_LENGTH sizeof(FIRMWARE_BUILD_DATE)
 #define COMPILER_VERSION_LENGTH    sizeof(__VERSION__)
 #define OPERATING_SYSTEM_LENGTH    sizeof(OPERATING_SYSTEM)
+#define BUILT_BY_NAME_LENGTH       sizeof(BUILT_BY_NAME)
+#define SUPPORT_EMAIL_LENGTH       sizeof(SUPPORT_EMAIL)
 
 
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Arrays here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
@@ -75,11 +77,26 @@ EXTERN const volatile unsigned short MAFTransferTable[1024]; /* 2k */
 EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 
 
+/** Serial interface unique identifier
+ *
+ * This should only change when the serial interface changes (even a little)
+ *
+ * This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
+ * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID
+ */
 EXTERN const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH];
+
+/** Displayable firmware version identifier
+ *
+ * This changes automatically every time the code is changed at all (even a little) thanks to Git.
+ */
 EXTERN const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH];
-EXTERN const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH];
-EXTERN const unsigned char compilerVersion[COMPILER_VERSION_LENGTH];
-EXTERN const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH];
+
+EXTERN const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH]; ///< When and roughly where it was built
+EXTERN const unsigned char compilerVersion[COMPILER_VERSION_LENGTH];     ///< GCC supplied compiler version used to build it
+EXTERN const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH];     ///< Which OS was it built on
+EXTERN const unsigned char builtByName[BUILT_BY_NAME_LENGTH];            ///< Name of the person who built it
+EXTERN const unsigned char supportEmail[SUPPORT_EMAIL_LENGTH];           ///< Support email for this build
 
 
 /* Injection (currently used for both inj and ign) */

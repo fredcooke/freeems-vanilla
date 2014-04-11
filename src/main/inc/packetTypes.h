@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -91,13 +91,15 @@
 #define startBenchTestSequence      0x8888
 
 // Data interrogation gold
-#define retrieveListOfLocationIDs   0xDA5E // Idea is Dave's, impl is Fred's
-#define retrieveLocationIDDetails   0xF8E0 // Idea is Fred's, impl is Fred's
-#define requestDecoderName          0xEEEE // Makes interrogation unique within a single build
-#define requestFirmwareBuildDate    0xEEF0 // When it was built
-#define requestCompilerVersion      0xEEF2 // Which GCC built it
-#define requestOperatingSystem      0xEEF4 // Which OS was it built on
-#define clearCountersAndFlagsToZero 0xFFF0 // Clean slate to perform tests of any type. Clears various flags too, should not affect running
+#define retrieveListOfLocationIDs   0xDA5E ///< Retrieves a list of all LocationIDs available for interrogation
+#define retrieveLocationIDDetails   0xF8E0 ///< Retrieves the object containing details for a LocationID
+#define requestDecoderName          0xEEEE ///< Makes interrogation unique within a single build @see decoderName
+#define requestFirmwareBuildDate    0xEEF0 ///< @copydoc buildTimeAndDate
+#define requestCompilerVersion      0xEEF2 ///< @copydoc compilerVersion
+#define requestOperatingSystem      0xEEF4 ///< @copydoc operatingSystem
+#define requestBuiltByName          0xEEF6 ///< @copydoc builtByName
+#define requestSupportEmail         0xEEF8 ///< @copydoc supportEmail
+#define clearCountersAndFlagsToZero 0xFFF0 ///< Clean slate to perform tests of any type. Clears various flags too, should not affect running
 
 // DEPRECATED TODO Remove once certain no users exist
 #define adjustMainTableCell         0x012C

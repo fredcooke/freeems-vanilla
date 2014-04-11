@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2012 Fred Cooke
+ * Copyright 2008-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -43,23 +43,14 @@
 /* &&&&&&&&&& WARNING &&&&&&&&&& These need to be changed if the timer period is changed at all!! &&&&&&&&&& WARNING &&&&&&&&&& */
 /* TODO It may be better to make these actual times and calculate the number of timer units such that a change in time base of the timer doesn't affect the code. */
 
-/** Serial interface unique identifier
- *
- * This should only change when the serial interface changes (even a little)
- *
- * This field consists of 3 chars for a 3 part version number and a free form string. For any unique string the version
- * number is also unique. In this way tools can easily support a range of versions for a specific unique string ID
- */
-const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = { INTERFACE_VERSION }; // TODO change spec to not have numerics and to parse from string, maybe pull from somewhere?
 
-/** Displayable firmware version identifier
- *
- * This should change every time the code is changed at all (even a little) before each release.
- */
-const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH] = { FIRMWARE_VERSION "-" BUILD_CONFIG }; // TODO shorten the comments here, add docs and refer to them
-const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH] = { FIRMWARE_BUILD_DATE }; ///< GCC supplied compiler version
-const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };             ///< GCC supplied compiler version
-const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH] = { OPERATING_SYSTEM };        ///< Operating system type
+const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH] = { INTERFACE_VERSION };               ///< @copydoc interfaceVersion TODO change spec to not have numerics and to parse from string, maybe pull from somewhere?
+const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH] = { FIRMWARE_VERSION "-" BUILD_CONFIG }; ///< @copydoc firmwareVersion
+const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH] = { FIRMWARE_BUILD_DATE };           ///< @copydoc buildTimeAndDate
+const unsigned char compilerVersion[COMPILER_VERSION_LENGTH] = { __VERSION__ };                       ///< @copydoc compilerVersion
+const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH] = { OPERATING_SYSTEM };                  ///< @copydoc operatingSystem
+const unsigned char builtByName[BUILT_BY_NAME_LENGTH] = { BUILT_BY_NAME };                            ///< @copydoc builtByName
+const unsigned char supportEmail[SUPPORT_EMAIL_LENGTH] = { SUPPORT_EMAIL };                           ///< @copydoc supportEmail
 
 /** Divisors and untunable physical constants combined into a single master fuel constant
  *
