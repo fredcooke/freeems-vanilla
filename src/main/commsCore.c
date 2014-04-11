@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2013 Fred Cooke
+ * Copyright 2008-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -137,9 +137,6 @@ unsigned short populateBasicDatalog(){
  * process. It configures the pos/neg ack header bit, adds the code if neg,
  * runs a checksum over the packet data and tags it to the end before
  * configuring the various ISRs that need to send the data out.
- *
- * @bug http://issues.freeems.org/view.php?id=81
- * @todo TODO fix the double/none start byte bug and remove the hack!
  */
 void finaliseAndSend(unsigned short errorID){
 
