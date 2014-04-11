@@ -49,7 +49,7 @@
 #endif
 
 
-EXTERN void generateDerivedVars(void) FPAGE_FE;
+void generateDerivedVars(void) FPAGE_FE;
 
 
 #undef EXTERN

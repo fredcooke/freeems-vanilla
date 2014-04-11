@@ -49,7 +49,7 @@
 #endif
 
 
-EXTERN unsigned short lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE;
+unsigned short lookupBlockDetails(unsigned short, blockDetails*) FPAGE_FE;
 
 
 #undef EXTERN

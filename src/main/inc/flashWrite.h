@@ -59,10 +59,10 @@
 
 
 /* The following code must run from unpaged space for obvious reasons. Location explicitly set to text. */
-EXTERN unsigned short writeWord(unsigned short*, unsigned short) TEXT;
-EXTERN unsigned short eraseSector(unsigned char, unsigned short*) TEXT;
-EXTERN unsigned short writeSector(unsigned char, unsigned short*, unsigned char, unsigned short*) TEXT;
-EXTERN unsigned short writeBlock(blockDetails*, void*) TEXT;
+unsigned short writeWord(unsigned short*, unsigned short) TEXT;
+unsigned short eraseSector(unsigned char, unsigned short*) TEXT;
+unsigned short writeSector(unsigned char, unsigned short*, unsigned char, unsigned short*) TEXT;
+unsigned short writeBlock(blockDetails*, void*) TEXT;
 
 
 #undef EXTERN

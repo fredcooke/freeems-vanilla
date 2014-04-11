@@ -48,7 +48,7 @@
 #endif
 
 
-EXTERN void performSimpleGPIO(void) FPAGE_FE;
+void performSimpleGPIO(void) FPAGE_FE;
 
 
 #undef EXTERN

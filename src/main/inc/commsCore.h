@@ -55,12 +55,12 @@
 
 /* Function declarations */
 /* This function accesses paged flash and thus must be in linear space. Set explicitly to text. */
-EXTERN void decodePacketAndRespond(void) TEXT;
+void decodePacketAndRespond(void) TEXT;
 
-EXTERN void resetReceiveState(unsigned char) FPAGE_FE;
-EXTERN void finaliseAndSend(unsigned short) FPAGE_FE;
+void resetReceiveState(unsigned char) FPAGE_FE;
+void finaliseAndSend(unsigned short) FPAGE_FE;
 
-EXTERN unsigned short populateBasicDatalog(void) FPAGE_FE;
+unsigned short populateBasicDatalog(void) FPAGE_FE;
 
 
 /* Global variables for TX (one set per interface) */

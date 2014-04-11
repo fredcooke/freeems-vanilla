@@ -350,10 +350,10 @@ EXTERN unsigned short injectorCodeCloseRuntimes[INJECTION_CHANNELS]; // Stats on
 
 
 // Helpers - force all these to be inlined!
-EXTERN void decoderInitPreliminary(void);
-EXTERN void perDecoderReset(void);
-EXTERN void resetToNonRunningState(unsigned char uniqueLossID);
-EXTERN void schedulePortTPin(unsigned char pin, LongTime timeStamp);
+void decoderInitPreliminary(void);
+void perDecoderReset(void);
+void resetToNonRunningState(unsigned char uniqueLossID);
+void schedulePortTPin(unsigned char pin, LongTime timeStamp);
 /** @todo TODO add shared function here that takes a long time stamp and stores
  * it in an array pointed to by a var with a flag saying "do it or not",
  * populate array entry, check pointer, set send flag, and unset record flag OR

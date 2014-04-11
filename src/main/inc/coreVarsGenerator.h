@@ -49,7 +49,7 @@
 #endif
 
 
-EXTERN void generateCoreVars(void) LOOKUPF;
+void generateCoreVars(void) LOOKUPF;
 
 
 #undef EXTERN

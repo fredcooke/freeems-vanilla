@@ -49,7 +49,7 @@
 #endif
 
 
-EXTERN void scheduleOutputs(void) FPAGE_FE;
+void scheduleOutputs(void) FPAGE_FE;
 
 
 #undef EXTERN

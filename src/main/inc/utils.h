@@ -48,23 +48,23 @@
 #define EXTERN extern
 #endif
 
-EXTERN unsigned short safeAdd(unsigned short, unsigned short);
-EXTERN unsigned short safeTrim(unsigned short, signed short);
-EXTERN unsigned short safeScale(unsigned short, unsigned short, unsigned short);
+unsigned short safeAdd(unsigned short, unsigned short);
+unsigned short safeTrim(unsigned short, signed short);
+unsigned short safeScale(unsigned short, unsigned short, unsigned short);
 
-EXTERN void sleep(unsigned short) FPAGE_FE;
-EXTERN void sleepMicro(unsigned short) FPAGE_FE;
+void sleep(unsigned short) FPAGE_FE;
+void sleepMicro(unsigned short) FPAGE_FE;
 
-EXTERN void adjustPWM(void) FPAGE_FE;
-EXTERN void setupPagedRAM(unsigned char) FPAGE_F8;
+void adjustPWM(void) FPAGE_FE;
+void setupPagedRAM(unsigned char) FPAGE_F8;
 
-EXTERN void sampleEachADC(ADCBuffer*) FPAGE_F8;
-EXTERN void sampleLoopADC(ADCBuffer*) FPAGE_F8;
-//EXTERN void sampleBlockADC(ADCBuffer*) FPAGE_F8; broken, do not use
+void sampleEachADC(ADCBuffer*) FPAGE_F8;
+void sampleLoopADC(ADCBuffer*) FPAGE_F8;
+//void sampleBlockADC(ADCBuffer*) FPAGE_F8; broken, do not use
 
-EXTERN unsigned char checksum(unsigned char *, unsigned short) FPAGE_F8;
-EXTERN unsigned short stringCopy(unsigned char*, unsigned char*) FPAGE_F8;
-EXTERN unsigned short compare(unsigned char*, unsigned char*, unsigned short); // In unpaged flash as it needs to compare paged flash with unpaged things
+unsigned char checksum(unsigned char *, unsigned short) FPAGE_F8;
+unsigned short stringCopy(unsigned char*, unsigned char*) FPAGE_F8;
+unsigned short compare(unsigned char*, unsigned char*, unsigned short); // In unpaged flash as it needs to compare paged flash with unpaged things
 
 
 #undef EXTERN

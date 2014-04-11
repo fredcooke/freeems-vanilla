@@ -49,22 +49,22 @@
 #endif
 
 
-EXTERN unsigned short lookupTwoDTableUS(twoDTableUS *, unsigned short) TEXT;
-EXTERN unsigned short lookupMainTable(unsigned short, unsigned short, unsigned short) TEXT;
+unsigned short lookupTwoDTableUS(twoDTableUS *, unsigned short) TEXT;
+unsigned short lookupMainTable(unsigned short, unsigned short, unsigned short) TEXT;
 
 
-EXTERN unsigned short validateTwoDTable(twoDTableUS*) TEXT;
-EXTERN unsigned short validateMainTable(mainTable*) TEXT;
+unsigned short validateTwoDTable(twoDTableUS*) TEXT;
+unsigned short validateMainTable(mainTable*) TEXT;
 
 
 /* These might change or might stay the same, so keeping for now */
-//EXTERN unsigned short lookup16Bit3dUS(unsigned short*, unsigned short, unsigned short, unsigned short*, unsigned short*, unsigned char, unsigned char); bad wrong.
-//EXTERN unsigned char lookup8Bit2dUC(void);
-//EXTERN unsigned char lookup8Bit3dUC(void);
-//EXTERN signed short lookup16Bit3D(void);
-//EXTERN signed char lookup8Bit3D(void);
-//EXTERN signed short lookup16Bit2D(void);
-//EXTERN signed char lookup8Bit2D(void);
+//unsigned short lookup16Bit3dUS(unsigned short*, unsigned short, unsigned short, unsigned short*, unsigned short*, unsigned char, unsigned char); bad wrong.
+//unsigned char lookup8Bit2dUC(void);
+//unsigned char lookup8Bit3dUC(void);
+//signed short lookup16Bit3D(void);
+//signed char lookup8Bit3D(void);
+//signed short lookup16Bit2D(void);
+//signed char lookup8Bit2D(void);
 
 
 #undef EXTERN

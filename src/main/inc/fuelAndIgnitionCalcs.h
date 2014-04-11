@@ -49,7 +49,7 @@
 #endif
 
 
-EXTERN void calculateFuelAndIgnition(void) FPAGE_FE;
+void calculateFuelAndIgnition(void) FPAGE_FE;
 
 
 /* The scaling system was reworked extensively in the commit after:
