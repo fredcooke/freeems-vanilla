@@ -55,7 +55,7 @@
 
 
 # Constants
-FIRMWARE_VERSION := $(shell git describe --dirty=-DEV)
+FIRMWARE_VERSION := $(shell git describe --always --dirty=-DEV)
 OUTPREFIX := FreeEMS
 BUILD_DATE := "$(shell date)"
 OS := $(shell uname)
