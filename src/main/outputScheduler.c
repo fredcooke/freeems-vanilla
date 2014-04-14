@@ -73,8 +73,8 @@ void scheduleOutputs(){
 	 * from reasonable configuration and write a guide on how to set it up for
 	 * any engine.
 	 */
-	unsigned char ignitionEvent;
-	for(ignitionEvent = 0;ignitionEvent < fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;ignitionEvent++){
+	unsigned char outputEvent;
+	for(outputEvent = 0;outputEvent < fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;outputEvent++){
 
 		/* pseudo code
 		 *
@@ -113,27 +113,27 @@ void scheduleOutputs(){
 
 
 		unsigned char appropriateCuts = KeyUserDebugs.ignitionCuts;
-		if(fixedConfigs1.schedulingSettings.schedulingConfigurationBits[ignitionEvent]){
+		if(fixedConfigs1.schedulingSettings.schedulingConfigurationBits[outputEvent]){
 			appropriateCuts = KeyUserDebugs.injectionCuts;
 		}
 
 		// needs another || or block here for other reasons to not schedule, in a union of two 8 bit values such that it can be checked here in a single 16 bit operation
 		if(appropriateCuts){
 			// If this becomes more than one line, it should be made explicitly atomic. Duplicate code, see below
-			outputEventInputEventNumbers[ignitionEvent] = 0xFF;
+			outputEventInputEventNumbers[outputEvent] = 0xFF;
 		}else{
 			// Default to ignition
 			unsigned short pulsewidthToUseForThisChannel = DerivedVars->Dwell;
 			unsigned short endOfPulseTimingToUseForThisChannel = DerivedVars->Advance;
-			if(fixedConfigs1.schedulingSettings.schedulingConfigurationBits[ignitionEvent]){ //
+			if(fixedConfigs1.schedulingSettings.schedulingConfigurationBits[outputEvent]){ //
 				pulsewidthToUseForThisChannel = masterPulseWidth;
 				endOfPulseTimingToUseForThisChannel = 0; // Fixed flat timing for fueling for the time being
 			} // Else we're doing ignition! Leave the defaults in place.
 
 			// This value is quite large, and used with a latency added, however PWs under about 0.5ms are not useful for dwell or fueling
-			if(pulsewidthToUseForThisChannel < injectorSwitchOnCodeTime){
+			if(pulsewidthToUseForThisChannel < ectSwitchOnCodeTime){
 				// If this becomes more than one line, it should be made explicitly atomic. Duplicate code, see above
-				outputEventInputEventNumbers[ignitionEvent] = 0xFF;
+				outputEventInputEventNumbers[outputEvent] = 0xFF;
 			}else{ // Otherwise act normally!
 
 				/** @todo TODO move sched code to a function or functions (inline?)
@@ -143,10 +143,10 @@ void scheduleOutputs(){
 
 				/// @todo TODO refactor this partly into init.c as per more detailed TD above
 				unsigned short codeAngleOfIgnition = 0;
-				if(fixedConfigs1.schedulingSettings.anglesOfTDC[ignitionEvent] > ((unsigned long)fixedConfigs1.schedulingSettings.decoderEngineOffset + endOfPulseTimingToUseForThisChannel)){ /// @todo TODO keep an eye on overflow here when increasing resolution by scaling angles
-					codeAngleOfIgnition = fixedConfigs1.schedulingSettings.anglesOfTDC[ignitionEvent] - (fixedConfigs1.schedulingSettings.decoderEngineOffset + endOfPulseTimingToUseForThisChannel);
+				if(fixedConfigs1.schedulingSettings.anglesOfTDC[outputEvent] > ((unsigned long)fixedConfigs1.schedulingSettings.decoderEngineOffset + endOfPulseTimingToUseForThisChannel)){ /// @todo TODO keep an eye on overflow here when increasing resolution by scaling angles
+					codeAngleOfIgnition = fixedConfigs1.schedulingSettings.anglesOfTDC[outputEvent] - (fixedConfigs1.schedulingSettings.decoderEngineOffset + endOfPulseTimingToUseForThisChannel);
 				}else{
-					codeAngleOfIgnition = (unsigned short)(((unsigned long)totalEventAngleRange + fixedConfigs1.schedulingSettings.anglesOfTDC[ignitionEvent]) - ((unsigned long)fixedConfigs1.schedulingSettings.decoderEngineOffset + endOfPulseTimingToUseForThisChannel));
+					codeAngleOfIgnition = (unsigned short)(((unsigned long)totalEventAngleRange + fixedConfigs1.schedulingSettings.anglesOfTDC[outputEvent]) - ((unsigned long)fixedConfigs1.schedulingSettings.decoderEngineOffset + endOfPulseTimingToUseForThisChannel));
 				}
 				/** @todo TODO, do this ^ at init time from fixed config as an array of
 				 * angles and a single engine offset combined into this runtime array.
@@ -191,10 +191,10 @@ void scheduleOutputs(){
 
 						// Determine the eventBeforeCurrent outside the atomic block
 						unsigned char eventBeforeCurrent = 0;
-						if(outputEventInputEventNumbers[ignitionEvent] == 0){
+						if(outputEventInputEventNumbers[outputEvent] == 0){
 							eventBeforeCurrent = numberOfRealEvents - 1;
 						}else{
-							eventBeforeCurrent = outputEventInputEventNumbers[ignitionEvent] - 1;
+							eventBeforeCurrent = outputEventInputEventNumbers[outputEvent] - 1;
 						}
 
 						unsigned long potentialDelay = ticksBetweenEventAndSpark - pulsewidthToUseForThisChannel;
@@ -215,47 +215,47 @@ void scheduleOutputs(){
 							 * just mean a single cycle of scheduling is slightly too retarded for a single
 							 * event around change of tooth time which could easily be acceptable.
 							 */
-							if((mappedEvent == eventBeforeCurrent) && (potentialDelay >  outputEventDelayTotalPeriod[ignitionEvent])){
-								skipEventFlags |= (1UL << ignitionEvent);
+							if((mappedEvent == eventBeforeCurrent) && (potentialDelay >  outputEventDelayTotalPeriod[outputEvent])){
+								skipEventFlags |= (1UL << outputEvent);
 							}
 
-							outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
-							outputEventDelayFinalPeriod[ignitionEvent] = (unsigned short)potentialDelay;
-							outputEventPulseWidthsMath[ignitionEvent] = pulsewidthToUseForThisChannel;
-							outputEventExtendNumberOfRepeats[ignitionEvent] = 0;
+							outputEventInputEventNumbers[outputEvent] = mappedEvent;
+							outputEventDelayFinalPeriod[outputEvent] = (unsigned short)potentialDelay;
+							outputEventPulseWidthsMath[outputEvent] = pulsewidthToUseForThisChannel;
+							outputEventExtendNumberOfRepeats[outputEvent] = 0;
 							ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-							outputEventDelayTotalPeriod[ignitionEvent] = potentialDelay; // No async accesses occur
+							outputEventDelayTotalPeriod[outputEvent] = potentialDelay; // No async accesses occur
 						}else{
 							ATOMIC_START(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 							// See comment in above block
-							if((mappedEvent == eventBeforeCurrent) && (potentialDelay > outputEventDelayTotalPeriod[ignitionEvent])){
-								skipEventFlags |= (1UL << ignitionEvent);
+							if((mappedEvent == eventBeforeCurrent) && (potentialDelay > outputEventDelayTotalPeriod[outputEvent])){
+								skipEventFlags |= (1UL << outputEvent);
 							}
 
-							outputEventInputEventNumbers[ignitionEvent] = mappedEvent;
+							outputEventInputEventNumbers[outputEvent] = mappedEvent;
 							unsigned char numberOfRepeats = potentialDelay / SHORTMAX;
 							unsigned short finalPeriod = potentialDelay % SHORTMAX;
 							if(finalPeriod > decoderMaxCodeTime){
-								outputEventDelayFinalPeriod[ignitionEvent] = finalPeriod;
-								outputEventExtendRepeatPeriod[ignitionEvent] = SHORTMAX;
-								outputEventExtendNumberOfRepeats[ignitionEvent] = numberOfRepeats;
+								outputEventDelayFinalPeriod[outputEvent] = finalPeriod;
+								outputEventExtendRepeatPeriod[outputEvent] = SHORTMAX;
+								outputEventExtendNumberOfRepeats[outputEvent] = numberOfRepeats;
 							}else{
 								unsigned short shortagePerRepeat = (decoderMaxCodeTime - finalPeriod) / numberOfRepeats;
 								unsigned short repeatPeriod = (SHORTMAX - 1) - shortagePerRepeat;
 								finalPeriod += (shortagePerRepeat + 1) * numberOfRepeats;
-								outputEventDelayFinalPeriod[ignitionEvent] = finalPeriod;
-								outputEventExtendRepeatPeriod[ignitionEvent] = repeatPeriod;
-								outputEventExtendNumberOfRepeats[ignitionEvent] = numberOfRepeats;
+								outputEventDelayFinalPeriod[outputEvent] = finalPeriod;
+								outputEventExtendRepeatPeriod[outputEvent] = repeatPeriod;
+								outputEventExtendNumberOfRepeats[outputEvent] = numberOfRepeats;
 							}
 							// find number of max sized chunks and remainder
 							// check remainder for being big enough compared to code runtime
 							// if so, set repeat to max and final to remainder and number of iterations to divs
 							// if not, decrease repeat size in some optimal way and provide new left over to work with that, and same number of divs/its
 							// Always use dwell as requested
-							outputEventPulseWidthsMath[ignitionEvent] = pulsewidthToUseForThisChannel;
+							outputEventPulseWidthsMath[outputEvent] = pulsewidthToUseForThisChannel;
 							ATOMIC_END(); /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-							outputEventDelayTotalPeriod[ignitionEvent] = potentialDelay; // No async accesses occur
+							outputEventDelayTotalPeriod[outputEvent] = potentialDelay; // No async accesses occur
 							Counters.timerStretchedToSchedule++;
 						}
 						break;

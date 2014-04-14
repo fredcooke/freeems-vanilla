@@ -110,7 +110,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 
 	/// @todo TODO Make this more understandable as right now it is difficult to grok.
 	// determine whether or not to reschedule or self schedule assuming pin is currently scheduled
-	unsigned long diff = (injectorMainEndTimes[pin] + injectorSwitchOffCodeTime) - startTimeLong;
+	unsigned long diff = (injectorMainEndTimes[pin] + ectSwitchOffCodeTime) - startTimeLong;
 #define newStartIsAfterOutputEndTimeAndCanSelfSet (diff > LONGHALF)
 // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
 
@@ -123,11 +123,11 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 */
 
 	// Is it enabled and about to do *something*?
-	if(TIE & injectorMainOnMasks[pin]){
+	if(TIE & ectMainOnMasks[pin]){
 		// If configured to do something specific
-		if(*injectorMainControlRegisters[pin] & injectorMainActiveMasks[pin]){
+		if(*injectorMainControlRegisters[pin] & ectMainActiveMasks[pin]){
 			// If that something is go high
-			if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
+			if(*injectorMainControlRegisters[pin] & ectMainGoHighMasks[pin]){
 				// GO HIGH SHOULD DO NOTHING CEPT COUNTER
 				// if too close, do nothing, or if far enough away, resched
 				// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
@@ -141,7 +141,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 					outputEventExtendNumberOfRepeatsHolding[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];
 					outputEventExtendRepeatPeriodHolding[pin] = outputEventExtendRepeatPeriod[outputEventNumber];
 					outputEventDelayFinalPeriodHolding[pin] = outputEventDelayFinalPeriod[outputEventNumber];
-					selfSetTimer |= injectorMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
+					selfSetTimer |= ectMainOnMasks[pin]; // setup a bit to let the timer interrupt know to set its own new start from a var
 					Counters.pinScheduledToSelfSchedule++;
 				}else{
 					SCHEDULE_ONE_ECT_OUTPUT();
@@ -149,7 +149,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 				}
 			}
 		}else{ // Configured to do nothing, or toggle
-			if(*injectorMainControlRegisters[pin] & injectorMainGoHighMasks[pin]){
+			if(*injectorMainControlRegisters[pin] & ectMainGoHighMasks[pin]){
 				// TOGGLE SHOULD EARN SOME SORT OF ERROR CONDITION/COUNTER
 				Counters.pinScheduledToToggleError++;
 			}else{

@@ -82,12 +82,12 @@ const unsigned long masterFuelConstant = 139371764;
  */
 const unsigned long MAFFuelConstant = 0;
 
-/// @todo TODO Move these to decoder interface AND rename to be more generic/meaningful/accurate, and make set by each decoder where appropriate
-///* Injection limits */
+/// @todo TODO Move these to decoder interface, and make set by each decoder where appropriate
+///* ECT limits */
 /* The number of timer units it takes for the switch on scheduling code to run + latencies */
-const unsigned short injectorSwitchOnCodeTime = 250; /* Used to set min pw in output ISR. 250 is based on worst of decoders causing latencies. */
+const unsigned short ectSwitchOnCodeTime = 250; /* Used to set min pw in output ISR. 250 is based on worst of decoders causing latencies. */
 /* The number of timer units it takes for the switch off scheduling code to run + latencies */
-const unsigned short injectorSwitchOffCodeTime = 250; /* Used to see if we should set self sched or not. 250 is based on worst of decoders causing latencies. */
+const unsigned short ectSwitchOffCodeTime = 250; /* Used to see if we should set self sched or not. 250 is based on worst of decoders causing latencies. */
 
 // TODO put these where they belong, just dumped from other file for now...
 /* Main injector channel bit masks and registers for use in both injection_isrs.c and engine_position_isrs.c */
@@ -106,15 +106,15 @@ const unsigned short injectorSwitchOffCodeTime = 250; /* Used to see if we shoul
 /* Injection masks */
 
 // To be used with flag vars and TIE and TFLG
-const unsigned char injectorMainOnMasks[INJECTION_CHANNELS] = {BIT2,  BIT3,  BIT4,  BIT5,  BIT6,  BIT7};
-const unsigned char injectorMainOffMasks[INJECTION_CHANNELS] = {NBIT2, NBIT3, NBIT4, NBIT5, NBIT6, NBIT7};
+const unsigned char ectMainOnMasks[ECT_CHANNELS] = {BIT2,  BIT3,  BIT4,  BIT5,  BIT6,  BIT7};
+const unsigned char ectMainOffMasks[ECT_CHANNELS] = {NBIT2, NBIT3, NBIT4, NBIT5, NBIT6, NBIT7};
 
 // To be used in conjunction with injectorMainControlRegisters
-const unsigned char injectorMainActiveMasks[INJECTION_CHANNELS] = {BIT5, BIT7, BIT1, BIT3, BIT5, BIT7};      // Is this enabled for go high OR go low?
-const unsigned char injectorMainEnableMasks[INJECTION_CHANNELS] = {0x30, 0xC0, 0x03, 0x0C, 0x30, 0xC0};      // Regardless of state, mask to enable and cause to go high
-const unsigned char injectorMainDisableMasks[INJECTION_CHANNELS] = {0xCF, 0x3F, 0xFC, 0xF3, 0xCF, 0x3F};     // Regardless of state, mask to disable completely
-const unsigned char injectorMainGoHighMasks[INJECTION_CHANNELS] = {BIT4, BIT6, BIT0, BIT2, BIT4, BIT6};      // Already enabled, mask to change from go low to go high
-const unsigned char injectorMainGoLowMasks[INJECTION_CHANNELS] = {NBIT4, NBIT6, NBIT0, NBIT2, NBIT4, NBIT6}; // Already enabled, mask to change from go high to go low
+const unsigned char ectMainActiveMasks[ECT_CHANNELS] = {BIT5, BIT7, BIT1, BIT3, BIT5, BIT7};      // Is this enabled for go high OR go low?
+const unsigned char ectMainEnableMasks[ECT_CHANNELS] = {0x30, 0xC0, 0x03, 0x0C, 0x30, 0xC0};      // Regardless of state, mask to enable and cause to go high
+const unsigned char ectMainDisableMasks[ECT_CHANNELS] = {0xCF, 0x3F, 0xFC, 0xF3, 0xCF, 0x3F};     // Regardless of state, mask to disable completely
+const unsigned char ectMainGoHighMasks[ECT_CHANNELS] = {BIT4, BIT6, BIT0, BIT2, BIT4, BIT6};      // Already enabled, mask to change from go low to go high
+const unsigned char ectMainGoLowMasks[ECT_CHANNELS] = {NBIT4, NBIT6, NBIT0, NBIT2, NBIT4, NBIT6}; // Already enabled, mask to change from go high to go low
 
 
 

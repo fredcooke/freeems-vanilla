@@ -99,14 +99,14 @@ EXTERN const unsigned char builtByName[BUILT_BY_NAME_LENGTH];            ///< Na
 EXTERN const unsigned char supportEmail[SUPPORT_EMAIL_LENGTH];           ///< Support email for this build
 
 
-/* Injection (currently used for both inj and ign) */
-EXTERN const unsigned char injectorMainOnMasks[INJECTION_CHANNELS];
-EXTERN const unsigned char injectorMainOffMasks[INJECTION_CHANNELS];
-EXTERN const unsigned char injectorMainActiveMasks[INJECTION_CHANNELS];
-EXTERN const unsigned char injectorMainEnableMasks[INJECTION_CHANNELS];
-EXTERN const unsigned char injectorMainDisableMasks[INJECTION_CHANNELS];
-EXTERN const unsigned char injectorMainGoHighMasks[INJECTION_CHANNELS];
-EXTERN const unsigned char injectorMainGoLowMasks[INJECTION_CHANNELS];
+/* ECT output register masks */
+EXTERN const unsigned char ectMainOnMasks[ECT_CHANNELS];
+EXTERN const unsigned char ectMainOffMasks[ECT_CHANNELS];
+EXTERN const unsigned char ectMainActiveMasks[ECT_CHANNELS];
+EXTERN const unsigned char ectMainEnableMasks[ECT_CHANNELS];
+EXTERN const unsigned char ectMainDisableMasks[ECT_CHANNELS];
+EXTERN const unsigned char ectMainGoHighMasks[ECT_CHANNELS];
+EXTERN const unsigned char ectMainGoLowMasks[ECT_CHANNELS];
 
 #endif
 
@@ -156,9 +156,9 @@ EXTERN const unsigned long MAFFuelConstant;
 /// @todo TODO Move these to decoder interface AND rename to be more generic/meaningful/accurate, and make set by each decoder where appropriate
 // These need to be changed if the timer period is changed at all
 /* The number of timer units it takes for the switch on scheduling code to run */
-EXTERN const unsigned short injectorSwitchOnCodeTime;
+EXTERN const unsigned short ectSwitchOnCodeTime;
 /* The number of timer units it takes for the switch off scheduling code to run */
-EXTERN const unsigned short injectorSwitchOffCodeTime;
+EXTERN const unsigned short ectSwitchOffCodeTime;
 
 
 #undef EXTERN

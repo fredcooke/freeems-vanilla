@@ -200,7 +200,7 @@ if(KeyUserDebugs.syncLostWithThisID){                                 \
 
 #define SCHEDULE_ONE_ECT_OUTPUT() \
 if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                                                      \
-	*injectorMainControlRegisters[pin] &= injectorMainDisableMasks[pin];                                          \
+	*injectorMainControlRegisters[pin] &= ectMainDisableMasks[pin];                                               \
 	outputEventExtendNumberOfRepeatsRealtime[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];          \
 	outputEventExtendNumberOfRepeatsRealtime[pin]--;                                                              \
 	outputEventExtendRepeatPeriodRealtime[pin] = outputEventExtendRepeatPeriod[outputEventNumber];                \
@@ -208,14 +208,14 @@ if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                    
 	*injectorMainTimeRegisters[pin] = timeStamp.timeShorts[1] + outputEventExtendRepeatPeriod[outputEventNumber]; \
 	Counters.pinScheduledWithTimerExtension++;                                                                    \
 }else{                                                                                                            \
-	*injectorMainControlRegisters[pin] |= injectorMainEnableMasks[pin];                                           \
+	*injectorMainControlRegisters[pin] |= ectMainEnableMasks[pin];                                                \
 	*injectorMainTimeRegisters[pin] = startTime;                                                                  \
 	Counters.pinScheduledToGoHigh++;                                                                              \
 }                                                                                                                 \
-TIE |= injectorMainOnMasks[pin];                                                                                  \
-TFLG = injectorMainOnMasks[pin];                                                                                  \
+TIE |= ectMainOnMasks[pin];                                                                                       \
+TFLG = ectMainOnMasks[pin];                                                                                       \
 outputEventPulseWidthsRealtime[pin] = outputEventPulseWidthsMath[outputEventNumber];                              \
-selfSetTimer &= injectorMainOffMasks[pin];                                                                        // End of macro block!
+selfSetTimer &= ectMainOffMasks[pin];                                                                             // End of macro block!
 
 
 #ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
@@ -313,34 +313,34 @@ EXTERN unsigned short outputEventExtendRepeatPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS]
 EXTERN unsigned short outputEventDelayFinalPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
 EXTERN unsigned long  outputEventDelayTotalPeriod[MAX_NUMBER_OF_OUTPUT_EVENTS];
 
-EXTERN unsigned short outputEventPulseWidthsHolding[INJECTION_CHANNELS];
-EXTERN unsigned char outputEventExtendNumberOfRepeatsHolding[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventExtendRepeatPeriodHolding[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventDelayFinalPeriodHolding[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventPulseWidthsHolding[ECT_CHANNELS];
+EXTERN unsigned char outputEventExtendNumberOfRepeatsHolding[ECT_CHANNELS];
+EXTERN unsigned short outputEventExtendRepeatPeriodHolding[ECT_CHANNELS];
+EXTERN unsigned short outputEventDelayFinalPeriodHolding[ECT_CHANNELS];
 
-EXTERN unsigned short outputEventPulseWidthsRealtime[INJECTION_CHANNELS];
-EXTERN unsigned char outputEventExtendNumberOfRepeatsRealtime[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[INJECTION_CHANNELS];
-EXTERN unsigned short outputEventDelayFinalPeriodRealtime[INJECTION_CHANNELS];
+EXTERN unsigned short outputEventPulseWidthsRealtime[ECT_CHANNELS];
+EXTERN unsigned char outputEventExtendNumberOfRepeatsRealtime[ECT_CHANNELS];
+EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[ECT_CHANNELS];
+EXTERN unsigned short outputEventDelayFinalPeriodRealtime[ECT_CHANNELS];
 
-EXTERN unsigned short injectorMainStartOffsetHolding[INJECTION_CHANNELS];
+EXTERN unsigned short injectorMainStartOffsetHolding[ECT_CHANNELS];
 
 
 
 /* Register addresses */
-EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[INJECTION_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
-EXTERN volatile unsigned char * volatile injectorMainControlRegisters[INJECTION_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
+EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[ECT_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
+EXTERN volatile unsigned char * volatile injectorMainControlRegisters[ECT_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
 
 
 /* Timer holding vars (init not required) */
-EXTERN unsigned long injectorMainEndTimes[INJECTION_CHANNELS]; // Used for scheduling calculations
+EXTERN unsigned long injectorMainEndTimes[ECT_CHANNELS]; // Used for scheduling calculations
 /* Channel latencies (init not required) */
-EXTERN unsigned short injectorCodeLatencies[INJECTION_CHANNELS]; // Used for injector control in a dysfunctional way.
+EXTERN unsigned short injectorCodeLatencies[ECT_CHANNELS]; // Used for output control in a dysfunctional way.
 
 
 /* Code time to run variables (init not required) */
-EXTERN unsigned short injectorCodeOpenRuntimes[INJECTION_CHANNELS]; // Stats only, remove or change to something accessible
-EXTERN unsigned short injectorCodeCloseRuntimes[INJECTION_CHANNELS]; // Stats only, remove or change to something accessible
+EXTERN unsigned short injectorCodeOpenRuntimes[ECT_CHANNELS]; // Stats only, remove or change to something accessible
+EXTERN unsigned short injectorCodeCloseRuntimes[ECT_CHANNELS]; // Stats only, remove or change to something accessible
 
 
 /// @todo TODO Perhaps use some of the space freed by shrinking all timing tables for this:

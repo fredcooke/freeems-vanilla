@@ -107,7 +107,7 @@ typedef struct {
 /** @copydoc SmallTables1 */
 typedef struct {
 	loggingSetting loggingSettings;                          ///< @copydoc loggingSetting
-	unsigned short perCylinderFuelTrims[INJECTION_CHANNELS]; ///< Trims for injection, from 0% to 200% of base.
+	unsigned short perCylinderFuelTrims[ECT_CHANNELS];       ///< Trims for injection, from 0% to 200% of base.
 	unsigned char filler[SMALL_TABLES_2_FILLER_SIZE];        ///< Padding data.
 } SmallTables2;
 

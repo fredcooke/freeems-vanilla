@@ -1249,7 +1249,7 @@ void decodePacketAndRespond(){
 				unsigned char channel;
 				unsigned char configuredChannels = 6;
 				for(channel = 0;channel < 6;channel++){
-					if(testPulseWidths[channel] > injectorSwitchOnCodeTime){ // See next block for warning.
+					if(testPulseWidths[channel] > ectSwitchOnCodeTime){ // See next block for warning.
 						// use as-is
 						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = testPulseWidths[channel];
