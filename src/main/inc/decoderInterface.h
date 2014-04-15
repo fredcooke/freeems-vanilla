@@ -199,23 +199,23 @@ if(KeyUserDebugs.syncLostWithThisID){                                 \
 
 
 #define SCHEDULE_ONE_ECT_OUTPUT() \
-if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                                                      \
-	*injectorMainControlRegisters[pin] &= ectMainDisableMasks[pin];                                               \
-	outputEventExtendNumberOfRepeatsRealtime[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];          \
-	outputEventExtendNumberOfRepeatsRealtime[pin]--;                                                              \
-	outputEventExtendRepeatPeriodRealtime[pin] = outputEventExtendRepeatPeriod[outputEventNumber];                \
-	outputEventDelayFinalPeriodRealtime[pin] = outputEventDelayFinalPeriod[outputEventNumber];                    \
-	*injectorMainTimeRegisters[pin] = timeStamp.timeShorts[1] + outputEventExtendRepeatPeriod[outputEventNumber]; \
-	Counters.pinScheduledWithTimerExtension++;                                                                    \
-}else{                                                                                                            \
-	*injectorMainControlRegisters[pin] |= ectMainEnableMasks[pin];                                                \
-	*injectorMainTimeRegisters[pin] = startTime;                                                                  \
-	Counters.pinScheduledToGoHigh++;                                                                              \
-}                                                                                                                 \
-TIE |= ectMainOnMasks[pin];                                                                                       \
-TFLG = ectMainOnMasks[pin];                                                                                       \
-outputEventPulseWidthsRealtime[pin] = outputEventPulseWidthsMath[outputEventNumber];                              \
-selfSetTimer &= ectMainOffMasks[pin];                                                                             // End of macro block!
+if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){                                                 \
+	*ectMainControlRegisters[pin] &= ectMainDisableMasks[pin];                                               \
+	outputEventExtendNumberOfRepeatsRealtime[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];     \
+	outputEventExtendNumberOfRepeatsRealtime[pin]--;                                                         \
+	outputEventExtendRepeatPeriodRealtime[pin] = outputEventExtendRepeatPeriod[outputEventNumber];           \
+	outputEventDelayFinalPeriodRealtime[pin] = outputEventDelayFinalPeriod[outputEventNumber];               \
+	*ectMainTimeRegisters[pin] = timeStamp.timeShorts[1] + outputEventExtendRepeatPeriod[outputEventNumber]; \
+	Counters.pinScheduledWithTimerExtension++;                                                               \
+}else{                                                                                                       \
+	*ectMainControlRegisters[pin] |= ectMainEnableMasks[pin];                                                \
+	*ectMainTimeRegisters[pin] = startTime;                                                                  \
+	Counters.pinScheduledToGoHigh++;                                                                         \
+}                                                                                                            \
+TIE |= ectMainOnMasks[pin];                                                                                  \
+TFLG = ectMainOnMasks[pin];                                                                                  \
+outputEventPulseWidthsRealtime[pin] = outputEventPulseWidthsMath[outputEventNumber];                         \
+selfSetTimer &= ectMainOffMasks[pin];                                                                        // End of macro block!
 
 
 #ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
@@ -323,24 +323,24 @@ EXTERN unsigned char outputEventExtendNumberOfRepeatsRealtime[ECT_CHANNELS];
 EXTERN unsigned short outputEventExtendRepeatPeriodRealtime[ECT_CHANNELS];
 EXTERN unsigned short outputEventDelayFinalPeriodRealtime[ECT_CHANNELS];
 
-EXTERN unsigned short injectorMainStartOffsetHolding[ECT_CHANNELS];
+EXTERN unsigned short ectMainStartOffsetHolding[ECT_CHANNELS];
 
 
 
 /* Register addresses */
-EXTERN volatile unsigned short * volatile injectorMainTimeRegisters[ECT_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
-EXTERN volatile unsigned char * volatile injectorMainControlRegisters[ECT_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
+EXTERN volatile unsigned short * volatile ectMainTimeRegisters[ECT_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
+EXTERN volatile unsigned char * volatile ectMainControlRegisters[ECT_CHANNELS]; // Static during a run, setup at init, shouldn't be in RAM, FIXME
 
 
 /* Timer holding vars (init not required) */
-EXTERN unsigned long injectorMainEndTimes[ECT_CHANNELS]; // Used for scheduling calculations
+EXTERN unsigned long ectMainEndTimes[ECT_CHANNELS]; // Used for scheduling calculations
 /* Channel latencies (init not required) */
-EXTERN unsigned short injectorCodeLatencies[ECT_CHANNELS]; // Used for output control in a dysfunctional way.
+EXTERN unsigned short ectCodeLatencies[ECT_CHANNELS]; // Used for output control in a dysfunctional way.
 
 
 /* Code time to run variables (init not required) */
-EXTERN unsigned short injectorCodeOpenRuntimes[ECT_CHANNELS]; // Stats only, remove or change to something accessible
-EXTERN unsigned short injectorCodeCloseRuntimes[ECT_CHANNELS]; // Stats only, remove or change to something accessible
+EXTERN unsigned short ectCodeOpenRuntimes[ECT_CHANNELS]; // Stats only, remove or change to something accessible
+EXTERN unsigned short ectCodeCloseRuntimes[ECT_CHANNELS]; // Stats only, remove or change to something accessible
 
 
 /// @todo TODO Perhaps use some of the space freed by shrinking all timing tables for this:

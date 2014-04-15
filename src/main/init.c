@@ -448,18 +448,18 @@ void initVariables(){
 	ticksPerDegreeRecord = &ticksPerDegree1; // TODO temp, remove, maybe
 
 	/* Setup the pointers to the registers for fueling use, this does NOT work if done in global.c, I still don't know why. */
-	injectorMainTimeRegisters[0] = TC2_ADDR;
-	injectorMainTimeRegisters[1] = TC3_ADDR;
-	injectorMainTimeRegisters[2] = TC4_ADDR;
-	injectorMainTimeRegisters[3] = TC5_ADDR;
-	injectorMainTimeRegisters[4] = TC6_ADDR;
-	injectorMainTimeRegisters[5] = TC7_ADDR;
-	injectorMainControlRegisters[0] = TCTL2_ADDR;
-	injectorMainControlRegisters[1] = TCTL2_ADDR;
-	injectorMainControlRegisters[2] = TCTL1_ADDR;
-	injectorMainControlRegisters[3] = TCTL1_ADDR;
-	injectorMainControlRegisters[4] = TCTL1_ADDR;
-	injectorMainControlRegisters[5] = TCTL1_ADDR;
+	ectMainTimeRegisters[0] = TC2_ADDR;
+	ectMainTimeRegisters[1] = TC3_ADDR;
+	ectMainTimeRegisters[2] = TC4_ADDR;
+	ectMainTimeRegisters[3] = TC5_ADDR;
+	ectMainTimeRegisters[4] = TC6_ADDR;
+	ectMainTimeRegisters[5] = TC7_ADDR;
+	ectMainControlRegisters[0] = TCTL2_ADDR;
+	ectMainControlRegisters[1] = TCTL2_ADDR;
+	ectMainControlRegisters[2] = TCTL1_ADDR;
+	ectMainControlRegisters[3] = TCTL1_ADDR;
+	ectMainControlRegisters[4] = TCTL1_ADDR;
+	ectMainControlRegisters[5] = TCTL1_ADDR;
 
 	coreStatusA |= FUEL_PUMP_PRIME;
 

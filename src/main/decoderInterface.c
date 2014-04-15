@@ -110,7 +110,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 
 	/// @todo TODO Make this more understandable as right now it is difficult to grok.
 	// determine whether or not to reschedule or self schedule assuming pin is currently scheduled
-	unsigned long diff = (injectorMainEndTimes[pin] + ectSwitchOffCodeTime) - startTimeLong;
+	unsigned long diff = (ectMainEndTimes[pin] + ectSwitchOffCodeTime) - startTimeLong;
 #define newStartIsAfterOutputEndTimeAndCanSelfSet (diff > LONGHALF)
 // http://forum.diyefi.org/viewtopic.php?f=8&t=57&p=861#p861
 
@@ -125,9 +125,9 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 	// Is it enabled and about to do *something*?
 	if(TIE & ectMainOnMasks[pin]){
 		// If configured to do something specific
-		if(*injectorMainControlRegisters[pin] & ectMainActiveMasks[pin]){
+		if(*ectMainControlRegisters[pin] & ectMainActiveMasks[pin]){
 			// If that something is go high
-			if(*injectorMainControlRegisters[pin] & ectMainGoHighMasks[pin]){
+			if(*ectMainControlRegisters[pin] & ectMainGoHighMasks[pin]){
 				// GO HIGH SHOULD DO NOTHING CEPT COUNTER
 				// if too close, do nothing, or if far enough away, resched
 				// for now just always do nothing as it's going to fire, and whatever configured got it close enough...
@@ -136,7 +136,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 				// if too close, resched to turn, ie, stay on... , if far enough away, self sched
 				if(newStartIsAfterOutputEndTimeAndCanSelfSet){
 					// self sched
-					injectorMainStartOffsetHolding[pin] = startTime - *injectorMainTimeRegisters[pin];
+					ectMainStartOffsetHolding[pin] = startTime - *ectMainTimeRegisters[pin];
 					outputEventPulseWidthsHolding[pin] = outputEventPulseWidthsMath[outputEventNumber];
 					outputEventExtendNumberOfRepeatsHolding[pin] = outputEventExtendNumberOfRepeats[outputEventNumber];
 					outputEventExtendRepeatPeriodHolding[pin] = outputEventExtendRepeatPeriod[outputEventNumber];
@@ -149,7 +149,7 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 				}
 			}
 		}else{ // Configured to do nothing, or toggle
-			if(*injectorMainControlRegisters[pin] & ectMainGoHighMasks[pin]){
+			if(*ectMainControlRegisters[pin] & ectMainGoHighMasks[pin]){
 				// TOGGLE SHOULD EARN SOME SORT OF ERROR CONDITION/COUNTER
 				Counters.pinScheduledToToggleError++;
 			}else{

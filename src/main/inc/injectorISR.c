@@ -76,14 +76,14 @@ void InjectorXISR(){
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT2, PORTB);
 
 	/* Record the edge time stamp from the IC register */
-	unsigned short edgeTimeStamp = *injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER];
+	unsigned short edgeTimeStamp = *ectMainTimeRegisters[INJECTOR_CHANNEL_NUMBER];
 
 	/* If rising edge triggered this */
 	if(PTIT & INJECTOR_MAIN_ON_MASK){ // Stuff for switch on time
 
 		/* Find out what max and min for pulse width are */
 		unsigned short localPulseWidth = outputEventPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER];
-		unsigned short localMinimumPulseWidth = ectSwitchOnCodeTime + injectorCodeLatencies[INJECTOR_CHANNEL_NUMBER];
+		unsigned short localMinimumPulseWidth = ectSwitchOnCodeTime + ectCodeLatencies[INJECTOR_CHANNEL_NUMBER];
 
 		/** @todo TODO *maybe* instead of checking min and increasing pulse, just force it straight off if diff between start and now+const is greater than desired pulsewidth */
 
@@ -104,29 +104,29 @@ void InjectorXISR(){
 		}
 
 		// store the end time for use in the scheduler
-		injectorMainEndTimes[INJECTOR_CHANNEL_NUMBER] = timeStamp.timeLong + localPulseWidth;
+		ectMainEndTimes[INJECTOR_CHANNEL_NUMBER] = timeStamp.timeLong + localPulseWidth;
 
 		/* Set the action for compare to switch off FIRST or it might inadvertently PWM the injector during opening... */
-		*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= ectMainGoLowMasks[INJECTOR_CHANNEL_NUMBER];
+		*ectMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= ectMainGoLowMasks[INJECTOR_CHANNEL_NUMBER];
 
 		/* Set the time to turn off again */
-		*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += localPulseWidth;
+		*ectMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += localPulseWidth;
 
 		/* This is the point we actually want the time to, but because the code is so simple, it can't help but be a nice short time */
 
 		Counters.injectorSwitchOns++;
 
 		/* Calculate and store code run time */
-		injectorCodeOpenRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
+		ectCodeOpenRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
 	}else{ // Stuff for switch off time and repeat timer time.
-		if(!(*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] & ectMainEnableMasks[INJECTOR_CHANNEL_NUMBER])){ // set to no action
+		if(!(*ectMainControlRegisters[INJECTOR_CHANNEL_NUMBER] & ectMainEnableMasks[INJECTOR_CHANNEL_NUMBER])){ // set to no action
 			if(outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER] > 0){
-				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventExtendRepeatPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
+				*ectMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventExtendRepeatPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
 				outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER]--;
 				Counters.injectorTimerExtensions++;
 			}else{
-				*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= ectMainEnableMasks[INJECTOR_CHANNEL_NUMBER];
-				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventDelayFinalPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
+				*ectMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= ectMainEnableMasks[INJECTOR_CHANNEL_NUMBER];
+				*ectMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += outputEventDelayFinalPeriodRealtime[INJECTOR_CHANNEL_NUMBER];
 				// this is already set from the decoder, we're just delaying use of it: outputEventPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER]
 				Counters.injectorTimerExtensionFinals++;
 			}
@@ -134,30 +134,30 @@ void InjectorXISR(){
 			/* Set the action for compare to switch on and the time to next start time, clear the self timer flag */
 			if(selfSetTimer & INJECTOR_MAIN_ON_MASK){
 				if(outputEventExtendNumberOfRepeatsHolding[INJECTOR_CHANNEL_NUMBER] > 0){
-					*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= ectMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
+					*ectMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= ectMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
 					outputEventExtendNumberOfRepeatsRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventExtendNumberOfRepeatsHolding[INJECTOR_CHANNEL_NUMBER];
 					outputEventExtendRepeatPeriodRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventExtendRepeatPeriodHolding[INJECTOR_CHANNEL_NUMBER];
 					outputEventDelayFinalPeriodRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventDelayFinalPeriodHolding[INJECTOR_CHANNEL_NUMBER];
 					Counters.injectorSelfScheduleExtensions++;
 				}else{
-					*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= ectMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
+					*ectMainControlRegisters[INJECTOR_CHANNEL_NUMBER] |= ectMainGoHighMasks[INJECTOR_CHANNEL_NUMBER];
 					Counters.injectorSelfSchedules++;
 				}
-				*injectorMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += injectorMainStartOffsetHolding[INJECTOR_CHANNEL_NUMBER];
+				*ectMainTimeRegisters[INJECTOR_CHANNEL_NUMBER] += ectMainStartOffsetHolding[INJECTOR_CHANNEL_NUMBER];
 				outputEventPulseWidthsRealtime[INJECTOR_CHANNEL_NUMBER] = outputEventPulseWidthsHolding[INJECTOR_CHANNEL_NUMBER];
 				selfSetTimer &= ectMainOffMasks[INJECTOR_CHANNEL_NUMBER];
 			}else{
 				// Disable interrupts and actions incase the period from this end to the next start is long (saves cpu)
 				TIE &= ectMainOffMasks[INJECTOR_CHANNEL_NUMBER];
-				*injectorMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= ectMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
+				*ectMainControlRegisters[INJECTOR_CHANNEL_NUMBER] &= ectMainDisableMasks[INJECTOR_CHANNEL_NUMBER];
 				Counters.injectorSwitchOffs++;
 			}
 		}
 		/* Calculate and store code run time */
-		injectorCodeCloseRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
+		ectCodeCloseRuntimes[INJECTOR_CHANNEL_NUMBER] = TCNT - TCNTStart;
 	}
 	/* Calculate and store the latency based on compare time and start time */
-	injectorCodeLatencies[INJECTOR_CHANNEL_NUMBER] = TCNTStart - edgeTimeStamp;
+	ectCodeLatencies[INJECTOR_CHANNEL_NUMBER] = TCNTStart - edgeTimeStamp;
 
 	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT2, PORTB);
 }
