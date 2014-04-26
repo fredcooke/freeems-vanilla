@@ -51,12 +51,7 @@ void generateCoreVars(){
 	// Battery Reference Voltage
 	unsigned short localBRV;
 	if(!(fixedConfigs2.sensorSources.BRV)){
-/// @todo TODO WARNING: HACK!!! Remove ASAP!!! IE, As Soon As Preston (get's a new cpu on the TA card!)
-#if CONFIG == HOTEL_ID
-		localBRV = (((unsigned long)ADCBuffers->MAT * fixedConfigs2.sensorRanges.BRVRange) / ADC_DIVISIONS) + fixedConfigs2.sensorRanges.BRVMinimum;
-#else
 		localBRV = (((unsigned long)ADCBuffers->BRV * fixedConfigs2.sensorRanges.BRVRange) / ADC_DIVISIONS) + fixedConfigs2.sensorRanges.BRVMinimum;
-#endif
 	}else if(fixedConfigs2.sensorSources.BRV == SOURCE_PRESET){
 		localBRV = fixedConfigs2.sensorPresets.presetBRV;
 	}else if(fixedConfigs2.sensorSources.BRV == SOURCE_LINEAR){
