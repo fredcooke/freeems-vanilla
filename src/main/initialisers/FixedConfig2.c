@@ -63,8 +63,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	sensorRanges:{
 // MAP Sensor Configuration
 #if CONFIG == HOTEL_ID
-		MAPMinimum:    HondaDenso183kPaMin,
-		MAPRange:      HondaDenso183kPaRange,
+		MAPMinimum:    MPX4250AMin,
+		MAPRange:      MPX4250ARange,
 #elif CONFIG == PRESTO_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
