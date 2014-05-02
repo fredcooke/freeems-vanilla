@@ -305,9 +305,15 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			},
 #endif
 			[1] = {
+#if CONFIG == HOTEL_ID // Don't need fan control, do need proper Wideband control
+				variable: &CoreVars0.RPM,
+				upperValue: RPM(700),
+				lowerValue: RPM(400),
+#else // Default fan control for everyone else
 				variable: &CoreVars0.CHT,
 				upperValue: DEGREES_C(100),
 				lowerValue: DEGREES_C(90),
+#endif
 				port: (unsigned char*)&PORTK,
 				mask: BIT4,
 				flags: 0
