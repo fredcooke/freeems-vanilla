@@ -58,6 +58,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SNOTROCKET_ID
 		perCylinderVolume:  CYLINDER_VOLUME(525),
 		injectorFlow:       CC_PER_MINUTE(310),
+#elif CONFIG == HOTEL_ID
+		perCylinderVolume:  CYLINDER_VOLUME(500),
+		injectorFlow:       CC_PER_MINUTE(140),
 #elif CONFIG == SLATER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(324),
 		injectorFlow:       CC_PER_MINUTE(320),
@@ -109,12 +112,12 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfInjectionsPerEngineCycle:            2  // Used to be batch, dead time being wrong could have affected AFRs
 
 #elif CONFIG == HOTEL_ID // Fred's Hotel Hyundai (Stellar) http://forum.diyefi.org/viewtopic.php?f=55&t=1086
-		anglesOfTDC:             {ANGLE(0)}, // Simple dual edge dizzy
-		outputEventPinNumbers:          {0}, // First pin
-		schedulingConfigurationBits:    {0}, // Ignition only
+		anglesOfTDC:             {ANGLE(0), ANGLE(45)}, // Simple dual edge dizzy
+		outputEventPinNumbers:          {0, 2}, // First pin
+		schedulingConfigurationBits:    {0, 1}, // Ignition only
 		decoderEngineOffset:  ANGLE(170.00), // Locked dizzy with timing of TDC on edge, used for static timing during cranking.
-		numberOfConfiguredOutputEvents:   1, // One per decoder cycle = 4
-		numberOfInjectionsPerEngineCycle: 1  // Ditto
+		numberOfConfiguredOutputEvents:   2, // One per decoder cycle = 4, and one injector too
+		numberOfInjectionsPerEngineCycle: 4  // Four injections per cycle
 
 #elif CONFIG == PRESTO_ID // Preston's silver-top-on-a-stand http://forum.diyefi.org/viewtopic.php?f=55&t=1101
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},

@@ -70,6 +70,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 	RPM: {
 #if CONFIG == TRUCK_ID
 #include "../data/tables/axis/FredsTruck-RPM.h"
+#elif CONFIG == HOTEL_ID
+#include "../data/tables/axis/HotelHyundai-RPM.h"
 #elif CONFIG == PRESTO_ID
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif CONFIG == SEANKLT1_ID
@@ -97,6 +99,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 	Load: {
 #if CONFIG == TRUCK_ID
 #include "../data/tables/axis/FredsTruck-Load.h"
+#elif CONFIG == HOTEL_ID
+#include "../data/tables/axis/HotelHyundai-Load.h"
 #elif CONFIG == PRESTO_ID
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif CONFIG == SEANKLT1_ID
@@ -124,6 +128,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 	Table: {
 #if CONFIG == TRUCK_ID
 #include "../data/tables/ve/FredsTruckVE.h"
+#elif CONFIG == HOTEL_ID
+#include "../data/tables/ve/HotelHyundaiVE.h"
 #elif CONFIG == PRESTO_ID
 #include "../data/tables/ve/flat60Percent.h"
 #elif CONFIG == SEANKLT1_ID
@@ -196,7 +202,9 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 	LoadLength: 16,
 #endif
 	RPM: {
-#if CONFIG == SEANKLT1_ID
+#if CONFIG == HOTEL_ID
+#include "../data/tables/axis/HotelHyundai-RPM.h"
+#elif CONFIG == SEANKLT1_ID
 #include "../data/tables/axis/SeansLT1-RPM.h"
 #elif CONFIG == SCAVENGER_ID
 #include "../data/tables/axis/ScavengersMiata-RPM.h"
@@ -213,7 +221,9 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #endif
 	},
 	Load: {
-#if CONFIG == SCAVENGER_ID
+#if CONFIG == HOTEL_ID
+#include "../data/tables/axis/HotelHyundai-Load.h"
+#elif CONFIG == SCAVENGER_ID
 #include "../data/tables/axis/ScavengersMiata-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
@@ -228,7 +238,9 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #endif
 	},
 	Table: {
-#if CONFIG == SCAVENGER_ID
+#if CONFIG == HOTEL_ID
+#include "../data/tables/lambda/HotelHyundaiLambda.h"
+#elif CONFIG == SCAVENGER_ID
 #include "../data/tables/lambda/ScavengerLambda24RPMx19Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/lambda/DefaultLambda24RPMx19Load.h"
