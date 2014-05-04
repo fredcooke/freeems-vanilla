@@ -220,8 +220,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7150)
 #else
-			disableThreshold:  RPM(5000),
-			reenableThreshold: RPM(4900)  // Come back on before ignition does
+			disableThreshold:  RPM(5850),
+			reenableThreshold: RPM(5800)  // Come back on before ignition does
 #endif
 		},
 		IgnitionRPM:{
@@ -247,8 +247,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7100)
 #else
-			disableThreshold:  RPM(5000),
-			reenableThreshold: RPM(4800)  // Come back on after injection does
+			disableThreshold:  RPM(5800),
+			reenableThreshold: RPM(5750)  // Come back on after injection does
 #endif
 		},
 		OverBoost:{
