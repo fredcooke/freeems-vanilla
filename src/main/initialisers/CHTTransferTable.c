@@ -48,6 +48,8 @@
 const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
 #if CONFIG == TRUCK_ID
 #include "../data/thermistors/Bosch.h"
+#elif CONFIG == HOTEL_ID
+#include "../data/thermistors/HotelStarion-2k49Bias.h"
 #elif CONFIG == PRESTO_ID
 #include "../data/thermistors/Bosch.h"
 #elif CONFIG == SEANKLT1_ID
