@@ -88,6 +88,11 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 			Axis: ARRAY_OF_16_VOLTAGES,
 			Values: { T(2.04),  T(1.61),  T(1.30),  T(1.19),  T(1.11),  T(1.03),  T(0.97),  T(0.91),  T(0.86),  T(0.81),  T(0.77),  T(0.73),  T(0.69),  T(0.53),  T(0.40),  T(0.28)}
 		},
+#elif CONFIG == HOTEL_ID
+		injectorDeadTimeTable: {
+			Axis: ARRAY_OF_16_VOLTAGES,
+			Values: { T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90)}
+		},
 #else
 		injectorDeadTimeTable: {
 			Axis: ARRAY_OF_16_VOLTAGES,
