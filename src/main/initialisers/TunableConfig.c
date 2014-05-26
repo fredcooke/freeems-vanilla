@@ -115,14 +115,22 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #if CONFIG == DEUCES10_ID
 			Axis:   ARRAY_OF_16_TEMPS,
 			Values: {T(14.00), T(13.00), T(12.00), T(11.00), T(10.00), T(10.00), T(9.00), T(9.00), T(8.00), T(8.00), T(7.00), T(7.00), T(6.50), T(6.00), T(6.00), T(5.00)}
+#elif CONFIG == HOTEL_ID
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: {T(52.42), T(52.42), T(52.42), T(50.00), T(30.00), T(18.00), T(11.00), T(9.00), T(8.00), T(7.00), T(6.00), T(5.00), T(5.00), T(5.00), T(5.00), T(5.00)}
 #else
 			Axis:   ARRAY_OF_16_TEMPS,
 			Values: ARRAY_OF_16_VOLUMES
 #endif
 		},
 		engineTempEnrichmentTablePercent: {
+#if CONFIG == HOTEL_ID
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: ARRAY_OF_16_PERCENTS_WIDE
+#else
 			Axis:   ARRAY_OF_16_TEMPS,
 			Values: ARRAY_OF_16_PERCENTS
+#endif
 		},
 		dwellVersusRPMTable: {
 			Axis:   ARRAY_OF_16_RPMS,

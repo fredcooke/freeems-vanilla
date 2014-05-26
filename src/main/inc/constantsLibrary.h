@@ -140,6 +140,7 @@
 // Temperature based small table default data
 #define ARRAY_OF_16_TEMPS         { C(-30),  C(-20),  C(-10),    C(0),   C(10),   C(20),   C(30),   C(40),   C(50),   C(60),   C(70),   C(80),   C(90),  C(100),  C(110),  C(120)}
 #define ARRAY_OF_16_PERCENTS      { W(250),  W(235),  W(220),  W(205),  W(190),  W(175),  W(160),  W(145),  W(130),  W(118),  W(108),  W(100),  W(100),  W(110),  W(120),  W(130)}
+#define ARRAY_OF_16_PERCENTS_WIDE { W(235),  W(220),  W(205),  W(190),  W(175),  W(160),  W(145),  W(130),  W(118),  W(108),  W(100),  W(100),  W(100),  W(110),  W(120),  W(130)}
 #define ARRAY_OF_16_VOLUMES       {T(6.40), T(5.06), T(4.09), T(3.74), T(3.48), T(3.23), T(3.06), T(2.86), T(2.71), T(2.53), T(2.41), T(2.29), T(2.18), T(1.67), T(1.25), T(0.88)} // Time in ms, for now, NOT volume, yet
 
 // RPM based small table default data
