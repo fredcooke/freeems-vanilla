@@ -33,6 +33,7 @@
 
 
 // 16 Load values due to limitation in previous tuner
+ KPA(14),
  KPA(20),
  KPA(26),
  KPA(32),
@@ -47,5 +48,4 @@
  KPA(86),
  KPA(92),
  KPA(98),
-KPA(104),
-KPA(110)
+KPA(104)
