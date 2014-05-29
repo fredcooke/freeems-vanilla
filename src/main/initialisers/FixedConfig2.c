@@ -227,8 +227,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		syncConfirmationsRunning: 10, // This number is arbitrary, add an if block and configure to taste.
 		syncConfirmationsStarting: 0, // Most users should leave this zero, however having it set to 1 or 2 could be beneficial
 #if CONFIG == HOTEL_ID
-		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
-		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
+		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(120), // once started this needs a lot less... fix
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(120),
 #elif CONFIG == SNOTROCKET_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
