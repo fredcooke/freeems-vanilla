@@ -121,17 +121,19 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		BRVMinimum:    VOLTS(0),
 		BRVRange:      VOLTS(24.5), // Standard 3.9k and 1k values.
 #endif
-#if CONFIG == DEUCECOUPE_ID  // This is calibrated for the Deuce Coupe TPS.
-		TPSMinimumADC: 81,  // This is to correct for the TPS reading at closed throttle.
-		TPSMaximumADC: 574  // This is to correct for the TPS reading at wide open throttle.
-
+#if CONFIG == HOTEL_ID
+		TPSMinimumADC: 913, // Idle! The hotel has a reversed TPS slope on purpose for code testing
+		TPSMaximumADC: 0    // WOT!  So these values are backward compared to normal
+#elif CONFIG == DEUCECOUPE_ID
+		TPSMinimumADC: 81,  // Idle
+		TPSMaximumADC: 574  // WOT
 #elif CONFIG == DEUCES10_ID   // This is an estimate for the S10 TPS.
-		TPSMinimumADC: 120,  // This is to correct for the TPS reading at closed throttle.
-		TPSMaximumADC: 560  // This is to correct for the TPS reading at wide open throttle.
+		TPSMinimumADC: 120, // Idle
+		TPSMaximumADC: 560  // WOT
 #elif CONFIG == SNOTROCKET_ID
 		TPSMinimumADC: 185,
 		TPSMaximumADC: 809
-#else
+#else // Default for a normal TPS slope
 		TPSMinimumADC: 0,
 		TPSMaximumADC: ADC_MAX_VALUE
 #endif

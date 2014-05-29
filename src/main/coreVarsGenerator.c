@@ -87,18 +87,29 @@ void generateCoreVars(){
 	// Throttle Position Sensor
 	/* Bound the TPS ADC reading and shift it to start at zero */
 	unsigned short unboundedTPSADC = ADCBuffers->TPS;
-	unsigned short boundedTPSADC = 0;
-	if(unboundedTPSADC > fixedConfigs2.sensorRanges.TPSMaximumADC){
-		boundedTPSADC = TPSADCRange;
-	}else if(unboundedTPSADC > fixedConfigs2.sensorRanges.TPSMinimumADC){
-		boundedTPSADC = unboundedTPSADC - fixedConfigs2.sensorRanges.TPSMinimumADC;
+	unsigned short boundedTPSADC;
+	if(fixedConfigs2.sensorRanges.TPSMaximumADC > fixedConfigs2.sensorRanges.TPSMinimumADC){
+		if(unboundedTPSADC > fixedConfigs2.sensorRanges.TPSMaximumADC){
+			boundedTPSADC = TPSADCRange;
+		}else if(unboundedTPSADC > fixedConfigs2.sensorRanges.TPSMinimumADC){
+			boundedTPSADC = unboundedTPSADC - fixedConfigs2.sensorRanges.TPSMinimumADC;
+		} else{
+			boundedTPSADC = 0;
+		}
+	}else{ // Reverse slope!
+		if(unboundedTPSADC > fixedConfigs2.sensorRanges.TPSMinimumADC){
+			boundedTPSADC = 0;
+		}else if(unboundedTPSADC > fixedConfigs2.sensorRanges.TPSMaximumADC){
+			boundedTPSADC = fixedConfigs2.sensorRanges.TPSMinimumADC - unboundedTPSADC;
+		}else{
+			boundedTPSADC = TPSADCRange;
+		}
 	}
 
 	/* Get TPS from ADC no need to add TPS min as we know it is zero by definition */
 	unsigned short localTPS = ((unsigned long)boundedTPSADC * PERCENT(100)) / TPSADCRange;
 	// TODO fail safe mode, only if on the ADC rails AND configured to do so
 	// Default to a low value that will get you home if you are in Alpha-N mode
-
 
 	/* Get RPM by locking out ISRs for a second and grabbing the Tooth logging data */
 	//atomic start

@@ -660,7 +660,11 @@ void initConfiguration(){
 	bootFuelConst = ((unsigned long)(masterFuelConstant / fixedConfigs1.engineSettings.injectorFlow) * fixedConfigs1.engineSettings.perCylinderVolume) / fixedConfigs1.engineSettings.stoichiometricAFR;
 
 	/* The ADC range used to generate TPS percentage */
-	TPSADCRange = fixedConfigs2.sensorRanges.TPSMaximumADC - fixedConfigs2.sensorRanges.TPSMinimumADC;
+	if(fixedConfigs2.sensorRanges.TPSMaximumADC > fixedConfigs2.sensorRanges.TPSMinimumADC){
+		TPSADCRange = fixedConfigs2.sensorRanges.TPSMaximumADC - fixedConfigs2.sensorRanges.TPSMinimumADC;
+	}else{
+		TPSADCRange = fixedConfigs2.sensorRanges.TPSMinimumADC - fixedConfigs2.sensorRanges.TPSMaximumADC;
+	}
 }
 
 
