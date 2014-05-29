@@ -1,0 +1,9 @@
+#!/bin/bash
+
+git push origin      origin/dev:master
+git push raptor      origin/dev:master
+git push freeems     origin/dev:master
+git push gitorious   origin/dev:master
+git push sourceforge origin/dev:master
+git push repoorcz    origin/dev:master
+
