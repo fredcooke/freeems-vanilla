@@ -90,6 +90,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-RPM.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-RPM.h"
+#elif CONFIG == M2CUPCAR_ID
+#include "../data/tables/axis/M2cupcar-FE3-RPM.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
 #else
@@ -119,6 +121,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-Load.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-Load.h"
+#elif CONFIG == M2CUPCAR_ID
+#include "../data/tables/axis/M2cupcar—FE3-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
 #else
@@ -148,6 +152,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/ve/ScavengerVE24RPMx19Load.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/ve/SimsVolvoVE.h"
+#elif CONFIG == M2CUPCAR_ID
+#include "../data/tables/ve/M2CupCarVE.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/ve/DefaultVE24RPMx19Load.h"
 #else
@@ -216,6 +222,8 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/axis/Deuces3100-RPM.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-RPM.h"
+#elif CONFIG == M2CUPCAR_ID
+#include "../data/tables/axis/M2cupcar-FE3-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -233,6 +241,8 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/axis/Deuces3100-Load.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-Load.h"
+#elif CONFIG == M2CUPCAR_ID
+#include "../data/tables/axis/M2cupcar—FE3-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
 #endif

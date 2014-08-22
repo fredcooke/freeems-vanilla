@@ -73,12 +73,12 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == DEUCES10_ID
 		perCylinderVolume:  CYLINDER_VOLUME(548),
 		injectorFlow:       CC_PER_MINUTE(235),
-#elif CONFIG == SCAVENGER_ID
-		perCylinderVolume:  CYLINDER_VOLUME(399.25),
-		injectorFlow:       CC_PER_MINUTE(540),
 #elif CONFIG == M2CUPCAR_ID
 		perCylinderVolume:  CYLINDER_VOLUME(500),
 		injectorFlow:       CC_PER_MINUTE(550), // RX7 "550" flowed at 580cc
+#elif CONFIG == SCAVENGER_ID
+		perCylinderVolume:  CYLINDER_VOLUME(399.25),
+		injectorFlow:       CC_PER_MINUTE(540),
 #else
 		perCylinderVolume:  CYLINDER_VOLUME(500),
 		injectorFlow:       CC_PER_MINUTE(550),
@@ -194,6 +194,14 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:          6, // THESE ARE IGN, THEY ARE NOT FUEL
 		numberOfInjectionsPerEngineCycle:        1  // Sequential, baby, yeah!
 
+#elif CONFIG == M2CUPCAR_ID // M2cupcar Mazda FE3 MX5/Miata, stock sensors, CAS and Coils
+		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
+		outputEventPinNumbers:       {0,1,0,1,2,3,2,3}, // Wasted spark and semi-sequential
+		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
+		decoderEngineOffset:              ANGLE(90.00), // FE-DOHC, 4and1 CAS approximately centre
+		numberOfConfiguredOutputEvents:              8, // 
+		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential
+
 #elif CONFIG == SCAVENGER_ID // hentai
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
 		outputEventPinNumbers:       {0,1,0,1,2,3,2,3}, // Wasted spark, semi-sequential TODO migrate this to sequential
@@ -201,14 +209,6 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		decoderEngineOffset:      ANGLE(128), // Hentai initial setup value, will change a bit
 		numberOfConfiguredOutputEvents:              8, // See two lines above
 		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential, for now.
-
-#elif CONFIG == M2CUPCAR_ID // M2cupcar Mazda FE3 MX5/Miata, stock sensors, CAS and Coils
-		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
-		outputEventPinNumbers:       {0,1,0,1,2,3,2,3}, // Wasted spark and semi-sequential
-		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
-		decoderEngineOffset:              ANGLE(90.00), // FE-DOHC, 4and1 CAS approximately centre
-		numberOfConfiguredOutputEvents:              8, // 
-		numberOfInjectionsPerEngineCycle:            2  // semi-sequential
 
 #else // Nothing scheduled by default, no sensible default for all possible vehicle setups.
 		anglesOfTDC:                            {}, // Depends on cylinder count and other variables
@@ -230,12 +230,12 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == DEUCES10_ID
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5400)
-#elif CONFIG == SCAVENGER_ID
-			disableThreshold:  RPM(7200),
-			reenableThreshold: RPM(7150)
 #elif CONFIG == M2CUPCAR_ID
 			disableThreshold:  RPM(7100),
 			reenableThreshold: RPM(7050)
+#elif CONFIG == SCAVENGER_ID
+			disableThreshold:  RPM(7200),
+			reenableThreshold: RPM(7150)
 #else
 			disableThreshold:  RPM(5850),
 			reenableThreshold: RPM(5800)  // Come back on before ignition does
@@ -260,12 +260,12 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == DEUCES10_ID
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5300)
-#elif CONFIG == SCAVENGER_ID
-			disableThreshold:  RPM(7200),
-			reenableThreshold: RPM(7100)
 #elif CONFIG == M2CUPCAR_ID
 			disableThreshold:  RPM(7100),
 			reenableThreshold: RPM(7000)
+#elif CONFIG == SCAVENGER_ID
+			disableThreshold:  RPM(7200),
+			reenableThreshold: RPM(7100)
 #else
 			disableThreshold:  RPM(5800),
 			reenableThreshold: RPM(5750)  // Come back on after injection does
