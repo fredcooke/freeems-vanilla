@@ -76,6 +76,9 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #elif CONFIG == SCAVENGER_ID
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
+#elif CONFIG == M2CUPCAR_ID        // STOCK 90 MIATA
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: { T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
 
 #else
 			Axis:   ARRAY_OF_16_VOLTAGES,
@@ -92,6 +95,11 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 		injectorDeadTimeTable: {
 			Axis: ARRAY_OF_16_VOLTAGES,
 			Values: { T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90),  T(0.90)}
+		},
+#elif CONFIG == M2CUPCAR_ID
+		injectorDeadTimeTable: {        // RX7 550CC 1955002020 SAT
+			Axis: ARRAY_OF_16_VOLTAGES,
+			Values: { T(2.55),  T(2.19),  T(1.63),  T(1.44),  T(1.30),  T(1.14),  T(1.08),  T(0.92),  T(0.86),  T(0.78),  T(0.70),  T(0.65),  T(0.58),  T(0.37),  T(0.28),  T(0.26)}
 		},
 #else
 		injectorDeadTimeTable: {
