@@ -198,7 +198,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
 		outputEventPinNumbers:       {0,1,0,1,2,3,2,3}, // Wasted spark and semi-sequential
 		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
-		decoderEngineOffset:              ANGLE(90.00), // FE-DOHC, 4and1 CAS- need to figure out offset
+		decoderEngineOffset:              ANGLE(0.00), // FE-DOHC, 4and1 CAS- need to figure out offset
 		numberOfConfiguredOutputEvents:              8, // 
 		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential
 
@@ -231,8 +231,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5400)
 #elif CONFIG == M2CUPCAR_ID
-			disableThreshold:  RPM(7100),
-			reenableThreshold: RPM(7050)
+			disableThreshold:  RPM(7200),
+			reenableThreshold: RPM(7100)
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7150)
@@ -261,8 +261,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5300)
 #elif CONFIG == M2CUPCAR_ID
-			disableThreshold:  RPM(7100),
-			reenableThreshold: RPM(7000)
+			disableThreshold:  RPM(7200),
+			reenableThreshold: RPM(7050)
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7100)

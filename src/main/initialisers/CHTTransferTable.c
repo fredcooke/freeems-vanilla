@@ -71,7 +71,7 @@ const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
 #elif CONFIG == SCAVENGER_ID
 #include "../data/thermistors/Denso-2k49Bias.h"
 #elif CONFIG == M2CUPCAR_ID
-#include "../data/thermistors/Denso-2k7Bias.h"
+#include "../data/thermistors/Denso-2k49Bias.h"
 #else // Default to correctly biased Jap sensor.
 #include "../data/thermistors/Denso-2k7Bias.h"
 #endif
