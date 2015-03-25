@@ -122,7 +122,7 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-Load.h"
 #elif CONFIG == M2CUPCAR_ID
-#include "../data/tables/axis/M2cupcar—FE3-Load.h"
+#include "../data/tables/axis/M2cupcar-FE3-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
 #else
@@ -242,7 +242,7 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-Load.h"
 #elif CONFIG == M2CUPCAR_ID
-#include "../data/tables/axis/M2cupcar—FE3-Load.h"
+#include "../data/tables/axis/M2cupcar-FE3-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
 #endif

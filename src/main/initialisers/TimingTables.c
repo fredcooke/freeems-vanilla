@@ -124,7 +124,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #elif CONFIG == SCAVENGER_ID
 #include "../data/tables/axis/ScavengersMiata-Load.h"
 #elif CONFIG == M2CUPCAR_ID
-#include "../data/tables/axis/M2cupar—FE3-Load.h"
+#include "../data/tables/axis/M2cupcar-FE3-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
 #else

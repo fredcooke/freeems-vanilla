@@ -161,7 +161,7 @@
 #define PRELIM_CONFIG "BMSTBO"
 #elif defined M2CUPCAR
 #define CONFIG M2CUPCAR_ID
-#define PRELIM_CONFIG “M2CUPCAR”
+#define PRELIM_CONFIG "M2CUPCAR"
 #elif defined CLIFLAGS && !(defined XGATE)
 #error "CLIFLAGS defined, but no build matched! Not allowing config to fall back to default!"
 #define CONFIG -1
