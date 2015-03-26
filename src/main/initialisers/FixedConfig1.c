@@ -196,11 +196,11 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 
 #elif CONFIG == M2CUPCAR_ID // M2cupcar Mazda FE-dohc MX5/Miata, stock sensors, CAS and Coils
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
-		outputEventPinNumbers:       {0,1,0,1,2,3,2,3}, // Wasted spark and semi-sequential
+		outputEventPinNumbers:       {0,1,0,1,2,3,4,5}, // Wasted spark and semi-sequential
 		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
 		decoderEngineOffset:               ANGLE(0.00), // FE-DOHC, 4and1 CAS- need to figure out offset
 		numberOfConfiguredOutputEvents:              8, // 
-		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential
+		numberOfInjectionsPerEngineCycle:            1  // Sequential
 
 #elif CONFIG == SCAVENGER_ID // hentai
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
