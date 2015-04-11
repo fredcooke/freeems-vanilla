@@ -140,6 +140,7 @@
 // Voltage based small table default data
 #define ARRAY_OF_16_VOLTAGES      {  V(6.0),   V(7.2),   V(8.4),   V(9.0),   V(9.6),  V(10.2),  V(10.8),  V(11.4),  V(12.0),  V(12.6),  V(13.2),  V(13.8),  V(14.4),  V(17.8),  V(21.0),  V(24.5)}
 #define ARRAY_OF_16_DEADTIMES     { T(2.91),  T(2.30),  T(1.86),  T(1.70),  T(1.58),  T(1.47),  T(1.39),  T(1.30),  T(1.23),  T(1.15),  T(1.10),  T(1.04),  T(0.99),  T(0.76),  T(0.57),  T(0.40)}
+#define ARRAY_OF_ID1000_DEADTIMES { T(4.00),  T(3.12),  T(2.38),  T(2.07),  T(1.82),  T(1.61),  T(1.47),  T(1.34),  T(1.24),  T(1.15),  T(1.08),  T(1.01),  T(0.95),  T(0.67),  T(0.48),  T(0.32)}
 #define ARRAY_OF_16_DWELLS        {T(14.55), T(11.50),  T(9.30),  T(8.50),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
 
 // Temperature based small table default data
