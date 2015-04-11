@@ -102,6 +102,11 @@
 #define GM2BarMax                KPA(200.0)     /* Pressure read at highest ADC reading */
 #define GM2BarRange              (GM2BarMax - GM2BarMin)
 
+/* GM 3 bar data as from OEM sheet formula detailed in #freeems-ot 11th April 2015, see 1 bar comment for link. */
+#define GM3BarMin                KPA(  1.11)    /* Pressure read at lowest ADC reading */
+#define GM3BarMax                KPA(315.58)    /* Pressure read at highest ADC reading */
+#define GM3BarRange              (GM3BarMax - GM3BarMin)
+
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4100A.pdf */
 #define MPX4100AMin              KPA( 14.0)     /* Pressure read at lowest ADC reading */
 #define MPX4100AMax              KPA(107.5)     /* Pressure read at highest ADC reading */
