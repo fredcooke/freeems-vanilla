@@ -133,6 +133,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SNOTROCKET_ID
 		TPSMinimumADC: 185,
 		TPSMaximumADC: 809
+#elif CONFIG == M2CUPCAR_ID
+		TPSMinimumADC: 167,
+		TPSMaximumADC: 953
 #else // Default for a normal TPS slope
 		TPSMinimumADC: 0,
 		TPSMaximumADC: ADC_MAX_VALUE
