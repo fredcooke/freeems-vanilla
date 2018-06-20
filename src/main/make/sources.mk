@@ -79,7 +79,7 @@ RPMMISSINGTEETH = MissingTeeth-TestFile.c MissingTeeth-Cam-24minus1.c MissingTee
 RPMHALLOROPTICAL = HallOrOptical-Distributor-4of64.c HallOrOptical-Distributor-4of90.c
 RPMVRDISTRIBUTOR = 
 # Specific purpose per engine stuff here
-RPMMITSISTYLE = MitsiAndMazda-CAS-4and1.c MitsiAndMazda-CAS-4and2.c
+RPMMITSISTYLE = MitsiAndMazda-CAS-4and1.c MitsiAndMazda-CAS-4and2.c MitsiAndMazda-CASBackwards-4and2.c
 RPMHONDASTYLE = JSeries-12CrankWith6-2Cam.c R18A1-13CrankWith5Cam.c
 RPMNISSANSTYLE = GM-LT1-CAS-360and8.c
 # Insert your file above and get coding!
