@@ -49,7 +49,6 @@
 // Variables unique to this decoder, should be kept to a minimum!
 static unsigned short edgeTimeStamp; /// @todo TODO why is this here, and why is it static/shared, investigate
 static LongTime timeStamp; /// @todo TODO why is this here, and why is it static/shared, investigate
-unsigned char doubleHighSeen = 0;
 
 
 // Slot (vane) angles used below

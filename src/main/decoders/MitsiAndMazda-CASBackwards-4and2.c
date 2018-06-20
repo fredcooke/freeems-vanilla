@@ -29,9 +29,7 @@
 #include "inc/MitsiAndMazda-CASBackwards-4and2.h"
 
 void decoderInitPreliminary(){} // This decoder works with the defaults
-void perDecoderReset(){
-	doubleHighSeen = 0;
-}
+void perDecoderReset(){}
 
 
 /** @file
@@ -86,20 +84,9 @@ void PrimaryRPMISR(){
 
 	// Determine the correct event based on post transition state
 	unsigned char correctEvent = 0;
-	if(PTITCurrentState & 0x01){
+	if(!(PTITCurrentState & 0x01)){
 		if(!(PTITCurrentState & 0x02)){
-			correctEvent = 10;
-		}else{ // Occurs three times
-			doubleHighSeen = 1;
-		}
-	}else{
-		if(PTITCurrentState & 0x02){
-			// Only this one is not intercepted by a clear
-			if(doubleHighSeen == 1){
-				correctEvent = 6;
-			}
-		}else{ // Clear on double low
-			doubleHighSeen = 0;
+			correctEvent = 9;
 		}
 	}
 
@@ -205,11 +192,11 @@ void SecondaryRPMISR(){
 
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent = 0;
-	if(PTITCurrentState & 0x02){
+	if(!(PTITCurrentState & 0x02)){
 		if(PTITCurrentState & 0x01){
-			correctEvent = 11;
+			correctEvent = 8;
 		}else{
-			correctEvent = 4;
+			correctEvent = 3;
 		}
 	} // else the leading edge of the slot is ambiguous
 
