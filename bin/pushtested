@@ -1,9 +1,0 @@
-#!/bin/bash
-
-git push origin      master :dev
-git push raptor      master :dev
-git push freeems     master :dev
-git push gitorious   master :dev
-git push sourceforge master :dev
-git push repoorcz    master :dev
-
