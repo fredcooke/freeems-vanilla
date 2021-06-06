@@ -72,6 +72,7 @@
 //efine WIKISPEEDR18_ID 26 // WikiSpeed's first car with R18A1 Honda
 //efine JOSHSB18MINI_ID 27 // Josh's LS-VTEC powered Mini
 //efine BMSTBO_ID       28 // Piimae's E7 Corolla w/ 4A-GE 16V turbo
+#define M2CUPCAR_ID	29 // Rob’s 90 Mazda Miata MX-5 FE3 turbo
 
 
 // Convert labels into IDs for use in code and set the ID string
@@ -158,6 +159,9 @@
 #elif defined BMSTBO
 #define CONFIG BMSTBO_ID
 #define PRELIM_CONFIG "BMSTBO"
+#elif defined M2CUPCAR
+#define CONFIG M2CUPCAR_ID
+#define PRELIM_CONFIG "M2CUPCAR"
 #elif defined CLIFLAGS && !(defined XGATE)
 #error "CLIFLAGS defined, but no build matched! Not allowing config to fall back to default!"
 #define CONFIG -1

@@ -73,6 +73,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == DEUCES10_ID
 		perCylinderVolume:  CYLINDER_VOLUME(548),
 		injectorFlow:       CC_PER_MINUTE(235),
+#elif CONFIG == M2CUPCAR_ID
+		perCylinderVolume:  CYLINDER_VOLUME(500),
+		injectorFlow:       CC_PER_MINUTE(550), // RX7 550CC SAT
 #elif CONFIG == SCAVENGER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(399.25),
 		injectorFlow:       CC_PER_MINUTE(540),
@@ -191,6 +194,14 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:          6, // THESE ARE IGN, THEY ARE NOT FUEL
 		numberOfInjectionsPerEngineCycle:        1  // Sequential, baby, yeah!
 
+#elif CONFIG == M2CUPCAR_ID // M2cupcar Mazda FE-dohc MX5/Miata, stock sensors, CAS and Coils
+		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
+		outputEventPinNumbers:       {0,1,0,1,2,3,4,5}, // Wasted spark and semi-sequential
+		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
+		decoderEngineOffset:               ANGLE(630.00), // FE-DOHC, 4and1 CAS- need to figure out offset
+		numberOfConfiguredOutputEvents:              8, // 
+		numberOfInjectionsPerEngineCycle:            1  // Sequential
+
 #elif CONFIG == SCAVENGER_ID // hentai
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
 		outputEventPinNumbers:       {0,1,0,1,2,3,2,3}, // Wasted spark, semi-sequential TODO migrate this to sequential
@@ -219,6 +230,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == DEUCES10_ID
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5400)
+#elif CONFIG == M2CUPCAR_ID
+			disableThreshold:  RPM(7200),
+			reenableThreshold: RPM(7100)
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7150)
@@ -246,6 +260,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == DEUCES10_ID
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5300)
+#elif CONFIG == M2CUPCAR_ID
+			disableThreshold:  RPM(7200),
+			reenableThreshold: RPM(7050)
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7100)

@@ -133,6 +133,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SNOTROCKET_ID
 		TPSMinimumADC: 185,
 		TPSMaximumADC: 809
+#elif CONFIG == M2CUPCAR_ID
+		TPSMinimumADC: 167,
+		TPSMaximumADC: 953
 #else // Default for a normal TPS slope
 		TPSMinimumADC: 0,
 		TPSMaximumADC: ADC_MAX_VALUE
@@ -224,7 +227,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		PortDirectionT: 0xFF  // Ignored! TODO: Overridden for precision timed outputs
 	},
 	decoderSettings:{
-		syncConfirmationsRunning: 10, // This number is arbitrary, add an if block and configure to taste.
+		syncConfirmationsRunning:  0, // This number is arbitrary, add an if block and configure to taste.
 		syncConfirmationsStarting: 0, // Most users should leave this zero, however having it set to 1 or 2 could be beneficial
 #if CONFIG == HOTEL_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(120), // once started this needs a lot less... fix
@@ -233,6 +236,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #elif CONFIG == SCAVENGER_ID
+		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
+#elif CONFIG == M2CUPCAR_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #else
