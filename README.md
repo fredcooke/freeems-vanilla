@@ -4,55 +4,46 @@
 
 FreeEMS - The open source engine management system!
 
-Please see [FreeEMS.org](http://freeems.org) for the most up to date information and links!
+### But FreeEMS Is Abandoned!
 
-To casually follow the highlights you can subscribe to our [facebook page](http://www.facebook.com/FreeEMS)!
+No, no it's not. Far from it:
 
-Before using FreeEMS, please read the [disclaimer](http://www.diyefi.org/disclaimer.htm)!
+* There's still half a dozen cars, some daily driven, running FreeEMS.
+* There's still occasional active development on both experimental versions of the firmware and supporting tools
+* The community around it lives on on IRC (both Freenode and Libera.chat, for now)
 
-If you're wondering why this project was started have a look at [this page](http://www.diyefi.org/why.htm).
+### But FreeEMS Is Not Open Source!
 
-### Obtaining the firmware
+Yes, yes it is. FreeEMS firmware is licensed under the terms of the GPL and always was.
 
-The best way to get the latest development firmware is from the [build server!](http://builds.freeems.org)
+### But Where Is The Latest Code??? Liar!
 
-### Building the firmware
+Code exists in the following forms:
 
-If you want to build your own firmware for some reason such as customisations, read below.
+1. Github slightly stale version - fully public - no one uses this AFAIK but it is functional
+2. Gitlab slightly updated version - available to genuine users only - I run this on one of my cars, dog fooding
+3. More recent unfinished work - available to developers of that work, and their testers who understand the risks, only
+4. Various branches with various innovations, improvements, and features - all close, some usable, none finished, none released
 
-Ensure that you have the latest release or latest code from the [github repository](http://github.com/fredcooke/freeems-vanilla).
+The flow of code, is, and always has been, something like this:
 
-To build this firmware you need the latest build environment from the [tools site](http://tools.diyefi.org).
+1. An idea forms when faced with a problem or situation that current code does not address
+2. The idea is discussed with other active firmware devs
+3. Some pseudo code is written to further solidify the ideas
+4. Firmware is implemented in line with the pseudo code and both are iterated until it works on the bench
+5. Trial on developers' vehicles/engines - if bad, more iterations, otherwise...
+6. Trial on testers' vehicles/engines - typically S19 sent with precanned tune, sometimes branch sent with instructions, tester loads S19 and performs testing, starts, idles, drives, measures things, whatever, then reports back
+7. Code appears to work well, a branch called "futuredev" is pushed to (ff only) and every genuine user benefits
+8. When a good number of people have updated and are running it, that branch is pushed to master
 
-You also need an up to date version of git available on the command line.
+If you're keen to be a part of that cycle at any level, please do get in touch. The team is still happy to work with people and help them through their journey to engine control freedom.
 
-With these prerequisites met, simply type 'make' and choose an option!
+### Then It's NOT Open Source
 
-### Loading the firmware
+You don't understand what the words mean, with all due respect, go and educate yourself.
 
-**Please note**: hcs12mem is no longer capable of loading the firmware unassisted.
+### But Why?
 
-You need either FreeEMS Loader or mtxloader. The former is a standalone app,
-and the latter is packaged with MTX.
+I'm all for open source, I've both used it and supported it for over half of my life at this point. Great code comes from people with skill and imagination, not copy cats. Pushing unfinished ideas to places where unoriginal leeches can study and copy it does no one any good. Better for them to learn for themselves through experience over time than to just copy everything. Note, FreeEMS remains the only original free and open source ECU with its own bespoke, documented, standardised, and open protocol and associated tuning software. The other two both use, or at least used to use, the Megasquirt protocol and proprietary tuning software.
 
-If you are working on the dev board, you need to flip the load/run switch
-to "load" and depress the reset button, or send a reset packet, prior to
-flashing.  Return the switch to the "run" position when complete.
-
-### Tuning your FreeEMS
-
-Tuning is currently done with a combination of techniques. For the full story
-check out [this thread](http://forum.diyefi.org/viewtopic.php?f=54&t=1166)
-and the threads that it links to.
-
-### Footnote
-
-Please post any and all feedback on code, documentation, the system, anything
-at all, even subtle and minor stuff to [the forum](http://forum.diyefi.org).
-
-Thanks for playing with FreeEMS :-)
-
-Good luck and regards,
-
-Fred.
-
+One day all of this will be pushed to Github, despite Microsoft's involvement, and it'll become very clear which system has genuine innovation and quality outcomes as a result. Until then, enjoy this README file :-)
